@@ -837,6 +837,19 @@ function cmBuildConceptPlatforms() {
           </div>
 
           <!-- CTAs -->
+          ${idx === 0 ? `
+          <button onclick="cmOpenPortfolioDemoModal()" style="
+            width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
+            color:${CM.aurora};background:${CM.aurora}12;cursor:pointer;
+            display:inline-flex;align-items:center;justify-content:center;gap:7px;
+            padding:10px 20px;border-radius:999px;margin-bottom:8px;
+            border:1px solid ${CM.aurora}45;
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(111,168,255,0.2)';this.style.boxShadow='0 0 16px rgba(111,168,255,0.2)';this.style.borderColor='rgba(111,168,255,0.7)'"
+             onmouseout="this.style.background='rgba(111,168,255,0.12)';this.style.boxShadow='none';this.style.borderColor='rgba(111,168,255,0.45)'">
+            <i data-lucide="play-circle" style="width:12px;height:12px"></i>
+            View Live Demo
+          </button>` : ''}
           <button onclick="cmOpenConceptModal(${idx})" style="
             width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
             color:${c.accentColor};background:transparent;cursor:pointer;
@@ -1928,6 +1941,198 @@ function cmCloseConceptModal() {
   modal.remove();
 }
 window.cmCloseConceptModal = cmCloseConceptModal;
+
+// ── Portfolio Demo Modal ──────────────────────────────────────────────────────
+
+function cmOpenPortfolioDemoModal() {
+  const prev = document.getElementById('cm-portfolio-demo-modal');
+  if (prev) prev.remove();
+
+  const features = [
+    'Single-page app — 5 sections: About, Projects, International Education, Creative Services, Contact',
+    'Skill Discovery filtering system',
+    'Calendar widget for articles and events',
+    'Contact form with Formspree + mailto fallback',
+    'Admin mode with WYSIWYG editor (Quill 2.x)',
+    'Inline editing of headings, paragraphs, and CTAs',
+    'Authenticated access via Supabase Row Level Security',
+    'Static deployment — GitHub Pages, Vercel, Netlify compatible',
+  ];
+
+  const techStack = ['HTML5', 'CSS3', 'Tailwind CSS v3.4', 'Vanilla JavaScript', 'Quill v2.0.2', 'Supabase', 'Formspree', 'Lucide Icons'];
+
+  const featureItems = features.map(f => `
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div style="width:17px;height:17px;border-radius:50%;background:${CM.aurora}18;
+        border:1px solid ${CM.aurora}30;display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;margin-top:2px">
+        <i data-lucide="check" style="width:9px;height:9px;color:${CM.aurora}"></i>
+      </div>
+      <span style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust};line-height:1.55">${f}</span>
+    </div>`).join('');
+
+  const techBadges = techStack.map(t => `
+    <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:400;
+      padding:4px 12px;border-radius:999px;background:${CM.aurora}0a;color:${CM.stardust};
+      border:1px solid ${CM.aurora}22">${t}</span>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'cm-portfolio-demo-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(3,7,18,0.92);
+    backdrop-filter:blur(22px) saturate(1.3);
+    -webkit-backdrop-filter:blur(22px) saturate(1.3);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto`;
+  modal.addEventListener('click', e => { if (e.target === modal) cmClosePortfolioDemoModal(); });
+
+  modal.innerHTML = `
+    <div class="cm-lightbox-enter" style="
+      width:100%;max-width:760px;border-radius:26px;overflow:hidden;
+      background:linear-gradient(160deg,${CM.deepSpace} 0%,#0d1e38 100%);
+      border:1px solid rgba(111,168,255,0.2);
+      box-shadow:0 32px 100px rgba(3,7,18,0.75),0 0 0 1px ${CM.aurora}14;
+      position:relative
+    ">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4">
+        ${cmBuildStarField(22)}
+      </div>
+      <div style="position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
+        background:radial-gradient(circle,${CM.aurora}08 0%,transparent 70%);pointer-events:none;z-index:0"></div>
+
+      <div style="height:2px;background:linear-gradient(to right,${CM.aurora}44,${CM.aurora},${CM.aurora}44);position:relative;z-index:1"></div>
+
+      <!-- Header -->
+      <div style="padding:clamp(1.25rem,3.5vw,1.75rem) clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:.5rem">
+              <i data-lucide="github" style="width:13px;height:13px;color:${CM.aurora};opacity:.65"></i>
+              <span style="font-family:'Outfit',sans-serif;font-size:.57rem;font-weight:700;
+                letter-spacing:.2em;text-transform:uppercase;color:${CM.aurora};opacity:.65">croissantsmoon / Portfolio-Demo</span>
+            </div>
+            <h2 style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.4rem,4vw,2rem);font-weight:500;font-style:italic;
+              color:${CM.moonlight};line-height:1.1;margin-bottom:.3rem">Premium Portfolio System</h2>
+            <p style="font-family:'Outfit',sans-serif;font-size:.74rem;color:${CM.aurora};opacity:.7">
+              Live Demo · Open Source Template
+            </p>
+          </div>
+          <button onclick="cmClosePortfolioDemoModal()" aria-label="Close" style="
+            flex-shrink:0;width:40px;height:40px;border-radius:50%;
+            background:rgba(217,230,255,0.06);border:1px solid rgba(217,230,255,0.14);
+            color:${CM.moonlight};display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:1.1rem;line-height:1;
+            transition:background .18s
+          " onmouseover="this.style.background='rgba(217,230,255,0.14)'"
+             onmouseout="this.style.background='rgba(217,230,255,0.06)'">✕</button>
+        </div>
+      </div>
+
+      <!-- Live preview iframe -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Live Preview</p>
+        <div style="height:220px;border-radius:14px;overflow:hidden;position:relative;
+          background:linear-gradient(145deg,#030a1a,#071126);
+          border:1px solid rgba(111,168,255,0.12);box-shadow:0 8px 36px rgba(3,7,18,0.5)">
+          <div id="cm-demo-iframe-fallback" style="
+            position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:10px;
+            transition:opacity .5s ease">
+            ${cmBuildStarField(14)}
+            <div style="position:relative;z-index:1;text-align:center">
+              <i data-lucide="loader" style="width:20px;height:20px;color:${CM.aurora};opacity:.4;animation:cmPulse 1.5s ease-in-out infinite"></i>
+              <p style="font-family:'Outfit',sans-serif;font-size:.65rem;color:${CM.stardust};opacity:.4;margin-top:8px">Loading preview…</p>
+            </div>
+          </div>
+          <iframe
+            src="https://portfolio-demo-pearl-six.vercel.app"
+            scrolling="no"
+            tabindex="-1"
+            aria-hidden="true"
+            title="Premium Portfolio System live preview"
+            style="
+              position:absolute;top:0;left:0;
+              width:1440px;height:900px;
+              transform:scale(0.5);
+              transform-origin:top left;
+              border:none;pointer-events:none;z-index:2"
+            loading="lazy"
+            onload="(function(f){if(f)f.style.opacity='0'})(document.getElementById('cm-demo-iframe-fallback'))"
+          ></iframe>
+          <div style="position:absolute;inset:0;z-index:3;pointer-events:none;
+            background:linear-gradient(to bottom,transparent 55%,rgba(7,17,38,0.5) 100%)"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="padding:clamp(1.25rem,3vw,1.5rem) clamp(1.5rem,4vw,2rem);position:relative;z-index:1;max-height:42vh;overflow-y:auto">
+        <!-- Description -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.85rem;line-height:1.76;
+          color:${CM.stardust};margin-bottom:1.5rem">
+          A demo build of a single-page portfolio website template with editorial aesthetic and fictional placeholder content.
+          The backend systems (Supabase, Formspree) are intentionally unconfigured for demonstration purposes — the template is
+          ready to clone and configure with your own credentials.
+        </p>
+
+        <!-- Features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.9rem">What's Inside</p>
+        <div style="margin-bottom:1.5rem">${featureItems}</div>
+
+        <!-- Tech stack -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Built With</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem">${techBadges}</div>
+      </div>
+
+      <!-- Footer CTAs -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);
+        border-top:1px solid rgba(111,168,255,0.08);
+        background:rgba(7,17,38,0.6);backdrop-filter:blur(12px);
+        position:relative;z-index:1">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://portfolio-demo-pearl-six.vercel.app" target="_blank" rel="noopener noreferrer"
+            class="cm-glow-btn" style="
+            flex:1;min-width:160px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;
+            background:${CM.nebulaGold};color:${CM.midnight};padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            letter-spacing:.03em">
+            <i data-lucide="external-link" style="width:14px;height:14px"></i>
+            Open Live Demo
+          </a>
+          <a href="https://github.com/croissantsmoon/Portfolio-Demo" target="_blank" rel="noopener noreferrer" style="
+            flex:1;min-width:140px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;
+            color:${CM.aurora};background:${CM.aurora}0d;padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            border:1px solid ${CM.aurora}35;
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(111,168,255,0.16)';this.style.boxShadow='0 0 16px rgba(111,168,255,0.2)';this.style.borderColor='rgba(111,168,255,0.6)'"
+             onmouseout="this.style.background='rgba(111,168,255,0.13)';this.style.boxShadow='none';this.style.borderColor='rgba(111,168,255,0.35)'">
+            <i data-lucide="github" style="width:14px;height:14px"></i>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+  const onKey = e => { if (e.key === 'Escape') cmClosePortfolioDemoModal(); };
+  document.addEventListener('keydown', onKey);
+  modal._cmKey = onKey;
+}
+window.cmOpenPortfolioDemoModal = cmOpenPortfolioDemoModal;
+
+function cmClosePortfolioDemoModal() {
+  const modal = document.getElementById('cm-portfolio-demo-modal');
+  if (!modal) return;
+  if (modal._cmKey) document.removeEventListener('keydown', modal._cmKey);
+  modal.remove();
+}
+window.cmClosePortfolioDemoModal = cmClosePortfolioDemoModal;
 
 // ── Scroll Reveal ─────────────────────────────────────────────────────────────
 
