@@ -12,5 +12,6 @@
 window.APP_CONFIG = {
   SUPABASE_URL: 'https://ztquydpzekcmyqwsfkmg.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_H7SZF5zhnTC9c6_uC46yzg_WqUCogV_',
-  ADMIN_EMAIL: 'zefanya.kharisma@gmail.com'
+  ADMIN_EMAIL: 'zefanya.kharisma@croissantsmoon.com',
+  FORMSPREE_ENDPOINT: 'https://formspree.io/f/xaqkdvwd',
 };
