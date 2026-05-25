@@ -252,7 +252,7 @@ function contactInitPage() {
             text-align:center;margin-bottom:1.25rem" data-edit-key="contact_direct_eyebrow">Or reach me directly through</p>
           <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
 
-            <a href="mailto:zefanya.kharisma@gmail.com" class="ct-link-card">
+            <a href="mailto:zefanya.kharisma@croissantsmoon.com" class="ct-link-card">
               <div class="ct-link-icon">
                 <i data-lucide="mail" style="width:20px;height:20px;color:#6FA8FF"></i>
               </div>
@@ -409,7 +409,7 @@ function contactInitPage() {
     var endpoint = _getFormspreeEndpoint();
 
     if (!endpoint || endpoint.indexOf('YOUR_FORM_ID') !== -1) {
-      var mailto = 'mailto:zefanya.kharisma@gmail.com'
+      var mailto = 'mailto:zefanya.kharisma@croissantsmoon.com'
         + '?subject=' + encodeURIComponent(subject)
         + '&body=' + encodeURIComponent('From: ' + name + ' <' + email + '>\n\n' + message);
       window.open(mailto);
@@ -435,7 +435,7 @@ function contactInitPage() {
         }
       })
       .catch(function(err) {
-        setMsg('Couldn\'t send right now — please email zefanya.kharisma@gmail.com directly.', 'error');
+        setMsg('Couldn\'t send right now — please email zefanya.kharisma@croissantsmoon.com directly.', 'error');
         console.error('Contact form error:', err);
       })
       .finally(function() {

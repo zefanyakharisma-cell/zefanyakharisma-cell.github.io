@@ -921,7 +921,7 @@ function gdBuildContact() {
              onmouseout="this.style.opacity='1';this.style.transform='translateY(0)';this.style.boxShadow='0 0 24px rgba(212,177,90,0.32),0 4px 18px rgba(212,177,90,0.2)'">
             Start a Conversation <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
           </button>
-          <a href="mailto:zefanya.kharisma@gmail.com" style="
+          <a href="mailto:zefanya.kharisma@croissantsmoon.com" style="
             font-family:'Outfit',sans-serif;
             border:1px solid rgba(212,177,90,0.38);color:#D4B15A;
             padding:16px 24px;border-radius:999px;
@@ -932,7 +932,7 @@ function gdBuildContact() {
           " onmouseover="this.style.background='rgba(212,177,90,0.14)';this.style.borderColor='rgba(212,177,90,0.6)';this.style.boxShadow='0 0 18px rgba(212,177,90,0.2)'"
              onmouseout="this.style.background='rgba(212,177,90,0.06)';this.style.borderColor='rgba(212,177,90,0.38)';this.style.boxShadow='none'">
             <i data-lucide="mail" style="width:14px;height:14px"></i>
-            zefanya.kharisma@gmail.com
+            zefanya.kharisma@croissantsmoon.com
           </a>
         </div>
 
