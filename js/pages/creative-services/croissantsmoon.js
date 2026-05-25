@@ -388,104 +388,422 @@ function cmBuildHero() {
 // ── Section 2: Services ───────────────────────────────────────────────────────
 
 function cmBuildServices() {
-  const cards = [
+  const services = [
     {
-      icon: 'monitor',
-      iconColor: CM.aurora,
-      headline: 'Websites that work as hard as you do',
-      desc: 'Purposeful web builds for educational institutions and companies — clean, accessible, and built to grow.',
-      tags: ['Landing Pages', 'Institution Sites', 'Web Portfolios', 'CMS Integration'],
-      editKey: 'cm_service_web',
-      page: 'websites',
-      cta: 'Web Development & Design',
-      ctaColor: CM.aurora,
+      icon: 'user-circle',
+      accentColor: CM.aurora,
+      glowColor: 'rgba(111,168,255,0.25)',
+      tag: 'Personal & Creative',
+      title: 'Personal Branding & Portfolio Platforms',
+      positioning: 'Your identity, crafted for the world stage.',
+      desc: 'Premium digital identities for professionals who need more than a résumé. We build narrative-driven platforms that position you as a thought leader in your field.',
+      targets: ['Researchers & Academics', 'Scholarship Awardees', 'Creative Professionals', 'Founders & Executives'],
+      features: ['Personal Brand Systems', 'Cinematic Portfolio Design', 'Professional Storytelling', 'Mobile-First Experience', 'CMS Integration'],
+      pricingIDR: 'Rp5 juta',
+      pricingUSD: '$300',
+      pricingLabel: 'Starter Presence',
+      ctaLabel: 'Build Your Platform',
+      editKey: 'cm_svc_personal',
     },
     {
-      icon: 'pen-tool',
-      iconColor: CM.nebulaGold,
-      headline: 'Visual identity that earns trust',
-      desc: 'Brand identities, digital assets, and visual systems that position your institution with clarity and confidence.',
-      tags: ['Brand Identity', 'Social Media Kits', 'Event Materials', 'Print & Digital'],
-      editKey: 'cm_service_design',
-      page: 'designs',
-      cta: 'Graphic Design',
-      ctaColor: CM.nebulaGold,
+      icon: 'globe',
+      accentColor: CM.nebulaGold,
+      glowColor: 'rgba(212,177,90,0.25)',
+      tag: 'International & Institutional',
+      title: 'International & Institutional Platforms',
+      positioning: 'Global-facing design for institutions that matter.',
+      desc: 'Sophisticated digital ecosystems for universities, NGOs, and international offices. Platforms that engage global audiences and communicate institutional excellence.',
+      targets: ['Universities & Faculties', 'International Offices', 'NGOs & Nonprofits', 'Educational Organizations'],
+      features: ['Global Engagement Systems', 'Partnership Directories', 'Student Onboarding Portals', 'Multilingual Architecture', 'Institutional Design Language'],
+      pricingIDR: 'Rp25 juta',
+      pricingUSD: '$1,500',
+      pricingLabel: 'Institutional Systems',
+      ctaLabel: 'Start a Project',
+      editKey: 'cm_svc_institutional',
     },
-  ].map(card => `
-    <div class="cm-card-hover cm-reveal cm-glass" style="
-      border-radius:22px;padding:clamp(2rem,4vw,2.75rem);
-      background:rgba(24,59,107,0.35);
+    {
+      icon: 'layout-dashboard',
+      accentColor: '#A0C4FF',
+      glowColor: 'rgba(160,196,255,0.2)',
+      tag: 'Data & Operations',
+      title: 'Dashboard & Internal Systems',
+      positioning: 'Intelligence made visible. Operations made elegant.',
+      desc: 'Modern dashboards and admin platforms that transform complex data into clear decisions. Built for teams who need both power and elegance in their internal tools.',
+      targets: ['Operations Teams', 'Admin Departments', 'Data-Driven Organizations', 'Management Systems'],
+      features: ['Real-Time Analytics', 'Workflow Management', 'Data Visualization', 'Admin Interfaces', 'Scalable Architecture'],
+      pricingIDR: 'Rp12 juta',
+      pricingUSD: '$750',
+      pricingLabel: 'Professional Identity Platform',
+      ctaLabel: 'Discuss Your Vision',
+      editKey: 'cm_svc_dashboard',
+    },
+  ];
+
+  const serviceCards = services.map(svc => `
+    <div class="cm-card-hover cm-reveal" style="
+      position:relative;border-radius:24px;overflow:hidden;
+      background:rgba(11,30,58,0.55);
+      backdrop-filter:blur(18px) saturate(1.4);
+      -webkit-backdrop-filter:blur(18px) saturate(1.4);
       border:1px solid rgba(111,168,255,0.16);
-      box-shadow:0 4px 32px rgba(3,7,18,0.4);
+      box-shadow:0 4px 40px rgba(3,7,18,0.5);
       display:flex;flex-direction:column
     ">
-      <div style="width:52px;height:52px;border-radius:16px;
-        background:rgba(111,168,255,0.08);border:1px solid rgba(111,168,255,0.18);
-        display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;
-        box-shadow:0 0 18px rgba(111,168,255,0.12)">
-        <i data-lucide="${card.icon}" style="width:22px;height:22px;color:${card.iconColor}"></i>
-      </div>
-      <h3 style="
-        font-family:'Cormorant Garamond',Georgia,serif;
-        font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:500;font-style:italic;
-        color:${CM.moonlight};line-height:1.22;margin-bottom:1rem
-      " data-edit-key="${card.editKey}_headline">${card.headline}</h3>
-      <p style="
-        font-family:'Outfit',sans-serif;font-size:.87rem;line-height:1.76;
-        color:${CM.stardust};margin-bottom:1.5rem
-      " data-edit-key="${card.editKey}_desc">${card.desc}</p>
-      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem">
-        ${card.tags.map(t => `
-          <span style="
-            font-family:'Outfit',sans-serif;font-size:.69rem;font-weight:400;
-            background:rgba(111,168,255,0.08);color:${CM.stardust};
-            padding:4px 13px;border-radius:999px;
-            border:1px solid rgba(111,168,255,0.18)
-          ">${t}</span>`).join('')}
-      </div>
-      <div style="margin-top:auto;padding-top:1.25rem;border-top:1px solid rgba(111,168,255,0.1)">
-        <button onclick="goToPage('${card.page}')" style="
-          font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
-          color:${card.ctaColor};background:transparent;cursor:pointer;
-          display:inline-flex;align-items:center;gap:7px;
-          padding:9px 20px;border-radius:999px;
-          border:1px solid ${card.ctaColor}44;
-          transition:background .2s,box-shadow .2s,border-color .2s
-        " onmouseover="this.style.background='${card.ctaColor}18';this.style.boxShadow='0 0 14px ${card.ctaColor}33';this.style.borderColor='${card.ctaColor}88'"
-           onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='${card.ctaColor}44'">
-          View ${card.cta} <i data-lucide="arrow-right" style="width:13px;height:13px"></i>
+      <div style="height:2px;background:linear-gradient(to right,${svc.accentColor}44,${svc.accentColor},${svc.accentColor}44)"></div>
+      <div style="padding:clamp(1.75rem,3.5vw,2.5rem);flex:1;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+          <div style="width:50px;height:50px;border-radius:15px;
+            background:${svc.accentColor}12;border:1px solid ${svc.accentColor}28;
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 0 20px ${svc.glowColor}">
+            <i data-lucide="${svc.icon}" style="width:22px;height:22px;color:${svc.accentColor}"></i>
+          </div>
+          <span style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;
+            letter-spacing:.14em;text-transform:uppercase;
+            color:${svc.accentColor};opacity:.8;
+            padding:4px 12px;border-radius:999px;
+            background:${svc.accentColor}10;border:1px solid ${svc.accentColor}22">${svc.tag}</span>
+        </div>
+        <h3 style="
+          font-family:'Cormorant Garamond',Georgia,serif;
+          font-size:clamp(1.3rem,2.8vw,1.7rem);font-weight:500;font-style:italic;
+          color:${CM.moonlight};line-height:1.2;margin-bottom:.6rem
+        " data-edit-key="${svc.editKey}_title">${svc.title}</h3>
+        <p style="
+          font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:500;
+          color:${svc.accentColor};opacity:.85;margin-bottom:1rem;line-height:1.4
+        " data-edit-key="${svc.editKey}_pos">${svc.positioning}</p>
+        <p style="
+          font-family:'Outfit',sans-serif;font-size:.84rem;line-height:1.78;
+          color:${CM.stardust};margin-bottom:1.5rem
+        " data-edit-key="${svc.editKey}_desc">${svc.desc}</p>
+        <div style="margin-bottom:1.25rem">
+          <p style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;
+            letter-spacing:.14em;text-transform:uppercase;color:rgba(143,168,214,0.5);margin-bottom:.65rem">Ideal For</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${svc.targets.map(t => `
+              <span style="
+                font-family:'Outfit',sans-serif;font-size:.68rem;
+                color:${CM.stardust};opacity:.8;
+                padding:4px 12px;border-radius:999px;
+                background:rgba(111,168,255,0.07);
+                border:1px solid rgba(111,168,255,0.15)">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div style="margin-bottom:1.75rem">
+          <p style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:600;
+            letter-spacing:.14em;text-transform:uppercase;color:rgba(143,168,214,0.5);margin-bottom:.65rem">Includes</p>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${svc.features.map(f => `
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="width:4px;height:4px;border-radius:50%;
+                  background:${svc.accentColor};flex-shrink:0;
+                  box-shadow:0 0 6px ${svc.accentColor}88"></span>
+                <span style="font-family:'Outfit',sans-serif;font-size:.8rem;color:${CM.stardust};opacity:.85">${f}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div style="
+          margin-top:auto;padding:1.25rem;border-radius:14px;
+          background:${svc.accentColor}08;
+          border:1px solid ${svc.accentColor}18;
+          margin-bottom:1.25rem
+        ">
+          <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;
+            letter-spacing:.14em;text-transform:uppercase;
+            color:rgba(143,168,214,0.45);margin-bottom:.4rem">${svc.pricingLabel} · Starting from</p>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:1.35rem;font-weight:500;color:${svc.accentColor}">${svc.pricingIDR}</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:.72rem;
+              color:rgba(143,168,214,0.5)">/</span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:1.1rem;font-weight:400;color:${CM.stardust}">${svc.pricingUSD}</span>
+          </div>
+        </div>
+        <button onclick="goToPage('contact')" style="
+          width:100%;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;
+          color:${svc.accentColor};background:transparent;cursor:pointer;
+          display:inline-flex;align-items:center;justify-content:center;gap:8px;
+          padding:11px 22px;border-radius:999px;
+          border:1px solid ${svc.accentColor}44;
+          transition:background .22s,box-shadow .22s,border-color .22s,transform .22s
+        " onmouseover="this.style.background='${svc.accentColor}12';this.style.boxShadow='0 0 18px ${svc.glowColor}';this.style.borderColor='${svc.accentColor}88';this.style.transform='translateY(-1px)'"
+           onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='${svc.accentColor}44';this.style.transform='translateY(0)'">
+          ${svc.ctaLabel}
+          <i data-lucide="arrow-right" style="width:13px;height:13px"></i>
         </button>
       </div>
     </div>`).join('');
 
   return `
-    <div style="background:linear-gradient(180deg,${CM.midnight} 0%,${CM.deepSpace} 100%);
-      padding:clamp(4.5rem,9vh,7rem) 24px;position:relative;overflow:hidden">
-      <!-- Subtle star texture -->
-      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.55">
-        ${cmBuildStarField(40)}
+    <div id="cm-services" style="
+      background:linear-gradient(180deg,${CM.midnight} 0%,${CM.deepSpace} 50%,${CM.midnight} 100%);
+      padding:clamp(5rem,10vh,8rem) 24px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.65">
+        ${cmBuildStarField(55)}
+      </div>
+      <div style="position:absolute;left:-15%;top:20%;width:55%;height:55%;border-radius:50%;
+        background:radial-gradient(circle,rgba(111,168,255,0.04) 0%,transparent 65%);
+        pointer-events:none;z-index:0"></div>
+      <div style="position:absolute;right:-10%;bottom:10%;width:45%;height:45%;border-radius:50%;
+        background:radial-gradient(circle,rgba(212,177,90,0.04) 0%,transparent 65%);
+        pointer-events:none;z-index:0"></div>
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0">
+        ${cmConstellationSVG(1200, 700, 5)}
       </div>
       ${cmBuildAstronauts([
-        { img: 5, left: '2%', top: '22%', size: 90, dur: 28, del: -7, rot: 8 },
+        { img: 4, right: '4%', top: '12%', size: 100, dur: 28, del: -3, rot: -10 },
       ])}
-      <div class="max-w-5xl mx-auto" style="position:relative;z-index:1">
-        <div class="cm-reveal" style="text-align:center;margin-bottom:3.5rem">
-          <p style="font-family:'Outfit',sans-serif;font-size:.63rem;font-weight:600;
-            letter-spacing:.2em;text-transform:uppercase;color:${CM.nebulaGold};margin-bottom:.9rem">What We Do</p>
+      <div class="max-w-6xl mx-auto" style="position:relative;z-index:1">
+        <div class="cm-reveal" style="text-align:center;margin-bottom:4.5rem">
+          <p style="font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:600;
+            letter-spacing:.22em;text-transform:uppercase;color:${CM.nebulaGold};margin-bottom:1rem">Services</p>
           <h2 style="
             font-family:'Cormorant Garamond',Georgia,serif;
-            font-size:clamp(2.2rem,5vw,3.5rem);font-weight:400;font-style:italic;
-            color:${CM.moonlight};line-height:1.08;letter-spacing:-.01em
-          " data-edit-key="cm_services_title">Two crafts. One studio.</h2>
+            font-size:clamp(2.4rem,6vw,4rem);font-weight:400;font-style:italic;
+            color:${CM.moonlight};line-height:1.05;letter-spacing:-.01em;margin-bottom:1.25rem
+          " data-edit-key="cm_services_headline">Digital Identity Systems</h2>
+          <p style="font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.78;
+            color:${CM.stardust};max-width:520px;margin:0 auto
+          " data-edit-key="cm_services_sub">We don't build websites. We architect digital presences that communicate who you are before a single word is read.</p>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
-          ${cards}
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start">
+          ${serviceCards}
+        </div>
+        <div class="cm-reveal" style="
+          margin-top:3.5rem;padding:2.5rem;border-radius:22px;
+          background:rgba(24,59,107,0.2);
+          border:1px solid rgba(111,168,255,0.1);
+          display:flex;align-items:center;justify-content:space-between;
+          flex-wrap:wrap;gap:1.5rem
+        ">
+          <div>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:400;font-style:italic;
+              color:${CM.moonlight};margin-bottom:.35rem">Not sure which fits you?</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust};opacity:.8">
+              Let's talk about your project and find the right direction together.
+            </p>
+          </div>
+          <button onclick="goToPage('contact')" class="cm-glow-btn" style="
+            font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;
+            background:${CM.nebulaGold};color:${CM.midnight};padding:14px 30px;border-radius:999px;
+            border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+            letter-spacing:.03em;white-space:nowrap
+          ">
+            Book a Consultation
+            <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+          </button>
         </div>
       </div>
     </div>`;
 }
 
-// ── Section 3: Web Projects ───────────────────────────────────────────────────
+// ── Section 3: Concept Platforms ──────────────────────────────────────────────
+
+function cmBuildConceptPlatforms() {
+  const concepts = [
+    {
+      num: '01',
+      badge: 'Personal · Portfolio',
+      title: 'Premium Portfolio System',
+      theme: 'Cinematic Personal Branding',
+      desc: 'A narrative-driven digital identity platform for creatives, researchers, and international professionals. Every element — from typography to motion — tells your story with editorial precision.',
+      accentColor: CM.aurora,
+      glowColor: 'rgba(111,168,255,0.2)',
+      bg: 'linear-gradient(145deg,#030a1a 0%,#071126 60%,#0B1E3A 100%)',
+      tags: ['Editorial Design', 'Portfolio CMS', 'Personal Branding', 'Motion & Animation', 'Multi-language'],
+      previewLabel: 'Identity System',
+      icon: 'user',
+    },
+    {
+      num: '02',
+      badge: 'Institutional · International',
+      title: 'International Office Platform',
+      theme: 'Global Engagement Ecosystem',
+      desc: 'A sophisticated digital platform for universities and international offices. Features partnership directories, student onboarding systems, mobility programs, and global announcement boards.',
+      accentColor: CM.nebulaGold,
+      glowColor: 'rgba(212,177,90,0.2)',
+      bg: 'linear-gradient(145deg,#0B1E3A 0%,#183B6B 60%,#1a3d6b 100%)',
+      tags: ['Partnership Directory', 'Student Onboarding', 'Mobility Programs', 'Institutional Design', 'Global Reach'],
+      previewLabel: 'Institutional Platform',
+      icon: 'globe',
+    },
+    {
+      num: '03',
+      badge: 'Data · Operations',
+      title: 'Modern Dashboard System',
+      theme: 'Operational Intelligence',
+      desc: 'A premium internal platform built for organizations that need clarity in complexity. Analytics, workflow management, and admin interfaces — designed with the aesthetic of premium SaaS.',
+      accentColor: '#A0C4FF',
+      glowColor: 'rgba(160,196,255,0.2)',
+      bg: 'linear-gradient(145deg,#080818 0%,#0d1a30 60%,#121f3a 100%)',
+      tags: ['Analytics Dashboard', 'Workflow Engine', 'Data Visualization', 'Admin Interface', 'Modular Systems'],
+      previewLabel: 'Dashboard System',
+      icon: 'layout-dashboard',
+    },
+  ];
+
+  const conceptCards = concepts.map((c, idx) => {
+    const previewMock = `
+      <div style="
+        background:${c.bg};border-radius:14px;overflow:hidden;
+        border:1px solid ${c.accentColor}22;
+        box-shadow:0 8px 40px rgba(3,7,18,0.6),0 0 0 1px ${c.accentColor}12;
+        position:relative;height:180px
+      ">
+        ${cmBuildStarField(14)}
+        <div style="
+          background:rgba(7,17,38,0.7);backdrop-filter:blur(10px);
+          padding:9px 14px;border-bottom:1px solid ${c.accentColor}18;
+          display:flex;align-items:center;gap:8px;position:relative;z-index:1
+        ">
+          <div style="width:7px;height:7px;border-radius:50%;background:${c.accentColor};opacity:.6"></div>
+          <div style="flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px"></div>
+          <div style="width:40px;height:6px;background:${c.accentColor}22;border-radius:3px"></div>
+        </div>
+        <div style="padding:14px 16px;position:relative;z-index:1">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+            <div style="background:rgba(255,255,255,0.03);border:1px solid ${c.accentColor}15;border-radius:8px;padding:10px">
+              <div style="height:5px;width:45%;background:${c.accentColor}30;border-radius:3px;margin-bottom:6px"></div>
+              <div style="height:14px;width:70%;background:${c.accentColor}18;border-radius:4px"></div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid ${c.accentColor}15;border-radius:8px;padding:10px">
+              <div style="height:5px;width:45%;background:${c.accentColor}30;border-radius:3px;margin-bottom:6px"></div>
+              <div style="height:14px;width:70%;background:${c.accentColor}18;border-radius:4px"></div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid ${c.accentColor}12;
+            border-radius:8px;padding:10px;display:flex;gap:8px;align-items:center">
+            <div style="width:28px;height:28px;border-radius:7px;background:${c.accentColor}18;
+              display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i data-lucide="${c.icon}" style="width:13px;height:13px;color:${c.accentColor}"></i>
+            </div>
+            <div style="flex:1">
+              <div style="height:4px;width:55%;background:${c.accentColor}25;border-radius:3px;margin-bottom:5px"></div>
+              <div style="height:4px;width:38%;background:rgba(255,255,255,0.06);border-radius:3px"></div>
+            </div>
+            <div style="width:44px;height:18px;background:${c.accentColor}22;border-radius:999px"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:10px;right:12px;z-index:2">
+          <span style="font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:600;
+            letter-spacing:.14em;text-transform:uppercase;color:${c.accentColor};opacity:.55">${c.previewLabel}</span>
+        </div>
+        <div style="position:absolute;${idx % 2 === 0 ? 'right' : 'left'}:-30px;top:-20px;
+          width:120px;height:120px;border-radius:50%;
+          background:radial-gradient(circle,${c.accentColor}14 0%,transparent 70%);
+          pointer-events:none;z-index:0"></div>
+      </div>`;
+
+    return `
+      <div class="cm-card-hover cm-reveal" style="
+        background:rgba(11,30,58,0.45);backdrop-filter:blur(16px) saturate(1.3);
+        -webkit-backdrop-filter:blur(16px) saturate(1.3);
+        border:1px solid rgba(111,168,255,0.14);border-radius:24px;overflow:hidden;
+        box-shadow:0 4px 36px rgba(3,7,18,0.45);
+        display:flex;flex-direction:column
+      ">
+        <div style="padding:16px 16px 0">${previewMock}</div>
+        <div style="padding:1.5rem clamp(1.25rem,3vw,1.75rem) clamp(1.5rem,3vw,2rem)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">
+            <span style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+              letter-spacing:.18em;text-transform:uppercase;color:${c.accentColor};opacity:.7">${c.num}</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:500;
+              letter-spacing:.12em;text-transform:uppercase;color:rgba(143,168,214,0.45);
+              padding:3px 10px;border-radius:999px;background:rgba(111,168,255,0.06);
+              border:1px solid rgba(111,168,255,0.12)">${c.badge}</span>
+          </div>
+          <h3 style="
+            font-family:'Cormorant Garamond',Georgia,serif;
+            font-size:clamp(1.25rem,2.5vw,1.55rem);font-weight:500;font-style:italic;
+            color:${CM.moonlight};line-height:1.2;margin-bottom:.4rem
+          ">${c.title}</h3>
+          <p style="font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:500;
+            color:${c.accentColor};opacity:.75;margin-bottom:.85rem">${c.theme}</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:.82rem;line-height:1.74;
+            color:${CM.stardust};margin-bottom:1.25rem">${c.desc}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem">
+            ${c.tags.map(tag => `
+              <span style="font-family:'Outfit',sans-serif;font-size:.66rem;
+                color:${CM.stardust};opacity:.75;
+                padding:4px 12px;border-radius:999px;
+                background:${c.accentColor}0a;
+                border:1px solid ${c.accentColor}20">${tag}</span>`).join('')}
+          </div>
+          <button onclick="goToPage('contact')" style="
+            width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
+            color:${c.accentColor};background:transparent;cursor:pointer;
+            display:inline-flex;align-items:center;justify-content:center;gap:7px;
+            padding:10px 20px;border-radius:999px;
+            border:1px solid ${c.accentColor}35;
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='${c.accentColor}10';this.style.boxShadow='0 0 14px ${c.glowColor}';this.style.borderColor='${c.accentColor}70'"
+             onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='${c.accentColor}35'">
+            Build This for Me
+            <i data-lucide="arrow-right" style="width:12px;height:12px"></i>
+          </button>
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div id="cm-concept-platforms" style="
+      background:linear-gradient(180deg,${CM.deepSpace} 0%,${CM.void} 50%,${CM.midnight} 100%);
+      padding:clamp(5rem,10vh,8rem) 24px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.6">
+        ${cmBuildStarField(45)}
+      </div>
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0">
+        ${cmConstellationSVG(1200, 700, 9)}
+      </div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        width:700px;height:400px;border-radius:50%;
+        background:radial-gradient(ellipse,rgba(111,168,255,0.04) 0%,transparent 65%);
+        pointer-events:none;z-index:0"></div>
+      ${cmBuildAstronauts([
+        { img: 5, left: '2%', bottom: '20%', size: 90, dur: 30, del: -8, rot: 12 },
+      ])}
+      <div class="max-w-6xl mx-auto" style="position:relative;z-index:1">
+        <div class="cm-reveal" style="text-align:center;margin-bottom:4.5rem">
+          <p style="font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:600;
+            letter-spacing:.22em;text-transform:uppercase;color:${CM.nebulaGold};margin-bottom:1rem">Concept Platforms</p>
+          <h2 style="
+            font-family:'Cormorant Garamond',Georgia,serif;
+            font-size:clamp(2.4rem,6vw,4rem);font-weight:400;font-style:italic;
+            color:${CM.moonlight};line-height:1.05;margin-bottom:1.25rem
+          " data-edit-key="cm_concepts_headline">Demo Experiences</h2>
+          <p style="font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.78;
+            color:${CM.stardust};max-width:520px;margin:0 auto
+          " data-edit-key="cm_concepts_sub">Three premium platform directions. Explore the visual language we bring to each type of project — and imagine what yours could feel like.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
+          ${conceptCards}
+        </div>
+        <div class="cm-reveal" style="margin-top:3.5rem;text-align:center">
+          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1rem,2vw,1.3rem);
+            font-weight:400;font-style:italic;color:${CM.stardust};opacity:.7;margin-bottom:1.5rem">
+            "I want <em>my</em> platform to feel like this."
+          </p>
+          <button onclick="goToPage('contact')" style="
+            font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;
+            color:${CM.nebulaGold};background:transparent;cursor:pointer;
+            display:inline-flex;align-items:center;gap:8px;
+            padding:12px 28px;border-radius:999px;
+            border:1px solid rgba(212,177,90,0.35);
+            transition:background .2s,box-shadow .2s,border-color .2s,transform .2s
+          " onmouseover="this.style.background='rgba(212,177,90,0.1)';this.style.boxShadow='0 0 20px rgba(212,177,90,0.25)';this.style.borderColor='rgba(212,177,90,0.65)';this.style.transform='translateY(-2px)'"
+             onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='rgba(212,177,90,0.35)';this.style.transform='translateY(0)'">
+            Discuss Your Vision
+            <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Section 4: Web Projects ───────────────────────────────────────────────────
 
 function cmBuildRepoSkeletons() {
   return Array.from({ length: 6 }, () => `
@@ -891,7 +1209,7 @@ async function cmFetchRepos() {
   }
 }
 
-// ── Section 4: Graphic Design ─────────────────────────────────────────────────
+// ── Section 5: Graphic Design ─────────────────────────────────────────────────
 
 const CM_CAT_COLORS = {
   'Brand Identity':   CM.nebulaGold,
@@ -1003,7 +1321,7 @@ function cmBuildGraphicDesign() {
     </div>`;
 }
 
-// ── Section 5: Process ────────────────────────────────────────────────────────
+// ── Section 6: Process ────────────────────────────────────────────────────────
 
 function cmBuildProcess() {
   const steps = [
@@ -1079,7 +1397,7 @@ function cmBuildProcess() {
     </div>`;
 }
 
-// ── Section 6: Contact CTA ────────────────────────────────────────────────────
+// ── Section 7: Contact CTA ────────────────────────────────────────────────────
 
 function cmBuildContact() {
   return `
@@ -1335,6 +1653,7 @@ function cmInitPage() {
   el.innerHTML = [
     cmBuildHero(),
     cmBuildServices(),
+    cmBuildConceptPlatforms(),
     cmBuildWebProjects(),
     cmBuildGraphicDesign(),
     cmBuildProcess(),
