@@ -602,50 +602,123 @@ function cmBuildServices() {
 
 // ── Section 3: Concept Platforms ──────────────────────────────────────────────
 
-function cmBuildConceptPlatforms() {
-  const concepts = [
-    {
-      num: '01',
-      badge: 'Personal · Portfolio',
-      title: 'Premium Portfolio System',
-      theme: 'Cinematic Personal Branding',
-      desc: 'A narrative-driven digital identity platform for creatives, researchers, and international professionals. Every element — from typography to motion — tells your story with editorial precision.',
-      accentColor: CM.aurora,
-      glowColor: 'rgba(111,168,255,0.2)',
-      bg: 'linear-gradient(145deg,#030a1a 0%,#071126 60%,#0B1E3A 100%)',
-      tags: ['Editorial Design', 'Portfolio CMS', 'Personal Branding', 'Motion & Animation', 'Multi-language'],
-      previewLabel: 'Identity System',
-      icon: 'user',
-    },
-    {
-      num: '02',
-      badge: 'Institutional · International',
-      title: 'International Office Platform',
-      theme: 'Global Engagement Ecosystem',
-      desc: 'A sophisticated digital platform for universities and international offices. Features partnership directories, student onboarding systems, mobility programs, and global announcement boards.',
-      accentColor: CM.nebulaGold,
-      glowColor: 'rgba(212,177,90,0.2)',
-      bg: 'linear-gradient(145deg,#0B1E3A 0%,#183B6B 60%,#1a3d6b 100%)',
-      tags: ['Partnership Directory', 'Student Onboarding', 'Mobility Programs', 'Institutional Design', 'Global Reach'],
-      previewLabel: 'Institutional Platform',
-      icon: 'globe',
-    },
-    {
-      num: '03',
-      badge: 'Data · Operations',
-      title: 'Modern Dashboard System',
-      theme: 'Operational Intelligence',
-      desc: 'A premium internal platform built for organizations that need clarity in complexity. Analytics, workflow management, and admin interfaces — designed with the aesthetic of premium SaaS.',
-      accentColor: '#A0C4FF',
-      glowColor: 'rgba(160,196,255,0.2)',
-      bg: 'linear-gradient(145deg,#080818 0%,#0d1a30 60%,#121f3a 100%)',
-      tags: ['Analytics Dashboard', 'Workflow Engine', 'Data Visualization', 'Admin Interface', 'Modular Systems'],
-      previewLabel: 'Dashboard System',
-      icon: 'layout-dashboard',
-    },
-  ];
+const CM_CONCEPT_DETAILS = [
+  {
+    num: '01',
+    badge: 'Personal · Portfolio',
+    title: 'Premium Portfolio System',
+    theme: 'Cinematic Personal Branding',
+    desc: 'A narrative-driven digital identity platform for creatives, researchers, and international professionals. Every element — from typography to motion — tells your story with editorial precision.',
+    accentColor: CM.aurora,
+    glowColor: 'rgba(111,168,255,0.2)',
+    bg: 'linear-gradient(145deg,#030a1a 0%,#071126 60%,#0B1E3A 100%)',
+    tags: ['Editorial Design', 'Portfolio CMS', 'Personal Branding', 'Motion & Animation', 'Multi-language'],
+    previewLabel: 'Identity System',
+    icon: 'user',
+    originalPrice: 5000000,
+    discountedPrice: 2000000,
+    timeline: '2–3 weeks',
+    revisions: '3 rounds included',
+    whatYouGet: [
+      'Custom multi-section design with cinematic hero',
+      'About & biography section with editorial layout',
+      'Portfolio gallery with lightbox preview',
+      'Achievements & credentials showcase',
+      'Contact form with backend integration',
+      'Mobile-first, production-ready build',
+      '3 revision rounds included',
+    ],
+    features: [
+      { name: 'Custom Design & Editorial Layout', price: 500000 },
+      { name: 'Responsive Mobile-First Build', price: 300000 },
+      { name: 'Portfolio Gallery + Lightbox', price: 350000 },
+      { name: 'CMS / Content Management', price: 300000 },
+      { name: 'Personal Brand System', price: 200000 },
+      { name: 'Motion & Scroll Animations', price: 200000 },
+      { name: 'SEO Optimization', price: 150000 },
+    ],
+  },
+  {
+    num: '02',
+    badge: 'Institutional · International',
+    title: 'International Office Platform',
+    theme: 'Global Engagement Ecosystem',
+    desc: 'A sophisticated digital platform for universities and international offices. Features partnership directories, student onboarding systems, mobility programs, and global announcement boards.',
+    accentColor: CM.nebulaGold,
+    glowColor: 'rgba(212,177,90,0.2)',
+    bg: 'linear-gradient(145deg,#0B1E3A 0%,#183B6B 60%,#1a3d6b 100%)',
+    tags: ['Partnership Directory', 'Student Onboarding', 'Mobility Programs', 'Institutional Design', 'Global Reach'],
+    previewLabel: 'Institutional Platform',
+    icon: 'globe',
+    originalPrice: 25000000,
+    discountedPrice: 10000000,
+    timeline: '4–6 weeks',
+    revisions: '4 rounds included',
+    whatYouGet: [
+      'Institutional homepage with global design language',
+      'Partnership directory with filtering & search',
+      'Student onboarding & orientation portal',
+      'Mobility programs & exchange listings',
+      'News & announcements CMS',
+      'Multilingual architecture (EN + ID)',
+      'Admin dashboard for content management',
+    ],
+    features: [
+      { name: 'Institutional Design System', price: 2000000 },
+      { name: 'Partnership Directory + Search', price: 1500000 },
+      { name: 'Student Onboarding Portal', price: 2000000 },
+      { name: 'Mobility Programs Section', price: 1000000 },
+      { name: 'News & Announcements CMS', price: 1000000 },
+      { name: 'Multilingual Architecture', price: 1500000 },
+      { name: 'Admin Dashboard', price: 1000000 },
+    ],
+  },
+  {
+    num: '03',
+    badge: 'Data · Operations',
+    title: 'Modern Dashboard System',
+    theme: 'Operational Intelligence',
+    desc: 'A premium internal platform built for organizations that need clarity in complexity. Analytics, workflow management, and admin interfaces — designed with the aesthetic of premium SaaS.',
+    accentColor: '#A0C4FF',
+    glowColor: 'rgba(160,196,255,0.2)',
+    bg: 'linear-gradient(145deg,#080818 0%,#0d1a30 60%,#121f3a 100%)',
+    tags: ['Analytics Dashboard', 'Workflow Engine', 'Data Visualization', 'Admin Interface', 'Modular Systems'],
+    previewLabel: 'Dashboard System',
+    icon: 'layout-dashboard',
+    originalPrice: 12000000,
+    discountedPrice: 7000000,
+    timeline: '3–5 weeks',
+    revisions: '3 rounds included',
+    whatYouGet: [
+      'Analytics dashboard with data visualization',
+      'Workflow management & task pipelines',
+      'Data tables with sorting, filtering, export',
+      'Admin interface with role-based access',
+      'Database integration & real-time updates',
+      'User management system',
+      'Modular, scalable component architecture',
+    ],
+    features: [
+      { name: 'Analytics Dashboard + Charts', price: 1500000 },
+      { name: 'Workflow Management Engine', price: 1500000 },
+      { name: 'Data Tables & Export System', price: 1000000 },
+      { name: 'Admin Interface Design', price: 1000000 },
+      { name: 'Database Integration', price: 1000000 },
+      { name: 'User Management System', price: 500000 },
+      { name: 'Mobile-Responsive Polish', price: 500000 },
+    ],
+  },
+];
 
-  const conceptCards = concepts.map((c, idx) => {
+function cmFormatRp(n) {
+  return 'Rp ' + n.toLocaleString('id-ID');
+}
+
+function cmBuildConceptPlatforms() {
+  const conceptCards = CM_CONCEPT_DETAILS.map((c, idx) => {
+    const savings = c.originalPrice - c.discountedPrice;
+    const discountPct = Math.round((savings / c.originalPrice) * 100);
+
     const previewMock = `
       <div style="
         background:${c.bg};border-radius:14px;overflow:hidden;
@@ -695,6 +768,13 @@ function cmBuildConceptPlatforms() {
           width:120px;height:120px;border-radius:50%;
           background:radial-gradient(circle,${c.accentColor}14 0%,transparent 70%);
           pointer-events:none;z-index:0"></div>
+        <!-- Discount ribbon -->
+        <div style="position:absolute;top:10px;left:10px;z-index:3">
+          <span style="font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;
+            letter-spacing:.1em;text-transform:uppercase;
+            background:${c.accentColor};color:#030712;
+            padding:3px 9px;border-radius:999px">${discountPct}% OFF</span>
+        </div>
       </div>`;
 
     return `
@@ -724,7 +804,7 @@ function cmBuildConceptPlatforms() {
             color:${c.accentColor};opacity:.75;margin-bottom:.85rem">${c.theme}</p>
           <p style="font-family:'Outfit',sans-serif;font-size:.82rem;line-height:1.74;
             color:${CM.stardust};margin-bottom:1.25rem">${c.desc}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem">
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem">
             ${c.tags.map(tag => `
               <span style="font-family:'Outfit',sans-serif;font-size:.66rem;
                 color:${CM.stardust};opacity:.75;
@@ -732,17 +812,54 @@ function cmBuildConceptPlatforms() {
                 background:${c.accentColor}0a;
                 border:1px solid ${c.accentColor}20">${tag}</span>`).join('')}
           </div>
-          <button onclick="goToPage('contact')" style="
+
+          <!-- Pricing block -->
+          <div style="
+            padding:14px 16px;border-radius:14px;margin-bottom:1.25rem;
+            background:${c.accentColor}07;border:1px solid ${c.accentColor}18
+          ">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-family:'Outfit',sans-serif;font-size:.55rem;font-weight:700;
+                letter-spacing:.12em;text-transform:uppercase;
+                background:${c.accentColor};color:#030712;
+                padding:2px 8px;border-radius:999px">Special Price</span>
+              <span style="font-family:'Outfit',sans-serif;font-size:.7rem;
+                text-decoration:line-through;color:rgba(143,168,214,0.38)">${cmFormatRp(c.originalPrice)}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font-family:'Cormorant Garamond',Georgia,serif;
+                font-size:1.4rem;font-weight:500;color:${c.accentColor}">${cmFormatRp(c.discountedPrice)}</span>
+              <span style="font-family:'Outfit',sans-serif;font-size:.62rem;
+                color:rgba(143,168,214,0.5)">starting from</span>
+            </div>
+            <p style="font-family:'Outfit',sans-serif;font-size:.62rem;
+              color:rgba(143,168,214,0.4);margin-top:4px">Save ${cmFormatRp(savings)} · ${discountPct}% off regular price</p>
+          </div>
+
+          <!-- CTAs -->
+          <button onclick="cmOpenConceptModal(${idx})" style="
             width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
             color:${c.accentColor};background:transparent;cursor:pointer;
             display:inline-flex;align-items:center;justify-content:center;gap:7px;
-            padding:10px 20px;border-radius:999px;
-            border:1px solid ${c.accentColor}35;
+            padding:10px 20px;border-radius:999px;margin-bottom:8px;
+            border:1px solid ${c.accentColor}45;
             transition:background .2s,box-shadow .2s,border-color .2s
-          " onmouseover="this.style.background='${c.accentColor}10';this.style.boxShadow='0 0 14px ${c.glowColor}';this.style.borderColor='${c.accentColor}70'"
-             onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='${c.accentColor}35'">
-            Build This for Me
-            <i data-lucide="arrow-right" style="width:12px;height:12px"></i>
+          " onmouseover="this.style.background='${c.accentColor}12';this.style.boxShadow='0 0 16px ${c.glowColor}';this.style.borderColor='${c.accentColor}80'"
+             onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='${c.accentColor}45'">
+            <i data-lucide="receipt" style="width:12px;height:12px"></i>
+            View Pricing & Details
+          </button>
+          <button onclick="goToPage('contact')" style="
+            width:100%;font-family:'Outfit',sans-serif;font-size:.76rem;font-weight:500;
+            color:rgba(143,168,214,0.55);background:transparent;cursor:pointer;
+            display:inline-flex;align-items:center;justify-content:center;gap:6px;
+            padding:8px 16px;border-radius:999px;
+            border:1px solid rgba(111,168,255,0.12);
+            transition:color .2s,border-color .2s
+          " onmouseover="this.style.color='${CM.stardust}';this.style.borderColor='rgba(111,168,255,0.25)'"
+             onmouseout="this.style.color='rgba(143,168,214,0.55)';this.style.borderColor='rgba(111,168,255,0.12)'">
+            Contact to Start
+            <i data-lucide="arrow-right" style="width:11px;height:11px"></i>
           </button>
         </div>
       </div>`;
@@ -776,7 +893,7 @@ function cmBuildConceptPlatforms() {
           " data-edit-key="cm_concepts_headline">Demo Experiences</h2>
           <p style="font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.78;
             color:${CM.stardust};max-width:520px;margin:0 auto
-          " data-edit-key="cm_concepts_sub">Three premium platform directions. Explore the visual language we bring to each type of project — and imagine what yours could feel like.</p>
+          " data-edit-key="cm_concepts_sub">Three premium platform directions — each with transparent pricing. Explore the visual language and see exactly what you get.</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
           ${conceptCards}
@@ -1609,6 +1726,208 @@ function cmGDJumpTo(i) {
   }
 }
 window.cmGDJumpTo = cmGDJumpTo;
+
+// ── Concept Platform Modals ───────────────────────────────────────────────────
+
+function cmOpenConceptModal(idx) {
+  const d = CM_CONCEPT_DETAILS[idx];
+  if (!d) return;
+  const prev = document.getElementById('cm-concept-modal');
+  if (prev) prev.remove();
+
+  const savings = d.originalPrice - d.discountedPrice;
+  const discountPct = Math.round((savings / d.originalPrice) * 100);
+
+  const featureRows = d.features.map((f, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;
+      padding:11px 0;${i < d.features.length - 1 ? 'border-bottom:1px solid rgba(111,168,255,0.07)' : ''}">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:5px;height:5px;border-radius:50%;background:${d.accentColor};
+          flex-shrink:0;box-shadow:0 0 7px ${d.accentColor}99"></span>
+        <span style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust}">${f.name}</span>
+      </div>
+      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:.95rem;font-weight:500;
+        color:${d.accentColor};white-space:nowrap;margin-left:14px">${cmFormatRp(f.price)}</span>
+    </div>`).join('');
+
+  const whatYouGet = d.whatYouGet.map(item => `
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:9px">
+      <div style="width:18px;height:18px;border-radius:50%;background:${d.accentColor}18;
+        border:1px solid ${d.accentColor}30;display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;margin-top:1px">
+        <i data-lucide="check" style="width:10px;height:10px;color:${d.accentColor}"></i>
+      </div>
+      <span style="font-family:'Outfit',sans-serif;font-size:.83rem;color:${CM.stardust};line-height:1.55">${item}</span>
+    </div>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'cm-concept-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(3,7,18,0.88);
+    backdrop-filter:blur(22px) saturate(1.3);
+    -webkit-backdrop-filter:blur(22px) saturate(1.3);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto`;
+  modal.addEventListener('click', e => { if (e.target === modal) cmCloseConceptModal(); });
+
+  modal.innerHTML = `
+    <div class="cm-lightbox-enter" style="
+      width:100%;max-width:680px;border-radius:26px;overflow:hidden;
+      background:linear-gradient(160deg,${CM.deepSpace} 0%,#0d1e38 100%);
+      border:1px solid rgba(111,168,255,0.2);
+      box-shadow:0 32px 100px rgba(3,7,18,0.75),0 0 0 1px ${d.accentColor}14;
+      position:relative
+    ">
+      <!-- Star atmosphere -->
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4">
+        ${cmBuildStarField(22)}
+      </div>
+      <!-- Nebula blob -->
+      <div style="position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
+        background:radial-gradient(circle,${d.accentColor}08 0%,transparent 70%);pointer-events:none;z-index:0"></div>
+
+      <!-- Top accent bar -->
+      <div style="height:2px;background:linear-gradient(to right,${d.accentColor}44,${d.accentColor},${d.accentColor}44);position:relative;z-index:1"></div>
+
+      <!-- Header -->
+      <div style="padding:clamp(1.5rem,4vw,2.25rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem">
+          <div>
+            <span style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+              letter-spacing:.2em;text-transform:uppercase;color:${d.accentColor};opacity:.7;display:block;margin-bottom:.5rem">${d.num} · ${d.badge}</span>
+            <h2 style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.5rem,4vw,2.1rem);font-weight:500;font-style:italic;
+              color:${CM.moonlight};line-height:1.1;margin-bottom:.35rem">${d.title}</h2>
+            <p style="font-family:'Outfit',sans-serif;font-size:.76rem;
+              color:${d.accentColor};opacity:.72">${d.theme}</p>
+          </div>
+          <button onclick="cmCloseConceptModal()" aria-label="Close" style="
+            flex-shrink:0;width:40px;height:40px;border-radius:50%;
+            background:rgba(217,230,255,0.06);border:1px solid rgba(217,230,255,0.14);
+            color:${CM.moonlight};display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:1.1rem;line-height:1;
+            transition:background .18s
+          " onmouseover="this.style.background='rgba(217,230,255,0.14)'"
+             onmouseout="this.style.background='rgba(217,230,255,0.06)'">✕</button>
+        </div>
+        <p style="font-family:'Outfit',sans-serif;font-size:.84rem;line-height:1.76;
+          color:${CM.stardust}">${d.desc}</p>
+      </div>
+
+      <!-- Pricing summary bar -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2.25rem);
+        background:${d.accentColor}07;border-bottom:1px solid rgba(111,168,255,0.08);
+        position:relative;z-index:1">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;
+              letter-spacing:.14em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.5rem">Total Investment</p>
+            <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+              <span style="font-family:'Cormorant Garamond',Georgia,serif;
+                font-size:2rem;font-weight:500;color:${d.accentColor}">${cmFormatRp(d.discountedPrice)}</span>
+              <span style="font-family:'Outfit',sans-serif;font-size:.78rem;
+                text-decoration:line-through;color:rgba(143,168,214,0.35)">${cmFormatRp(d.originalPrice)}</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <span style="font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:700;
+              background:${d.accentColor}1a;color:${d.accentColor};
+              border:1px solid ${d.accentColor}30;
+              padding:5px 14px;border-radius:999px;letter-spacing:.05em;display:inline-block;margin-bottom:5px">${discountPct}% OFF · Limited Offer</span>
+            <p style="font-family:'Outfit',sans-serif;font-size:.68rem;
+              color:rgba(143,168,214,0.4)">Save ${cmFormatRp(savings)}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="padding:clamp(1.25rem,3vw,1.75rem) clamp(1.5rem,4vw,2.25rem);
+        position:relative;z-index:1;max-height:52vh;overflow-y:auto">
+
+        <!-- What's included -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:1rem">What's Included</p>
+        <div style="margin-bottom:1.75rem">${whatYouGet}</div>
+
+        <!-- Timeline + revisions -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.75rem">
+          <div style="background:rgba(111,168,255,0.05);border:1px solid rgba(111,168,255,0.12);
+            border-radius:12px;padding:14px 16px">
+            <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;
+              letter-spacing:.12em;text-transform:uppercase;color:rgba(143,168,214,0.4);margin-bottom:5px">Timeline</p>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:1.05rem;font-weight:500;color:${CM.moonlight}">${d.timeline}</p>
+          </div>
+          <div style="background:rgba(111,168,255,0.05);border:1px solid rgba(111,168,255,0.12);
+            border-radius:12px;padding:14px 16px">
+            <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:600;
+              letter-spacing:.12em;text-transform:uppercase;color:rgba(143,168,214,0.4);margin-bottom:5px">Revisions</p>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:1.05rem;font-weight:500;color:${CM.moonlight}">${d.revisions}</p>
+          </div>
+        </div>
+
+        <!-- Price breakdown -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.6rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:1rem">Price Breakdown</p>
+        <div style="background:rgba(7,17,38,0.5);border-radius:16px;padding:1.25rem 1.5rem;
+          border:1px solid rgba(111,168,255,0.1);margin-bottom:1.5rem">
+          ${featureRows}
+          <!-- Subtotal divider -->
+          <div style="margin-top:14px;padding-top:12px;
+            border-top:1px solid rgba(111,168,255,0.12);
+            display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-family:'Outfit',sans-serif;font-size:.75rem;
+              color:rgba(143,168,214,0.45)">Regular Total</span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;
+              text-decoration:line-through;color:rgba(143,168,214,0.3)">${cmFormatRp(d.originalPrice)}</span>
+          </div>
+          <div style="margin-top:10px;padding:12px 0 4px;
+            border-top:1px solid ${d.accentColor}20;
+            display:flex;justify-content:space-between;align-items:center">
+            <span style="font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;
+              color:${CM.moonlight}">Your Price Today</span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:1.55rem;font-weight:500;color:${d.accentColor}">${cmFormatRp(d.discountedPrice)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer CTA (sticky) -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2.25rem);
+        border-top:1px solid rgba(111,168,255,0.08);
+        background:rgba(7,17,38,0.6);backdrop-filter:blur(12px);
+        position:relative;z-index:1">
+        <button onclick="cmCloseConceptModal();goToPage('contact')" class="cm-glow-btn" style="
+          width:100%;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;
+          background:${CM.nebulaGold};color:${CM.midnight};padding:15px 28px;border-radius:999px;
+          border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+          gap:9px;letter-spacing:.03em;margin-bottom:.6rem
+        ">
+          Start This Project
+          <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+        </button>
+        <p style="font-family:'Outfit',sans-serif;font-size:.67rem;text-align:center;
+          color:rgba(143,168,214,0.35)">No commitment required — let's talk first.</p>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+  const onKey = e => { if (e.key === 'Escape') cmCloseConceptModal(); };
+  document.addEventListener('keydown', onKey);
+  modal._cmKey = onKey;
+}
+window.cmOpenConceptModal = cmOpenConceptModal;
+
+function cmCloseConceptModal() {
+  const modal = document.getElementById('cm-concept-modal');
+  if (!modal) return;
+  if (modal._cmKey) document.removeEventListener('keydown', modal._cmKey);
+  modal.remove();
+}
+window.cmCloseConceptModal = cmCloseConceptModal;
 
 // ── Scroll Reveal ─────────────────────────────────────────────────────────────
 
