@@ -849,6 +849,18 @@ function cmBuildConceptPlatforms() {
              onmouseout="this.style.background='rgba(111,168,255,0.12)';this.style.boxShadow='none';this.style.borderColor='rgba(111,168,255,0.45)'">
             <i data-lucide="play-circle" style="width:12px;height:12px"></i>
             View Live Demo
+          </button>` : idx === 2 ? `
+          <button onclick="cmOpenDashboardDemoModal()" style="
+            width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
+            color:#A0C4FF;background:rgba(160,196,255,0.1);cursor:pointer;
+            display:inline-flex;align-items:center;justify-content:center;gap:7px;
+            padding:10px 20px;border-radius:999px;margin-bottom:8px;
+            border:1px solid rgba(160,196,255,0.38);
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(160,196,255,0.18)';this.style.boxShadow='0 0 16px rgba(160,196,255,0.2)';this.style.borderColor='rgba(160,196,255,0.65)'"
+             onmouseout="this.style.background='rgba(160,196,255,0.1)';this.style.boxShadow='none';this.style.borderColor='rgba(160,196,255,0.38)'">
+            <i data-lucide="play-circle" style="width:12px;height:12px"></i>
+            View Live Demo
           </button>` : ''}
           <button onclick="cmOpenConceptModal(${idx})" style="
             width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
@@ -2133,6 +2145,233 @@ function cmClosePortfolioDemoModal() {
   modal.remove();
 }
 window.cmClosePortfolioDemoModal = cmClosePortfolioDemoModal;
+
+// ── Dashboard Demo Modal ──────────────────────────────────────────────────────
+
+function cmOpenDashboardDemoModal() {
+  const prev = document.getElementById('cm-dashboard-demo-modal');
+  if (prev) prev.remove();
+
+  const accent = '#A0C4FF';
+  const accentGlow = 'rgba(160,196,255,0.2)';
+
+  const stats = [
+    { label: 'Agreements',  value: '2,289' },
+    { label: 'Institutions', value: '1,201' },
+    { label: 'Departments',  value: '38' },
+    { label: 'Countries',    value: 'Dom + Intl' },
+  ];
+
+  const guestFeatures = [
+    'Executive KPI dashboard with live status cards',
+    'Status distribution pie chart · Agreements-by-department bar chart',
+    'Monthly activity line chart · Expiration timeline · Country distribution',
+    'Public Archive Library — full search, filter, and sort',
+    'Public Analytics page with multiple chart types',
+  ];
+
+  const adminFeatures = [
+    'Supabase Auth — email/password + magic-link sign-in',
+    'Role-based access: Admin · Manager · Staff · Viewer',
+    'Agreement List — multi-column filter, full-text search, sortable, paginated',
+    'Agreement Detail — workflow visualiser, document attachments, status history',
+    'Workflow Engine — 8 stages: Drafting → Internal Review → Legal → Partner → Waiting Signature → Signed → Completed → Archived',
+    'Realtime sync — Supabase Realtime streams INSERT/UPDATE/DELETE to all browsers',
+    'Notification Center with expiration alerts and unread badge',
+    'User Management (Admin only) — create, enable/disable, delete users',
+    'Export to CSV / JSON · Print-to-PDF stylesheet · Dark / light mode',
+  ];
+
+  const techStack = ['Vanilla JS', 'Tailwind CSS', 'Chart.js', 'Lucide Icons', 'Supabase Auth', 'PostgreSQL', 'Supabase Realtime', 'RLS'];
+
+  const makeItems = (arr, color) => arr.map(f => `
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div style="width:17px;height:17px;border-radius:50%;background:${color}18;
+        border:1px solid ${color}30;display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;margin-top:2px">
+        <i data-lucide="check" style="width:9px;height:9px;color:${color}"></i>
+      </div>
+      <span style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust};line-height:1.55">${f}</span>
+    </div>`).join('');
+
+  const statCards = stats.map(s => `
+    <div style="flex:1;min-width:80px;background:${accent}07;border:1px solid ${accent}18;
+      border-radius:10px;padding:10px 12px;text-align:center">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:500;color:${accent}">${s.value}</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:.6rem;color:${CM.stardust};opacity:.55;margin-top:2px">${s.label}</div>
+    </div>`).join('');
+
+  const techBadges = techStack.map(t => `
+    <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:400;
+      padding:4px 12px;border-radius:999px;background:${accent}0a;color:${CM.stardust};
+      border:1px solid ${accent}20">${t}</span>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'cm-dashboard-demo-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(3,7,18,0.92);
+    backdrop-filter:blur(22px) saturate(1.3);
+    -webkit-backdrop-filter:blur(22px) saturate(1.3);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto`;
+  modal.addEventListener('click', e => { if (e.target === modal) cmCloseDashboardDemoModal(); });
+
+  modal.innerHTML = `
+    <div class="cm-lightbox-enter" style="
+      width:100%;max-width:780px;border-radius:26px;overflow:hidden;
+      background:linear-gradient(160deg,${CM.deepSpace} 0%,#0d1e38 100%);
+      border:1px solid rgba(160,196,255,0.2);
+      box-shadow:0 32px 100px rgba(3,7,18,0.75),0 0 0 1px ${accent}14;
+      position:relative
+    ">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4">
+        ${cmBuildStarField(22)}
+      </div>
+      <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;
+        background:radial-gradient(circle,${accent}07 0%,transparent 70%);pointer-events:none;z-index:0"></div>
+
+      <div style="height:2px;background:linear-gradient(to right,${accent}44,${accent},${accent}44);position:relative;z-index:1"></div>
+
+      <!-- Header -->
+      <div style="padding:clamp(1.25rem,3.5vw,1.75rem) clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:.5rem">
+              <i data-lucide="github" style="width:13px;height:13px;color:${accent};opacity:.65"></i>
+              <span style="font-family:'Outfit',sans-serif;font-size:.57rem;font-weight:700;
+                letter-spacing:.2em;text-transform:uppercase;color:${accent};opacity:.65">croissantsmoon / Partnership-Dashboard-Demo</span>
+            </div>
+            <h2 style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.4rem,4vw,2rem);font-weight:500;font-style:italic;
+              color:${CM.moonlight};line-height:1.1;margin-bottom:.3rem">Modern Dashboard System</h2>
+            <p style="font-family:'Outfit',sans-serif;font-size:.74rem;color:${accent};opacity:.7">
+              Live Demo · Partnership Management Platform
+            </p>
+          </div>
+          <button onclick="cmCloseDashboardDemoModal()" aria-label="Close" style="
+            flex-shrink:0;width:40px;height:40px;border-radius:50%;
+            background:rgba(217,230,255,0.06);border:1px solid rgba(217,230,255,0.14);
+            color:${CM.moonlight};display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:1.1rem;line-height:1;transition:background .18s
+          " onmouseover="this.style.background='rgba(217,230,255,0.14)'"
+             onmouseout="this.style.background='rgba(217,230,255,0.06)'">✕</button>
+        </div>
+      </div>
+
+      <!-- Live preview iframe -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Live Preview</p>
+        <div style="height:220px;border-radius:14px;overflow:hidden;position:relative;
+          background:linear-gradient(145deg,#08101e,#0d1a30);
+          border:1px solid rgba(160,196,255,0.12);box-shadow:0 8px 36px rgba(3,7,18,0.5)">
+          <div id="cm-dash-iframe-fallback" style="
+            position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:10px;
+            transition:opacity .5s ease">
+            ${cmBuildStarField(14)}
+            <div style="position:relative;z-index:1;text-align:center">
+              <i data-lucide="loader" style="width:20px;height:20px;color:${accent};opacity:.4;animation:cmPulse 1.5s ease-in-out infinite"></i>
+              <p style="font-family:'Outfit',sans-serif;font-size:.65rem;color:${CM.stardust};opacity:.4;margin-top:8px">Loading preview…</p>
+            </div>
+          </div>
+          <iframe
+            src="https://partnership-dashboard-demo-three.vercel.app"
+            scrolling="no"
+            tabindex="-1"
+            aria-hidden="true"
+            title="Modern Dashboard System live preview"
+            style="
+              position:absolute;top:0;left:0;
+              width:1440px;height:900px;
+              transform:scale(0.5);
+              transform-origin:top left;
+              border:none;pointer-events:none;z-index:2"
+            loading="lazy"
+            onload="(function(f){if(f)f.style.opacity='0'})(document.getElementById('cm-dash-iframe-fallback'))"
+          ></iframe>
+          <div style="position:absolute;inset:0;z-index:3;pointer-events:none;
+            background:linear-gradient(to bottom,transparent 55%,rgba(7,17,38,0.5) 100%)"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="padding:clamp(1.25rem,3vw,1.5rem) clamp(1.5rem,4vw,2rem);position:relative;z-index:1;max-height:44vh;overflow-y:auto">
+
+        <!-- Dataset stats -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Real Dataset — Petra Christian University</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.4rem">${statCards}</div>
+        <p style="font-family:'Outfit',sans-serif;font-size:.82rem;line-height:1.76;
+          color:${CM.stardust};margin-bottom:1.5rem">
+          A full-stack partnership management dashboard built on a real institutional dataset of
+          2,289 MoU · MoA · IA agreements across 1,201 domestic and international institutions.
+          Features a public guest view with live charts and a full authenticated admin suite powered
+          by Supabase Auth, PostgreSQL, and Realtime.
+        </p>
+
+        <!-- Guest features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Public / Guest View</p>
+        <div style="margin-bottom:1.4rem">${makeItems(guestFeatures, accent)}</div>
+
+        <!-- Admin features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Admin (Authenticated)</p>
+        <div style="margin-bottom:1.4rem">${makeItems(adminFeatures, accent)}</div>
+
+        <!-- Tech stack -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Built With</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem">${techBadges}</div>
+      </div>
+
+      <!-- Footer CTAs -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);
+        border-top:1px solid rgba(111,168,255,0.08);
+        background:rgba(7,17,38,0.6);backdrop-filter:blur(12px);
+        position:relative;z-index:1">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://partnership-dashboard-demo-three.vercel.app" target="_blank" rel="noopener noreferrer"
+            class="cm-glow-btn" style="
+            flex:1;min-width:160px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;
+            background:${CM.nebulaGold};color:${CM.midnight};padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            letter-spacing:.03em">
+            <i data-lucide="external-link" style="width:14px;height:14px"></i>
+            Open Live Demo
+          </a>
+          <a href="https://github.com/croissantsmoon/Partnership-Dashboard-Demo" target="_blank" rel="noopener noreferrer" style="
+            flex:1;min-width:140px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;
+            color:${accent};background:${accent}0d;padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            border:1px solid ${accent}35;
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(160,196,255,0.16)';this.style.boxShadow='0 0 16px rgba(160,196,255,0.2)';this.style.borderColor='rgba(160,196,255,0.6)'"
+             onmouseout="this.style.background='rgba(160,196,255,0.13)';this.style.boxShadow='none';this.style.borderColor='rgba(160,196,255,0.35)'">
+            <i data-lucide="github" style="width:14px;height:14px"></i>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+  const onKey = e => { if (e.key === 'Escape') cmCloseDashboardDemoModal(); };
+  document.addEventListener('keydown', onKey);
+  modal._cmKey = onKey;
+}
+window.cmOpenDashboardDemoModal = cmOpenDashboardDemoModal;
+
+function cmCloseDashboardDemoModal() {
+  const modal = document.getElementById('cm-dashboard-demo-modal');
+  if (!modal) return;
+  if (modal._cmKey) document.removeEventListener('keydown', modal._cmKey);
+  modal.remove();
+}
+window.cmCloseDashboardDemoModal = cmCloseDashboardDemoModal;
 
 // ── Scroll Reveal ─────────────────────────────────────────────────────────────
 
