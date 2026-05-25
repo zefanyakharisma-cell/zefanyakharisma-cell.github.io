@@ -1971,7 +1971,6 @@ function cmInitPage() {
   el.style.background = CM.midnight;
   el.innerHTML = [
     cmBuildHero(),
-    cmBuildServices(),
     cmBuildConceptPlatforms(),
     cmBuildWebProjects(),
     cmBuildGraphicDesign(),
