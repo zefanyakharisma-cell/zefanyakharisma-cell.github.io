@@ -1122,7 +1122,7 @@ function cmBuildFeaturedProject(project) {
 const CM_FEATURED_PROJECTS = [
   {
     page:        'web-portfolio',
-    live:        'https://website-portfolio-liard-alpha.vercel.app/',
+    live:        'https://zefanyakharisma.com',
     title:       'Website Portfolio',
     label:       'SPA · Vanilla JS',
     watermark:   'Portfolio',
