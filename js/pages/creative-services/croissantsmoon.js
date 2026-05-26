@@ -1041,7 +1041,7 @@ function cmBuildRepoCard(repo) {
           font-family:'Outfit',sans-serif;font-size:.77rem;line-height:1.64;
           color:${CM.stardust};margin-bottom:14px;
           display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
-        ">${repo.description}</p>
+        ">${repo.description || 'Open source web project by CroissantsMoon.'}</p>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
           ${repo.language ? `
             <span style="display:inline-flex;align-items:center;gap:5px;
@@ -1360,7 +1360,7 @@ window.cmSetRepoFilter = function(filter) {
 };
 
 async function cmFetchRepos() {
-  const KEY = 'cm_gh_repos_v3';
+  const KEY = 'cm_gh_repos_v4';
   const cached = sessionStorage.getItem(KEY);
   if (cached) {
     try { cmRenderRepos(JSON.parse(cached)); return; } catch(e) {}
@@ -1369,7 +1369,7 @@ async function cmFetchRepos() {
     const res = await fetch('https://api.github.com/users/croissantsmoon/repos?sort=updated&per_page=20');
     if (!res.ok) throw new Error('fetch failed');
     const all = await res.json();
-    const filtered = all.filter(r => !r.fork && r.description && r.name !== 'zefanyakharisma-cell');
+    const filtered = all.filter(r => !r.fork && r.name !== 'zefanyakharisma-cell');
     sessionStorage.setItem(KEY, JSON.stringify(filtered));
     cmRenderRepos(filtered);
   } catch(e) {
