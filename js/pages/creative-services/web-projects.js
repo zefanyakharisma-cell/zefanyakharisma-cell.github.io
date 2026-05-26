@@ -187,6 +187,242 @@ const WP_PROJECTS = {
     },
   },
 
+  'cm-portfolio-demo': {
+    title:   'Portfolio Website — Demo',
+    tagline: 'Open-source editorial SPA portfolio template — vanilla JS, Tailwind CSS, Supabase admin CMS.',
+    year:    '2025',
+    status:  'Live',
+    github:  'https://github.com/croissantsmoon/Portfolio-Demo',
+    live:    'https://portfolio-demo-pearl-six.vercel.app',
+    tech:    ['HTML5', 'CSS3', 'Tailwind CSS', 'JavaScript', 'Supabase', 'Quill.js'],
+    background: `A demo build of the portfolio website template powering zefanyakharisma.com. All names, institutions, programs, and contact details are fictional placeholders — backends (Supabase, Formspree) are intentionally unconfigured so you can fork it and fill in your own details. The codebase is the complete production source, structured into five canonical sections that mirror the real portfolio: About, Projects, Intl. Ed, Creative, and Contact.`,
+    purpose: `To give anyone building a personal portfolio a battle-tested, framework-free starting point. The demo shows the full visual system — hero, about sections, project pages, international education, creative studio identity, writing, and contact — without exposing any personal data. Fork it, configure your Supabase project, and go live.`,
+    features: [
+      { icon: 'layout-dashboard', title: 'Five Canonical Sections',    desc: 'About, Projects, Intl. Ed, Creative (CroissantsMoon), and Contact — each with its own visual language, sub-pages, and navigation state.' },
+      { icon: 'edit-3',           title: 'Admin CMS with Quill Editor', desc: 'Authenticated admin mode lets you write and publish articles via Quill 2.x WYSIWYG, manage calendar events, and edit any heading or paragraph inline — no code push required.' },
+      { icon: 'smartphone',       title: 'iOS-Style Navigation Shell',  desc: 'Bottom tab bar, Dynamic Island pill, and smooth page transitions replicate a native app feel using only vanilla CSS and a custom hash-router.' },
+      { icon: 'git-branch',       title: '20+ Pages, One HTML File',   desc: 'Custom hash-router handles dynamic meta titles, OG tags, browser history, scroll-to-top, and nav state across 20+ pages without a framework.' },
+      { icon: 'filter',           title: 'Skill Discovery Entry Point', desc: 'Home page hosts a filterable work grid where visitors filter projects by skill area, surfacing relevant experience instantly.' },
+      { icon: 'calendar',         title: 'Calendar Widget',            desc: 'Calendar shows published articles and upcoming events managed by the admin and stored in Supabase.' },
+    ],
+    problems: [
+      { icon: 'user',       title: 'Two Professional Identities',    tag: 'Identity Architecture', desc: 'Presenting international education work and creative studio work under a single brand without one overshadowing the other.' },
+      { icon: 'smartphone', title: 'Native Feel on Mobile',          tag: 'Mobile UX',            desc: 'Traditional portfolio sites feel clunky on phones — too much scrolling, no clear hierarchy. This needed to feel like an iOS app.' },
+      { icon: 'edit-3',     title: 'Content Without Code Pushes',    tag: 'Content Management',   desc: 'Updating a heading or publishing an article should not require touching the codebase or a deployment pipeline.' },
+      { icon: 'git-branch', title: 'Scale Across 20+ Pages',         tag: 'Routing Complexity',   desc: 'Twenty-plus distinct pages with their own titles, meta descriptions, and nav states — all inside one HTML file without a framework.' },
+    ],
+    solutions: [
+      { icon: 'layers',     title: 'Section-Based Design System',   tag: 'Architecture', desc: 'Each section has its own visual language and accent palette, giving each professional identity room to breathe within a unified brand.' },
+      { icon: 'smartphone', title: 'iOS-Inspired Navigation Shell', tag: 'Mobile UX',     desc: 'Bottom tab bar, Dynamic Island pill, and smooth transitions replicate native app feel using only vanilla CSS and a custom router.' },
+      { icon: 'database',   title: 'Supabase Inline Editing',       tag: 'CMS Layer',     desc: 'Admin mode powered by Supabase and Quill.js lets any data-edit-key element be edited in place — no code, no deploy, just click and type.' },
+      { icon: 'hash',       title: 'Custom Hash Router',            tag: 'SPA Routing',   desc: '60-line router handles 20+ pages: dynamic meta titles, OG tags, back/forward history, scroll-to-top, and nav state — no framework.' },
+    ],
+    uiux: {
+      desc: 'The interface draws from editorial design and iOS native apps — a pairing that creates a distinctly premium, readable feel. Every visual decision was made to reduce friction for two primary audiences: institutional contacts assessing credentials, and creative clients evaluating web and design work.',
+      points: [
+        { icon: 'smartphone', title: 'iOS-Inspired Shell',             desc: 'Bottom tab bar, Dynamic Island pill, and smooth slide transitions replicate a native mobile app experience — built entirely with CSS and a custom JS router.' },
+        { icon: 'type',       title: 'Editorial Typography',          desc: 'Cormorant Garamond (serif, headings) paired with Outfit/DM Sans (sans-serif, body) creates a luxury editorial hierarchy readable at every viewport.' },
+        { icon: 'layers',     title: 'Section-Level Visual Languages', desc: 'Each of the five sections has its own accent palette — About uses warm cream tones, Creative uses celestial midnight blues — giving each identity its own space.' },
+        { icon: 'sun-moon',   title: 'Light & Dark Modes',            desc: 'The site adapts cleanly to system preference, maintaining contrast and readability across both modes.' },
+      ],
+    },
+    frontend: {
+      desc: 'The frontend is intentionally framework-free. Every feature — routing, animations, admin mode, calendar, skill filters — is implemented in vanilla JavaScript. No bundler, no build step, no framework.',
+      points: [
+        { icon: 'hash',   title: 'Custom 60-Line Hash Router',      desc: 'Handles 20+ pages with dynamic title, Open Graph tags, back/forward history, scroll-to-top, and nav highlighting — without a framework or build step.' },
+        { icon: 'zap',    title: 'IntersectionObserver Animations', desc: 'Scroll-reveal, card entrance, and section transitions are driven by native IntersectionObserver — zero animation libraries.' },
+        { icon: 'edit-3', title: 'Quill 2.x WYSIWYG Editor',       desc: 'Integrated for admin article authoring with custom Tailwind-styled toolbar, image upload, and Supabase Storage integration.' },
+        { icon: 'wind',   title: 'Tailwind CSS (CDN)',              desc: 'Loaded via CDN with custom config for brand tokens — no build pipeline required, keeping deployment a single HTML + JS drop.' },
+      ],
+    },
+    backend: {
+      desc: 'Supabase serves as the entire backend: authentication, database, storage, and inline content editing. The anon key is safely exposed in the frontend; Row Level Security policies ensure public users can only read published content.',
+      points: [
+        { icon: 'database', title: 'Supabase Postgres', desc: 'Tables for articles, calendar events, and inline content edits — all with RLS policies allowing public reads and restricting writes to authenticated admins.' },
+        { icon: 'lock',     title: 'Supabase Auth',     desc: 'Email/password auth gates the admin mode. On login, the UI unlocks inline editing, article management, and calendar event controls.' },
+        { icon: 'image',    title: 'Supabase Storage',  desc: 'Article cover images and inline image uploads stored in a Supabase Storage bucket.' },
+        { icon: 'send',     title: 'Formspree Contact', desc: 'Contact form submits via Formspree — keeping the submission pipeline serverless with no custom backend endpoint.' },
+      ],
+    },
+  },
+
+  'cm-intl-office-demo': {
+    title:   'International Office Website — Demo',
+    tagline: 'Open-source university international office SPA — inbound/outbound programs, role-based CMS, partnership directory, meeting requests.',
+    year:    '2025–2026',
+    status:  'Live',
+    github:  'https://github.com/croissantsmoon/Website-International-Office-Demo',
+    live:    'https://website-demo-liard.vercel.app',
+    tech:    ['HTML5', 'Tailwind CSS', 'JavaScript', 'Supabase', 'Lucide Icons', 'Resend'],
+    background: `Demo version of the PCU Global International Office Website — a full-featured SPA built for Petra Christian University's international office. This open-source build uses placeholder content and unconfigured backends so anyone can fork it and adapt it for their own institution. The architecture covers every core function: inbound and outbound academic programs, a meeting request form, a news CMS with four admin roles, a partnership directory, and an arrival guide for incoming students.`,
+    purpose: `To give universities and international offices a production-grade starting point for their digital presence. The demo shows the full system — 20+ pages, admin CMS, Supabase backend, and Resend email integration — without any institution-specific data. Fork it, configure your Supabase project, and adapt the content for your office.`,
+    features: [
+      { icon: 'globe',       title: 'Inbound & Outbound Programs',      desc: 'Dedicated pages for semester exchange, international degree, ICOP, Indonesian SPECTRUM, joint/double degree, and internship — structured around two distinct audience journeys.' },
+      { icon: 'users',       title: 'Role-Based Admin News CMS',         desc: 'Four admin roles (Inbound, Outbound, Partnership, Head) can publish, edit, and delete news articles from a rich-text editor backed by Supabase.' },
+      { icon: 'mail',        title: 'Meeting Request Form',             desc: 'Multi-step modal captures institution details, meeting preferences, and guest lists — writes to Supabase and fires a Deno Edge Function to send email notifications via Resend.' },
+      { icon: 'map',         title: 'Interactive Partnership Directory', desc: 'Drill-down modal — continent → country → partner details — lets visitors explore the institution\'s global network. Domestic partners have a separate categorised modal.' },
+      { icon: 'play-circle', title: 'Animated Hero Carousel',           desc: 'Auto-advancing hero slides with navigation arrows, dot indicators, and scroll-reveal animations built using IntersectionObserver — no animation library.' },
+      { icon: 'database',    title: 'OSE & Internship CMS',             desc: 'Admins can add custom university entries to the Outbound Semester Exchange page and manage internship opportunity listings via Supabase-backed modals.' },
+    ],
+    problems: [
+      { icon: 'file-x',     title: 'No CMS for Content Teams',         tag: 'Content Management',       desc: 'University staff need to update news and program details without touching code. Static sites create a bottleneck between content and publication.' },
+      { icon: 'users',      title: 'Two Audiences, One Navigation',    tag: 'Information Architecture', desc: 'Prospective partners and exchange students have completely different information needs — the site must serve both without confusing either.' },
+      { icon: 'globe',      title: 'No Partnership Directory',         tag: 'Data Presentation',        desc: 'An institution\'s network of international partners had no visual representation — no searchable directory, no map, no snapshot of global reach.' },
+      { icon: 'smartphone', title: 'Desktop-Only Legacy Sites',        tag: 'Responsive Design',        desc: 'Many institutional sites break on mobile, alienating prospective students who browse primarily on phones.' },
+    ],
+    solutions: [
+      { icon: 'edit-3',     title: 'Role-Based News CMS',         tag: 'Content Management',       desc: 'Four admin roles with scoped write permissions. Each role publishes to their own section tag — no code deployment needed for content updates.' },
+      { icon: 'layout',     title: 'Audience-First Architecture', tag: 'Information Architecture', desc: 'Navigation and content structure redesigned around two primary journeys — partner institutions and prospective exchange students.' },
+      { icon: 'map',        title: 'Partnership Directory',       tag: 'Data Presentation',        desc: 'Drill-down modal lets visitors explore the global network continent by continent, country by country — with full partner details at each level.' },
+      { icon: 'smartphone', title: 'Mobile-First Rebuild',        tag: 'Responsive Design',        desc: 'Every layout designed mobile-first using Tailwind CSS, with progressive enhancement for tablet and desktop.' },
+    ],
+    uiux: {
+      desc: 'The design language reflects institutional gravitas: navy and gold palette, clean typographic hierarchy, and generous white space. Every page follows an audience-first layout principle: partners find programme overviews and the partnership directory; students find orientation guides and mobility options.',
+      points: [
+        { icon: 'layout',      title: 'Audience-Split Navigation',    desc: 'Primary navigation structured around two journeys — Inbound and Outbound — so each audience type reaches relevant content within one click.' },
+        { icon: 'play-circle', title: 'Animated Hero Carousel',       desc: 'Auto-advancing hero slides with dot indicators and keyboard navigation create immediate visual energy without a carousel library.' },
+        { icon: 'map',         title: 'Drill-Down Partnership Modal', desc: 'Continent → country → partner details: three-level modal hierarchy presents a complex partner network without overwhelming the user.' },
+        { icon: 'mail',        title: 'Multi-Step Meeting Request',   desc: 'Guided modal form captures institution details, contact info, meeting preferences, and guest lists — reducing drop-off by presenting one step at a time.' },
+      ],
+    },
+    frontend: {
+      desc: 'Built with semantic HTML, Tailwind CSS, and vanilla JavaScript. IntersectionObserver drives all scroll animations. Each page section lives in its own render function file — no framework, no build step needed for development.',
+      points: [
+        { icon: 'wind',   title: 'Tailwind CSS',                       desc: 'Utility-first CSS with custom config for institutional colour palette and type scale. Compiled locally and committed for production.' },
+        { icon: 'eye',    title: 'IntersectionObserver Scroll Reveals', desc: 'Cards, sections, and panels animate in as they enter the viewport — driven by native browser APIs with a single reusable observer class.' },
+        { icon: 'layers', title: 'Modular Page Architecture',          desc: 'Each page section is an independently rendered JS function under JS/pages/ — making the codebase easy to extend or adapt.' },
+        { icon: 'globe',  title: 'No Framework, No Build Step',       desc: 'A single HTML file with modular JS — deployable to any static host with no CI pipeline, no package.json, and no bundler.' },
+      ],
+    },
+    backend: {
+      desc: 'Supabase provides the full backend: Postgres for news and CMS content, Auth for role-based admin access, and a Deno Edge Function that handles email notifications via Resend when a meeting request is submitted.',
+      points: [
+        { icon: 'database', title: 'Supabase Postgres',         desc: 'Tables for news articles, OSE university listings, internship opportunities, and meeting requests — all protected by RLS policies.' },
+        { icon: 'users',    title: 'Role-Based Auth (4 Roles)', desc: 'Inbound, Outbound, Partnership, and Head admin roles — each with scoped write permissions managed via Supabase Auth and a profiles table.' },
+        { icon: 'cpu',      title: 'Deno Edge Function',        desc: 'Serverless Edge Function fires on new meeting request inserts and sends a formatted email to the international office via the Resend API.' },
+        { icon: 'send',     title: 'Resend Email API',          desc: 'Meeting request notifications delivered via Resend with a template that includes all submitted form data.' },
+      ],
+    },
+  },
+
+  'cm-partnership-demo': {
+    title:   'Partnership Dashboard — Demo',
+    tagline: 'Open-source dashboard for institutional partnership portfolios — 2,289 agreements, 8-stage workflow, analytics, public archive.',
+    year:    '2025–2026',
+    status:  'Live',
+    github:  'https://github.com/croissantsmoon/Partnership-Dashboard-Demo',
+    live:    'https://partnership-dashboard-demo-three.vercel.app',
+    tech:    ['Vanilla JS', 'Tailwind CSS', 'Chart.js', 'Supabase', 'Lucide Icons'],
+    background: `A responsive, open-source dashboard for managing a university or organisation's MoU, MoA, and IA agreement portfolio. Ships with a real institutional dataset of 2,289 agreements across 1,201 institutions and 38 departments, normalised from raw spreadsheets into a fast, queryable JSON store. Built as a single-page application using Vanilla JavaScript, Tailwind CSS, Chart.js, and Supabase — the architecture also serves as a blueprint for lifting into a Next.js + Supabase production stack.`,
+    purpose: `To replace fragmented spreadsheets with a single, real-time view of an institution's entire partnership network. The dashboard answers the most common operational questions in seconds: how many active agreements, where are they concentrated, and which ones are approaching expiry — without opening a single spreadsheet.`,
+    features: [
+      { icon: 'bar-chart-2', title: '2,289 Agreements at a Glance', desc: 'Real institutional dataset — 2,289 agreements across 1,201 institutions and 38 departments, normalised from raw spreadsheets into a fast searchable JSON store.' },
+      { icon: 'workflow',    title: '8-Stage Workflow Engine',       desc: 'Every agreement moves through Drafting → Internal Review → Legal Review → Partner Review → Waiting Signature → Signed → Completed → Archived, with full status history.' },
+      { icon: 'archive',     title: 'Public Archive Library',        desc: 'Signed and active agreements are auto-archived and made available in a public-facing library with advanced search, filter, and CSV export — no sign-in required.' },
+      { icon: 'pie-chart',   title: 'Executive Analytics',           desc: 'Status distribution, agreements by department, monthly activity trends, and expiration timeline — all rendered with Chart.js and updated live as filters change.' },
+      { icon: 'users',       title: 'Role-Based Admin System',       desc: 'Four roles (Admin, Manager, Staff, Viewer) with Supabase Auth. Admins manage users, workflows, and document attachments; Viewers get read-only access.' },
+      { icon: 'moon',        title: 'Dark Mode & CSV Export',        desc: 'Persistent dark/light mode toggle, keyboard shortcuts, confirmation modals on all destructive actions, and one-click data export to JSON or CSV.' },
+    ],
+    problems: [
+      { icon: 'table',   title: 'Data Locked in Spreadsheets', tag: 'Data Accessibility', desc: 'Partnership data maintained in multiple spreadsheet files — impossible to get a real-time, consolidated picture of the institution\'s partner network.' },
+      { icon: 'map-pin', title: 'No Geographic Overview',      tag: 'Visualisation',      desc: 'Without a regional breakdown, it was difficult to identify geographic gaps or report distribution to senior leadership.' },
+      { icon: 'clock',   title: 'Agreement Expiry Blind Spots', tag: 'Monitoring',        desc: 'MoU and MoA agreements have fixed terms — but no system surfaced agreements nearing expiry before they lapsed unnoticed.' },
+      { icon: 'filter',  title: 'No Filtering or Segmentation', tag: 'User Experience',   desc: 'With hundreds of partners across multiple agreement types and regions, no way to quickly answer "show me all active partners in Europe" without manual sorting.' },
+    ],
+    solutions: [
+      { icon: 'bar-chart-2',  title: 'Interactive Summary Charts', tag: 'Visualisation',   desc: 'Chart.js-powered bar and doughnut charts break down partnerships by region, agreement type, and status — updating live when filters change.' },
+      { icon: 'map',          title: 'Regional Distribution View', tag: 'Visualisation',   desc: 'Regional breakdown panel gives an immediate sense of geographic coverage, making it easy to identify gaps and report distribution data.' },
+      { icon: 'alert-circle', title: 'Expiry Status Indicators',   tag: 'Monitoring',      desc: 'Each partnership card displays agreement status — active, expiring soon, or expired — with colour-coded badges so renewals never slip through.' },
+      { icon: 'search',       title: 'Search and Filter Controls', tag: 'User Experience', desc: 'Compound filters by country, region, agreement type, and status let any team member answer specific questions about the network in seconds.' },
+    ],
+    uiux: {
+      desc: 'Dashboard design requires different visual logic than a marketing site. Information density is high, so the design relies on structured whitespace, strong typographic hierarchy, and colour-coded status indicators to reduce cognitive load. Dark mode is the default — long sessions demand it.',
+      points: [
+        { icon: 'grid',     title: 'Card-Based Data Layout',   desc: 'Partnership records presented as cards with status badges, country flags, and agreement-type indicators — scannable at a glance without opening individual records.' },
+        { icon: 'moon',     title: 'Dark-First Design',        desc: 'Dark mode is the default with a toggle to light mode — optimised for extended use in office environments and presentations to leadership.' },
+        { icon: 'filter',   title: 'Compound Filter Panel',    desc: 'Region, country, agreement type, department, and status filters can be combined — giving any team member the ability to answer specific network questions.' },
+        { icon: 'workflow', title: '8-Stage Workflow Kanban',  desc: 'A visual pipeline shows every active agreement\'s stage — from Drafting to Archived — so bottlenecks and pending approvals are immediately visible.' },
+      ],
+    },
+    frontend: {
+      desc: 'Vanilla JavaScript handles all interactivity, with Chart.js for data visualisation and Tailwind CSS for layout. The dataset — 2,289 agreements — is loaded from a normalised JSON file at runtime, giving instant filtering and charting without any API call latency.',
+      points: [
+        { icon: 'bar-chart-2', title: 'Chart.js Visualisations', desc: 'Bar charts, doughnut charts, and line charts break down partnerships by region, agreement type, status, and monthly activity — updating live when filters change.' },
+        { icon: 'zap',         title: 'JSON Data Layer',          desc: '2,289 agreements pre-normalised into a single JSON file — loaded once at page init and queried in-memory. No API call required for filtering, searching, or charting.' },
+        { icon: 'download',    title: 'CSV & JSON Export',        desc: 'Current filtered view can be exported as CSV or JSON from the Settings page — one click to get board-ready data without opening a spreadsheet.' },
+        { icon: 'keyboard',    title: 'Keyboard Shortcuts',       desc: 'Power users can toggle dark mode, open search, and navigate sections via keyboard — improving efficiency for daily dashboard users.' },
+      ],
+    },
+    backend: {
+      desc: 'The public archive and workflow engine are backed by Supabase, while the core partnership dataset lives in a normalised JSON file for instant client-side querying. Supabase Auth manages role-based access across four admin tiers.',
+      points: [
+        { icon: 'database',     title: 'Supabase Postgres',       desc: 'Workflow state, document attachments, user activity logs, and audit trails stored in Supabase — keeping mutable state off the static JSON layer.' },
+        { icon: 'shield',       title: 'Supabase Auth & RLS',     desc: 'Four roles (Admin, Manager, Staff, Viewer) with scoped permissions via RLS — Viewers get read-only; Admins can create, edit, delete, and attach documents.' },
+        { icon: 'file-text',    title: 'Normalised JSON Dataset', desc: '2,289 partnership records cleaned, deduplicated, and normalised from raw spreadsheets into a structured JSON schema — canonical data source for all client-side queries.' },
+        { icon: 'upload-cloud', title: 'Supabase Storage',        desc: 'Document attachments (MoU/MoA PDFs, signed copies) uploaded and stored in Supabase Storage, with admin-controlled access per agreement record.' },
+      ],
+    },
+  },
+
+  'cm-grants-demo': {
+    title:   'International Grants Dashboard — Demo',
+    tagline: 'Open-source grant discovery and management platform — realtime updates, deadline calendar, grant matching engine.',
+    year:    '2025–2026',
+    status:  'Live',
+    github:  'https://github.com/croissantsmoon/Grants-Dashboard',
+    live:    'https://grants-dashboard-eta.vercel.app',
+    tech:    ['HTML', 'Tailwind CSS', 'JavaScript', 'Chart.js', 'Supabase', 'Lucide Icons'],
+    background: `Open-source grant discovery and management platform for educational institutions. Public users browse opportunities; administrators from the International Office manage the catalog with realtime updates pushed to every connected client. Built with vanilla JavaScript as ES modules, Tailwind CSS, Chart.js, and Supabase (Postgres + RLS + Realtime + Storage) — no build step required for local development.`,
+    purpose: `International grant programmes span multiple stages — from awareness and application through to placement and completion — and require precise deadline tracking across concurrent cycles. The dashboard gives staff and prospective applicants a single place to discover relevant grants, track application stages, and never miss a submission deadline.`,
+    features: [
+      { icon: 'zap',          title: 'Realtime Updates',           desc: 'Supabase Realtime subscriptions push INSERT/UPDATE/DELETE events from the grants table to every connected client instantly — no polling, no page refresh.' },
+      { icon: 'calendar',     title: 'Deadline Calendar',          desc: 'Dedicated calendar view surfaces every grant deadline across active programmes, sorted by urgency so no submission window is missed.' },
+      { icon: 'bookmark',     title: 'Local & Remote Bookmarks',   desc: 'Public users can bookmark grants locally; authenticated users get bookmarks synced across devices via Supabase, persisting across sessions.' },
+      { icon: 'cpu',          title: 'Grant Matching Engine',      desc: 'Matching view cross-references a user\'s faculty and programme against grant eligibility criteria, surfacing the most relevant opportunities automatically.' },
+      { icon: 'shield',       title: 'Row Level Security Throughout', desc: 'Every table protected by Supabase RLS — public read, admin write. The anon key is safely exposed in the client bundle; service_role key is never used in frontend code.' },
+      { icon: 'upload-cloud', title: 'Admin File Attachments',     desc: 'Admins can upload supporting documents (PDFs, forms) directly to Supabase Storage — drag-and-drop or file picker, with a full audit trail in the activity log.' },
+    ],
+    problems: [
+      { icon: 'inbox',       title: 'Scattered Grant Information', tag: 'Data Management',       desc: 'Grant details, deadlines, and outcomes distributed across emails, shared drives, and spreadsheets — creating a fragmented and unreliable record.' },
+      { icon: 'calendar',    title: 'Deadline Management',         tag: 'Time-Critical Tracking', desc: 'Grant cycles have hard deadlines at multiple stages. Missing a submission window means losing funding for the entire cohort.' },
+      { icon: 'trending-up', title: 'No Outcome Visibility',       tag: 'Reporting',              desc: 'Leadership needed to report on grant performance — acceptance rates, funding secured, placement outcomes — but producing those figures required manual aggregation.' },
+      { icon: 'user-check',  title: 'Applicant Stage Tracking',   tag: 'Pipeline Management',   desc: 'With multiple applicants per grant and multiple stages per applicant, tracking who was at which stage across concurrent grant cycles was error-prone.' },
+    ],
+    solutions: [
+      { icon: 'layout',    title: 'Centralised Grant Overview', tag: 'Data Management',        desc: 'All active and completed grants in one dashboard — each with type, funding body, cycle dates, applicant count, and current status visible at a glance.' },
+      { icon: 'calendar',  title: 'Deadline Timeline View',     tag: 'Time-Critical Tracking', desc: 'Timeline panel surfaces upcoming deadlines across all active grants, sorted by urgency — ensuring no submission window is missed.' },
+      { icon: 'pie-chart', title: 'Outcome Analytics',          tag: 'Reporting',              desc: 'Acceptance rates, funding totals, and placement outcomes calculated automatically and presented in charts ready for leadership reporting.' },
+      { icon: 'git-merge', title: 'Stage-Based Pipeline View',  tag: 'Pipeline Management',    desc: 'Kanban-style pipeline shows every applicant\'s current stage across active grants — making it easy to see where bottlenecks are and who needs follow-up.' },
+    ],
+    uiux: {
+      desc: 'The design prioritises time-critical information: deadline proximity, application stage, and grant relevance are the three data points that determine what a user needs to see first. Urgency indicators and a persistent deadline calendar ensure no grant window closes unnoticed.',
+      points: [
+        { icon: 'clock',    title: 'Deadline-First Priority',       desc: 'Grants sorted by deadline urgency by default. Colour-coded countdown badges (green / amber / red) communicate time pressure at a glance.' },
+        { icon: 'calendar', title: 'Persistent Deadline Calendar',  desc: 'Monthly calendar view marks every active grant deadline — users can switch between list and calendar views depending on their planning horizon.' },
+        { icon: 'cpu',      title: 'Matching Engine UI',            desc: 'Faculty/programme selector surfaces the most relevant grants for the user\'s profile — reducing time spent reading eligibility criteria manually.' },
+        { icon: 'bookmark', title: 'Bookmark System',               desc: 'Public users get local bookmarks; authenticated users get cross-device sync via Supabase — building a personal grant shortlist without requiring sign-up.' },
+      ],
+    },
+    frontend: {
+      desc: "Vanilla JavaScript with Chart.js for analytics and Tailwind CSS for layout. Supabase's JS client handles Realtime subscriptions, auth, and storage — all without a frontend framework. The matching engine is a pure client-side algorithm.",
+      points: [
+        { icon: 'zap',         title: 'Supabase Realtime Client',         desc: 'JS SDK subscribes to INSERT/UPDATE/DELETE events on the grants table — live updates propagate to all connected clients without a page refresh.' },
+        { icon: 'bar-chart-2', title: 'Chart.js Analytics',               desc: 'Acceptance rate trends, grant type distribution, and funding body breakdowns rendered with Chart.js — updating automatically as data changes.' },
+        { icon: 'cpu',         title: 'Client-Side Matching Algorithm',   desc: 'Grant matching engine runs entirely in the browser: filters grants by faculty, programme, nationality, and GPA threshold in milliseconds with no server round-trip.' },
+        { icon: 'wind',        title: 'Tailwind CSS',                     desc: 'Utility-first styling with custom dark-mode palette. All components — cards, modals, calendar, table — share a consistent design token system.' },
+      ],
+    },
+    backend: {
+      desc: 'Supabase provides the complete backend stack: Postgres for grant and applicant data, Realtime for live updates, Auth for authenticated admin and student roles, and Storage for grant document attachments — all protected by Row Level Security.',
+      points: [
+        { icon: 'database',     title: 'Supabase Postgres',      desc: 'Tables for grants, applications, stages, bookmarks, and activity logs — all with RLS policies. Public users can read published grants; admins can write across all tables.' },
+        { icon: 'radio',        title: 'Supabase Realtime',      desc: 'Postgres Changes subscriptions push live INSERT/UPDATE/DELETE events to the frontend — no polling, no manual websocket management.' },
+        { icon: 'shield',       title: 'Row Level Security',     desc: 'Every table has RLS enabled. The anon key is safely used in the frontend bundle; no service_role key is ever exposed to the client.' },
+        { icon: 'upload-cloud', title: 'Storage & File Uploads', desc: 'Admins can upload grant-related documents (application forms, guidelines, results) directly from the dashboard — drag-and-drop with a full audit trail.' },
+      ],
+    },
+  },
+
   'web-dashboard-grants': {
     title:   'International Grants Dashboard',
     tagline: 'Centralising international grant tracking from application through to outcome.',
@@ -716,7 +952,8 @@ window.wpLoadPreview = function(projectId) {
 
 // ── Initialise each page ─────────────────────────────────────────────────────
 (function wpInit() {
-  ['web-portfolio', 'web-pcu-global-intl', 'web-dashboard-partnership', 'web-dashboard-grants']
+  ['web-portfolio', 'web-pcu-global-intl', 'web-dashboard-partnership', 'web-dashboard-grants',
+   'cm-portfolio-demo', 'cm-intl-office-demo', 'cm-partnership-demo', 'cm-grants-demo']
     .forEach(function(id) {
       var el = document.getElementById('page-' + id);
       if (!el) return;

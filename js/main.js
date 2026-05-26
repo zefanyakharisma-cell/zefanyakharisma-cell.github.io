@@ -352,7 +352,7 @@ const defaultConfig = {
 
 const BASE_PATH = '';
 
-const CM_PAGES = new Set(['websites', 'designs', 'writing', 'web-portfolio', 'web-pcu-global-intl', 'web-dashboard-partnership', 'web-dashboard-grants']);
+const CM_PAGES = new Set(['websites', 'designs', 'writing', 'web-portfolio', 'web-pcu-global-intl', 'web-dashboard-partnership', 'web-dashboard-grants', 'cm-portfolio-demo', 'cm-intl-office-demo', 'cm-partnership-demo', 'cm-grants-demo']);
 
 function _pageIdToPath(pageId) {
   if (pageId === 'home') return '/';
@@ -384,6 +384,10 @@ const pageMetadata = {
   'web-pcu-global-intl':     { title: 'PCU Global International Office — CroissantsMoon',     description: 'Rebuilding an institutional web presence for a university\'s international office.' },
   'web-dashboard-partnership':{ title: 'Dashboard Partnership — CroissantsMoon',              description: 'A data dashboard for visualising and managing international partnership networks.' },
   'web-dashboard-grants':    { title: 'Dashboard International Grants — CroissantsMoon',      description: 'Centralising international grant tracking from application through to outcome.' },
+  'cm-portfolio-demo':      { title: 'Portfolio Website Demo — CroissantsMoon',               description: 'Open-source editorial SPA portfolio template — vanilla JS, Tailwind CSS, Supabase admin CMS.' },
+  'cm-intl-office-demo':    { title: 'International Office Website Demo — CroissantsMoon',    description: 'Open-source university international office SPA — inbound/outbound programs, role-based CMS, meeting requests.' },
+  'cm-partnership-demo':    { title: 'Partnership Dashboard Demo — CroissantsMoon',           description: 'Open-source dashboard for institutional partnership portfolios — 2,289 agreements, 8-stage workflow, analytics.' },
+  'cm-grants-demo':         { title: 'International Grants Dashboard Demo — CroissantsMoon',  description: 'Open-source grant discovery and management platform — realtime updates, deadline calendar, grant matching.' },
   'writing':            { title: 'Writing — Zefanya Kharisma Nugroho',                    description: 'Essays and insights on international education, leadership, and digital craft.' },
   'websites':           { title: 'Web Development — Zefanya Kharisma Nugroho',            description: 'Responsive, user-centered websites for institutional communications.' },
   'designs':            { title: 'Graphic Design — Zefanya Kharisma Nugroho',             description: 'Strategic visual design for institutional identity and event collateral.' },
@@ -485,6 +489,10 @@ const _navActiveMap = {
   'web-pcu-global-intl':         { tab: 'tab-creative', label: 'Creative' },
   'web-dashboard-partnership':   { tab: 'tab-creative', label: 'Creative' },
   'web-dashboard-grants':        { tab: 'tab-creative', label: 'Creative' },
+  'cm-portfolio-demo':           { tab: 'tab-creative', label: 'Creative' },
+  'cm-intl-office-demo':         { tab: 'tab-creative', label: 'Creative' },
+  'cm-partnership-demo':         { tab: 'tab-creative', label: 'Creative' },
+  'cm-grants-demo':              { tab: 'tab-creative', label: 'Creative' },
   // Contact & standalone
   'contact':           { tab: 'tab-contact', label: 'Contact' },
   'skill-discovery':   { tab: null,           label: 'Discover' },

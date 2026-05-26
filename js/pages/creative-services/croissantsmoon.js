@@ -28,10 +28,10 @@ const CM = {
 };
 
 const CM_REPO_DETAIL_PAGE = {
-  'Portfolio-Demo':                   'web-portfolio',
-  'Website-International-Office-Demo':'web-pcu-global-intl',
-  'Partnership-Dashboard-Demo':       'web-dashboard-partnership',
-  'Grants-Dashboard':                 'web-dashboard-grants',
+  'Portfolio-Demo':                   'cm-portfolio-demo',
+  'Website-International-Office-Demo':'cm-intl-office-demo',
+  'Partnership-Dashboard-Demo':       'cm-partnership-demo',
+  'Grants-Dashboard':                 'cm-grants-demo',
 };
 
 const CM_GRAPHIC_WORKS = [
@@ -1155,6 +1155,20 @@ function cmBuildFeaturedProject(project) {
             letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
             background:${statusBg};color:${statusColor}">${project.status}</span>
         </div>
+        ${project.page ? `
+        <button onclick="goToPage('${project.page}')" style="
+          width:100%;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;
+          color:${CM.midnight};background:${CM.nebulaGold};cursor:pointer;
+          display:inline-flex;align-items:center;justify-content:center;gap:6px;
+          padding:9px 18px;border-radius:999px;margin-bottom:8px;
+          border:none;
+          box-shadow:0 0 14px rgba(212,177,90,0.28);
+          transition:opacity .2s,transform .2s,box-shadow .2s
+        " onmouseover="this.style.opacity='.88';this.style.transform='translateY(-1px)';this.style.boxShadow='0 0 22px rgba(212,177,90,0.45)'"
+           onmouseout="this.style.opacity='1';this.style.transform='translateY(0)';this.style.boxShadow='0 0 14px rgba(212,177,90,0.28)'">
+          View Case Study
+          <i data-lucide="arrow-right" style="width:12px;height:12px"></i>
+        </button>` : ''}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           ${project.github ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer" style="
             font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;
