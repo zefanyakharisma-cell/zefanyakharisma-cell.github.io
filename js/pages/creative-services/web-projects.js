@@ -491,45 +491,44 @@ function wpStars(n) {
   }).join('');
 }
 
-// ── Shared section helpers ────────────────────────────────────────────────────
+// ── Section helpers ───────────────────────────────────────────────────────────
 
-function wpSectionLabel(label, color) {
-  return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-    <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:700;
-      letter-spacing:.13em;text-transform:uppercase;color:${color}">${label}</span>
-    <div style="flex:1;height:1px;background:rgba(111,168,255,0.1)"></div>
+function wpSectionLabel(text, color) {
+  return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
+    <span style="width:3px;height:22px;border-radius:2px;background:${color};flex-shrink:0;display:block"></span>
+    <p style="font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:600;
+      letter-spacing:.2em;text-transform:uppercase;color:${color};margin:0">${text}</p>
   </div>`;
 }
 
 function wpDivider() {
-  return `<div style="height:1px;background:rgba(111,168,255,0.1);margin:clamp(2rem,5vh,3.5rem) 0"></div>`;
+  return `<hr style="border:none;border-top:1px solid rgba(111,168,255,0.08);margin:clamp(2rem,5vh,3.5rem) 0">`;
 }
 
-function wpPointsGrid(points, iconColor, iconBg, iconBorder) {
-  return `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:16px">
-    ${points.map(pt => `
-      <div class="wp-card" style="
-        background:rgba(11,30,58,0.65);border-radius:14px;padding:20px;
-        border:1px solid rgba(111,168,255,0.13);backdrop-filter:blur(12px);
-        box-shadow:0 2px 12px rgba(3,7,18,0.28);
-        display:flex;gap:13px;align-items:flex-start
+function wpPointsGrid(points, accentColor, iconBg, iconBorder) {
+  const cards = points.map(pt => `
+    <div class="wp-card" style="
+      background:rgba(11,30,58,0.7);border-radius:14px;padding:22px;
+      border:1px solid rgba(111,168,255,0.14);backdrop-filter:blur(12px);
+      box-shadow:0 2px 12px rgba(3,7,18,0.3);
+      display:flex;gap:14px;align-items:flex-start
+    ">
+      <div style="
+        width:36px;height:36px;border-radius:10px;flex-shrink:0;
+        background:${iconBg};border:1px solid ${iconBorder};
+        display:flex;align-items:center;justify-content:center;margin-top:2px
       ">
-        <div style="
-          width:34px;height:34px;border-radius:9px;flex-shrink:0;
-          background:${iconBg};border:1px solid ${iconBorder};
-          display:flex;align-items:center;justify-content:center;margin-top:2px
-        ">
-          <i data-lucide="${pt.icon}" style="width:15px;height:15px;color:${iconColor}"></i>
-        </div>
-        <div>
-          <h4 style="font-family:'Cormorant Garamond',Georgia,serif;
-            font-size:.98rem;font-weight:600;color:#D9E6FF;
-            line-height:1.25;margin-bottom:5px">${pt.title}</h4>
-          <p style="font-family:'Outfit',sans-serif;font-size:.81rem;
-            line-height:1.64;color:#8FA8D6">${pt.desc}</p>
-        </div>
-      </div>`).join('')}
-  </div>`;
+        <i data-lucide="${pt.icon}" style="width:16px;height:16px;color:${accentColor}"></i>
+      </div>
+      <div>
+        <h4 style="font-family:'Cormorant Garamond',Georgia,serif;
+          font-size:1rem;font-weight:600;color:#D9E6FF;
+          line-height:1.25;margin-bottom:6px">${pt.title}</h4>
+        <p style="font-family:'Outfit',sans-serif;font-size:.83rem;
+          line-height:1.65;color:#8FA8D6">${pt.desc}</p>
+      </div>
+    </div>`).join('');
+  return `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:1.5rem">${cards}</div>`;
 }
 
 // ── Page builder ──────────────────────────────────────────────────────────────
@@ -537,6 +536,8 @@ function wpPointsGrid(points, iconColor, iconBg, iconBorder) {
 function wpBuildPage(projectId) {
   const p = WP_PROJECTS[projectId];
   if (!p) return '';
+
+  const uid = 'wp' + projectId.replace(/[^a-z0-9]/gi, '');
 
   const techBadges = p.tech.map(t => `
     <span style="

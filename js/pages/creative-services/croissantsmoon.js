@@ -1499,7 +1499,7 @@ function cmBuildGraphicDesign() {
           " data-edit-key="cm_design_subtitle">Branding, institutional materials, and communication design — click any to preview.</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;margin-bottom:2.5rem">
-          ${CM_GRAPHIC_WORKS.map((g, i) => cmBuildGDCard(g, i)).join('')}
+          ${CM_GRAPHIC_WORKS.slice(-3).map((g, i) => cmBuildGDCard(g, CM_GRAPHIC_WORKS.length - 3 + i)).join('')}
         </div>
 
         <!-- View All button -->
@@ -2931,10 +2931,10 @@ function cmInitPage() {
   el.style.background = CM.midnight;
   el.innerHTML = [
     cmBuildHero(),
-    cmBuildConceptPlatforms(),
     cmBuildWebProjects(),
     cmBuildGraphicDesign(),
     cmBuildProcess(),
+    cmBuildConceptPlatforms(),
     cmBuildContact(),
   ].join('');
 
