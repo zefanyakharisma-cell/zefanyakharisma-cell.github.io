@@ -849,19 +849,45 @@ function cmBuildConceptPlatforms() {
              onmouseout="this.style.background='rgba(111,168,255,0.12)';this.style.boxShadow='none';this.style.borderColor='rgba(111,168,255,0.45)'">
             <i data-lucide="play-circle" style="width:12px;height:12px"></i>
             View Live Demo
-          </button>` : idx === 2 ? `
-          <button onclick="cmOpenDashboardDemoModal()" style="
+          </button>` : idx === 1 ? `
+          <button onclick="cmOpenIntlOfficeDemoModal()" style="
             width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
-            color:#A0C4FF;background:rgba(160,196,255,0.1);cursor:pointer;
+            color:${CM.nebulaGold};background:rgba(212,177,90,0.1);cursor:pointer;
             display:inline-flex;align-items:center;justify-content:center;gap:7px;
             padding:10px 20px;border-radius:999px;margin-bottom:8px;
-            border:1px solid rgba(160,196,255,0.38);
+            border:1px solid rgba(212,177,90,0.38);
             transition:background .2s,box-shadow .2s,border-color .2s
-          " onmouseover="this.style.background='rgba(160,196,255,0.18)';this.style.boxShadow='0 0 16px rgba(160,196,255,0.2)';this.style.borderColor='rgba(160,196,255,0.65)'"
-             onmouseout="this.style.background='rgba(160,196,255,0.1)';this.style.boxShadow='none';this.style.borderColor='rgba(160,196,255,0.38)'">
+          " onmouseover="this.style.background='rgba(212,177,90,0.18)';this.style.boxShadow='0 0 16px rgba(212,177,90,0.22)';this.style.borderColor='rgba(212,177,90,0.65)'"
+             onmouseout="this.style.background='rgba(212,177,90,0.1)';this.style.boxShadow='none';this.style.borderColor='rgba(212,177,90,0.38)'">
             <i data-lucide="play-circle" style="width:12px;height:12px"></i>
             View Live Demo
-          </button>` : ''}
+          </button>` : idx === 2 ? `
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:8px">
+            <button onclick="cmOpenDashboardDemoModal()" style="
+              width:100%;font-family:'Outfit',sans-serif;font-size:.77rem;font-weight:600;
+              color:#A0C4FF;background:rgba(160,196,255,0.1);cursor:pointer;
+              display:inline-flex;align-items:center;justify-content:center;gap:7px;
+              padding:9px 18px;border-radius:999px;
+              border:1px solid rgba(160,196,255,0.35);
+              transition:background .2s,box-shadow .2s,border-color .2s
+            " onmouseover="this.style.background='rgba(160,196,255,0.18)';this.style.boxShadow='0 0 14px rgba(160,196,255,0.2)';this.style.borderColor='rgba(160,196,255,0.62)'"
+               onmouseout="this.style.background='rgba(160,196,255,0.1)';this.style.boxShadow='none';this.style.borderColor='rgba(160,196,255,0.35)'">
+              <i data-lucide="bar-chart-2" style="width:12px;height:12px"></i>
+              Partnership Dashboard Demo
+            </button>
+            <button onclick="cmOpenGrantsDemoModal()" style="
+              width:100%;font-family:'Outfit',sans-serif;font-size:.77rem;font-weight:600;
+              color:#A0C4FF;background:rgba(160,196,255,0.07);cursor:pointer;
+              display:inline-flex;align-items:center;justify-content:center;gap:7px;
+              padding:9px 18px;border-radius:999px;
+              border:1px solid rgba(160,196,255,0.28);
+              transition:background .2s,box-shadow .2s,border-color .2s
+            " onmouseover="this.style.background='rgba(160,196,255,0.15)';this.style.boxShadow='0 0 14px rgba(160,196,255,0.18)';this.style.borderColor='rgba(160,196,255,0.55)'"
+               onmouseout="this.style.background='rgba(160,196,255,0.07)';this.style.boxShadow='none';this.style.borderColor='rgba(160,196,255,0.28)'">
+              <i data-lucide="award" style="width:12px;height:12px"></i>
+              International Grants Demo
+            </button>
+          </div>` : ''}
           <button onclick="cmOpenConceptModal(${idx})" style="
             width:100%;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;
             color:${c.accentColor};background:transparent;cursor:pointer;
@@ -2372,6 +2398,462 @@ function cmCloseDashboardDemoModal() {
   modal.remove();
 }
 window.cmCloseDashboardDemoModal = cmCloseDashboardDemoModal;
+
+// ── Grants Dashboard Demo Modal ───────────────────────────────────────────────
+
+function cmOpenGrantsDemoModal() {
+  const prev = document.getElementById('cm-grants-demo-modal');
+  if (prev) prev.remove();
+
+  const accent = '#86D4BC';
+  const accentRgb = '134,212,188';
+
+  const publicFeatures = [
+    'Dashboard with KPIs and live charts',
+    'Browse / search / filter / sort grants',
+    'Deadline calendar with upcoming closings',
+    'Faculty & program drill-down pages',
+    'Grant matching by faculty or program',
+    'Local bookmarks — synced to account when signed in',
+    'Dark mode · mobile responsive',
+  ];
+
+  const adminFeatures = [
+    'Full CRUD on grants — create, edit, delete',
+    'Upload attachments to Supabase Storage',
+    'Archive / restore grants',
+    'Activity log — full audit trail of every change',
+    'Realtime: edits appear on every open dashboard within seconds',
+    'Auto-archive of expired grants',
+    'Role-gated UI — Admin vs. Viewer access levels',
+  ];
+
+  const techStack = ['HTML', 'Tailwind CSS', 'Vanilla JS (ES modules)', 'Supabase Auth', 'PostgreSQL + RLS', 'Supabase Realtime', 'Supabase Storage', 'Chart.js', 'Lucide Icons'];
+
+  const makeItems = arr => arr.map(f => `
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div style="width:17px;height:17px;border-radius:50%;background:rgba(${accentRgb},0.12);
+        border:1px solid rgba(${accentRgb},0.28);display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;margin-top:2px">
+        <i data-lucide="check" style="width:9px;height:9px;color:${accent}"></i>
+      </div>
+      <span style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust};line-height:1.55">${f}</span>
+    </div>`).join('');
+
+  const techBadges = techStack.map(t => `
+    <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:400;
+      padding:4px 12px;border-radius:999px;background:rgba(${accentRgb},0.07);color:${CM.stardust};
+      border:1px solid rgba(${accentRgb},0.2)">${t}</span>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'cm-grants-demo-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(3,7,18,0.92);
+    backdrop-filter:blur(22px) saturate(1.3);
+    -webkit-backdrop-filter:blur(22px) saturate(1.3);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto`;
+  modal.addEventListener('click', e => { if (e.target === modal) cmCloseGrantsDemoModal(); });
+
+  modal.innerHTML = `
+    <div class="cm-lightbox-enter" style="
+      width:100%;max-width:780px;border-radius:26px;overflow:hidden;
+      background:linear-gradient(160deg,${CM.deepSpace} 0%,#081f1a 100%);
+      border:1px solid rgba(${accentRgb},0.2);
+      box-shadow:0 32px 100px rgba(3,7,18,0.75),0 0 0 1px rgba(${accentRgb},0.1);
+      position:relative
+    ">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4">
+        ${cmBuildStarField(22)}
+      </div>
+      <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;
+        background:radial-gradient(circle,rgba(${accentRgb},0.06) 0%,transparent 70%);pointer-events:none;z-index:0"></div>
+
+      <div style="height:2px;background:linear-gradient(to right,rgba(${accentRgb},0.35),${accent},rgba(${accentRgb},0.35));position:relative;z-index:1"></div>
+
+      <!-- Header -->
+      <div style="padding:clamp(1.25rem,3.5vw,1.75rem) clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:.5rem">
+              <i data-lucide="github" style="width:13px;height:13px;color:${accent};opacity:.65"></i>
+              <span style="font-family:'Outfit',sans-serif;font-size:.57rem;font-weight:700;
+                letter-spacing:.2em;text-transform:uppercase;color:${accent};opacity:.65">croissantsmoon / Grants-Dashboard</span>
+            </div>
+            <h2 style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.4rem,4vw,2rem);font-weight:500;font-style:italic;
+              color:${CM.moonlight};line-height:1.1;margin-bottom:.3rem">International Grants Dashboard</h2>
+            <p style="font-family:'Outfit',sans-serif;font-size:.74rem;color:${accent};opacity:.7">
+              Live Demo · Grants Discovery & Management Platform
+            </p>
+          </div>
+          <button onclick="cmCloseGrantsDemoModal()" aria-label="Close" style="
+            flex-shrink:0;width:40px;height:40px;border-radius:50%;
+            background:rgba(217,230,255,0.06);border:1px solid rgba(217,230,255,0.14);
+            color:${CM.moonlight};display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:1.1rem;line-height:1;transition:background .18s
+          " onmouseover="this.style.background='rgba(217,230,255,0.14)'"
+             onmouseout="this.style.background='rgba(217,230,255,0.06)'">✕</button>
+        </div>
+      </div>
+
+      <!-- Live preview iframe -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(111,168,255,0.08);position:relative;z-index:1">
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Live Preview</p>
+        <div style="height:220px;border-radius:14px;overflow:hidden;position:relative;
+          background:linear-gradient(145deg,#040f0c,#081a14);
+          border:1px solid rgba(${accentRgb},0.14);box-shadow:0 8px 36px rgba(3,7,18,0.5)">
+          <div id="cm-grants-iframe-fallback" style="
+            position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:10px;
+            transition:opacity .5s ease">
+            ${cmBuildStarField(14)}
+            <div style="position:relative;z-index:1;text-align:center">
+              <i data-lucide="loader" style="width:20px;height:20px;color:${accent};opacity:.4;animation:cmPulse 1.5s ease-in-out infinite"></i>
+              <p style="font-family:'Outfit',sans-serif;font-size:.65rem;color:${CM.stardust};opacity:.4;margin-top:8px">Loading preview…</p>
+            </div>
+          </div>
+          <iframe
+            src="https://grants-dashboard-eta.vercel.app"
+            scrolling="no"
+            tabindex="-1"
+            aria-hidden="true"
+            title="International Grants Dashboard live preview"
+            style="
+              position:absolute;top:0;left:0;
+              width:1440px;height:900px;
+              transform:scale(0.5);
+              transform-origin:top left;
+              border:none;pointer-events:none;z-index:2"
+            loading="lazy"
+            onload="(function(f){if(f)f.style.opacity='0'})(document.getElementById('cm-grants-iframe-fallback'))"
+          ></iframe>
+          <div style="position:absolute;inset:0;z-index:3;pointer-events:none;
+            background:linear-gradient(to bottom,transparent 55%,rgba(7,17,38,0.5) 100%)"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="padding:clamp(1.25rem,3vw,1.5rem) clamp(1.5rem,4vw,2rem);position:relative;z-index:1;max-height:44vh;overflow-y:auto">
+
+        <p style="font-family:'Outfit',sans-serif;font-size:.85rem;line-height:1.76;
+          color:${CM.stardust};margin-bottom:1.5rem">
+          International grants discovery and management platform for Demo University.
+          Public users browse and filter funding opportunities; administrators from the
+          International Office manage the full catalog with realtime updates pushed to
+          every connected client — no polling, no refresh needed.
+        </p>
+
+        <!-- Public features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Public Features</p>
+        <div style="margin-bottom:1.4rem">${makeItems(publicFeatures)}</div>
+
+        <!-- Admin features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Admin Features</p>
+        <div style="margin-bottom:1.4rem">${makeItems(adminFeatures)}</div>
+
+        <!-- Architecture note -->
+        <div style="background:rgba(${accentRgb},0.05);border:1px solid rgba(${accentRgb},0.15);
+          border-radius:12px;padding:14px 16px;margin-bottom:1.4rem">
+          <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+            letter-spacing:.14em;text-transform:uppercase;color:${accent};opacity:.7;margin-bottom:.5rem">Architecture</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:.8rem;line-height:1.7;color:${CM.stardust}">
+            Supabase is the single source of truth. The client holds a cache hydrated on boot
+            and patched live by Realtime subscriptions — every open dashboard reflects changes
+            the moment an admin saves, using <code style="font-size:.75rem;background:rgba(255,255,255,0.06);
+            padding:1px 5px;border-radius:4px;color:${accent}">postgres_changes</code> on
+            <code style="font-size:.75rem;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:4px;color:${accent}">grants</code>
+            and <code style="font-size:.75rem;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:4px;color:${accent}">categories</code>.
+          </p>
+        </div>
+
+        <!-- Tech stack -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Built With</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem">${techBadges}</div>
+      </div>
+
+      <!-- Footer CTAs -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);
+        border-top:1px solid rgba(111,168,255,0.08);
+        background:rgba(7,17,38,0.6);backdrop-filter:blur(12px);
+        position:relative;z-index:1">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://grants-dashboard-eta.vercel.app" target="_blank" rel="noopener noreferrer"
+            class="cm-glow-btn" style="
+            flex:1;min-width:160px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;
+            background:${CM.nebulaGold};color:${CM.midnight};padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            letter-spacing:.03em">
+            <i data-lucide="external-link" style="width:14px;height:14px"></i>
+            Open Live Demo
+          </a>
+          <a href="https://github.com/croissantsmoon/Grants-Dashboard" target="_blank" rel="noopener noreferrer" style="
+            flex:1;min-width:140px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;
+            color:${accent};background:rgba(${accentRgb},0.08);padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            border:1px solid rgba(${accentRgb},0.3);
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(${accentRgb},0.16)';this.style.boxShadow='0 0 16px rgba(${accentRgb},0.2)';this.style.borderColor='rgba(${accentRgb},0.55)'"
+             onmouseout="this.style.background='rgba(${accentRgb},0.08)';this.style.boxShadow='none';this.style.borderColor='rgba(${accentRgb},0.3)'">
+            <i data-lucide="github" style="width:14px;height:14px"></i>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+  const onKey = e => { if (e.key === 'Escape') cmCloseGrantsDemoModal(); };
+  document.addEventListener('keydown', onKey);
+  modal._cmKey = onKey;
+}
+window.cmOpenGrantsDemoModal = cmOpenGrantsDemoModal;
+
+function cmCloseGrantsDemoModal() {
+  const modal = document.getElementById('cm-grants-demo-modal');
+  if (!modal) return;
+  if (modal._cmKey) document.removeEventListener('keydown', modal._cmKey);
+  modal.remove();
+}
+window.cmCloseGrantsDemoModal = cmCloseGrantsDemoModal;
+
+// ── International Office Demo Modal ──────────────────────────────────────────
+
+function cmOpenIntlOfficeDemoModal() {
+  const prev = document.getElementById('cm-intloffice-demo-modal');
+  if (prev) prev.remove();
+
+  const accent = CM.nebulaGold;
+  const accentRgb = '212,177,90';
+
+  const publicFeatures = [
+    'Hash-based SPA routing with browser history support',
+    'Hero carousel with auto-advancing slides and navigation controls',
+    'Dynamic news carousel — trending articles ranked by live visit count',
+    'Animated scroll-reveal sections and stat counters',
+    'Flip card animations for program overviews (Inbound · Outbound · Partnership · Life at PCU)',
+    'Interactive partner university modals — international & domestic',
+    'Auto-scrolling partner logo marquees (~71 logos)',
+    'Meeting request form with multi-step modal workflow',
+    'Mobile slide-in navigation drawer · Page-specific color theming',
+  ];
+
+  const adminFeatures = [
+    'Role-based content management — Inbound · Outbound · Partnership · Head',
+    'Article CRUD with drag-and-drop image upload (base64 storage)',
+    'OSE (Outbound Semester Exchange) university program manager',
+    'Internship opportunity listings manager',
+    'Supabase Auth email/password login with session persistence',
+    'Real-time article visit tracking and trending calculation',
+  ];
+
+  const techStack = ['HTML5', 'Vanilla JavaScript', 'Tailwind CSS v3.4', 'Lucide Icons', 'Google Fonts', 'Supabase Auth', 'PostgreSQL + RLS', 'Supabase Edge Functions', 'Resend (email)', 'Vercel'];
+
+  const sections = [
+    { icon: 'plane-landing', label: 'Inbound Programs' },
+    { icon: 'plane-takeoff', label: 'Outbound Programs' },
+    { icon: 'handshake', label: 'Partnership Directory' },
+    { icon: 'building-2',  label: 'Life at PCU' },
+    { icon: 'newspaper',   label: 'News & Articles' },
+    { icon: 'calendar',    label: 'Meeting Request' },
+  ];
+
+  const makeItems = arr => arr.map(f => `
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+      <div style="width:17px;height:17px;border-radius:50%;background:rgba(${accentRgb},0.12);
+        border:1px solid rgba(${accentRgb},0.28);display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;margin-top:2px">
+        <i data-lucide="check" style="width:9px;height:9px;color:${accent}"></i>
+      </div>
+      <span style="font-family:'Outfit',sans-serif;font-size:.82rem;color:${CM.stardust};line-height:1.55">${f}</span>
+    </div>`).join('');
+
+  const sectionPills = sections.map(s => `
+    <div style="display:inline-flex;align-items:center;gap:6px;
+      padding:5px 12px;border-radius:999px;
+      background:rgba(${accentRgb},0.07);border:1px solid rgba(${accentRgb},0.2)">
+      <i data-lucide="${s.icon}" style="width:11px;height:11px;color:${accent};opacity:.75"></i>
+      <span style="font-family:'Outfit',sans-serif;font-size:.67rem;color:${CM.stardust}">${s.label}</span>
+    </div>`).join('');
+
+  const techBadges = techStack.map(t => `
+    <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:400;
+      padding:4px 12px;border-radius:999px;background:rgba(${accentRgb},0.07);color:${CM.stardust};
+      border:1px solid rgba(${accentRgb},0.2)">${t}</span>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'cm-intloffice-demo-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(3,7,18,0.92);
+    backdrop-filter:blur(22px) saturate(1.3);
+    -webkit-backdrop-filter:blur(22px) saturate(1.3);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto`;
+  modal.addEventListener('click', e => { if (e.target === modal) cmCloseIntlOfficeDemoModal(); });
+
+  modal.innerHTML = `
+    <div class="cm-lightbox-enter" style="
+      width:100%;max-width:780px;border-radius:26px;overflow:hidden;
+      background:linear-gradient(160deg,${CM.deepSpace} 0%,#1a1508 100%);
+      border:1px solid rgba(${accentRgb},0.22);
+      box-shadow:0 32px 100px rgba(3,7,18,0.75),0 0 0 1px rgba(${accentRgb},0.1);
+      position:relative
+    ">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4">
+        ${cmBuildStarField(22)}
+      </div>
+      <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;
+        background:radial-gradient(circle,rgba(${accentRgb},0.07) 0%,transparent 70%);pointer-events:none;z-index:0"></div>
+
+      <div style="height:2px;background:linear-gradient(to right,rgba(${accentRgb},0.38),${accent},rgba(${accentRgb},0.38));position:relative;z-index:1"></div>
+
+      <!-- Header -->
+      <div style="padding:clamp(1.25rem,3.5vw,1.75rem) clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(212,177,90,0.1);position:relative;z-index:1">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:.5rem">
+              <i data-lucide="github" style="width:13px;height:13px;color:${accent};opacity:.65"></i>
+              <span style="font-family:'Outfit',sans-serif;font-size:.57rem;font-weight:700;
+                letter-spacing:.2em;text-transform:uppercase;color:${accent};opacity:.65">croissantsmoon / Website-International-Office-Demo</span>
+            </div>
+            <h2 style="font-family:'Cormorant Garamond',Georgia,serif;
+              font-size:clamp(1.4rem,4vw,2rem);font-weight:500;font-style:italic;
+              color:${CM.moonlight};line-height:1.1;margin-bottom:.3rem">International Office Platform</h2>
+            <p style="font-family:'Outfit',sans-serif;font-size:.74rem;color:${accent};opacity:.7">
+              Live Demo · PCU Global — Institutional Web Platform
+            </p>
+          </div>
+          <button onclick="cmCloseIntlOfficeDemoModal()" aria-label="Close" style="
+            flex-shrink:0;width:40px;height:40px;border-radius:50%;
+            background:rgba(217,230,255,0.06);border:1px solid rgba(217,230,255,0.14);
+            color:${CM.moonlight};display:flex;align-items:center;justify-content:center;
+            cursor:pointer;font-size:1.1rem;line-height:1;transition:background .18s
+          " onmouseover="this.style.background='rgba(217,230,255,0.14)'"
+             onmouseout="this.style.background='rgba(217,230,255,0.06)'">✕</button>
+        </div>
+      </div>
+
+      <!-- Live preview iframe -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);border-bottom:1px solid rgba(212,177,90,0.1);position:relative;z-index:1">
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Live Preview</p>
+        <div style="height:220px;border-radius:14px;overflow:hidden;position:relative;
+          background:linear-gradient(145deg,#0d0c04,#1a1508);
+          border:1px solid rgba(${accentRgb},0.16);box-shadow:0 8px 36px rgba(3,7,18,0.5)">
+          <div id="cm-intl-iframe-fallback" style="
+            position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:10px;
+            transition:opacity .5s ease">
+            ${cmBuildStarField(14)}
+            <div style="position:relative;z-index:1;text-align:center">
+              <i data-lucide="loader" style="width:20px;height:20px;color:${accent};opacity:.4;animation:cmPulse 1.5s ease-in-out infinite"></i>
+              <p style="font-family:'Outfit',sans-serif;font-size:.65rem;color:${CM.stardust};opacity:.4;margin-top:8px">Loading preview…</p>
+            </div>
+          </div>
+          <iframe
+            src="https://website-demo-liard.vercel.app"
+            scrolling="no"
+            tabindex="-1"
+            aria-hidden="true"
+            title="International Office Platform live preview"
+            style="
+              position:absolute;top:0;left:0;
+              width:1440px;height:900px;
+              transform:scale(0.5);
+              transform-origin:top left;
+              border:none;pointer-events:none;z-index:2"
+            loading="lazy"
+            onload="(function(f){if(f)f.style.opacity='0'})(document.getElementById('cm-intl-iframe-fallback'))"
+          ></iframe>
+          <div style="position:absolute;inset:0;z-index:3;pointer-events:none;
+            background:linear-gradient(to bottom,transparent 55%,rgba(7,17,38,0.5) 100%)"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div style="padding:clamp(1.25rem,3vw,1.5rem) clamp(1.5rem,4vw,2rem);position:relative;z-index:1;max-height:44vh;overflow-y:auto">
+
+        <p style="font-family:'Outfit',sans-serif;font-size:.85rem;line-height:1.76;
+          color:${CM.stardust};margin-bottom:1.25rem">
+          A single-page application showcasing an international office's programs, partnerships,
+          and student resources — built for Petra Christian University. Presents inbound and outbound
+          academic initiatives, campus life, news, and partner directories for prospective students
+          and institutional partners worldwide.
+        </p>
+
+        <!-- Site sections -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Site Sections</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.4rem">${sectionPills}</div>
+
+        <!-- Public features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Public Features</p>
+        <div style="margin-bottom:1.4rem">${makeItems(publicFeatures)}</div>
+
+        <!-- Admin features -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Admin Features</p>
+        <div style="margin-bottom:1.4rem">${makeItems(adminFeatures)}</div>
+
+        <!-- Tech stack -->
+        <p style="font-family:'Outfit',sans-serif;font-size:.58rem;font-weight:700;
+          letter-spacing:.18em;text-transform:uppercase;color:rgba(143,168,214,0.45);margin-bottom:.75rem">Built With</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.5rem">${techBadges}</div>
+      </div>
+
+      <!-- Footer CTAs -->
+      <div style="padding:1.25rem clamp(1.5rem,4vw,2rem);
+        border-top:1px solid rgba(212,177,90,0.1);
+        background:rgba(7,17,38,0.6);backdrop-filter:blur(12px);
+        position:relative;z-index:1">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://website-demo-liard.vercel.app" target="_blank" rel="noopener noreferrer"
+            class="cm-glow-btn" style="
+            flex:1;min-width:160px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;
+            background:${CM.nebulaGold};color:${CM.midnight};padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            letter-spacing:.03em">
+            <i data-lucide="external-link" style="width:14px;height:14px"></i>
+            Open Live Demo
+          </a>
+          <a href="https://github.com/croissantsmoon/Website-International-Office-Demo" target="_blank" rel="noopener noreferrer" style="
+            flex:1;min-width:140px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;
+            color:${accent};background:rgba(${accentRgb},0.08);padding:13px 22px;border-radius:999px;
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+            border:1px solid rgba(${accentRgb},0.3);
+            transition:background .2s,box-shadow .2s,border-color .2s
+          " onmouseover="this.style.background='rgba(${accentRgb},0.16)';this.style.boxShadow='0 0 16px rgba(${accentRgb},0.22)';this.style.borderColor='rgba(${accentRgb},0.55)'"
+             onmouseout="this.style.background='rgba(${accentRgb},0.08)';this.style.boxShadow='none';this.style.borderColor='rgba(${accentRgb},0.3)'">
+            <i data-lucide="github" style="width:14px;height:14px"></i>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+  const onKey = e => { if (e.key === 'Escape') cmCloseIntlOfficeDemoModal(); };
+  document.addEventListener('keydown', onKey);
+  modal._cmKey = onKey;
+}
+window.cmOpenIntlOfficeDemoModal = cmOpenIntlOfficeDemoModal;
+
+function cmCloseIntlOfficeDemoModal() {
+  const modal = document.getElementById('cm-intloffice-demo-modal');
+  if (!modal) return;
+  if (modal._cmKey) document.removeEventListener('keydown', modal._cmKey);
+  modal.remove();
+}
+window.cmCloseIntlOfficeDemoModal = cmCloseIntlOfficeDemoModal;
 
 // ── Scroll Reveal ─────────────────────────────────────────────────────────────
 
