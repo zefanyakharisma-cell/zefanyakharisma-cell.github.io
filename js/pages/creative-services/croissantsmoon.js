@@ -1149,22 +1149,38 @@ function cmBuildFeaturedProject(project) {
       <p style="font-family:'Outfit',sans-serif;font-size:.79rem;line-height:1.66;
         color:${CM.stardust};margin-bottom:14px">${project.tagline}</p>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px">${techBadges}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;
-        border-top:1px solid rgba(111,168,255,0.1)">
-        <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:600;
-          letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
-          background:${statusBg};color:${statusColor}">${project.status}</span>
-        <button onclick="goToPage('${project.page}')" style="
-          font-family:'Outfit',sans-serif;font-size:.77rem;font-weight:600;
-          color:${CM.nebulaGold};background:transparent;cursor:pointer;
-          display:inline-flex;align-items:center;gap:5px;
-          padding:6px 16px;border-radius:999px;
-          border:1px solid rgba(212,177,90,0.28);
-          transition:background .2s,box-shadow .2s,border-color .2s"
-          onmouseover="this.style.background='rgba(212,177,90,0.12)';this.style.boxShadow='0 0 14px rgba(212,177,90,0.22)';this.style.borderColor='rgba(212,177,90,0.5)'"
-          onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='rgba(212,177,90,0.28)'">
-          Explore <i data-lucide="arrow-right" style="width:11px;height:11px"></i>
-        </button>
+      <div style="padding-top:14px;border-top:1px solid rgba(111,168,255,0.1)">
+        <div style="display:flex;align-items:center;margin-bottom:10px">
+          <span style="font-family:'Outfit',sans-serif;font-size:.67rem;font-weight:600;
+            letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;
+            background:${statusBg};color:${statusColor}">${project.status}</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${project.github ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer" style="
+            font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;
+            color:${CM.stardust};text-decoration:none;flex:1;
+            display:inline-flex;align-items:center;justify-content:center;gap:5px;
+            padding:7px 14px;border-radius:999px;
+            border:1px solid rgba(111,168,255,0.22);background:transparent;
+            transition:background .2s,box-shadow .2s,color .2s,border-color .2s"
+            onmouseover="this.style.background='rgba(111,168,255,0.1)';this.style.boxShadow='0 0 10px rgba(111,168,255,0.15)';this.style.color='${CM.aurora}';this.style.borderColor='rgba(111,168,255,0.4)'"
+            onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.color='${CM.stardust}';this.style.borderColor='rgba(111,168,255,0.22)'">
+            <i data-lucide="github" style="width:12px;height:12px"></i>
+            GitHub
+          </a>` : ''}
+          ${project.live ? `<a href="${project.live}" target="_blank" rel="noopener noreferrer" style="
+            font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;
+            color:${CM.nebulaGold};text-decoration:none;flex:1;
+            display:inline-flex;align-items:center;justify-content:center;gap:5px;
+            padding:7px 14px;border-radius:999px;
+            border:1px solid rgba(212,177,90,0.28);background:transparent;
+            transition:background .2s,box-shadow .2s,border-color .2s"
+            onmouseover="this.style.background='rgba(212,177,90,0.12)';this.style.boxShadow='0 0 14px rgba(212,177,90,0.22)';this.style.borderColor='rgba(212,177,90,0.5)'"
+            onmouseout="this.style.background='transparent';this.style.boxShadow='none';this.style.borderColor='rgba(212,177,90,0.28)'">
+            Live Preview
+            <i data-lucide="external-link" style="width:11px;height:11px"></i>
+          </a>` : ''}
+        </div>
       </div>
     </div>
   </div>`;
@@ -1173,8 +1189,9 @@ function cmBuildFeaturedProject(project) {
 const CM_FEATURED_PROJECTS = [
   {
     page:        'web-portfolio',
-    live:        'https://portfolio-demo-pearl-six.vercel.app',
-    title:       'Portfolio Demo',
+    live:        'https://zefanyakharisma.com/',
+    github:      'https://github.com/zefanyakharisma-cell/zefanyakharisma-cell.github.io',
+    title:       'Portfolio',
     label:       'SPA · Vanilla JS',
     watermark:   'Portfolio',
     tagline:     'Premium editorial-style single-page portfolio template — vanilla JS, Tailwind, Supabase, and Formspree.',
@@ -1186,8 +1203,9 @@ const CM_FEATURED_PROJECTS = [
   },
   {
     page:        'web-pcu-global-intl',
-    live:        'https://website-demo-liard.vercel.app',
-    title:       'International Office',
+    live:        'https://international-office-website.vercel.app/',
+    github:      'https://github.com/zefanyakharisma-cell/International-Office-Website',
+    title:       'PCU Global — International Office',
     label:       'Web App · PCU Global',
     watermark:   'Intl. Office',
     tagline:     'Full international office platform — news CMS, partnership directory, inbound & outbound programs, mobile-first.',
@@ -1199,11 +1217,12 @@ const CM_FEATURED_PROJECTS = [
   },
   {
     page:        'web-dashboard-partnership',
-    live:        'https://partnership-dashboard-demo-three.vercel.app',
-    title:       'Partnership Dashboard',
+    live:        'https://dashboard-partnership.vercel.app/',
+    github:      'https://github.com/zefanyakharisma-cell/Dashboard-Partnership',
+    title:       'International Partnership Dashboard',
     label:       'Data Dashboard',
     watermark:   'Partnership',
-    tagline:     'Interactive dashboard visualising 2,289 institutional partnerships — workflow engine, analytics, archive.',
+    tagline:     'Interactive dashboard visualising institutional partnerships — workflow engine, analytics, archive.',
     tech:        ['JavaScript', 'Chart.js', 'Tailwind'],
     bg:          'linear-gradient(145deg,#0a1f2e,#0f3545)',
     status:      'Live',
@@ -1212,8 +1231,9 @@ const CM_FEATURED_PROJECTS = [
   },
   {
     page:        'web-dashboard-grants',
-    live:        'https://grants-dashboard-eta.vercel.app',
-    title:       'Grants Dashboard',
+    live:        'https://dashboard-international-grants.vercel.app/',
+    github:      'https://github.com/zefanyakharisma-cell/Dashboard-International-Grants',
+    title:       'International Grants Dashboard',
     label:       'Data Dashboard',
     watermark:   'Grants',
     tagline:     'Modern international grants discovery and management platform — deadline timeline, realtime updates, admin suite.',
