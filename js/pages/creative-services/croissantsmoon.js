@@ -28,10 +28,10 @@ const CM = {
 };
 
 const CM_REPO_DETAIL_PAGE = {
-  'Website-Portfolio':              'web-portfolio',
-  'International-Office-Website':   'web-pcu-global-intl',
-  'Dashboard-Partnership':          'web-dashboard-partnership',
-  'Dashboard-International-Grants': 'web-dashboard-grants',
+  'Portfolio-Demo':                   'web-portfolio',
+  'Website-International-Office-Demo':'web-pcu-global-intl',
+  'Partnership-Dashboard-Demo':       'web-dashboard-partnership',
+  'Grants-Dashboard':                 'web-dashboard-grants',
 };
 
 const CM_GRAPHIC_WORKS = [
@@ -1021,7 +1021,7 @@ function cmBuildRepoCard(repo) {
         <div style="flex:1;background:rgba(7,17,38,0.5);border-radius:4px;padding:3px 9px;
           font-family:'Outfit',sans-serif;font-size:.55rem;color:${CM.stardust};opacity:.6;
           border:1px solid rgba(111,168,255,0.1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis
-        ">github.com/zefanyakharisma-cell/${repo.name}</div>
+        ">github.com/croissantsmoon/${repo.name}</div>
       </div>
       <div style="background:rgba(11,30,58,0.45);padding:14px 18px 16px;
         border-bottom:1px solid rgba(111,168,255,0.07);min-height:72px;position:relative;overflow:hidden">
@@ -1173,11 +1173,11 @@ function cmBuildFeaturedProject(project) {
 const CM_FEATURED_PROJECTS = [
   {
     page:        'web-portfolio',
-    live:        'https://zefanyakharisma.com',
-    title:       'Website Portfolio',
+    live:        'https://portfolio-demo-pearl-six.vercel.app',
+    title:       'Portfolio Demo',
     label:       'SPA · Vanilla JS',
     watermark:   'Portfolio',
-    tagline:     'Dual-identity single-page app with iOS-style navigation, Supabase CMS, and 20+ pages — no framework.',
+    tagline:     'Premium editorial-style single-page portfolio template — vanilla JS, Tailwind, Supabase, and Formspree.',
     tech:        ['HTML/CSS', 'JavaScript', 'Tailwind', 'Supabase'],
     bg:          'linear-gradient(145deg,#030712,#071126)',
     status:      'Live',
@@ -1186,21 +1186,21 @@ const CM_FEATURED_PROJECTS = [
   },
   {
     page:        'web-pcu-global-intl',
-    live:        'https://international-office-website.vercel.app/',
+    live:        'https://website-demo-liard.vercel.app',
     title:       'International Office',
     label:       'Web App · PCU Global',
     watermark:   'Intl. Office',
-    tagline:     'Full rebuild of PCU\'s International Office website — news CMS, partnership directory, mobile-first.',
+    tagline:     'Full international office platform — news CMS, partnership directory, inbound & outbound programs, mobile-first.',
     tech:        ['HTML/CSS', 'JavaScript', 'Tailwind', 'Supabase'],
     bg:          'linear-gradient(145deg,#0B1E3A,#183B6B)',
-    status:      'In Progress',
-    statusBg:    'rgba(212,177,90,0.12)',
-    statusColor: '#D4B15A',
+    status:      'Live',
+    statusBg:    'rgba(45,180,79,0.12)',
+    statusColor: '#4CAF87',
   },
   {
     page:        'web-dashboard-partnership',
-    live:        'https://dashboard-partnership.vercel.app/',
-    title:       'Dashboard Partnership',
+    live:        'https://partnership-dashboard-demo-three.vercel.app',
+    title:       'Partnership Dashboard',
     label:       'Data Dashboard',
     watermark:   'Partnership',
     tagline:     'Interactive dashboard visualising 2,289 institutional partnerships — workflow engine, analytics, archive.',
@@ -1212,11 +1212,11 @@ const CM_FEATURED_PROJECTS = [
   },
   {
     page:        'web-dashboard-grants',
-    live:        'https://dashboard-international-grants.vercel.app/',
-    title:       'International Grants',
+    live:        'https://grants-dashboard-eta.vercel.app',
+    title:       'Grants Dashboard',
     label:       'Data Dashboard',
     watermark:   'Grants',
-    tagline:     'Centralised grant tracking from application to outcome — deadline timeline, pipeline view, realtime updates.',
+    tagline:     'Modern international grants discovery and management platform — deadline timeline, realtime updates, admin suite.',
     tech:        ['JavaScript', 'Chart.js', 'Supabase'],
     bg:          'linear-gradient(145deg,#120a2e,#2a1060)',
     status:      'Live',
@@ -1300,7 +1300,7 @@ function cmBuildWebProjects() {
 
         <div class="cm-reveal" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem">
           <div style="display:flex;flex-wrap:wrap;gap:8px">${pills}</div>
-          <a href="https://github.com/zefanyakharisma-cell" target="_blank" rel="noopener noreferrer" style="
+          <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style="
             font-family:'Outfit',sans-serif;font-size:.77rem;font-weight:400;
             color:${CM.stardust};text-decoration:none;display:inline-flex;align-items:center;gap:6px;
             border:1px solid rgba(111,168,255,0.18);padding:8px 16px;border-radius:999px;
@@ -1308,7 +1308,7 @@ function cmBuildWebProjects() {
           " onmouseover="this.style.borderColor='rgba(111,168,255,0.4)';this.style.color='${CM.aurora}';this.style.boxShadow='0 0 12px rgba(111,168,255,0.12)'"
              onmouseout="this.style.borderColor='rgba(111,168,255,0.18)';this.style.color='${CM.stardust}';this.style.boxShadow='none'">
             <i data-lucide="github" style="width:14px;height:14px"></i>
-            @zefanyakharisma-cell
+            @croissantsmoon
           </a>
         </div>
 
@@ -1328,11 +1328,11 @@ function cmRenderRepos(repos) {
         <p style="font-family:'Outfit',sans-serif;font-size:.9rem;color:${CM.stardust};margin-bottom:14px">
           Couldn't load projects — view them directly on GitHub.
         </p>
-        <a href="https://github.com/zefanyakharisma-cell" target="_blank" rel="noopener noreferrer" style="
+        <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style="
           font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;
           color:${CM.nebulaGold};text-decoration:none;
           border-bottom:1px solid ${CM.nebulaGold};padding-bottom:2px
-        ">@zefanyakharisma-cell ↗</a>
+        ">@croissantsmoon ↗</a>
       </div>`;
     return;
   }
@@ -1360,13 +1360,13 @@ window.cmSetRepoFilter = function(filter) {
 };
 
 async function cmFetchRepos() {
-  const KEY = 'cm_gh_repos_v2';
+  const KEY = 'cm_gh_repos_v3';
   const cached = sessionStorage.getItem(KEY);
   if (cached) {
     try { cmRenderRepos(JSON.parse(cached)); return; } catch(e) {}
   }
   try {
-    const res = await fetch('https://api.github.com/users/zefanyakharisma-cell/repos?sort=updated&per_page=20');
+    const res = await fetch('https://api.github.com/users/croissantsmoon/repos?sort=updated&per_page=20');
     if (!res.ok) throw new Error('fetch failed');
     const all = await res.json();
     const filtered = all.filter(r => !r.fork && r.description && r.name !== 'zefanyakharisma-cell');
@@ -1617,7 +1617,7 @@ function cmBuildContact() {
         </button>
 
         <div style="margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(111,168,255,0.08)">
-          <a href="https://github.com/zefanyakharisma-cell" target="_blank" rel="noopener noreferrer" style="
+          <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style="
             font-family:'Outfit',sans-serif;font-size:.77rem;font-weight:400;
             color:rgba(143,168,214,0.35);text-decoration:none;
             display:inline-flex;align-items:center;gap:6px;transition:color .22s
