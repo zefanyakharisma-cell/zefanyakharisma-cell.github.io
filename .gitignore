@@ -2,3 +2,10 @@ node_modules
 .next
 .env
 .DS_Store
+echo "
+._*
+.env
+node_modules
+.next
+.DS_Store
+" >> .gitignore

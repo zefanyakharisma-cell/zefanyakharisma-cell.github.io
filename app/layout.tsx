@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, DM_Sans } from 'next/font/google'
 import './globals.css'
-import TopBar from '@/components/layout/TopBar'
-import TabBar from '@/components/layout/TabBar'
-import Footer from '@/components/layout/Footer'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -64,15 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body style={{ fontFamily: 'var(--font-dm-sans, "DM Sans", sans-serif)' }}>
-        <a href="#main-content" className="skip-to-content">Skip to main content</a>
-        <TopBar />
-        <div id="app" className="w-full">
-          <main id="main-content" tabIndex={-1}>
-            {children}
-          </main>
-          <Footer />
-        </div>
-        <TabBar />
+        {children}
       </body>
     </html>
   )
