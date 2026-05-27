@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Volumes/V-GEN/Website Portfolio/app/layout\":[\"static/media/4261f91ea7100e2e-s.p.woff2\",\"static/media/13971731025ec697-s.p.woff2\",\"static/media/c49dcee81b580683-s.p.woff2\",\"static/media/636a5ac981f94f8b-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
