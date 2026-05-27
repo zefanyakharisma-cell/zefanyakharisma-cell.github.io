@@ -372,6 +372,18 @@ function cmBuildHero() {
             View Design Work
             <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
           </a>
+          <a href="/croissantsmoon/proposals" style="
+            font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:400;
+            border:1px solid rgba(143,168,214,0.28);color:${CM.stardust};
+            padding:14px 30px;border-radius:999px;text-decoration:none;
+            display:inline-flex;align-items:center;gap:8px;
+            background:rgba(143,168,214,0.05);
+            transition:background .22s,border-color .22s,color .22s,box-shadow .22s
+          " onmouseover="this.style.background='rgba(143,168,214,0.1)';this.style.borderColor='rgba(143,168,214,0.5)';this.style.color='${CM.moonlight}';this.style.boxShadow='0 0 18px rgba(143,168,214,0.12)'"
+             onmouseout="this.style.background='rgba(143,168,214,0.05)';this.style.borderColor='rgba(143,168,214,0.28)';this.style.color='${CM.stardust}';this.style.boxShadow='none'">
+            Request a Proposal
+            <i data-lucide="send" style="width:13px;height:13px"></i>
+          </a>
         </div>
 
         <!-- Scroll indicator -->
