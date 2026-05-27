@@ -1,7 +1,4 @@
+node_modules
+.next
+.env
 .DS_Store
-**/.DS_Store
-._*
-**/._*
-
-# Build output (if Tailwind CLI is added later)
-css/dist/
