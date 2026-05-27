@@ -64,6 +64,10 @@ export default function HeroSection() {
         <span style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 'clamp(16rem,22vw,30rem)', fontWeight: 800, fontStyle: 'italic', color: 'rgba(28,28,30,0.028)', lineHeight: 1, userSelect: 'none', transform: 'translateY(-4%)', display: 'block', overflow: 'hidden' }}>Z</span>
       </div>
 
+      {/* Geometric ring accents */}
+      <div className="absolute hidden lg:block pointer-events-none" aria-hidden="true" style={{ right: '15%', top: '15%', width: 220, height: 220, borderRadius: '50%', border: '1px solid rgba(139,115,85,0.11)' }} />
+      <div className="absolute hidden lg:block pointer-events-none" aria-hidden="true" style={{ right: '18%', top: '22%', width: 110, height: 110, borderRadius: '50%', border: '1px solid rgba(139,115,85,0.07)' }} />
+
       <div className="max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-16">
         {/* Avatar */}
         <div className="flex-shrink-0" style={{ animation: 'springIn .6s cubic-bezier(0.34,1.56,0.64,1) both' }}>

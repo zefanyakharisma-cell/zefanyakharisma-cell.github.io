@@ -337,3 +337,42 @@ body { font-family: 'DM Sans', 'Inter', system-ui, sans-serif; -webkit-font-smoo
   .proj-stats-item { padding: 14px 18px 14px 0; margin-right: 18px; }
   .proj-stats-number { font-size: 1.35rem; }
 }
+
+/* ── Home work card arrow hover ──────────────────────────── */
+.home-work-card:hover .home-work-arrow { background: rgba(255,255,255,0.24) !important; }
+
+/* ── Competency rows ──────────────────────────────────────── */
+.competency-row { background: transparent; transition: background .2s; display: flex; }
+.competency-row:hover { background: rgba(10,132,255,0.04); }
+.competency-cta { opacity: .45; transition: opacity .2s, transform .2s; }
+.competency-row:hover .competency-cta { opacity: 1; transform: translateX(3px); }
+
+/* ── Skill tag category variants ─────────────────────────── */
+.skill-tag.cat-education { background: rgba(10,132,255,0.10); color: #0A84FF; border-color: rgba(10,132,255,0.22); }
+.skill-tag.cat-education:hover { background: rgba(10,132,255,0.18); }
+.skill-tag.cat-education.selected { background: #0A84FF; color: #fff; border-color: #0A84FF; }
+.skill-tag.cat-creative { background: rgba(255,107,71,0.10); color: #FF6B47; border-color: rgba(255,107,71,0.22); }
+.skill-tag.cat-creative:hover { background: rgba(255,107,71,0.18); }
+.skill-tag.cat-creative.selected { background: #FF6B47; color: #fff; border-color: #FF6B47; }
+.skill-tag.cat-leadership { background: rgba(48,209,88,0.10); color: #1D8348; border-color: rgba(48,209,88,0.22); }
+.skill-tag.cat-leadership:hover { background: rgba(48,209,88,0.18); }
+.skill-tag.cat-leadership.selected { background: #30D158; color: #fff; border-color: #30D158; }
+.skill-tag.cat-tech { background: rgba(94,92,230,0.10); color: #5E5CE6; border-color: rgba(94,92,230,0.22); }
+.skill-tag.cat-tech:hover { background: rgba(94,92,230,0.18); }
+.skill-tag.cat-tech.selected { background: #5E5CE6; color: #fff; border-color: #5E5CE6; }
+
+/* ── CTA dark-section buttons ────────────────────────────── */
+.btn-cv-download {
+  background: var(--color-accent); color: #fff; text-decoration: none;
+  border-radius: var(--radius-pill); font-family: 'DM Sans', sans-serif;
+  font-weight: 600; transition: transform 0.35s var(--spring), filter 0.2s;
+  display: inline-flex; align-items: center;
+}
+.btn-cv-download:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-contact-outline {
+  border: 1.5px solid rgba(255,255,255,0.25); color: #fff;
+  background: rgba(255,255,255,0.1); text-decoration: none;
+  border-radius: var(--radius-pill); transition: background 0.2s;
+  display: inline-flex; align-items: center;
+}
+.btn-contact-outline:hover { background: rgba(255,255,255,0.18); }
