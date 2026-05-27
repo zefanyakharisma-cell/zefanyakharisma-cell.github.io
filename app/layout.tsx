@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans, DM_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, DM_Sans, Cormorant_Garamond, Outfit } from 'next/font/google'
 import './globals.css'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -15,6 +15,21 @@ const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-dm-sans',
+  display: 'swap',
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-outfit',
   display: 'swap',
 })
 
@@ -40,7 +55,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${dmSans.variable} h-full`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${dmSans.variable} ${cormorantGaramond.variable} ${outfit.variable} h-full`}>
       <head>
         <meta name="theme-color" content="#F2F2F7" />
         <script

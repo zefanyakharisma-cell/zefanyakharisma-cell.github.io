@@ -316,6 +316,152 @@ body { font-family: 'DM Sans', 'Inter', system-ui, sans-serif; -webkit-font-smoo
 
 /* ── CroissantsMoon ───────────────────────────────────────── */
 .cm-marquee-track { animation: cmMarquee 30s linear infinite; width: max-content; }
+
+/* ── CM Font utilities ────────────────────────────────────── */
+.font-cormorant { font-family: var(--font-cormorant, 'Cormorant Garamond', Georgia, serif); }
+.font-outfit { font-family: var(--font-outfit, 'Outfit', sans-serif); }
+
+/* ── CM CSS variables ─────────────────────────────────────── */
+:root {
+  --cm-midnight:   #071126;
+  --cm-deepSpace:  #0B1E3A;
+  --cm-moonlight:  #D9E6FF;
+  --cm-stardust:   #8FA8D6;
+  --cm-gold:       #D4B15A;
+  --cm-cosmicBlue: #183B6B;
+  --cm-aurora:     #6FA8FF;
+  --cm-void:       #030712;
+  --cm-border:     rgba(111,168,255,0.14);
+  --cm-glow:       rgba(111,168,255,0.22);
+  --cm-gold-glow:  rgba(212,177,90,0.28);
+  --cm-spring:     cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* ── CM Animations ────────────────────────────────────────── */
+@keyframes cmTwinkle {
+  0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.2;transform:scale(.6)}
+}
+@keyframes cmFloat {
+  0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+}
+@keyframes cmPulse {
+  0%,100%{opacity:1} 50%{opacity:.45}
+}
+@keyframes cmGlowPulse {
+  0%,100%{box-shadow:0 0 18px rgba(212,177,90,0.35),0 4px 28px rgba(212,177,90,0.22)}
+  50%{box-shadow:0 0 36px rgba(212,177,90,0.6),0 4px 42px rgba(212,177,90,0.38)}
+}
+@keyframes cmFadeUp {
+  from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)}
+}
+@keyframes cmShimmer {
+  0%{background-position:-400px 0} 100%{background-position:400px 0}
+}
+@keyframes cmOrbit {
+  from{transform:rotate(0deg) translateX(8px) rotate(0deg)}
+  to{transform:rotate(360deg) translateX(8px) rotate(-360deg)}
+}
+@keyframes cmScrollLine {
+  0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom}
+}
+@keyframes cmDrift {
+  0%{transform:translate(0,0) rotate(0deg)} 33%{transform:translate(6px,-4px) rotate(1deg)}
+  66%{transform:translate(-4px,3px) rotate(-.5deg)} 100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes cmAstronautDrift {
+  0%  { transform:translate(0,0) rotate(var(--ar0,-8deg)); }
+  30% { transform:translate(var(--ax1,14px),var(--ay1,-18px)) rotate(var(--ar1,2deg)); }
+  70% { transform:translate(var(--ax2,-10px),var(--ay2,12px)) rotate(var(--ar2,6deg)); }
+  100%{ transform:translate(0,0) rotate(var(--ar0,-8deg)); }
+}
+
+/* ── CM Reveal ────────────────────────────────────────────── */
+.cm-reveal { opacity:0; transform:translateY(20px); transition:opacity .65s ease-out, transform .65s ease-out; }
+.cm-visible { opacity:1 !important; transform:none !important; }
+
+/* ── CM Card Hover ────────────────────────────────────────── */
+.cm-card-hover {
+  transition: transform .32s var(--cm-spring), box-shadow .32s ease;
+}
+.cm-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(7,17,38,0.55), 0 0 0 1px rgba(111,168,255,0.24) !important;
+}
+
+/* ── CM Star ──────────────────────────────────────────────── */
+.cm-star {
+  position:absolute;border-radius:50%;background:#fff;pointer-events:none;
+  animation:cmTwinkle var(--dur,2.4s) var(--delay,0s) ease-in-out infinite;
+}
+
+/* ── CM Glass ─────────────────────────────────────────────── */
+.cm-glass {
+  background:rgba(11,30,58,0.62);
+  backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);
+  border:1px solid rgba(111,168,255,0.16);
+}
+
+/* ── CM Glow Button ───────────────────────────────────────── */
+.cm-glow-btn {
+  animation:cmGlowPulse 2.6s ease-in-out infinite;
+  transition:transform .22s var(--cm-spring), opacity .22s;
+}
+.cm-glow-btn:hover { transform:scale(1.04); opacity:.9; }
+
+/* ── CM Filter Pill ───────────────────────────────────────── */
+.cm-filter-pill {
+  font-family:var(--font-outfit,'Outfit',sans-serif);font-size:.76rem;font-weight:500;
+  padding:7px 18px;border-radius:999px;cursor:pointer;letter-spacing:.02em;
+  transition:background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.cm-filter-pill.active {
+  background:var(--cm-gold);color:var(--cm-midnight);border-color:var(--cm-gold);
+  box-shadow:0 0 14px var(--cm-gold-glow);
+}
+
+/* ── CM Lightbox ──────────────────────────────────────────── */
+.cm-lightbox-enter { animation:cmFadeUp .24s ease-out forwards; }
+
+/* ── CM Process Card ──────────────────────────────────────── */
+.cm-process-card {
+  transition:transform .32s var(--cm-spring), box-shadow .32s ease;
+}
+.cm-process-card:hover {
+  transform:translateY(-8px);
+  box-shadow:0 24px 64px rgba(7,17,38,0.6), 0 0 0 1px rgba(111,168,255,0.22) !important;
+}
+
+/* ── CM Graphic Design Card ───────────────────────────────── */
+.cm-gd-card-hover:hover .cm-gd-overlay { opacity:1 !important; }
+.cm-gd-card-hover:hover img { transform:scale(1.06) !important; }
+
+/* ── CM Step Connector ────────────────────────────────────── */
+@media(min-width:768px){ .cm-step-connector { display:block !important; } }
+
+/* ── CM Shimmer ───────────────────────────────────────────── */
+.cm-shimmer {
+  background:linear-gradient(90deg,#0B1E3A 25%,#162d50 50%,#0B1E3A 75%);
+  background-size:400px 100%;
+  animation:cmShimmer 1.5s ease-in-out infinite;
+}
+
+/* ── CM Constellation ─────────────────────────────────────── */
+.cm-constellation-line {
+  stroke:rgba(111,168,255,0.18);stroke-width:1;stroke-dasharray:4 6;
+  animation:cmPulse 4s ease-in-out infinite;
+}
+
+/* ── CM Astronaut ─────────────────────────────────────────── */
+.cm-astro {
+  position:absolute;pointer-events:none;user-select:none;z-index:0;opacity:.1;
+  animation:cmAstronautDrift var(--ad,26s) var(--adl,0s) ease-in-out infinite;
+}
+
+/* ── CM Marquee ───────────────────────────────────────────── */
+.cm-marquee-wrap { overflow:hidden; }
+.cm-marquee-track-new { animation:cmMarquee 30s linear infinite; display:flex; width:max-content; }
 .page-hero-banner { position: relative; overflow: hidden; }
 
 /* ── Accessibility ────────────────────────────────────────── */
