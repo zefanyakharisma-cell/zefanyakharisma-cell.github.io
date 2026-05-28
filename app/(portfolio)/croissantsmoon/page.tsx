@@ -311,7 +311,7 @@ export default function CroissantsMoonPage() {
             >
               View Design Work <ArrowRight style={{ width: 14, height: 14 }} />
             </button>
-            <Link href="/croissantsmoon/proposals" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 400, border: '1px solid rgba(143,168,214,0.28)', color: CM.stardust, padding: '14px 30px', borderRadius: 999, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(143,168,214,0.05)', textDecoration: 'none', transition: 'background .22s,border-color .22s,color .22s,box-shadow .22s' }}>
+            <Link href="/croissantsmoon/proposal" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 400, border: '1px solid rgba(143,168,214,0.28)', color: CM.stardust, padding: '14px 30px', borderRadius: 999, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(143,168,214,0.05)', textDecoration: 'none', transition: 'background .22s,border-color .22s,color .22s,box-shadow .22s' }}>
               Request a Proposal <Send style={{ width: 13, height: 13 }} />
             </Link>
           </div>
