@@ -314,6 +314,28 @@ body { font-family: 'DM Sans', 'Inter', system-ui, sans-serif; -webkit-font-smoo
 .ct-visible { opacity:1 !important; transform:none !important; }
 .ct-star { position: absolute; border-radius: 50%; background: #fff; pointer-events: none; animation: ctTwinkle var(--dur, 2.4s) var(--delay, 0s) ease-in-out infinite; }
 
+/* ── Gallery strip photo hover ───────────────────────────── */
+.gallery-photo { opacity: .9; transition: opacity .2s; }
+.gallery-photo:hover { opacity: 1; }
+
+/* ── Writing / Article ────────────────────────────────────── */
+.article-card { transition: transform .25s ease, box-shadow .25s ease; }
+.article-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+.article-body { font-family: 'DM Sans', sans-serif; font-size: 1rem; line-height: 1.8; color: #3C3C3E; }
+.article-body h1,.article-body h2,.article-body h3,.article-body h4 { font-family: 'Playfair Display', serif; color: #1C1C1E; margin: 1.75em 0 .65em; line-height: 1.25; font-weight: 700; }
+.article-body h2 { font-size: 1.5rem; }
+.article-body h3 { font-size: 1.2rem; }
+.article-body p { margin: 0 0 1.2em; }
+.article-body ul,.article-body ol { margin: 0 0 1.2em; padding-left: 1.6em; }
+.article-body li { margin-bottom: .4em; }
+.article-body blockquote { margin: 1.5em 0; padding: 1em 1.5em; border-left: 3px solid #8B7355; background: rgba(139,115,85,0.05); border-radius: 0 8px 8px 0; font-style: italic; color: #5C5C5C; }
+.article-body strong { color: #1C1C1E; font-weight: 600; }
+.article-body a { color: #1E3A5F; text-decoration: underline; text-underline-offset: 3px; }
+.article-body img { max-width: 100%; border-radius: 10px; margin: 1.5em 0; }
+.article-body pre { background: #1C1C1E; color: #E5E7EB; padding: 1.25em 1.5em; border-radius: 10px; overflow-x: auto; margin: 1.5em 0; font-size: .88rem; line-height: 1.65; }
+.article-body code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: .85em; }
+.article-body hr { border: none; border-top: 1px solid rgba(28,28,30,0.1); margin: 2.5em 0; }
+
 /* ── CroissantsMoon ───────────────────────────────────────── */
 .cm-marquee-track { animation: cmMarquee 30s linear infinite; width: max-content; }
 

@@ -245,7 +245,7 @@ export default function CroissantsMoonPage() {
   const webProjectsRef = useRef<HTMLDivElement>(null)
   const graphicDesignRef = useRef<HTMLDivElement>(null)
 
-  function scrollTo(ref: React.RefObject<HTMLDivElement>) {
+  function scrollTo(ref: React.RefObject<HTMLDivElement | null>) {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 

@@ -1,124 +1,150 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Plane, Handshake, FileCheck, Heart, DollarSign, Globe2 } from 'lucide-react'
+import { LogIn, HeartHandshake, Handshake, FileText, Award, ArrowRight, Users, Globe, Calendar, FileCheck } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'International Education — Zefanya Kharisma Nugroho',
-  description: 'International education programs — student mobility, institutional partnerships, welfare support, and grants at Petra Christian University.',
+  description: 'Supporting 480+ international students across welfare, mobility, engagement, and partnership programs at Airlangga Global Engagement and Petra Christian University.',
 }
 
-const programs = [
+const AREA_CARDS = [
   {
-    icon: Plane,
     href: '/onboarding',
-    color: '#1E3A5F',
-    title: 'Student Mobility Programs',
-    sub: 'Inbound & Outbound Exchange',
-    desc: 'End-to-end coordination of 5+ international exchange programs — pre-departure preparation, arrival logistics, and post-program completion for 100+ international students per semester.',
-    tags: ['Student Mobility', 'Logistics', 'Program Management'],
+    gradient: 'linear-gradient(135deg,#1E3A5F,#2C4A72)',
+    Icon: LogIn,
+    accentColor: '#1E3A5F',
+    title: 'International Student Support',
+    desc: 'Holistic care for 480+ students from arrival to departure — visa, welfare, scholarships, and peer mentoring.',
+    tags: ['Airport Pick-Up', 'Immigration', 'Welfare', 'Best Buddies'],
+    cta: 'Explore Program',
   },
   {
-    icon: Handshake,
+    href: '/onboarding',
+    gradient: 'linear-gradient(135deg,#064E3B,#059669)',
+    Icon: HeartHandshake,
+    accentColor: '#059669',
+    title: 'Student Engagement',
+    desc: 'Creating meaningful cultural experiences through immersion programs, community engagement, and experiential learning.',
+    tags: ['City Tour', 'Cultural Events', 'Volunteering', 'Best Buddies'],
+    cta: 'Explore Initiatives',
+  },
+  {
     href: '/partnerships',
-    color: '#8B7355',
-    title: 'Institutional Partnerships',
-    sub: 'Global Partner Network',
-    desc: 'Managing 30+ active institutional partnerships — monthly MoU/MoA reviews, strategic meeting facilitation, and partner relationship management across Asia, Europe, and the Americas.',
-    tags: ['Partnership Management', 'MoU/MoA', 'Strategy'],
+    gradient: 'linear-gradient(135deg,#2D3B1F,#4A5235)',
+    Icon: Handshake,
+    accentColor: '#4A5235',
+    title: 'Partnership Development',
+    desc: 'Managing 30+ institutional partners and facilitating 15+ strategic meetings per month at PCU.',
+    tags: ['Research', 'Exchange', 'Faculty Dev', 'Curriculum'],
+    cta: 'Explore Partnerships',
   },
   {
-    icon: FileCheck,
     href: '/mou',
-    color: '#4A6B8A',
+    gradient: 'linear-gradient(135deg,#3B0764,#7C3AED)',
+    Icon: FileText,
+    accentColor: '#7C3AED',
     title: 'MoU / MoA Coordination',
-    sub: 'Agreement Management',
-    desc: 'Reviewing 25+ MoU and MoA documents monthly — ensuring compliance, tracking renewal deadlines, and coordinating signatory processes across institutional stakeholders.',
-    tags: ['Legal Coordination', 'Compliance', 'Documentation'],
+    desc: 'Reviewing 25+ partnership agreements per month — ensuring compliance, alignment, and timely processing.',
+    tags: ['Drafting', 'Compliance', 'Renewals', 'Monitoring'],
+    cta: 'View Portfolio',
   },
   {
-    icon: Heart,
-    href: '/onboarding',
-    color: '#064E3B',
-    title: 'International Student Welfare',
-    sub: 'Comprehensive Support',
-    desc: 'Non-academic support for international students — accommodation facilitation, healthcare navigation, banking assistance, insurance enrollment, and immigration compliance.',
-    tags: ['Student Welfare', 'Support Services', 'Community'],
-  },
-  {
-    icon: DollarSign,
     href: '/intl-grants',
-    color: '#D4B15A',
+    gradient: 'linear-gradient(135deg,#064E3B,#D97706)',
+    Icon: Award,
+    accentColor: '#D97706',
     title: 'International Grants',
-    sub: 'Funding & Scholarships',
-    desc: 'Identifying, tracking, and facilitating applications for international grants and scholarships — matching institutional priorities with available bilateral and multilateral funding.',
-    tags: ['Grants', 'Scholarships', 'Funding Strategy'],
-  },
-  {
-    icon: Globe2,
-    href: '/expertise',
-    color: '#2563EB',
-    title: 'Internationalization Strategy',
-    sub: 'Institutional Development',
-    desc: 'Contributing to multi-year internationalization roadmaps — expanding partner networks, developing program pipelines, and aligning institutional KPIs with international benchmarks.',
-    tags: ['Strategy', 'Internationalization', 'Leadership'],
+    desc: 'Building a system to inform, maintain, and execute international grants at PCU — digitally and physically.',
+    tags: ['In Development', 'Grant Dashboard', 'PCU', 'Digital + Physical'],
+    cta: 'View System',
   },
 ]
 
 export default function EngagementPage() {
   return (
-    <div style={{ background: '#F2F2F7', minHeight: '100vh' }}>
-      {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg,#0D2137 0%,#1E3A5F 55%,#2E5A8A 100%)', padding: '64px 24px 52px', position: 'relative', overflow: 'hidden' }}>
-        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 55%)' }} />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.15)' }}>International Education</span>
-          <h1 className="font-heading font-bold text-white mb-4" style={{ fontSize: 'clamp(2rem,5.5vw,3.4rem)', letterSpacing: '-.025em', lineHeight: 1.1 }}>Global Engagement Programs</h1>
-          <p style={{ fontSize: '.95rem', color: 'rgba(255,255,255,0.68)', lineHeight: 1.74, maxWidth: 560 }}>
-            Student mobility, institutional partnerships, welfare support, and international grants — the full spectrum of international higher education coordination at Petra Christian University.
+    <div style={{ background: '#FAFAF8', minHeight: '100vh' }}>
+
+      {/* ── Hero ── */}
+      <div style={{ background: 'linear-gradient(160deg,#1C1C1E 0%,#1E3A5F 55%,#2C4A72 100%)', padding: 'clamp(48px,8vh,72px) 24px 0', position: 'relative', overflow: 'hidden' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(139,115,85,0.18),transparent 55%)' }} />
+        <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full pointer-events-none" style={{ border: '1px solid rgba(255,255,255,0.04)' }} />
+        <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10 }}>
+          <div className="label-small mb-3" style={{ color: 'rgba(255,255,255,0.35)', letterSpacing: '.12em' }}>International Education</div>
+          <h1 className="font-heading font-bold mb-4" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', lineHeight: 1.05, color: '#fff', letterSpacing: '-.02em' }}>
+            Building Global Connections,<br /><em style={{ fontStyle: 'italic', color: '#8B7355' }}>One Student at a Time</em>
+          </h1>
+          <p className="max-w-2xl mb-8" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', lineHeight: 1.7 }}>
+            A track record of supporting 480+ international students across welfare, mobility, and engagement programs — through holistic roles at Airlangga Global Engagement and Petra Christian University.
           </p>
+          <div className="flex flex-wrap gap-8 pb-8">
+            {[['480+','Students'],['30+','Partners'],['25+','MoUs Monthly'],['5','Programs']].map(([val, label]) => (
+              <div key={label}>
+                <p className="font-heading font-bold text-2xl" style={{ color: '#8B7355' }}>{val}</p>
+                <p className="label-small" style={{ color: 'rgba(255,255,255,0.35)' }}>{label}</p>
+              </div>
+            ))}
+          </div>
+          {/* Tab nav */}
+          <div className="flex gap-0 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <Link href="/onboarding" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', textDecoration: 'none', display: 'block' }}>Student Support</Link>
+            <Link href="/onboarding" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', textDecoration: 'none', display: 'block' }}>Student Engagement</Link>
+            <Link href="/partnerships" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', textDecoration: 'none', display: 'block' }}>Partnerships</Link>
+            <Link href="/mou" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', textDecoration: 'none', display: 'block' }}>MoU / MoA</Link>
+            <Link href="/intl-grants" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', textDecoration: 'none', display: 'block' }}>Intl. Grants</Link>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {[
-            { value: '30+', label: 'Active partners', color: '#1E3A5F' },
-            { value: '100+', label: 'Students / semester', color: '#8B7355' },
-            { value: '25+', label: 'MoUs reviewed / month', color: '#4A6B8A' },
-            { value: '5+', label: 'Exchange programs', color: '#064E3B' },
-          ].map(s => (
-            <div key={s.label} className="card p-6 text-center" style={{ borderTop: `3px solid ${s.color}` }}>
-              <div className="font-heading font-bold" style={{ fontSize: '1.5rem', color: '#1C1C1E', letterSpacing: '-.02em' }}>{s.value}</div>
-              <div style={{ fontSize: '.72rem', color: '#767676', marginTop: 4, lineHeight: 1.4 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Programs */}
-        <div className="space-y-5">
-          {programs.map(p => (
-            <Link key={p.href + p.title} href={p.href} className="card p-7 flex gap-5 block group" style={{ textDecoration: 'none', display: 'flex' }}>
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${p.color}12` }}>
-                <p.icon style={{ width: 22, height: 22, color: p.color }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-1">
-                  <div>
-                    <h3 className="font-heading font-bold text-base" style={{ color: '#1C1C1E' }}>{p.title}</h3>
-                    <span style={{ fontSize: '.72rem', color: p.color, fontWeight: 600 }}>{p.sub}</span>
+      {/* ── Five Pillars Cards ── */}
+      <div style={{ padding: '72px 24px', background: '#FAFAF8' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-10"><span className="accent-line" /><span className="label-small">Areas of Work</span></div>
+          <h2 className="font-heading font-bold text-3xl mb-4" style={{ color: '#1C1C1E' }}>Five Pillars of International Education</h2>
+          <p className="text-base max-w-3xl mb-10" style={{ color: '#5C5C5C' }}>From welcoming students at the airport to formalizing global partnerships and building grant systems — each area represents a critical dimension of international education management.</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {AREA_CARDS.map(c => (
+              <Link key={c.title} href={c.href} className="card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style={{ border: '1px solid rgba(28,28,30,0.08)', textDecoration: 'none', display: 'block' }}>
+                <div className="p-6 relative overflow-hidden" style={{ background: c.gradient }}>
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(255,255,255,0.08),transparent 60%)' }} />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 relative" style={{ zIndex: 10, background: 'rgba(255,255,255,0.12)' }}>
+                    <c.Icon style={{ width: 24, height: 24, color: '#fff' }} />
                   </div>
-                  <ArrowRight style={{ width: 16, height: 16, color: '#C0B8AE', flexShrink: 0, marginTop: 4 }} />
+                  <h3 className="font-heading font-bold text-xl mb-2 relative" style={{ zIndex: 10, color: '#fff' }}>{c.title}</h3>
+                  <p className="text-sm relative" style={{ zIndex: 10, color: 'rgba(255,255,255,0.7)' }}>{c.desc}</p>
                 </div>
-                <p className="text-sm leading-relaxed mb-3 mt-2" style={{ color: '#5C5C5C' }}>{p.desc}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                <div className="p-6">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {c.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                  </div>
+                  <div className="flex items-center gap-1.5" style={{ color: c.accentColor }}>
+                    <span className="text-xs font-semibold">{c.cta}</span>
+                    <ArrowRight style={{ width: 13, height: 13 }} />
+                  </div>
                 </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Bottom Stats Row */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t" style={{ borderColor: 'rgba(28,28,30,0.1)' }}>
+            {[
+              { Icon: Users,     color:'#059669', val:'480+', label:'Students Supported' },
+              { Icon: Globe,     color:'#1E3A5F', val:'30+',  label:'Institutional Partners' },
+              { Icon: Calendar,  color:'#8B7355', val:'15+',  label:'Meetings / Month' },
+              { Icon: FileCheck, color:'#7C3AED', val:'25+',  label:'Agreements / Month' },
+            ].map(s => (
+              <div key={s.label} className="card p-6 rounded-2xl text-center" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 mx-auto" style={{ background: `${s.color}14` }}>
+                  <s.Icon style={{ width: 24, height: 24, color: s.color }} />
+                </div>
+                <p className="font-heading font-bold text-3xl mb-1" style={{ color: '#1C1C1E' }}>{s.val}</p>
+                <p className="text-sm" style={{ color: '#5C5C5C' }}>{s.label}</p>
               </div>
-            </Link>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

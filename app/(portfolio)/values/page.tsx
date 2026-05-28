@@ -1,87 +1,80 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, Heart, Lightbulb, Globe2, Users, Zap, Star } from 'lucide-react'
+import { ArrowLeft, Target, Users, Lightbulb, Handshake, Globe, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Values — Zefanya Kharisma Nugroho',
-  description: 'Core values and professional philosophy guiding my work in international education and digital development.',
+  description: 'Professional values and principles guiding work in international education.',
 }
 
 const values = [
   {
-    icon: Globe2,
+    icon: Target,
     color: '#1E3A5F',
-    title: 'Internationalism',
-    quote: 'Every border crossed is a perspective gained.',
-    desc: 'I believe in the transformative power of international exchange — not just as an academic program, but as a way of building the human capacity for empathy, adaptability, and global citizenship. My work is grounded in a genuine commitment to making international education more accessible and meaningful.',
-  },
-  {
-    icon: Heart,
-    color: '#8B7355',
-    title: 'Care & Human-Centeredness',
-    quote: 'Systems serve people. People don\'t serve systems.',
-    desc: 'Whether designing a web interface or managing a student\'s arrival logistics, I start with the person on the other end. Good work makes someone\'s day easier, clearer, or more meaningful. I measure success by the experience of the people I serve — not just the metrics on a report.',
-  },
-  {
-    icon: Lightbulb,
-    color: '#4A6B8A',
-    title: 'Curiosity & Continuous Learning',
-    quote: 'The best practitioners are always students.',
-    desc: 'From teaching myself Next.js to researching bilateral scholarship programs, I pursue learning as a professional discipline. I believe that staying genuinely curious — not just technically updated — is what separates good practitioners from great ones.',
-  },
-  {
-    icon: Zap,
-    color: '#064E3B',
-    title: 'Craft & Quality',
-    quote: 'Details are not the small things. Details are everything.',
-    desc: 'I care about doing things properly — the right font weight, the clear clause in the MoU, the accurate program description in the welcome handbook. Quality is a choice made at every level of granularity, and it\'s one I make deliberately.',
+    bg: 'rgba(30,58,95,0.08)',
+    title: 'Excellence & Quality',
+    desc: 'Commitment to highest standards in program design, partnership development, and student support. Every initiative reflects institutional pride and global best practices.',
   },
   {
     icon: Users,
-    color: '#D4B15A',
-    title: 'Collaboration & Trust',
-    quote: 'Complex problems need clear relationships.',
-    desc: 'International education runs on institutional trust. I invest in relationships — with partner universities, with student communities, with colleagues — because long-term coordination requires the kind of goodwill that only comes from consistent, reliable engagement over time.',
+    color: '#4A6B8A',
+    bg: 'rgba(74,107,138,0.08)',
+    title: 'Inclusivity & Equity',
+    desc: 'Belief that international education should be accessible to all students, regardless of background. Advocate for equitable access and diverse representation.',
   },
   {
-    icon: Star,
-    color: '#2563EB',
-    title: 'Integration & Systems Thinking',
-    quote: 'The best solution connects what\'s already there.',
-    desc: 'I\'m drawn to work that connects domains others treat as separate — combining international education management with digital design, or applying systems thinking from one context to solve problems in another. Integration is where the most interesting value lives.',
+    icon: Lightbulb,
+    color: '#8B7355',
+    bg: 'rgba(139,115,85,0.08)',
+    title: 'Innovation & Adaptability',
+    desc: 'Embrace change and seek new approaches to education and partnership. Continuously learn, adapt to emerging trends, and pioneer solutions.',
+  },
+  {
+    icon: Handshake,
+    color: '#8B7355',
+    bg: 'rgba(139,115,85,0.08)',
+    title: 'Collaboration & Integrity',
+    desc: 'Build partnerships on trust, transparency, and mutual benefit. Operate with honesty and ethical commitment in all institutional relationships.',
+  },
+  {
+    icon: Globe,
+    color: '#4A6B8A',
+    bg: 'rgba(74,107,138,0.08)',
+    title: 'Global Citizenship',
+    desc: 'Foster cross-cultural understanding and respect for diverse perspectives. Empower students to become engaged global citizens contributing to a better world.',
+  },
+  {
+    icon: Zap,
+    color: '#8B7355',
+    bg: 'rgba(139,115,85,0.08)',
+    title: 'Student-Centered Approach',
+    desc: 'Every decision prioritizes student success, well-being, and personal growth. Listen to student voices and create supportive environments for learning.',
   },
 ]
 
-export default function ValuesPage() {
+export default function Values() {
   return (
-    <div style={{ background: '#F2F2F7', minHeight: '100vh' }}>
-      <div style={{ background: 'linear-gradient(135deg,#1E3A5F 0%,#2563EB 60%,#38BDF8 100%)', padding: '52px 24px 44px' }}>
-        <div className="max-w-4xl mx-auto px-5">
-          <Link href="/about-overview" className="inline-flex items-center gap-2 mb-7 px-3.5 py-1.5 rounded-full text-sm font-medium" style={{ background: 'rgba(255,255,255,0.14)', backdropFilter: 'blur(12px)', color: 'rgba(255,255,255,0.9)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.18)' }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Back
-          </Link>
-          <span className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider" style={{ background: 'rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.12)' }}>About Me</span>
-          <h1 className="font-heading font-bold mb-3 text-white" style={{ fontSize: 'clamp(1.9rem,6vw,3rem)', letterSpacing: '-.02em', lineHeight: 1.1 }}>Values &amp; Philosophy</h1>
-          <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>The principles that guide how I approach work, collaboration, and professional growth.</p>
+    <div style={{ background: '#FAFAF8', minHeight: '100vh' }}>
+      <div className="max-w-6xl mx-auto px-6" style={{ paddingTop: '48px', paddingBottom: '72px' }}>
+        <Link href="/about-overview" className="flex items-center gap-2 mb-6" style={{ color: '#1E3A5F', textDecoration: 'none' }}>
+          <ArrowLeft style={{ width: 16, height: 16 }} /> Back
+        </Link>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="accent-line" />
+          <span className="text-sm font-semibold" style={{ color: '#1E3A5F' }}>Core Values</span>
         </div>
-      </div>
-
-      <div style={{ padding: '72px 24px' }}>
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {values.map(v => (
-              <div key={v.title} className="card p-8" style={{ borderLeft: `4px solid ${v.color}` }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: `${v.color}12` }}>
-                  <v.icon style={{ width: 22, height: 22, color: v.color }} />
-                </div>
-                <h2 className="font-heading font-bold text-lg mb-3" style={{ color: '#1C1C1E' }}>{v.title}</h2>
-                <blockquote className="text-sm italic mb-4" style={{ color: v.color, fontFamily: 'Georgia, serif', lineHeight: 1.55, borderLeft: `2px solid ${v.color}40`, paddingLeft: 12 }}>
-                  &ldquo;{v.quote}&rdquo;
-                </blockquote>
-                <p className="text-sm leading-relaxed" style={{ color: '#5C5C5C' }}>{v.desc}</p>
+        <h1 className="font-heading font-bold text-4xl mb-2" style={{ color: '#1C1C1E' }}>Professional Values</h1>
+        <p className="text-lg mb-12" style={{ color: '#5C5C5C' }}>Principles that guide my work and decisions in international education</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          {values.map(v => (
+            <div key={v.title} className="card p-8">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: v.bg }}>
+                <v.icon style={{ width: 24, height: 24, color: v.color }} />
               </div>
-            ))}
-          </div>
+              <h3 className="font-heading font-bold text-lg mb-3" style={{ color: '#1C1C1E' }}>{v.title}</h3>
+              <p style={{ color: '#5C5C5C' }}>{v.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

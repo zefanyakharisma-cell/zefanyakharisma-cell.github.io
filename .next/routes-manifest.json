@@ -57,6 +57,14 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/croissantsmoon/proposals/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/writing/[slug]",
+      "regex": "^/writing/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/writing/(?<nxtPslug>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -275,6 +283,12 @@
       "regex": "^/values(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/values(?:/)?$"
+    },
+    {
+      "page": "/writing",
+      "regex": "^/writing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/writing(?:/)?$"
     }
   ],
   "dataRoutes": [],

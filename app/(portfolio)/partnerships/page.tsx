@@ -1,86 +1,200 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, Handshake, Globe2, FileCheck, BarChart2 } from 'lucide-react'
+import { ArrowLeft, Globe, Building2, BookOpen, Microscope, Users, Layers, Search, Handshake, FileCheck, TrendingUp, MapPin, FileText } from 'lucide-react'
+import PartnerDirectory from '@/components/projects/PartnerDirectory'
 
 export const metadata: Metadata = {
-  title: 'Institutional Partnerships — Zefanya Kharisma Nugroho',
-  description: 'Managing 30+ institutional partnerships across Asia, Europe, and the Americas at Petra Christian University.',
+  title: 'Partnership Development — Zefanya Kharisma Nugroho',
+  description: 'Managing 505+ institutional partnerships across 32 countries and 52 domestic cities at Petra Christian University.',
 }
-
-const regions = [
-  { region: 'Asia Pacific', color: '#1E3A5F', partners: ['Griffith University (Australia)', 'Liverpool John Moores University (UK)', 'Staffordshire University (UK)', 'University of Applied Sciences (Germany)', 'Keio University (Japan)', 'Chulalongkorn University (Thailand)'] },
-  { region: 'Europe', color: '#4A6B8A', partners: ['University of Warsaw (Poland)', 'Universidad de Salamanca (Spain)', 'Sapienza University of Rome (Italy)', 'University of Helsinki (Finland)', 'Radboud University (Netherlands)', 'Budapest Metropolitan University (Hungary)'] },
-  { region: 'Americas', color: '#8B7355', partners: ['University of California system (USA)', 'Pontificia Universidad Católica (Chile)', 'Universidad de los Andes (Colombia)', 'York University (Canada)', 'Tecnológico de Monterrey (Mexico)', 'University of São Paulo (Brazil)'] },
-]
-
-const responsibilities = [
-  { icon: Handshake, title: 'Relationship Management', desc: 'Maintaining active correspondence with 30+ partner universities — responding to inquiries, coordinating joint activities, and managing ongoing partnership commitments.', color: '#1E3A5F' },
-  { icon: Globe2, title: 'Partnership Development', desc: 'Identifying prospective partners aligned with institutional priorities, preparing partnership proposals, and leading initial outreach and negotiation.', color: '#4A6B8A' },
-  { icon: FileCheck, title: 'MoU/MoA Processing', desc: 'Reviewing 25+ MoU and MoA documents monthly — tracking renewal dates, coordinating approvals, and maintaining the partnership agreement database.', color: '#8B7355' },
-  { icon: BarChart2, title: 'Partnership Analytics', desc: 'Monitoring partnership activity levels, exchange volumes, and mutual benefit metrics — reporting quarterly to institutional leadership.', color: '#064E3B' },
-]
 
 export default function PartnershipsPage() {
   return (
-    <div style={{ background: '#F2F2F7', minHeight: '100vh' }}>
-      <div style={{ background: 'linear-gradient(135deg,#0D2137 0%,#1E3A5F 55%,#2E5A8A 100%)', padding: '64px 24px 52px' }}>
-        <div className="max-w-4xl mx-auto">
-          <Link href="/engagement" className="inline-flex items-center gap-2 mb-7 px-3.5 py-1.5 rounded-full text-sm font-medium" style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', color: 'rgba(255,255,255,0.85)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.16)' }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Back
+    <div style={{ background: '#FAFAF8', minHeight: '100vh' }}>
+
+      {/* ── Hero ── */}
+      <div style={{ background: 'linear-gradient(160deg,#1C1C1E 0%,#1E3A5F 55%,#2C4A72 100%)', padding: 'clamp(48px,8vh,72px) 24px 0', position: 'relative', overflow: 'hidden' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(139,115,85,0.18),transparent 55%)' }} />
+        <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full pointer-events-none" style={{ border: '1px solid rgba(255,255,255,0.04)' }} />
+        <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10 }}>
+          <Link href="/engagement" style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 32, color: 'rgba(255,255,255,0.45)', fontSize: '.8rem', fontWeight: 500, textDecoration: 'none' }}>
+            <ArrowLeft style={{ width: 15, height: 15 }} /> Back
           </Link>
-          <span className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider" style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.15)' }}>International Education</span>
-          <h1 className="font-heading font-bold text-white mb-4" style={{ fontSize: 'clamp(1.9rem,5vw,3rem)', letterSpacing: '-.025em', lineHeight: 1.1 }}>Institutional Partnerships</h1>
-          <p style={{ fontSize: '.9rem', color: 'rgba(255,255,255,0.68)', lineHeight: 1.74, maxWidth: 520 }}>
-            Managing Petra Christian University&apos;s global partner network — 30+ active institutional partnerships across Asia Pacific, Europe, and the Americas.
+          <div className="label-small mb-3" style={{ color: 'rgba(255,255,255,0.35)', letterSpacing: '.12em' }}>Global Partnerships</div>
+          <h1 className="font-heading font-bold mb-4" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', lineHeight: 1.05, color: '#fff', letterSpacing: '-.02em' }}>
+            Partnership<br /><em style={{ fontStyle: 'italic', color: '#8B7355' }}>Development</em>
+          </h1>
+          <p className="max-w-2xl mb-8" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', lineHeight: 1.7 }}>
+            Managing 30+ institutional partners and facilitating 15+ strategic meetings per month at Petra Christian University — building collaborations that drive academic excellence and global opportunity.
           </p>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {[
-            { value: '30+', label: 'Active partners', color: '#1E3A5F' },
-            { value: '25+', label: 'MoUs/month reviewed', color: '#8B7355' },
-            { value: '15+', label: 'Meetings/month', color: '#4A6B8A' },
-            { value: '3', label: 'Regions covered', color: '#064E3B' },
-          ].map(s => (
-            <div key={s.label} className="card p-5 text-center" style={{ borderTop: `3px solid ${s.color}` }}>
-              <div className="font-heading font-bold" style={{ fontSize: '1.4rem', color: '#1C1C1E' }}>{s.value}</div>
-              <div style={{ fontSize: '.72rem', color: '#767676', marginTop: 4 }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="font-heading font-bold text-xl mb-6" style={{ color: '#1C1C1E' }}>Responsibilities</h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-14">
-          {responsibilities.map(r => (
-            <div key={r.title} className="card p-6" style={{ borderLeft: `3px solid ${r.color}` }}>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: `${r.color}12` }}>
-                <r.icon style={{ width: 20, height: 20, color: r.color }} />
+          <div className="flex flex-wrap gap-8 pb-8">
+            {[['505+','Total Partners'],['15+','Meetings/Month'],['32','Countries'],['52','Domestic Cities']].map(([val, label]) => (
+              <div key={label}>
+                <p className="font-heading font-bold text-2xl" style={{ color: '#8B7355' }}>{val}</p>
+                <p className="label-small" style={{ color: 'rgba(255,255,255,0.35)' }}>{label}</p>
               </div>
-              <h3 className="font-heading font-semibold text-sm mb-2" style={{ color: '#1C1C1E' }}>{r.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: '#5C5C5C' }}>{r.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="font-heading font-bold text-xl mb-6" style={{ color: '#1C1C1E' }}>Partner Network by Region</h2>
-        <div className="grid md:grid-cols-3 gap-5">
-          {regions.map(r => (
-            <div key={r.region} className="card p-6" style={{ borderTop: `3px solid ${r.color}` }}>
-              <h3 className="font-heading font-bold text-base mb-4" style={{ color: r.color }}>{r.region}</h3>
-              <ul className="space-y-2">
-                {r.partners.map(p => (
-                  <li key={p} className="flex items-start gap-2 text-sm" style={{ color: '#5C5C5C' }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: r.color, flexShrink: 0, marginTop: 6, display: 'inline-block' }} />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            ))}
+          </div>
+          {/* Tab nav */}
+          <div className="flex gap-0 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <Link href="/engagement" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', cursor: 'pointer', textDecoration: 'none', display: 'block' }}>Overview</Link>
+            <Link href="/onboarding" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', cursor: 'pointer', textDecoration: 'none', display: 'block' }}>Student Support</Link>
+            <span style={{ color: '#fff', fontSize: '.75rem', fontWeight: 600, padding: '12px 20px', borderBottom: '2px solid #8B7355', background: 'transparent', cursor: 'default', display: 'block' }}>Partnership Dev</span>
+            <Link href="/mou" style={{ color: 'rgba(255,255,255,0.45)', fontSize: '.75rem', fontWeight: 500, padding: '12px 20px', borderBottom: '2px solid transparent', background: 'transparent', cursor: 'pointer', textDecoration: 'none', display: 'block' }}>MoU / MoA</Link>
+          </div>
         </div>
       </div>
+
+      {/* ── Institutional Reach ── */}
+      <div style={{ padding: '72px 24px 48px', background: '#FAFAF8' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-6"><span className="accent-line" /><span className="label-small">Partnership Network</span></div>
+          <h2 className="font-heading font-bold text-3xl mb-3" style={{ color: '#1C1C1E' }}>Institutional Reach at PCU</h2>
+          <p className="text-base max-w-3xl mb-10" style={{ color: '#5C5C5C' }}>PCU&apos;s portfolio spans two distinct tracks — global academic institutions and domestic organizations across Indonesia — both of which I help coordinate, manage, and grow.</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* International card */}
+            <div className="card rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+              <div className="p-6 pb-5" style={{ background: 'linear-gradient(135deg,#1E3A5F 0%,#2C4A72 100%)' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Globe style={{ width: 18, height: 18, color: 'rgba(255,255,255,0.6)' }} />
+                  <span style={{ fontSize: '.7rem', fontWeight: 600, letterSpacing: '.1em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' as const }}>International</span>
+                </div>
+                <h3 className="font-heading font-bold text-xl mb-1" style={{ color: '#fff' }}>International Partnerships</h3>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>Academic institutions spanning 4 continents</p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  {[['184','Institutions'],['32','Countries'],['4','Continents']].map(([n, l], i) => (
+                    <div key={l} className="text-center" style={i > 0 ? { borderLeft: '1px solid rgba(28,28,30,0.08)' } : {}}>
+                      <p className="font-heading font-bold text-3xl mb-0.5" style={{ color: '#1E3A5F' }}>{n}</p>
+                      <p className="text-xs" style={{ color: '#5C5C5C' }}>{l}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {['Asia','Europe','North America','Australia'].map(r => (
+                    <div key={r} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(30,58,95,0.05)' }}>
+                      <MapPin style={{ width: 13, height: 13, color: '#1E3A5F', flexShrink: 0 }} />
+                      <span className="text-xs font-medium" style={{ color: '#1C1C1E' }}>{r}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* Domestic card */}
+            <div className="card rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+              <div className="p-6 pb-5" style={{ background: 'linear-gradient(135deg,#166534 0%,#0d9488 100%)' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Building2 style={{ width: 18, height: 18, color: 'rgba(255,255,255,0.6)' }} />
+                  <span style={{ fontSize: '.7rem', fontWeight: 600, letterSpacing: '.1em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' as const }}>Domestic</span>
+                </div>
+                <h3 className="font-heading font-bold text-xl mb-1" style={{ color: '#fff' }}>Domestic Partnerships</h3>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>Organizations across cities throughout Indonesia</p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  {[['321','Total Partners'],['52','Cities'],['5','Partner Types']].map(([n, l], i) => (
+                    <div key={l} className="text-center" style={i > 0 ? { borderLeft: '1px solid rgba(28,28,30,0.08)' } : {}}>
+                      <p className="font-heading font-bold text-3xl mb-0.5" style={{ color: '#166534' }}>{n}</p>
+                      <p className="text-xs" style={{ color: '#5C5C5C' }}>{l}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(22,101,52,0.05)' }}>
+                    <Layers style={{ width: 13, height: 13, color: '#166534', flexShrink: 0 }} />
+                    <span className="text-xs font-medium" style={{ color: '#1C1C1E' }}>Industry, Education, Government & Regional Organizations</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(22,101,52,0.05)' }}>
+                    <FileText style={{ width: 13, height: 13, color: '#166534', flexShrink: 0 }} />
+                    <span className="text-xs font-medium" style={{ color: '#1C1C1E' }}>MoU, MoA, IA/IR & Strategic Collaboration Frameworks</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Collaboration Areas ── */}
+      <div style={{ padding: '48px 24px', background: '#FAFAF8' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-6"><span className="accent-line" /><span className="label-small">Collaboration Areas</span></div>
+          <h2 className="font-heading font-bold text-3xl mb-3" style={{ color: '#1C1C1E' }}>What the Partnerships Enable</h2>
+          <p className="text-base max-w-3xl mb-10" style={{ color: '#5C5C5C' }}>Across both tracks, partnerships unlock a wide range of academic and institutional opportunities — each designed to create mutual value and advance internationalisation goals.</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { Icon: BookOpen,   color: '#1E3A5F', title: 'Student Exchange',         desc: 'Semester abroad, dual-degree, and degree-level mobility for students' },
+              { Icon: Microscope, color: '#4A6B8A', title: 'Research Collaboration',    desc: 'Joint projects and interdisciplinary initiatives advancing knowledge' },
+              { Icon: Users,      color: '#8B7355', title: 'Faculty Development',       desc: 'Teaching capacity, research mentoring, and professional growth' },
+              { Icon: Layers,     color: '#059669', title: 'Curriculum Design',         desc: 'Joint program design and curriculum internationalisation' },
+            ].map(c => (
+              <div key={c.title} className="card p-6 rounded-2xl" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${c.color}12` }}>
+                  <c.Icon style={{ width: 20, height: 20, color: c.color }} />
+                </div>
+                <p className="font-heading font-semibold mb-1.5" style={{ color: '#1C1C1E' }}>{c.title}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#5C5C5C' }}>{c.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── How I Build ── */}
+      <div style={{ padding: '48px 24px', background: '#FAFAF8' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-6"><span className="accent-line" /><span className="label-small">My Approach</span></div>
+          <h2 className="font-heading font-bold text-3xl mb-3" style={{ color: '#1C1C1E' }}>How I Build Partnerships</h2>
+          <p className="text-base max-w-3xl mb-10" style={{ color: '#5C5C5C' }}>A four-phase approach I apply to identify, formalise, and sustain institutional collaborations — ensuring every partnership creates lasting value on both sides.</p>
+          <div className="grid md:grid-cols-2 gap-5">
+            {[
+              { n:'01', Icon: Search,     color:'#1E3A5F', title:'Strategic Identification',  desc:'Identifying partner institutions aligned with PCU\'s mission and academic strengths through rigorous evaluation and due diligence' },
+              { n:'02', Icon: Handshake,  color:'#4A6B8A', title:'Engagement & Negotiation',  desc:'Building relationships and negotiating terms that benefit both institutions and advance shared educational goals' },
+              { n:'03', Icon: FileCheck,  color:'#8B7355', title:'Program Development',       desc:'Co-designing exchange programs, research collaborations, and joint curriculum initiatives with partner institutions' },
+              { n:'04', Icon: TrendingUp, color:'#059669', title:'Activation & Growth',       desc:'Implementing programs, monitoring progress, and fostering long-term partnership growth through continuous engagement' },
+            ].map(s => (
+              <div key={s.n} className="card p-7 rounded-2xl flex gap-5" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: `${s.color}12` }}>
+                  <s.Icon style={{ width: 20, height: 20, color: s.color }} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-xs font-bold" style={{ color: s.color, letterSpacing: '.06em' }}>{s.n}</span>
+                    <h3 className="font-heading font-bold text-base" style={{ color: '#1C1C1E' }}>{s.title}</h3>
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: '#5C5C5C' }}>{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Interactive Partner Directory ── */}
+      <PartnerDirectory />
+
+      {/* ── Closing Stats ── */}
+      <div style={{ padding: '0 24px 80px', background: '#FAFAF8' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center gap-3 mb-8"><span className="accent-line" /><span className="label-small">Deeper Breakdown</span></div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { val:'8',    color:'#1E3A5F', title:'ASEAN Nations',            sub:'With active partnership agreements' },
+              { val:'4',    color:'#4A6B8A', title:'Continents Covered',       sub:'Asia, Europe, Americas, Oceania' },
+              { val:'40+',  color:'#8B7355', title:'Active MoU/MoA Agreements',sub:'Lifecycle-managed from draft to renewal' },
+              { val:'3+',   color:'#059669', title:'Years Building the Network',sub:'At Petra Christian University' },
+            ].map(s => (
+              <div key={s.title} className="card rounded-2xl p-6 text-center" style={{ border: '1px solid rgba(28,28,30,0.08)' }}>
+                <p className="font-heading font-bold mb-1" style={{ fontSize: '2.5rem', lineHeight: 1, color: s.color }}>{s.val}</p>
+                <p className="text-sm font-medium mb-1" style={{ color: '#1C1C1E' }}>{s.title}</p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>{s.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
