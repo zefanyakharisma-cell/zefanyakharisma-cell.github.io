@@ -487,6 +487,26 @@ body { font-family: 'DM Sans', 'Inter', system-ui, sans-serif; -webkit-font-smoo
 /* ── Home work card arrow hover ──────────────────────────── */
 .home-work-card:hover .home-work-arrow { background: rgba(255,255,255,0.24) !important; }
 
+/* ── Graphic Designs page ─────────────────────────────────── */
+.gd-card-hover { transition: transform .32s cubic-bezier(0.34,1.56,0.64,1), box-shadow .32s ease; }
+.gd-card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(7,17,38,0.55), 0 0 0 1px rgba(111,168,255,0.22) !important; }
+.gd-overlay-card:hover .gd-cover-overlay { opacity: 1 !important; }
+.gd-overlay-card:hover .gd-cover-img { transform: scale(1.06) !important; }
+.gd-filter-tab { font-family: 'Outfit',sans-serif; font-size:.76rem; font-weight:500; padding:7px 18px; border-radius:999px; cursor:pointer; letter-spacing:.02em; transition:background .2s,color .2s,border-color .2s,box-shadow .2s; border:1px solid rgba(111,168,255,0.2); background:transparent; color:#8FA8D6; white-space:nowrap; }
+.gd-filter-tab.gd-active { background:#D4B15A; color:#071126; border-color:#D4B15A; box-shadow:0 0 14px rgba(212,177,90,0.3); }
+@keyframes gdMarquee { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+@keyframes gdMarqueeRev { from { transform:translateX(-50%) } to { transform:translateX(0) } }
+.gd-marquee-track { animation:gdMarquee 28s linear infinite; display:flex; width:max-content; }
+.gd-marquee-track.rev { animation:gdMarqueeRev 32s linear infinite; }
+.gd-marquee-wrap:hover .gd-marquee-track { animation-play-state:paused; }
+.gd-marquee-pill { display:inline-flex; align-items:center; gap:8px; padding:8px 20px; border-radius:999px; margin:0 8px; font-family:'Outfit',sans-serif; font-weight:500; white-space:nowrap; background:rgba(111,168,255,0.07); border:1px solid rgba(111,168,255,0.16); transition:background .2s,border-color .2s,box-shadow .2s; cursor:default; }
+.gd-marquee-pill:hover { background:rgba(111,168,255,0.14); border-color:rgba(111,168,255,0.32); box-shadow:0 4px 16px rgba(7,17,38,0.4); }
+
+/* ── Web project detail cards ─────────────────────────────── */
+.wp-card { transition: box-shadow .2s, transform .2s; }
+.wp-card:hover { box-shadow: 0 12px 40px rgba(3,7,18,0.5) !important; transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) { .wp-card:hover { transform: none; } }
+
 /* ── Competency rows ──────────────────────────────────────── */
 .competency-row { background: transparent; transition: background .2s; display: flex; }
 .competency-row:hover { background: rgba(10,132,255,0.04); }

@@ -1,66 +1,64 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft, DollarSign, Calendar, Search, Bell, BarChart2, FileCheck } from 'lucide-react'
+import WebProjectDetail, { WebProject } from '@/components/cm/WebProjectDetail'
 
-export const metadata: Metadata = {
-  title: 'Grants Dashboard — CroissantsMoon · Zefanya Kharisma Nugroho',
-  description: 'International grants tracking dashboard — centralizing grant applications from submission through to outcome at Petra Christian University.',
+const project: WebProject = {
+  title:   'International Grants Dashboard',
+  tagline: 'Centralising international grant tracking from application through to outcome.',
+  year:    '2025',
+  status:  'Live',
+  github:  'https://github.com/zefanyakharisma-cell/Dashboard-International-Grants',
+  live:    'https://dashboard-international-grants.vercel.app/',
+  tech:    ['HTML', 'CSS', 'JavaScript', 'Chart.js', 'Tailwind CSS', 'Supabase'],
+  background: `International grant programmes — from government scholarships to university-funded exchanges — require careful tracking across multiple stages: awareness, application, selection, placement, and completion. At the International Office, managing these journeys across multiple grant types and dozens of applicants per cycle created a coordination overhead that was hard to manage without a dedicated tool. This dashboard was built to centralise that information: one place to see every active grant, every applicant's stage, every upcoming deadline, and every outcome — without chasing status updates across emails and spreadsheets.`,
+  purpose: `International grant programmes span multiple stages — from awareness and application through to placement and completion — and require precise deadline tracking across concurrent cycles. The dashboard exists to give international office staff and prospective applicants a single place to discover relevant grants, track application stages, and never miss a submission deadline.`,
+  features: [
+    { icon: 'zap',          title: 'Realtime Updates',          desc: 'Supabase Realtime subscriptions push INSERT/UPDATE/DELETE events from the grants table to every connected client instantly — no polling, no page refresh required.' },
+    { icon: 'calendar',     title: 'Deadline Calendar',         desc: 'A dedicated calendar view surfaces every grant deadline across active programmes, sorted by urgency so no submission window is missed.' },
+    { icon: 'bookmark',     title: 'Local & Remote Bookmarks',  desc: 'Public users can bookmark grants locally; authenticated users get their bookmarks synced across devices via Supabase, persisting across sessions.' },
+    { icon: 'cpu',          title: 'Grant Matching Engine',     desc: "A matching view cross-references a user's faculty and programme against grant eligibility criteria, surfacing the most relevant opportunities automatically." },
+    { icon: 'shield',       title: 'Row Level Security Throughout', desc: 'Every table is protected by Supabase RLS — public read, admin write. The anon key is safely exposed in the client bundle; the service_role key is never used in frontend code.' },
+    { icon: 'upload-cloud', title: 'Admin File Attachments',    desc: 'Admins can upload supporting documents (PDFs, forms) directly to Supabase Storage from the grant form — drag-and-drop or file picker, with a full audit trail in the activity log.' },
+  ],
+  problems: [
+    { icon: 'inbox',       title: 'Scattered Grant Information',  tag: 'Data Management',       desc: 'Grant details, applicant lists, deadlines, and outcomes were distributed across emails, shared drives, and spreadsheets — creating a fragmented and unreliable record.' },
+    { icon: 'calendar',    title: 'Deadline Management',          tag: 'Time-Critical Tracking', desc: 'Grant cycles have hard deadlines at multiple stages. Missing a submission window meant losing funding for the entire cohort — yet there was no centralised deadline view.' },
+    { icon: 'trending-up', title: 'No Outcome Visibility',        tag: 'Reporting',              desc: 'Leadership needed to report on grant performance — acceptance rates, funding secured, placement outcomes — but producing those figures required manual data aggregation.' },
+    { icon: 'user-check',  title: 'Applicant Stage Tracking',     tag: 'Pipeline Management',   desc: 'With multiple applicants per grant and multiple stages per applicant, tracking who was at which stage across several concurrent grant cycles was error-prone.' },
+  ],
+  solutions: [
+    { icon: 'layout',    title: 'Centralised Grant Overview',  tag: 'Data Management',       desc: 'All active and completed grants in one dashboard — each with type, funding body, cycle dates, applicant count, and current status visible at a glance.' },
+    { icon: 'calendar',  title: 'Deadline Timeline View',      tag: 'Time-Critical Tracking', desc: 'A timeline panel surfaces upcoming deadlines across all active grants, sorted by urgency — ensuring no submission window is missed.' },
+    { icon: 'pie-chart', title: 'Outcome Analytics',           tag: 'Reporting',              desc: 'Acceptance rates, funding totals, and placement outcomes are calculated automatically from the data and presented in charts ready for leadership reporting.' },
+    { icon: 'git-merge', title: 'Stage-Based Pipeline View',   tag: 'Pipeline Management',   desc: "A Kanban-style pipeline shows every applicant's current stage across active grants — making it easy to see where the bottlenecks are and who needs follow-up." },
+  ],
+  uiux: {
+    desc: 'The design prioritises time-critical information: deadline proximity, application stage, and grant relevance are the three data points that determine what a user needs to see first. Urgency indicators and a persistent deadline calendar ensure that no grant window closes unnoticed.',
+    points: [
+      { icon: 'clock',    title: 'Deadline-First Priority',      desc: 'Grants are sorted by deadline urgency by default. Colour-coded countdown badges (green / amber / red) communicate time pressure at a glance.' },
+      { icon: 'calendar', title: 'Persistent Deadline Calendar', desc: 'A monthly calendar view marks every active grant deadline — users can switch between list and calendar views depending on their planning horizon.' },
+      { icon: 'cpu',      title: 'Matching Engine UI',           desc: "A faculty/programme selector surfaces the most relevant grants for the user's profile — reducing the time spent reading eligibility criteria manually." },
+      { icon: 'bookmark', title: 'Bookmark System',              desc: 'Public users get local bookmarks; authenticated users get cross-device sync via Supabase — building a personal grant shortlist without requiring sign-up.' },
+    ],
+  },
+  frontend: {
+    desc: "Vanilla JavaScript with Chart.js for analytics and Tailwind CSS for layout. Supabase's JavaScript client handles Realtime subscriptions, auth, and storage — all without a frontend framework. The matching engine is a pure client-side algorithm that cross-references user input against grant eligibility rules stored in the database.",
+    points: [
+      { icon: 'zap',         title: 'Supabase Realtime Client',          desc: 'The JS SDK subscribes to INSERT/UPDATE/DELETE events on the grants table — live updates propagate to all connected clients without a page refresh.' },
+      { icon: 'bar-chart-2', title: 'Chart.js Analytics',                desc: 'Acceptance rate trends, grant type distribution, and funding body breakdowns are rendered with Chart.js — updating automatically as data changes.' },
+      { icon: 'cpu',         title: 'Client-Side Matching Algorithm',    desc: 'The grant matching engine runs entirely in the browser: it filters grants by faculty, programme, nationality, and GPA threshold in milliseconds with no server round-trip.' },
+      { icon: 'wind',        title: 'Tailwind CSS',                      desc: 'Utility-first styling with a custom dark-mode palette. All components — cards, modals, calendar, table — share a consistent design token system defined in the Tailwind config.' },
+    ],
+  },
+  backend: {
+    desc: 'Supabase provides the complete backend stack: Postgres for grant and applicant data, Realtime for live updates, Auth for authenticated admin and student roles, and Storage for grant document attachments — all protected by Row Level Security.',
+    points: [
+      { icon: 'database',     title: 'Supabase Postgres',     desc: 'Tables for grants, applications, stages, bookmarks, and activity logs — all with RLS policies. Public users can read published grants; admins can write across all tables.' },
+      { icon: 'radio',        title: 'Supabase Realtime',     desc: 'Postgres Changes subscriptions push live INSERT/UPDATE/DELETE events to the frontend — no polling, no websocket management, no extra infrastructure.' },
+      { icon: 'shield',       title: 'Row Level Security',    desc: 'Every table has RLS enabled. The anon key is safely used in the frontend bundle; no service_role key is ever exposed to the client.' },
+      { icon: 'upload-cloud', title: 'Storage & File Uploads', desc: 'Admins can upload grant-related documents (application forms, guidelines, results) directly from the dashboard — drag-and-drop with a full audit trail.' },
+    ],
+  },
 }
 
-const features = [
-  { icon: DollarSign, color: '#6FD88A', title: 'Grant Pipeline', desc: 'Track every grant application from identification through submission, review, decision, and outcome — with stage timestamps and responsible coordinator.' },
-  { icon: Calendar, color: '#6FA8FF', title: 'Deadline Calendar', desc: 'Visual calendar of all grant deadlines with alert zones (30/60/90 days) — filterable by grant type, source country, and target faculty.' },
-  { icon: Search, color: '#D4B15A', title: 'Grant Matching', desc: 'Algorithm matching available grants against institutional faculty profiles, research areas, and student demographics — surfacing relevant opportunities proactively.' },
-  { icon: Bell, color: '#8FA8D6', title: 'Notification System', desc: 'Automated alerts for approaching deadlines, required document submissions, and decision notifications — sent via email and in-app.' },
-  { icon: BarChart2, color: '#6FD88A', title: 'Outcome Analytics', desc: 'Success rate tracking by grant type, faculty, and application year — identifying patterns to improve future applications.' },
-  { icon: FileCheck, color: '#6FA8FF', title: 'Document Repository', desc: 'Centralized storage for all supporting documents — institutional letters, financial statements, and past application materials — linked to specific grant records.' },
-]
-
-export default function GrantsDashboardPage() {
-  return (
-    <div style={{ background: '#071126', minHeight: '100vh', color: '#D9E6FF' }}>
-      <div style={{ position: 'relative', padding: '60px 24px 48px', borderBottom: '1px solid rgba(111,168,255,0.1)' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Link href="/croissantsmoon/websites" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24, padding: '8px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '.84rem' }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Websites
-          </Link>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(6,78,59,0.4)', color: '#6FD88A', border: '1px solid rgba(111,216,138,0.2)' }}>Dashboard · PCU</span>
-            <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.68rem', padding: '4px 12px', borderRadius: 999, background: 'rgba(212,177,90,0.1)', border: '1px solid rgba(212,177,90,0.2)', color: '#D4B15A' }}>In Development</span>
-          </div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem,5.5vw,3.2rem)', fontWeight: 400, fontStyle: 'italic', color: '#D9E6FF', lineHeight: 1.1, marginBottom: 14 }}>International Grants Dashboard</h1>
-          <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.9rem', color: '#8FA8D6', lineHeight: 1.74, maxWidth: 560, marginBottom: 28 }}>
-            Centralizing international grant tracking from application through to outcome — real-time status updates, deadline calendar, grant matching engine, and reporting tools for PCU&apos;s international office.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {['Digital Strategy', 'Systems Thinking', 'Full-Stack Development', 'Grant Management'].map(t => (
-              <span key={t} style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.7rem', fontWeight: 600, padding: '5px 14px', borderRadius: 999, background: 'rgba(111,216,138,0.08)', border: '1px solid rgba(111,216,138,0.16)', color: '#8FA8D6' }}>{t}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px 80px' }}>
-        <div style={{ background: 'rgba(11,30,58,0.55)', border: '1px solid rgba(111,216,138,0.12)', borderLeft: '3px solid #6FD88A', borderRadius: 20, padding: 32, marginBottom: 40 }}>
-          <h2 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: '1.1rem', color: '#D9E6FF', marginBottom: 12 }}>The Problem</h2>
-          <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.88rem', color: '#8FA8D6', lineHeight: 1.74 }}>
-            International grant opportunities are time-sensitive and fragmented — deadlines arrive and pass without institutional awareness, applications are managed in personal spreadsheets, and outcome data is never systematically captured. PCU&apos;s international office needs a single source of truth for all grant activity: what&apos;s available, what&apos;s in progress, what&apos;s been submitted, and what&apos;s been won.
-          </p>
-        </div>
-
-        <h2 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: '1.2rem', color: '#D9E6FF', marginBottom: 24 }}>Key Features</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
-          {features.map(f => (
-            <div key={f.title} style={{ background: 'rgba(11,30,58,0.55)', border: '1px solid rgba(111,168,255,0.1)', borderLeft: `3px solid ${f.color}`, borderRadius: 18, padding: 24 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: `${f.color}14`, border: `1px solid ${f.color}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                <f.icon style={{ width: 18, height: 18, color: f.color }} />
-              </div>
-              <h3 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: '.95rem', color: '#D9E6FF', marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.82rem', color: '#8FA8D6', lineHeight: 1.68 }}>{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+export default function WebDashboardGrantsPage() {
+  return <WebProjectDetail project={project} />
 }

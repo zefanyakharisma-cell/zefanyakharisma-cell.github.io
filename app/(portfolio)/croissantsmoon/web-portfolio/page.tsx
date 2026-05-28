@@ -1,64 +1,64 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft, ArrowRight, Code2, Palette, Zap, Smartphone } from 'lucide-react'
+import WebProjectDetail, { WebProject } from '@/components/cm/WebProjectDetail'
 
-export const metadata: Metadata = {
-  title: 'Portfolio Website — CroissantsMoon · Zefanya Kharisma Nugroho',
-  description: 'This portfolio — built with Next.js 15, TypeScript, and an iOS-inspired design system.',
+const project: WebProject = {
+  title:   'Website Portfolio',
+  tagline: 'A dual-identity SPA for international education and creative technology.',
+  year:    '2025',
+  status:  'Live',
+  github:  'https://github.com/zefanyakharisma-cell/zefanyakharisma-cell.github.io',
+  live:    'https://zefanyakharisma.com/',
+  tech:    ['HTML', 'CSS', 'JavaScript', 'Tailwind CSS', 'Supabase', 'Quill.js'],
+  background: `This portfolio started as a personal challenge: how do you present two very different professional identities — international education professional and creative technologist — without splitting them into two separate sites or burying one under the other? The answer was a single-page application designed to feel like a native mobile app on phone and a polished editorial site on desktop. Every architectural decision, from the hash-based routing to the iOS-style bottom tab bar, was made in service of that dual narrative.`,
+  purpose: `Built to solve a specific identity problem: two distinct professional worlds — international education and creative technology — needed to coexist under a single domain without either diminishing the other. The portfolio is both a professional asset and a technical showcase, demonstrating that thoughtful architecture and considered design can carry more weight than a framework or a complex stack.`,
+  features: [
+    { icon: 'layout-dashboard', title: 'Five Canonical Sections',    desc: 'About, Projects, International Education, Creative, and Contact — each with its own visual language, sub-pages, and navigation state.' },
+    { icon: 'smartphone',       title: 'iOS-Style Navigation Shell',  desc: 'Bottom tab bar, Dynamic Island pill, and smooth page transitions replicate a native app feel using only vanilla CSS and a custom hash-router.' },
+    { icon: 'edit-3',           title: 'Admin CMS with Quill Editor', desc: 'An authenticated admin mode lets the owner write and publish articles via a Quill 2.x WYSIWYG editor, manage calendar events, and edit any heading or paragraph inline — no code push required.' },
+    { icon: 'git-branch',       title: '20+ Pages, One HTML File',   desc: 'A custom 60-line hash-router handles dynamic meta titles, OG tags, browser history, scroll-to-top, and nav state across more than twenty distinct pages without any framework.' },
+    { icon: 'filter',           title: 'Skill Discovery Entry Point', desc: 'Home page hosts a filterable work grid where visitors can filter projects and work by skill area, surfacing relevant experience instantly.' },
+    { icon: 'calendar',         title: 'Calendar Widget',            desc: 'A calendar on the home page shows published articles and upcoming events, all managed by the admin and stored in Supabase.' },
+  ],
+  problems: [
+    { icon: 'split',      title: 'Two Identities, One Domain',   tag: 'Identity Architecture', desc: 'International education work and creative studio work felt mismatched under a single brand. Visitors from one world expected a very different site than those from the other.' },
+    { icon: 'smartphone', title: 'Native Feel on Mobile',         tag: 'Mobile UX',            desc: 'Traditional portfolio sites feel clunky on phones — too much scrolling, no clear hierarchy. The site needed to feel like an iOS app, not a web page on a small screen.' },
+    { icon: 'edit-3',     title: 'Content Without Code',          tag: 'Content Management',   desc: 'Updating a paragraph or image should not require a code push. A non-technical edit workflow was essential for long-term maintenance.' },
+    { icon: 'git-branch', title: 'Scale Across 20+ Pages',        tag: 'Routing Complexity',   desc: 'Over twenty distinct pages with their own titles, meta descriptions, and nav states — all living inside one HTML file without a framework.' },
+  ],
+  solutions: [
+    { icon: 'layers',      title: 'Section-Based Design System',  tag: 'Architecture',   desc: 'Each section of the portfolio — About, Projects, Intl. Ed, Creative — has its own visual language and colour palette, giving each professional identity room to breathe.' },
+    { icon: 'smartphone',  title: 'iOS-Inspired Navigation Shell', tag: 'Mobile UX',     desc: 'Bottom tab bar, Dynamic Island pill, and smooth page transitions replicate a native app feel using only vanilla CSS transitions and a custom hash-router.' },
+    { icon: 'database',    title: 'Supabase Inline Editing',       tag: 'CMS Layer',     desc: 'An admin mode powered by Supabase and Quill.js lets any data-edit-key element be edited in place — no code, no deploy, just click and type.' },
+    { icon: 'hash',        title: 'Custom Hash Router',            tag: 'SPA Routing',   desc: 'A 60-line router in main.js handles 20+ pages: dynamic meta titles, OG tags, back/forward history, scroll-to-top, and nav state — all without a framework.' },
+  ],
+  uiux: {
+    desc: 'The interface draws from editorial design and iOS native apps — a pairing that creates a distinctly premium, readable feel. Every visual decision, from typeface selection to motion timing, was made to reduce friction for two primary audiences: academic institutions assessing international education credentials, and creative clients evaluating web and design work.',
+    points: [
+      { icon: 'smartphone',  title: 'iOS-Inspired Shell',            desc: 'Bottom tab bar, Dynamic Island pill, and smooth slide transitions replicate a native mobile app experience — built entirely with CSS and a custom JS router.' },
+      { icon: 'type',        title: 'Editorial Typography',          desc: 'Cormorant Garamond (serif, for headings) paired with Outfit (sans-serif, for body) creates a luxury editorial hierarchy that is readable at every viewport.' },
+      { icon: 'sun-moon',    title: 'Dark Mode Throughout',          desc: 'A deep midnight palette reduces eye strain during extended reading and positions the portfolio as premium and contemporary.' },
+      { icon: 'layers',      title: 'Section-Level Visual Languages', desc: 'Each of the five sections has its own accent palette — About uses warm cream tones, Creative uses celestial midnight blues — giving each identity its own design space.' },
+    ],
+  },
+  frontend: {
+    desc: "The frontend is intentionally framework-free. Every feature — routing, animations, admin mode, calendar, skill filters — is implemented in vanilla JavaScript. This was a deliberate choice: the project needed to demonstrate front-end engineering depth without leaning on a framework's abstractions.",
+    points: [
+      { icon: 'hash',   title: 'Custom 60-Line Hash Router',    desc: 'Handles 20+ pages with dynamic <title>, Open Graph tags, back/forward history, scroll-to-top, and nav highlighting — all without a framework or build step.' },
+      { icon: 'zap',    title: 'IntersectionObserver Animations', desc: 'Scroll-reveal, card entrance, and section transitions are driven by native IntersectionObserver — zero animation libraries in the dependency chain.' },
+      { icon: 'edit-3', title: 'Quill 2.x WYSIWYG Editor',     desc: 'Integrated for admin article authoring with custom Tailwind-styled toolbar, image upload, and Supabase Storage integration.' },
+      { icon: 'wind',   title: 'Tailwind CSS (CDN)',            desc: 'Tailwind is loaded via CDN with a custom config for brand tokens — no build pipeline required, keeping the deployment a single HTML + JS drop.' },
+    ],
+  },
+  backend: {
+    desc: 'Supabase serves as the entire backend: authentication, database, storage, and inline content editing. The anon key is safely exposed in the frontend; Row Level Security policies ensure public users can only read published content.',
+    points: [
+      { icon: 'database', title: 'Supabase Postgres', desc: 'Tables for articles, calendar events, and inline content edits — all with RLS policies that allow public reads and restrict writes to authenticated admins.' },
+      { icon: 'lock',     title: 'Supabase Auth',     desc: 'Email/password auth gates the admin mode. On login, the UI unlocks inline editing, article management, and calendar event controls.' },
+      { icon: 'image',    title: 'Supabase Storage',  desc: 'Article cover images and inline image uploads are stored in a Supabase Storage bucket with signed URLs for private assets.' },
+      { icon: 'send',     title: 'Formspree Contact', desc: 'The contact form submits via Formspree — keeping the submission pipeline serverless and requiring no custom backend endpoint.' },
+    ],
+  },
 }
 
-const highlights = [
-  { icon: Code2, color: '#6FA8FF', title: 'Next.js 15 App Router', desc: 'Server components for static pages, client components for interactive sections — hero slideshows, accordion timelines, animated contact forms.' },
-  { icon: Palette, color: '#D4B15A', title: 'iOS 26 Liquid Glass Design System', desc: 'Custom design language inspired by iOS 26 — glassmorphism cards, bottom tab bar, dynamic island top bar, spring animations, and editorial typography.' },
-  { icon: Zap, color: '#6FD88A', title: 'Performance Optimized', desc: 'Lazy-loaded images, server-side rendering, font optimization via next/font, and no external CSS/JS CDN dependencies.' },
-  { icon: Smartphone, color: '#8FA8D6', title: 'Mobile-First Responsive', desc: 'Mobile layout with tab bar navigation; desktop layout with horizontal nav — all transitions handled via CSS without JavaScript breakpoint hacks.' },
-]
-
 export default function WebPortfolioPage() {
-  return (
-    <div style={{ background: '#071126', minHeight: '100vh', color: '#D9E6FF' }}>
-      <div style={{ padding: '60px 24px 48px', borderBottom: '1px solid rgba(111,168,255,0.1)' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Link href="/croissantsmoon/websites" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24, padding: '8px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '.84rem' }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Websites
-          </Link>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(139,115,85,0.3)', color: '#D4B15A', border: '1px solid rgba(212,177,90,0.2)' }}>Personal Project</span>
-            <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.68rem', padding: '4px 12px', borderRadius: 999, background: 'rgba(111,216,138,0.1)', border: '1px solid rgba(111,216,138,0.2)', color: '#6FD88A' }}>Live</span>
-          </div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem,5.5vw,3.2rem)', fontWeight: 400, fontStyle: 'italic', color: '#D9E6FF', lineHeight: 1.1, marginBottom: 14 }}>Personal Portfolio Website</h1>
-          <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.9rem', color: '#8FA8D6', lineHeight: 1.74, maxWidth: 540, marginBottom: 28 }}>
-            This website — built with Next.js 15, TypeScript, Tailwind CSS, and a custom iOS-inspired design system. 25+ pages, animated components, and a dark cosmic contact form.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {['Next.js 15', 'TypeScript', 'Tailwind CSS', 'React 19', 'Lucide Icons'].map(t => (
-              <span key={t} style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.7rem', fontWeight: 600, padding: '5px 14px', borderRadius: 999, background: 'rgba(212,177,90,0.08)', border: '1px solid rgba(212,177,90,0.16)', color: '#8FA8D6' }}>{t}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 24px 80px' }}>
-        <h2 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: '1.1rem', color: '#D9E6FF', marginBottom: 24 }}>Technical Highlights</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginBottom: 48 }}>
-          {highlights.map(h => (
-            <div key={h.title} style={{ background: 'rgba(11,30,58,0.55)', border: '1px solid rgba(111,168,255,0.1)', borderLeft: `3px solid ${h.color}`, borderRadius: 18, padding: 24 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: `${h.color}14`, border: `1px solid ${h.color}24`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                <h.icon style={{ width: 18, height: 18, color: h.color }} />
-              </div>
-              <h3 style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: '.95rem', color: '#D9E6FF', marginBottom: 8 }}>{h.title}</h3>
-              <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.82rem', color: '#8FA8D6', lineHeight: 1.68 }}>{h.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ background: 'rgba(212,177,90,0.06)', border: '1px solid rgba(212,177,90,0.16)', borderRadius: 20, padding: 32, textAlign: 'center' }}>
-          <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.88rem', color: '#8FA8D6', marginBottom: 16 }}>Explore the portfolio</p>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: "'Outfit',sans-serif", fontSize: '.88rem', fontWeight: 700, color: '#071126', background: '#D4B15A', padding: '12px 28px', borderRadius: 999, textDecoration: 'none' }}>
-            Go to Home <ArrowRight style={{ width: 15, height: 15 }} />
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
+  return <WebProjectDetail project={project} />
 }
