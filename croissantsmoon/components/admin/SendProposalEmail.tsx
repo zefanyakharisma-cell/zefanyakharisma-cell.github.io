@@ -23,11 +23,12 @@ interface Props {
     industry: string | null
     notes: string | null
   }
+  hideCreatedBanner?: boolean
 }
 
 type Stage = 'idle' | 'generating' | 'preview' | 'sending' | 'sent'
 
-export function SendProposalEmail({ proposal, lead }: Props) {
+export function SendProposalEmail({ proposal, lead, hideCreatedBanner = false }: Props) {
   const [stage, setStage] = useState<Stage>('idle')
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
@@ -73,14 +74,15 @@ export function SendProposalEmail({ proposal, lead }: Props) {
 
   return (
     <div className="space-y-5">
-      {/* Created confirmation */}
-      <div className="flex items-center gap-3 bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3">
-        <CheckCircle size={15} className="text-green-400 flex-shrink-0" />
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-cm-white">Proposal created</p>
-          <p className="text-xs text-cm-subtle truncate">{proposal.title}</p>
+      {!hideCreatedBanner && (
+        <div className="flex items-center gap-3 bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3">
+          <CheckCircle size={15} className="text-green-400 flex-shrink-0" />
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-cm-white">Proposal created</p>
+            <p className="text-xs text-cm-subtle truncate">{proposal.title}</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {stage === 'sent' ? (
         <div className="text-center py-6 space-y-4">

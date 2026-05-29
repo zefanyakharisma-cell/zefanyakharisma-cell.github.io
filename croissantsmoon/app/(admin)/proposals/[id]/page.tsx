@@ -10,6 +10,7 @@ import { ProposalActions } from '@/components/admin/ProposalActions'
 import { ProposalEditor } from '@/components/admin/ProposalEditor'
 import { CopyButton } from '@/components/ui/CopyButton'
 import { Button } from '@/components/ui/Button'
+import { SendEmailModal } from '@/components/admin/SendEmailModal'
 
 export const metadata: Metadata = { title: 'Proposal Detail' }
 
@@ -17,7 +18,7 @@ async function getProposal(id: string) {
   const supabase = await createClient()
   const { data } = await supabase
     .from('proposals')
-    .select('*, lead:leads(id, organization, contact_person, email, temperature), versions:proposal_versions(*)')
+    .select('*, lead:leads(id, organization, contact_person, email, website, industry, notes, temperature), versions:proposal_versions(*)')
     .eq('id', id)
     .single()
   return data
@@ -57,6 +58,12 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
           <a href={proposalUrl} target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="sm"><Eye size={13} /> Preview Portal</Button>
           </a>
+          {(proposal.lead as { email?: string })?.email && (
+            <SendEmailModal
+              proposal={proposal}
+              lead={proposal.lead as { id: string; organization: string; contact_person: string; email: string; website: string | null; industry: string | null; notes: string | null }}
+            />
+          )}
           <ProposalActions proposal={proposal} />
         </div>
       </div>
