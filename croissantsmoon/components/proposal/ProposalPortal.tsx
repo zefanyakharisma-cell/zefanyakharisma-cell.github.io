@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { trackEvent, trackSectionView } from '@/lib/analytics/tracker'
 import type { Proposal, ProposalBlock } from '@/types'
 import { Moon, Sparkles } from 'lucide-react'
@@ -50,6 +50,24 @@ function CelestialDivider() {
   )
 }
 
+function DemoEmbed({ url }: { url: string }) {
+  const [failed, setFailed] = useState(false)
+  return (
+    <div className="rounded-2xl overflow-hidden border border-cm-border bg-cm-elevated aspect-video">
+      {failed ? (
+        <div className="w-full h-full flex items-center justify-center gap-2 text-sm text-cm-muted">
+          Preview unavailable —
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-cm-gold/70 hover:text-cm-gold underline transition-colors">
+            open in new tab
+          </a>
+        </div>
+      ) : (
+        <iframe src={url} className="w-full h-full" title="Demo" onError={() => setFailed(true)} />
+      )}
+    </div>
+  )
+}
+
 function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars: Record<string, string>; proposalId: string }) {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
@@ -90,7 +108,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
 
     case 'greeting':
       return (
-        <section className="py-16 px-8 max-w-3xl mx-auto">
+        <section className="py-16 px-8 border-t border-cm-border max-w-3xl mx-auto w-full">
           <p className="text-base text-cm-text leading-relaxed whitespace-pre-line">
             {interp(data.message ?? '')}
           </p>
@@ -126,7 +144,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
             </h2>
             <CelestialDivider />
             <div className="grid md:grid-cols-2 gap-3">
-              {(data.features ?? '').split('\n').filter(Boolean).map((feature, i) => (
+              {(data.features ?? '').split('\n').filter(s => s.trim()).map((feature, i) => (
                 <div key={i} className="flex items-start gap-3 bg-cm-elevated border border-cm-border rounded-xl p-4 hover:border-cm-accent/20 transition-colors">
                   <div className="w-5 h-5 rounded-full bg-cm-accent/10 border border-cm-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-cm-accent" />
@@ -152,7 +170,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
               className="bg-cm-surface border border-cm-gold/20 rounded-2xl overflow-hidden"
               style={{ boxShadow: '0 0 40px rgba(201,168,76,0.15)' }}
             >
-              <div className="px-8 py-6 bg-cm-gold/5 border-b border-cm-gold/10">
+              <div className={`px-8 py-6 bg-cm-gold/5 ${data.inclusions ? 'border-b border-cm-gold/10' : ''}`}>
                 <p className="text-xs text-cm-gold uppercase tracking-widest mb-2">
                   {interp(data.package ?? 'Professional Package')}
                 </p>
@@ -184,18 +202,18 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
               Project Timeline
             </h2>
             <CelestialDivider />
-            <div className="space-y-3">
-              {(data.timeline ?? '').split('\n').filter(Boolean).map((phase, i) => (
-                <div key={i} className="flex items-start gap-4">
+            <div className="space-y-0">
+              {(data.timeline ?? '').split('\n').filter(s => s.trim()).map((phase, i, arr) => (
+                <div key={i} className="flex gap-4">
                   <div className="flex flex-col items-center">
-                    <div className="w-7 h-7 rounded-full bg-cm-accent/10 border border-cm-accent/20 flex items-center justify-center text-xs font-mono text-cm-accent">
+                    <div className="w-7 h-7 rounded-full bg-cm-accent/10 border border-cm-accent/20 flex items-center justify-center text-xs font-mono text-cm-accent flex-shrink-0">
                       {i + 1}
                     </div>
-                    {i < (data.timeline ?? '').split('\n').filter(Boolean).length - 1 && (
-                      <div className="w-px flex-1 bg-cm-border mt-1 h-6" />
+                    {i < arr.length - 1 && (
+                      <div className="w-px flex-1 bg-cm-border mt-1" />
                     )}
                   </div>
-                  <p className="text-sm text-cm-text py-1.5">{interp(phase)}</p>
+                  <p className="text-sm text-cm-text pt-1.5 pb-5">{interp(phase)}</p>
                 </div>
               ))}
             </div>
@@ -224,7 +242,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
                 {interp(data.heading ?? "Ready to Begin?")}
               </h2>
               <p className="text-sm text-cm-subtle mb-8 max-w-md mx-auto">
-                Let's schedule a discovery call to discuss your vision and next steps.
+                {interp(data.subtext ?? "Let's schedule a discovery call to discuss your vision and next steps.")}
               </p>
               {data.email && (
                 <a
@@ -259,11 +277,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
               Live Preview
             </h2>
             <CelestialDivider />
-            {data.url && (
-              <div className="rounded-2xl overflow-hidden border border-cm-border bg-cm-elevated aspect-video">
-                <iframe src={data.url} className="w-full h-full" title="Demo" />
-              </div>
-            )}
+            {data.url && <DemoEmbed url={data.url} />}
           </section>
         </SectionObserver>
       )

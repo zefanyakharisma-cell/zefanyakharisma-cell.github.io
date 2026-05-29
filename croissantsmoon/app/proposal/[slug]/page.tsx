@@ -81,9 +81,14 @@ function ExpiredScreen({ reason }: { reason: 'expired' | 'archived' | 'revoked' 
             This proposal is no longer available
           </h1>
           <p className="text-sm text-cm-subtle leading-relaxed">
-            This private proposal preview has{' '}
-            {reason === 'expired' ? 'expired' : 'been archived'}.
-            Please contact CroissantsMoon to reactivate access.
+            {reason === 'revoked'
+              ? 'Access to this proposal has been revoked. Please contact CroissantsMoon for assistance.'
+              : <>
+                  This private proposal preview has{' '}
+                  {reason === 'expired' ? 'expired' : 'been archived'}.
+                  {' '}Please contact CroissantsMoon to reactivate access.
+                </>
+            }
           </p>
         </div>
         <a

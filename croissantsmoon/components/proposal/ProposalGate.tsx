@@ -10,6 +10,13 @@ interface Props {
   orgName: string
 }
 
+function formatToken(raw: string): string {
+  const stripped = raw.replace(/[^A-Z0-9]/g, '').slice(0, 10)
+  if (stripped.length <= 2) return stripped
+  if (stripped.length <= 6) return `${stripped.slice(0, 2)}-${stripped.slice(2)}`
+  return `${stripped.slice(0, 2)}-${stripped.slice(2, 6)}-${stripped.slice(6)}`
+}
+
 export function ProposalGate({ slug, orgName }: Props) {
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(false)
@@ -137,7 +144,7 @@ export function ProposalGate({ slug, orgName }: Props) {
                   ref={inputRef}
                   type="text"
                   value={token}
-                  onChange={e => setToken(e.target.value.toUpperCase())}
+                  onChange={e => setToken(formatToken(e.target.value.toUpperCase()))}
                   placeholder="CM-XXXX-XXXX"
                   disabled={loading || attempts >= 5}
                   className={cn(
@@ -147,7 +154,7 @@ export function ProposalGate({ slug, orgName }: Props) {
                       ? 'border-red-500/40 focus:ring-red-500/40'
                       : 'border-cm-border focus:ring-cm-gold/40 focus:border-cm-gold/40'
                   )}
-                  maxLength={20}
+                  maxLength={12}
                   autoComplete="off"
                   spellCheck={false}
                 />
@@ -160,9 +167,22 @@ export function ProposalGate({ slug, orgName }: Props) {
                 </div>
               )}
 
+              {attempts >= 2 && attempts < 5 && (
+                <p className="text-xs text-amber-400/60 text-center">
+                  {5 - attempts} attempt{5 - attempts !== 1 ? 's' : ''} remaining
+                </p>
+              )}
+
               {attempts >= 5 && (
                 <p className="text-xs text-cm-subtle text-center">
-                  Too many attempts. Please contact CroissantsMoon for assistance.
+                  Too many attempts.{' '}
+                  <a
+                    href="mailto:contact@croissantsmoon.studio"
+                    className="text-cm-gold/70 hover:text-cm-gold underline transition-colors"
+                  >
+                    Contact CroissantsMoon
+                  </a>{' '}
+                  for assistance.
                 </p>
               )}
 
