@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: 'New Proposal' }
 async function getLeadsAndTemplates() {
   const supabase = await createClient()
   const [{ data: leads }, { data: templates }] = await Promise.all([
-    supabase.from('leads').select('id, organization, contact_person').neq('status', 'archived').order('organization'),
+    supabase.from('leads').select('id, organization, contact_person, email, website, industry, notes').neq('status', 'archived').order('organization'),
     supabase.from('proposal_templates').select('id, name, project_type').eq('is_archived', false),
   ])
   return { leads: leads ?? [], templates: templates ?? [] }

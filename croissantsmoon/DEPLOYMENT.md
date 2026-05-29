@@ -64,6 +64,11 @@ NEXT_PUBLIC_BASE_PATH=/croissantsmoon
 NEXT_PUBLIC_SITE_URL=https://zefanyakharisma.com
 ADMIN_EMAIL=your-admin-email@example.com
 TOKEN_SECRET=your-32-char-random-secret
+
+# Email (proposal outreach)
+ANTHROPIC_API_KEY=sk-ant-...        # get from console.anthropic.com
+RESEND_API_KEY=re_...               # get from resend.com
+RESEND_FROM_EMAIL=Zefanya @ CroissantsMoon <hello@croissantsmoon.studio>
 ```
 
 ---
@@ -97,6 +102,8 @@ Or use Cloudflare Workers/Pages as a proxy.
 - [ ] Create a test proposal
 - [ ] Token gate works at `/croissantsmoon/proposal/[slug]`
 - [ ] Analytics events are recorded in Supabase
+- [ ] Email generation works (New Proposal → Generate Email)
+- [ ] Resend delivery confirmed (check Resend dashboard logs)
 - [ ] Proposal pages return `X-Robots-Tag: noindex`
 
 ---

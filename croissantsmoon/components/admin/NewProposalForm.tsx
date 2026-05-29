@@ -1,13 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Select, Textarea } from '@/components/ui/Input'
+import { Input, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { createProposal } from '@/lib/actions/proposals'
 import { useRouter } from 'next/navigation'
+import { SendProposalEmail } from '@/components/admin/SendProposalEmail'
+import type { Proposal } from '@/types'
+
+interface LeadOption {
+  id: string
+  organization: string
+  contact_person: string
+  email: string
+  website: string | null
+  industry: string | null
+  notes: string | null
+}
 
 interface Props {
-  leads: { id: string; organization: string; contact_person: string }[]
+  leads: LeadOption[]
   templates: { id: string; name: string; project_type: string }[]
   preselectedLead?: string
 }
@@ -15,7 +27,11 @@ interface Props {
 export function NewProposalForm({ leads, templates, preselectedLead }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [createdProposal, setCreatedProposal] = useState<Proposal | null>(null)
+  const [selectedLeadId, setSelectedLeadId] = useState(preselectedLead ?? '')
   const router = useRouter()
+
+  const selectedLead = leads.find(l => l.id === selectedLeadId)
 
   const leadOptions = [
     { value: '', label: 'Select a lead...' },
@@ -44,16 +60,37 @@ export function NewProposalForm({ leads, templates, preselectedLead }: Props) {
         template_id: (form.get('template_id') as string) || undefined,
         expiration_days: Number(form.get('expiration_days') ?? 14),
       })
-      router.push(`/proposals/${proposal.id}`)
+      setCreatedProposal(proposal)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create proposal')
       setLoading(false)
     }
   }
 
+  if (createdProposal && selectedLead) {
+    return (
+      <SendProposalEmail
+        proposal={createdProposal}
+        lead={selectedLead}
+      />
+    )
+  }
+
+  if (createdProposal) {
+    router.push(`/proposals/${createdProposal.id}`)
+    return null
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <Select label="Lead *" name="lead_id" options={leadOptions} defaultValue={preselectedLead ?? ''} required />
+      <Select
+        label="Lead *"
+        name="lead_id"
+        options={leadOptions}
+        defaultValue={preselectedLead ?? ''}
+        required
+        onChange={e => setSelectedLeadId(e.target.value)}
+      />
       <Input label="Proposal Title *" name="title" placeholder="Institutional Website Redesign Proposal" required />
       <Select label="Template" name="template_id" options={templateOptions} />
       <Select label="Expiration" name="expiration_days" options={expirationOptions} defaultValue="14" />
