@@ -1,11 +1,11 @@
 'use client'
 
-import { useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowRight, Send, UserCircle, Globe, LayoutDashboard,
-  PlayCircle, BarChart2, Award, Receipt, Search, PenTool,
-  TrendingUp, Github, ExternalLink
+  PlayCircle, BarChart2, Award, Github, ExternalLink,
+  Star, GitFork, Search, FileText, TrendingUp, Code2, Settings,
 } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
@@ -22,27 +22,57 @@ const CM = {
   void:       '#030712',
 }
 
+// ── Types ─────────────────────────────────────────────────────
+interface GithubRepo {
+  id: number
+  name: string
+  description: string | null
+  html_url: string
+  homepage: string | null
+  language: string | null
+  stargazers_count: number
+  forks_count: number
+  updated_at: string
+  topics: string[]
+  fork: boolean
+}
+
 // ── Data ─────────────────────────────────────────────────────
 
-const CM_GRAPHIC_WORKS = [
-  { title: 'PCU Partnership Booklet',                cat: 'Brand Identity',    folder: 'partnership-booklet-pcu',               year: '2024–2025', inst: 'Petra Christian University'   },
-  { title: 'PCU International Students Guide',       cat: 'Print & Digital',   folder: 'international-students-guidebook-pcu',  year: '2024–2025', inst: 'Petra Christian University'   },
-  { title: 'PCU Presentation Template',              cat: 'Visual Identity',   folder: 'general-ppt-pcu',                       year: '2024–2025', inst: 'Petra Christian University'   },
-  { title: 'ACI 2025 Batch 2 Guidebook',             cat: 'Event Materials',   folder: 'booklet-aci-2025-b2-unair',             year: '2025',      inst: 'Universitas Airlangga'        },
-  { title: 'ACI 2025 Batch 1 Guidebook',             cat: 'Event Materials',   folder: 'guidebook-aci-2025-b1-unair',           year: '2025',      inst: 'Universitas Airlangga'        },
-  { title: 'Staffordshire Banyuwangi Booklet',       cat: 'Brand Identity',    folder: 'guidebook-staffordshire-unair',         year: '2025',      inst: 'Staffordshire × Airlangga'   },
-  { title: 'AERO 2025 Presentation',                 cat: 'Event Materials',   folder: 'aero-2025-unair',                       year: '2025',      inst: 'Universitas Airlangga'        },
-  { title: 'Airlangga Accommodation Guide',          cat: 'Print & Digital',   folder: 'accommodation-guidebook-unair',         year: '2024–2025', inst: 'Universitas Airlangga'        },
-  { title: 'Airlangga International Students Guide', cat: 'Social Media Kits', folder: 'international-students-guidebook-unair',year: '2024–2025', inst: 'Universitas Airlangga'        },
+const BP_PHASES = [
+  {
+    num: '01', label: 'Discover', sublabel: 'Lead & Audit', color: CM.aurora,
+    icon: <Search style={{ width: 18, height: 18, color: CM.aurora }} />,
+    points: ['Identify qualified leads', 'Website & UX audit', 'Scope & opportunity mapping'],
+  },
+  {
+    num: '02', label: 'Propose', sublabel: 'Custom Demo', color: CM.nebulaGold,
+    icon: <FileText style={{ width: 18, height: 18, color: CM.nebulaGold }} />,
+    points: ['Build tailored prototype', 'Token-gated proposal page', 'Personalized outreach email'],
+  },
+  {
+    num: '03', label: 'Convert', sublabel: 'Analytics & Follow-up', color: '#A0C4FF',
+    icon: <TrendingUp style={{ width: 18, height: 18, color: '#A0C4FF' }} />,
+    points: ['Track proposal engagement', 'Score-based follow-up system', '14-day token access window'],
+  },
+  {
+    num: '04', label: 'Build', sublabel: 'Dev & Deploy', color: '#C9A9FF',
+    icon: <Code2 style={{ width: 18, height: 18, color: '#C9A9FF' }} />,
+    points: ['UI/UX → Development → QA', 'Responsive testing & polish', 'Production deployment'],
+  },
+  {
+    num: '05', label: 'Maintain', sublabel: 'Infrastructure', color: '#7DC9A0',
+    icon: <Settings style={{ width: 18, height: 18, color: '#7DC9A0' }} />,
+    points: ['3 infrastructure models', 'Monthly retainer options', 'Long-term growth strategy'],
+  },
 ]
 
-const CM_CAT_COLORS: Record<string,string> = {
-  'Brand Identity':   CM.nebulaGold,
-  'Event Materials':  CM.aurora,
-  'Print & Digital':  CM.stardust,
-  'Visual Identity':  '#A0B8E0',
-  'Social Media Kits':'#B8956A',
-}
+const BP_METRICS = [
+  { val: '16', label: 'Process Stages' },
+  { val: '14d', label: 'Proposal Window' },
+  { val: '3', label: 'Infra Models' },
+  { val: '50/25/25', label: 'Payment Split' },
+]
 
 const CM_FEATURED_PROJECTS = [
   {
@@ -61,7 +91,7 @@ const CM_FEATURED_PROJECTS = [
     seed: 8,
   },
   {
-    page: '/croissantsmoon/web-pcu-global-intl',
+    page: '/croissantsmoon/websites',
     live: 'https://international-office-website.vercel.app/',
     github: 'https://github.com/zefanyakharisma-cell/International-Office-Website',
     title: 'PCU Global — International Office',
@@ -107,53 +137,25 @@ const CM_FEATURED_PROJECTS = [
   },
 ]
 
-const CM_SERVICES = [
-  {
-    icon: <UserCircle style={{ width: 22, height: 22, color: CM.aurora }} />,
-    accentColor: CM.aurora,
-    glowColor: 'rgba(111,168,255,0.25)',
-    tag: 'Personal & Creative',
-    title: 'Personal Branding & Portfolio Platforms',
-    positioning: 'Your identity, crafted for the world stage.',
-    desc: 'Premium digital identities for professionals who need more than a résumé. We build narrative-driven platforms that position you as a thought leader in your field.',
-    targets: ['Researchers & Academics', 'Scholarship Awardees', 'Creative Professionals', 'Founders & Executives'],
-    features: ['Personal Brand Systems', 'Cinematic Portfolio Design', 'Professional Storytelling', 'Mobile-First Experience', 'CMS Integration'],
-    pricingIDR: 'Rp5 juta',
-    pricingUSD: '$300',
-    pricingLabel: 'Starter Presence',
-    ctaLabel: 'Build Your Platform',
-  },
-  {
-    icon: <Globe style={{ width: 22, height: 22, color: CM.nebulaGold }} />,
-    accentColor: CM.nebulaGold,
-    glowColor: 'rgba(212,177,90,0.25)',
-    tag: 'International & Institutional',
-    title: 'International & Institutional Platforms',
-    positioning: 'Global-facing design for institutions that matter.',
-    desc: 'Sophisticated digital ecosystems for universities, NGOs, and international offices. Platforms that engage global audiences and communicate institutional excellence.',
-    targets: ['Universities & Faculties', 'International Offices', 'NGOs & Nonprofits', 'Educational Organizations'],
-    features: ['Global Engagement Systems', 'Partnership Directories', 'Student Onboarding Portals', 'Multilingual Architecture', 'Institutional Design Language'],
-    pricingIDR: 'Rp25 juta',
-    pricingUSD: '$1,500',
-    pricingLabel: 'Institutional Systems',
-    ctaLabel: 'Start a Project',
-  },
-  {
-    icon: <LayoutDashboard style={{ width: 22, height: 22, color: '#A0C4FF' }} />,
-    accentColor: '#A0C4FF',
-    glowColor: 'rgba(160,196,255,0.2)',
-    tag: 'Data & Operations',
-    title: 'Dashboard & Internal Systems',
-    positioning: 'Intelligence made visible. Operations made elegant.',
-    desc: 'Modern dashboards and admin platforms that transform complex data into clear decisions. Built for teams who need both power and elegance in their internal tools.',
-    targets: ['Operations Teams', 'Admin Departments', 'Data-Driven Organizations', 'Management Systems'],
-    features: ['Real-Time Analytics', 'Workflow Management', 'Data Visualization', 'Admin Interfaces', 'Scalable Architecture'],
-    pricingIDR: 'Rp12 juta',
-    pricingUSD: '$750',
-    pricingLabel: 'Professional Identity Platform',
-    ctaLabel: 'Discuss Your Vision',
-  },
+const CM_GRAPHIC_WORKS = [
+  { title: 'PCU Partnership Booklet',                cat: 'Brand Identity',    folder: 'partnership-booklet-pcu',               year: '2024–2025', inst: 'Petra Christian University'   },
+  { title: 'PCU International Students Guide',       cat: 'Print & Digital',   folder: 'international-students-guidebook-pcu',  year: '2024–2025', inst: 'Petra Christian University'   },
+  { title: 'PCU Presentation Template',              cat: 'Visual Identity',   folder: 'general-ppt-pcu',                       year: '2024–2025', inst: 'Petra Christian University'   },
+  { title: 'ACI 2025 Batch 2 Guidebook',             cat: 'Event Materials',   folder: 'booklet-aci-2025-b2-unair',             year: '2025',      inst: 'Universitas Airlangga'        },
+  { title: 'ACI 2025 Batch 1 Guidebook',             cat: 'Event Materials',   folder: 'guidebook-aci-2025-b1-unair',           year: '2025',      inst: 'Universitas Airlangga'        },
+  { title: 'Staffordshire Banyuwangi Booklet',       cat: 'Brand Identity',    folder: 'guidebook-staffordshire-unair',         year: '2025',      inst: 'Staffordshire × Airlangga'   },
+  { title: 'AERO 2025 Presentation',                 cat: 'Event Materials',   folder: 'aero-2025-unair',                       year: '2025',      inst: 'Universitas Airlangga'        },
+  { title: 'Airlangga Accommodation Guide',          cat: 'Print & Digital',   folder: 'accommodation-guidebook-unair',         year: '2024–2025', inst: 'Universitas Airlangga'        },
+  { title: 'Airlangga International Students Guide', cat: 'Social Media Kits', folder: 'international-students-guidebook-unair',year: '2024–2025', inst: 'Universitas Airlangga'        },
 ]
+
+const CM_CAT_COLORS: Record<string,string> = {
+  'Brand Identity':   CM.nebulaGold,
+  'Event Materials':  CM.aurora,
+  'Print & Digital':  CM.stardust,
+  'Visual Identity':  '#A0B8E0',
+  'Social Media Kits':'#B8956A',
+}
 
 const CM_CONCEPT_DETAILS = [
   {
@@ -167,10 +169,6 @@ const CM_CONCEPT_DETAILS = [
     tags: ['Editorial Design', 'Portfolio CMS', 'Personal Branding', 'Motion & Animation', 'Multi-language'],
     previewLabel: 'Identity System',
     icon: <UserCircle style={{ width: 13, height: 13 }} />,
-    originalPrice: 5000000,
-    discountedPrice: 2000000,
-    timeline: '2–3 weeks',
-    revisions: '3 rounds included',
     demoHref: '/croissantsmoon/web-portfolio',
     demoLabel: 'View Live Demo',
     demoIcon: <PlayCircle style={{ width: 12, height: 12 }} />,
@@ -186,10 +184,6 @@ const CM_CONCEPT_DETAILS = [
     tags: ['Partnership Directory', 'Student Onboarding', 'Mobility Programs', 'Institutional Design', 'Global Reach'],
     previewLabel: 'Institutional Platform',
     icon: <Globe style={{ width: 13, height: 13 }} />,
-    originalPrice: 25000000,
-    discountedPrice: 10000000,
-    timeline: '4–6 weeks',
-    revisions: '4 rounds included',
     demoHref: '/croissantsmoon/websites',
     demoLabel: 'View Live Demo',
     demoIcon: <PlayCircle style={{ width: 12, height: 12 }} />,
@@ -205,10 +199,6 @@ const CM_CONCEPT_DETAILS = [
     tags: ['Analytics Dashboard', 'Workflow Engine', 'Data Visualization', 'Admin Interface', 'Modular Systems'],
     previewLabel: 'Dashboard System',
     icon: <LayoutDashboard style={{ width: 13, height: 13 }} />,
-    originalPrice: 12000000,
-    discountedPrice: 7000000,
-    timeline: '3–5 weeks',
-    revisions: '3 rounds included',
     demoHref: '/croissantsmoon/web-dashboard-partnership',
     demoHref2: '/croissantsmoon/web-dashboard-grants',
     demoLabel: 'Partnership Dashboard Demo',
@@ -218,14 +208,70 @@ const CM_CONCEPT_DETAILS = [
   },
 ]
 
-function formatRp(n: number) {
-  return 'Rp ' + n.toLocaleString('id-ID')
-}
-
-const PROCESS_STEPS = [
-  { num: '01', icon: <Search style={{ width: 22, height: 22, color: CM.aurora }} />, label: 'Discover',       desc: 'We start with your goals, audience, and brand values to define what success looks like.' },
-  { num: '02', icon: <PenTool style={{ width: 22, height: 22, color: CM.aurora }} />, label: 'Design & Build', desc: 'From wireframes to final delivery — every pixel and line of code is intentional.' },
-  { num: '03', icon: <TrendingUp style={{ width: 22, height: 22, color: CM.aurora }} />, label: 'Launch & Grow', desc: 'We hand off a product that your team can own, maintain, and scale.' },
+const PRODUCT_TIERS = [
+  {
+    id: 'basic',
+    label: 'Landing — Basic',
+    features: [
+      { name: 'UI design',         desc: 'clean, modern layout — 1 page',     time: '4–6 hrs' },
+      { name: 'Responsive layout', desc: 'mobile + desktop breakpoints',       time: '2–3 hrs' },
+      { name: 'Contact form',      desc: 'basic email submission',             time: '2 hrs'   },
+      { name: 'Domain setup',      desc: 'DNS config + SSL',                   time: '1 hr'    },
+      { name: 'Deployment',        desc: 'Vercel deploy + environment setup',  time: '1 hr'    },
+      { name: 'Revisions',         desc: '1 round included',                   time: '2–3 hrs' },
+    ],
+    totalTime: '12–16 hrs', totalTimeDesc: '~2–3 days work',
+    originalPrice: 'Rp 5jt', originalDesc: '~Rp 350k/hr',
+    foundingPrice: 'Rp 2.5jt', foundingDesc: '50% off',
+  },
+  {
+    id: 'pro',
+    label: 'Landing — Pro',
+    features: [
+      { name: 'Everything in Basic',  desc: 'UI, responsive, contact, deploy',             time: '12–16 hrs' },
+      { name: 'Multi-section design', desc: 'hero, about, services, testimonials, CTA',    time: '4–6 hrs'   },
+      { name: 'Animations',           desc: 'scroll-triggered, entrance effects',           time: '3–4 hrs'   },
+      { name: 'CMS integration',      desc: 'editable content without code',               time: '4–5 hrs'   },
+      { name: 'SEO setup',            desc: 'meta tags, OG image, sitemap',                time: '2 hrs'     },
+      { name: 'Revisions',            desc: '1 round included',                             time: '3–4 hrs'   },
+    ],
+    totalTime: '28–35 hrs', totalTimeDesc: '~5–6 days work',
+    originalPrice: 'Rp 7jt', originalDesc: '~Rp 220k/hr',
+    foundingPrice: 'Rp 3.5jt', foundingDesc: '50% off',
+  },
+  {
+    id: 'org',
+    label: 'Org Website',
+    features: [
+      { name: 'Multi-page structure',     desc: 'home, about, programs, contact, etc.',   time: '8–10 hrs' },
+      { name: 'Admin panel',              desc: 'content management for staff',            time: '8–10 hrs' },
+      { name: 'Announcements system',     desc: 'post, edit, publish news',                time: '4–5 hrs'  },
+      { name: 'Forms',                    desc: 'registration, inquiry, submission',       time: '4–5 hrs'  },
+      { name: 'International branding',   desc: 'bilingual support, EN/ID toggle',         time: '5–6 hrs'  },
+      { name: 'Auth for staff',           desc: 'login system for admin access',           time: '4–5 hrs'  },
+      { name: 'Deploy + domain + revisions', desc: 'full setup + 1 revision round',        time: '5–6 hrs'  },
+    ],
+    totalTime: '38–47 hrs', totalTimeDesc: '~7–9 days work',
+    originalPrice: 'Rp 12jt', originalDesc: '~Rp 280k/hr',
+    foundingPrice: 'Rp 6jt', foundingDesc: '50% off',
+  },
+  {
+    id: 'dash',
+    label: 'Dashboard',
+    features: [
+      { name: 'Database setup',    desc: 'Supabase schema, tables, relations',        time: '4–6 hrs'  },
+      { name: 'Auth system',       desc: 'login, session, role-based access',         time: '5–6 hrs'  },
+      { name: 'CRUD operations',   desc: 'create, read, update, delete records',      time: '6–8 hrs'  },
+      { name: 'Permissions system',desc: 'admin vs member vs viewer roles',           time: '4–5 hrs'  },
+      { name: 'Dashboard UI',      desc: 'tables, charts, filters, search',           time: '8–10 hrs' },
+      { name: 'Analytics view',    desc: 'basic metrics, charts, summaries',          time: '4–5 hrs'  },
+      { name: 'Realtime updates',  desc: 'Supabase realtime subscriptions',           time: '3–4 hrs'  },
+      { name: 'Deploy + revisions',desc: 'Vercel deploy, env config, 1 revision',    time: '4–5 hrs'  },
+    ],
+    totalTime: '38–49 hrs', totalTimeDesc: '~8–10 days work',
+    originalPrice: 'Rp 18jt', originalDesc: '~Rp 390k/hr',
+    foundingPrice: 'Rp 9jt', foundingDesc: '50% off',
+  },
 ]
 
 // ── Logo SVG ──────────────────────────────────────────────────
@@ -245,9 +291,34 @@ export default function CroissantsMoonPage() {
   const webProjectsRef = useRef<HTMLDivElement>(null)
   const graphicDesignRef = useRef<HTMLDivElement>(null)
 
+  const [repos, setRepos] = useState<GithubRepo[]>([])
+  const [reposLoading, setReposLoading] = useState(true)
+  const [reposError, setReposError] = useState(false)
+  const [activeLang, setActiveLang] = useState('All')
+  const [activeTier, setActiveTier] = useState('basic')
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/croissantsmoon/repos?sort=updated&per_page=12&type=public')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setRepos(data.filter((r: GithubRepo) => !r.fork))
+        } else {
+          setReposError(true)
+        }
+        setReposLoading(false)
+      })
+      .catch(() => { setReposError(true); setReposLoading(false) })
+  }, [])
+
   function scrollTo(ref: React.RefObject<HTMLDivElement | null>) {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const repoLanguages = ['All', ...Array.from(new Set(repos.map(r => r.language).filter(Boolean) as string[]))]
+  const filteredRepos = activeLang === 'All' ? repos : repos.filter(r => r.language === activeLang)
+
+  const activeTierData = PRODUCT_TIERS.find(t => t.id === activeTier)!
 
   return (
     <div style={{ background: CM.midnight }}>
@@ -259,34 +330,26 @@ export default function CroissantsMoonPage() {
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: 'clamp(6rem,14vh,10rem) 24px clamp(5rem,11vh,9rem)',
       }}>
-        {/* Star field */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
           <StarField count={80} />
         </div>
-        {/* Floating astronauts */}
         <AstronautFloat img={3} style={{ right: '7%', top: '16%' }} size={115} dur={24} del={0}   rot={15}  x1={10}  y1={-20} x2={-8}  y2={14} />
         <AstronautFloat img={4} style={{ left: '4%', bottom: '22%' }} size={90}  dur={31} del={-11} rot={-12} x1={-14} y1={10}  x2={10}  y2={-8} />
-        {/* Constellation */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
           <ConstellationSVG w={1200} h={700} seed={3} />
         </div>
-        {/* Nebula blobs */}
         <div style={{ position: 'absolute', left: -200, top: -80, width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle,rgba(111,168,255,0.06) 0%,transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
         <div style={{ position: 'absolute', right: -120, bottom: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(212,177,90,0.06) 0%,transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
-        {/* Crescent */}
         <div style={{ position: 'absolute', right: '5%', top: '8%', pointerEvents: 'none', zIndex: 0, filter: 'blur(0.5px) drop-shadow(0 0 28px rgba(212,177,90,0.35))', opacity: 0.18 }}>
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
             <path d="M130 90C130 114.85 109.85 135 85 135C60.15 135 40 114.85 40 90C40 65.15 60.15 45 85 45C78.8 54.2 76 65 76 76.5C76 100.65 91.8 121.2 113.6 128.1C124 119.1 130 105.2 130 90Z" fill={CM.nebulaGold} opacity="0.8"/>
           </svg>
         </div>
-        {/* CM watermark */}
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
           <span style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",serif)', fontStyle: 'italic', fontSize: '28vw', fontWeight: 300, color: CM.nebulaGold, opacity: 0.025, lineHeight: 1, userSelect: 'none', whiteSpace: 'nowrap' }}>CM</span>
         </div>
-        {/* Aurora glow */}
         <div style={{ position: 'absolute', bottom: -60, left: '50%', transform: 'translateX(-50%)', width: 600, height: 200, borderRadius: '50%', background: 'radial-gradient(ellipse,rgba(111,168,255,0.08) 0%,transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-        {/* Hero content */}
         <div className="max-w-3xl mx-auto text-center" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem', animation: 'cmFloat 5s ease-in-out infinite', filter: 'drop-shadow(0 0 18px rgba(212,177,90,0.4))' }}>
             <LogoSVG />
@@ -315,7 +378,6 @@ export default function CroissantsMoonPage() {
               Request a Proposal <Send style={{ width: 13, height: 13 }} />
             </Link>
           </div>
-          {/* Scroll indicator */}
           <div style={{ marginTop: 'clamp(4rem,8vh,7rem)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
             <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.56rem', letterSpacing: '.2em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.5 }}>Explore</span>
             <div style={{ width: 1, height: 44, background: `linear-gradient(to bottom,${CM.aurora},transparent)`, animation: 'cmScrollLine 2.2s ease-in-out infinite', opacity: 0.5 }} />
@@ -323,84 +385,59 @@ export default function CroissantsMoonPage() {
         </div>
       </div>
 
-      {/* ── Services ─────────────────────────────────────────── */}
-      <div style={{ background: `linear-gradient(180deg,${CM.midnight} 0%,${CM.deepSpace} 50%,${CM.midnight} 100%)`, padding: 'clamp(5rem,10vh,8rem) 24px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.65 }}>
-          <StarField count={55} />
+      {/* ── S1: Business Process ─────────────────────────────── */}
+      <div style={{ background: `linear-gradient(180deg,${CM.deepSpace} 0%,${CM.midnight} 100%)`, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.5 }}>
+          <StarField count={30} />
         </div>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          <ConstellationSVG w={1200} h={700} seed={5} />
+          <ConstellationSVG w={1200} h={600} seed={2} />
         </div>
-        <AstronautFloat img={4} style={{ right: '4%', top: '12%' }} size={100} dur={28} del={-3} rot={-10} />
-        <div className="max-w-6xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
-            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.22em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '1rem' }}>Services</p>
-            <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.4rem,6vw,4rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.05, letterSpacing: '-.01em', marginBottom: '1.25rem' }}>Digital Identity Systems</h2>
-            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.92rem', lineHeight: 1.78, color: CM.stardust, maxWidth: 520, margin: '0 auto' }}>We don't build websites. We architect digital presences that communicate who you are before a single word is read.</p>
+        <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.22em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '1rem' }}>How We Work</p>
+            <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.4rem,6vw,4rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.05, marginBottom: '1rem' }}>Business Process</h2>
+            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.9rem', lineHeight: 1.75, color: CM.stardust, maxWidth: 500, margin: '0 auto' }}>From the first lead to long-term delivery — every step is designed for clarity, quality, and trust.</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 24, alignItems: 'start' }}>
-            {CM_SERVICES.map((svc, i) => (
-              <div key={i} className="cm-card-hover" style={{ position: 'relative', borderRadius: 24, overflow: 'hidden', background: 'rgba(11,30,58,0.55)', backdropFilter: 'blur(18px) saturate(1.4)', WebkitBackdropFilter: 'blur(18px) saturate(1.4)', border: '1px solid rgba(111,168,255,0.16)', boxShadow: '0 4px 40px rgba(3,7,18,0.5)', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ height: 2, background: `linear-gradient(to right,${svc.accentColor}44,${svc.accentColor},${svc.accentColor}44)` }} />
-                <div style={{ padding: 'clamp(1.75rem,3.5vw,2.5rem)', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                    <div style={{ width: 50, height: 50, borderRadius: 15, background: `${svc.accentColor}12`, border: `1px solid ${svc.accentColor}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 20px ${svc.glowColor}` }}>
-                      {svc.icon}
-                    </div>
-                    <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: svc.accentColor, opacity: 0.8, padding: '4px 12px', borderRadius: 999, background: `${svc.accentColor}10`, border: `1px solid ${svc.accentColor}22` }}>{svc.tag}</span>
+
+          {/* Phase pipeline */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 1, background: 'rgba(111,168,255,0.08)', borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(111,168,255,0.12)', marginBottom: '2.5rem' }}>
+            {BP_PHASES.map((phase, i) => (
+              <div key={i} style={{ background: CM.deepSpace, padding: '24px 18px 22px', borderRight: i < 4 ? '1px solid rgba(111,168,255,0.08)' : 'none', transition: 'background .2s' }} className="cm-card-hover">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 10, background: `${phase.color}12`, border: `1px solid ${phase.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    {phase.icon}
                   </div>
-                  <h3 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(1.3rem,2.8vw,1.7rem)', fontWeight: 500, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.2, marginBottom: '.6rem' }}>{svc.title}</h3>
-                  <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.78rem', fontWeight: 500, color: svc.accentColor, opacity: 0.85, marginBottom: '1rem', lineHeight: 1.4 }}>{svc.positioning}</p>
-                  <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.84rem', lineHeight: 1.78, color: CM.stardust, marginBottom: '1.5rem' }}>{svc.desc}</p>
-                  <div style={{ marginBottom: '1.25rem' }}>
-                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(143,168,214,0.5)', marginBottom: '.65rem' }}>Ideal For</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {svc.targets.map(t => (
-                        <span key={t} style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.68rem', color: CM.stardust, opacity: 0.8, padding: '4px 12px', borderRadius: 999, background: 'rgba(111,168,255,0.07)', border: '1px solid rgba(111,168,255,0.15)' }}>{t}</span>
-                      ))}
+                  <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.58rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: phase.color, opacity: 0.6 }}>{phase.num}</span>
+                </div>
+                <h4 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.1rem', fontWeight: 500, color: CM.moonlight, marginBottom: 3 }}>{phase.label}</h4>
+                <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.65rem', fontWeight: 500, color: phase.color, opacity: 0.7, letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: 12 }}>{phase.sublabel}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  {phase.points.map((pt, j) => (
+                    <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
+                      <span style={{ width: 4, height: 4, borderRadius: '50%', background: phase.color, opacity: 0.45, flexShrink: 0, marginTop: 5 }} />
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.73rem', color: CM.stardust, lineHeight: 1.5 }}>{pt}</span>
                     </div>
-                  </div>
-                  <div style={{ marginBottom: '1.75rem' }}>
-                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(143,168,214,0.5)', marginBottom: '.65rem' }}>Includes</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                      {svc.features.map(f => (
-                        <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ width: 4, height: 4, borderRadius: '50%', background: svc.accentColor, flexShrink: 0, boxShadow: `0 0 6px ${svc.accentColor}88` }} />
-                          <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.8rem', color: CM.stardust, opacity: 0.85 }}>{f}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div style={{ marginTop: 'auto', padding: '1.25rem', borderRadius: 14, background: `${svc.accentColor}08`, border: `1px solid ${svc.accentColor}18`, marginBottom: '1.25rem' }}>
-                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.58rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(143,168,214,0.45)', marginBottom: '.4rem' }}>{svc.pricingLabel} · Starting from</p>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-                      <span style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.35rem', fontWeight: 500, color: svc.accentColor }}>{svc.pricingIDR}</span>
-                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.72rem', color: 'rgba(143,168,214,0.5)' }}>/</span>
-                      <span style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.1rem', fontWeight: 400, color: CM.stardust }}>{svc.pricingUSD}</span>
-                    </div>
-                  </div>
-                  <Link href="/contact" style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.82rem', fontWeight: 600, color: svc.accentColor, background: 'transparent', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '11px 22px', borderRadius: 999, border: `1px solid ${svc.accentColor}44`, textDecoration: 'none', transition: 'background .22s,box-shadow .22s,border-color .22s' }}>
-                    {svc.ctaLabel} <ArrowRight style={{ width: 13, height: 13 }} />
-                  </Link>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
-          {/* CTA bar */}
-          <div style={{ marginTop: '3.5rem', padding: '2.5rem', borderRadius: 22, background: 'rgba(24,59,107,0.2)', border: '1px solid rgba(111,168,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
-            <div>
-              <p style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(1.2rem,2.5vw,1.6rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, marginBottom: '.35rem' }}>Not sure which fits you?</p>
-              <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.82rem', color: CM.stardust, opacity: 0.8 }}>Let's talk about your project and find the right direction together.</p>
-            </div>
-            <Link href="/contact" className="cm-glow-btn" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 600, background: CM.nebulaGold, color: CM.midnight, padding: '14px 30px', borderRadius: 999, border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, letterSpacing: '.03em', whiteSpace: 'nowrap', textDecoration: 'none' }}>
-              Book a Consultation <ArrowRight style={{ width: 14, height: 14 }} />
-            </Link>
+
+          {/* Key metrics bar */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'rgba(212,177,90,0.08)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(212,177,90,0.12)' }}>
+            {BP_METRICS.map((m, i) => (
+              <div key={i} style={{ background: `${CM.midnight}cc`, padding: '18px 20px', borderRight: i < 3 ? '1px solid rgba(212,177,90,0.1)' : 'none', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.6rem', fontWeight: 600, color: CM.nebulaGold, lineHeight: 1 }}>{m.val}</div>
+                <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', letterSpacing: '.12em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.6, marginTop: 5 }}>{m.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ── Web Projects ─────────────────────────────────────── */}
-      <div ref={webProjectsRef} style={{ background: `linear-gradient(180deg,${CM.deepSpace} 0%,${CM.midnight} 100%)`, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
+      {/* ── S2: Web Projects ─────────────────────────────────── */}
+      <div ref={webProjectsRef} style={{ background: `linear-gradient(180deg,${CM.midnight} 0%,${CM.deepSpace} 100%)`, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
           <ConstellationSVG w={1200} h={800} seed={7} />
         </div>
@@ -417,9 +454,7 @@ export default function CroissantsMoonPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(270px,1fr))', gap: 20, marginBottom: '2.5rem' }}>
             {CM_FEATURED_PROJECTS.map((p, i) => (
               <div key={i} className="cm-card-hover" style={{ background: CM.deepSpace, borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(111,168,255,0.14)', boxShadow: '0 4px 28px rgba(3,7,18,0.4)', position: 'relative' }}>
-                {/* Thumbnail */}
                 <div style={{ height: 160, position: 'relative', overflow: 'hidden', background: p.bg }}>
-                  {/* Fallback */}
                   <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: p.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}><StarField count={16} /></div>
                     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.45 }}><ConstellationSVG w={320} h={160} seed={p.seed} /></div>
@@ -429,7 +464,6 @@ export default function CroissantsMoonPage() {
                       <div style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.55rem', fontWeight: 500, color: CM.moonlight, lineHeight: 1.15, textShadow: '0 2px 20px rgba(0,0,0,0.6)' }}>{p.title}</div>
                     </div>
                   </div>
-                  {/* Live iframe */}
                   <iframe
                     src={p.live}
                     scrolling="no"
@@ -439,7 +473,6 @@ export default function CroissantsMoonPage() {
                     style={{ position: 'absolute', top: 0, left: 0, width: 1620, height: 800, transform: 'scale(0.2)', transformOrigin: 'top left', border: 'none', pointerEvents: 'none', zIndex: 2 }}
                     loading="lazy"
                   />
-                  {/* Polish overlay */}
                   <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', background: 'linear-gradient(to bottom,transparent 55%,rgba(7,17,38,0.45) 100%)' }} />
                 </div>
                 <div style={{ padding: '20px 22px 22px' }}>
@@ -473,36 +506,115 @@ export default function CroissantsMoonPage() {
               </div>
             ))}
           </div>
-          {/* View All */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '3.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Link href="/croissantsmoon/websites" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.875rem', fontWeight: 600, background: CM.nebulaGold, color: CM.midnight, padding: '14px 32px', borderRadius: 999, border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 9, letterSpacing: '.03em', boxShadow: '0 0 24px rgba(212,177,90,0.32),0 4px 18px rgba(212,177,90,0.2)', textDecoration: 'none', transition: 'opacity .2s,transform .2s,box-shadow .2s' }}>
               View All Web Projects <ArrowRight style={{ width: 15, height: 15 }} />
             </Link>
           </div>
-          {/* Open Source divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '2.25rem' }}>
-            <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right,transparent,rgba(111,168,255,0.2))' }} />
-            <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.63rem', fontWeight: 600, letterSpacing: '.18em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.6 }}>Open Source</span>
-            <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left,transparent,rgba(111,168,255,0.2))' }} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: '1.5rem' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {['All', 'HTML / CSS', 'JavaScript', 'Other'].map(label => (
-                <span key={label} style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.76rem', fontWeight: 500, padding: '7px 18px', borderRadius: 999, border: '1px solid rgba(111,168,255,0.2)', background: 'transparent', color: CM.stardust, letterSpacing: '.02em' }}>{label}</span>
-              ))}
-            </div>
-            <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 400, color: CM.stardust, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(111,168,255,0.18)', padding: '8px 16px', borderRadius: 999, background: 'transparent' }}>
-              <Github style={{ width: 14, height: 14 }} /> @croissantsmoon
-            </a>
-          </div>
-          <div style={{ textAlign: 'center', padding: '32px 24px', border: '1px solid rgba(111,168,255,0.1)', borderRadius: 16, background: 'rgba(11,30,58,0.35)' }}>
-            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.84rem', color: CM.stardust, opacity: 0.7, marginBottom: 12 }}>View open source repositories on GitHub</p>
-            <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.84rem', fontWeight: 600, color: CM.nebulaGold, textDecoration: 'none', borderBottom: `1px solid ${CM.nebulaGold}`, paddingBottom: 2 }}>@croissantsmoon ↗</a>
-          </div>
         </div>
       </div>
 
-      {/* ── Graphic Design ───────────────────────────────────── */}
+      {/* ── S3: Open Source ───────────────────────────────────── */}
+      <div style={{ background: CM.void, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.45 }}>
+          <StarField count={40} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+          <ConstellationSVG w={1200} h={600} seed={13} />
+        </div>
+        <AstronautFloat img={5} style={{ right: '3%', top: '20%' }} size={90} dur={29} del={-6} rot={-10} />
+        <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '2.75rem' }}>
+            <div>
+              <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.63rem', fontWeight: 600, letterSpacing: '.2em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '.9rem' }}>Open Source</p>
+              <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.2rem,5vw,3.5rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.08 }}>@croissantsmoon</h2>
+            </div>
+            <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 500, color: CM.stardust, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, border: '1px solid rgba(111,168,255,0.18)', padding: '9px 18px', borderRadius: 999, background: 'transparent', transition: 'background .2s,border-color .2s,color .2s' }}>
+              <Github style={{ width: 14, height: 14 }} /> View on GitHub
+            </a>
+          </div>
+
+          {/* Language filter */}
+          {repoLanguages.length > 1 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '2rem' }}>
+              {repoLanguages.map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setActiveLang(lang)}
+                  style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.76rem', fontWeight: 500, padding: '7px 18px', borderRadius: 999, border: activeLang === lang ? `1px solid ${CM.nebulaGold}` : '1px solid rgba(111,168,255,0.2)', background: activeLang === lang ? 'rgba(212,177,90,0.12)' : 'transparent', color: activeLang === lang ? CM.nebulaGold : CM.stardust, letterSpacing: '.02em', cursor: 'pointer', transition: 'all .18s' }}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Repo grid */}
+          {reposLoading ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 16 }}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{ background: 'rgba(11,30,58,0.4)', borderRadius: 14, border: '1px solid rgba(111,168,255,0.1)', padding: '22px 20px', height: 130 }}>
+                  <div style={{ height: 10, width: '40%', background: 'rgba(255,255,255,0.05)', borderRadius: 6, marginBottom: 10 }} />
+                  <div style={{ height: 7, width: '80%', background: 'rgba(255,255,255,0.04)', borderRadius: 5, marginBottom: 6 }} />
+                  <div style={{ height: 7, width: '55%', background: 'rgba(255,255,255,0.03)', borderRadius: 5 }} />
+                </div>
+              ))}
+            </div>
+          ) : reposError || filteredRepos.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '48px 24px', border: '1px solid rgba(111,168,255,0.1)', borderRadius: 16, background: 'rgba(11,30,58,0.35)' }}>
+              <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.88rem', color: CM.stardust, opacity: 0.65, marginBottom: 14 }}>
+                {reposError ? 'Could not load repositories.' : 'No repositories found for this filter.'}
+              </p>
+              <a href="https://github.com/croissantsmoon" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.84rem', fontWeight: 600, color: CM.nebulaGold, textDecoration: 'none', borderBottom: `1px solid ${CM.nebulaGold}`, paddingBottom: 2 }}>
+                @croissantsmoon on GitHub ↗
+              </a>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 16 }}>
+              {filteredRepos.map(repo => (
+                <a
+                  key={repo.id}
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cm-card-hover"
+                  style={{ background: 'rgba(11,30,58,0.5)', backdropFilter: 'blur(12px)', borderRadius: 14, border: '1px solid rgba(111,168,255,0.12)', padding: '20px', textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 10, transition: 'border-color .2s,background .2s', boxShadow: '0 2px 16px rgba(3,7,18,0.3)' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Github style={{ width: 15, height: 15, color: CM.stardust, opacity: 0.5, flexShrink: 0 }} />
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 600, color: CM.moonlight }}>{repo.name}</span>
+                    </div>
+                    {repo.homepage && (
+                      <ExternalLink style={{ width: 13, height: 13, color: CM.stardust, opacity: 0.4, flexShrink: 0 }} />
+                    )}
+                  </div>
+                  {repo.description && (
+                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.78rem', color: CM.stardust, lineHeight: 1.6, opacity: 0.85 }}>{repo.description}</p>
+                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 'auto', flexWrap: 'wrap' }}>
+                    {repo.language && (
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.68rem', color: CM.nebulaGold, background: 'rgba(212,177,90,0.1)', border: '1px solid rgba(212,177,90,0.2)', padding: '2px 10px', borderRadius: 999 }}>{repo.language}</span>
+                    )}
+                    {repo.stargazers_count > 0 && (
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.72rem', color: CM.stardust, opacity: 0.6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Star style={{ width: 11, height: 11 }} /> {repo.stargazers_count}
+                      </span>
+                    )}
+                    {repo.forks_count > 0 && (
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.72rem', color: CM.stardust, opacity: 0.6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <GitFork style={{ width: 11, height: 11 }} /> {repo.forks_count}
+                      </span>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── S4: Graphic Design ───────────────────────────────── */}
       <div ref={graphicDesignRef} style={{ background: `linear-gradient(180deg,${CM.midnight} 0%,${CM.void} 100%)`, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', width: 800, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse,rgba(111,168,255,0.04) 0%,transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.4 }}>
@@ -548,38 +660,7 @@ export default function CroissantsMoonPage() {
         </div>
       </div>
 
-      {/* ── Process ──────────────────────────────────────────── */}
-      <div style={{ background: `linear-gradient(180deg,${CM.void} 0%,${CM.midnight} 100%)`, padding: 'clamp(4.5rem,9vh,7rem) 24px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          <ConstellationSVG w={1200} h={600} seed={11} />
-        </div>
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.4 }}>
-          <StarField count={28} />
-        </div>
-        <AstronautFloat img={4} style={{ left: '3%', bottom: '18%' }} size={85} dur={27} del={-6} rot={-15} />
-        <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.63rem', fontWeight: 600, letterSpacing: '.2em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '.9rem' }}>Process</p>
-            <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.2rem,5vw,3.5rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.08 }}>How We Work</h2>
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(1.25rem,2.5vw,2rem)', alignItems: 'flex-start', justifyContent: 'center' }}>
-            {PROCESS_STEPS.map((step, i) => (
-              <div key={i} className="cm-process-card" style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', background: 'rgba(24,59,107,0.28)', backdropFilter: 'blur(12px)', border: '1px solid rgba(111,168,255,0.15)', borderRadius: 22, padding: '2.25rem 1.5rem 2rem', boxShadow: '0 4px 28px rgba(3,7,18,0.35)' }}>
-                <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
-                  <div style={{ width: 60, height: 60, borderRadius: 20, background: 'rgba(111,168,255,0.08)', border: '1px solid rgba(111,168,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 24px rgba(111,168,255,0.12)' }}>
-                    {step.icon}
-                  </div>
-                  <span style={{ position: 'absolute', top: -10, right: -10, fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.52rem', fontWeight: 700, letterSpacing: '.1em', color: CM.nebulaGold, opacity: 0.8 }}>{step.num}</span>
-                </div>
-                <h3 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.32rem', fontWeight: 500, fontStyle: 'italic', color: CM.moonlight, marginBottom: '.75rem', lineHeight: 1.2 }}>{step.label}</h3>
-                <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.83rem', lineHeight: 1.74, color: CM.stardust, maxWidth: 210 }}>{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Concept Platforms ─────────────────────────────────── */}
+      {/* ── S5: Concept Platforms ─────────────────────────────── */}
       <div style={{ background: `linear-gradient(180deg,${CM.deepSpace} 0%,${CM.void} 50%,${CM.midnight} 100%)`, padding: 'clamp(5rem,10vh,8rem) 24px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.6 }}>
           <StarField count={45} />
@@ -592,115 +673,162 @@ export default function CroissantsMoonPage() {
           <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
             <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.22em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '1rem' }}>Concept Platforms</p>
             <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.4rem,6vw,4rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.05, marginBottom: '1.25rem' }}>Demo Experiences</h2>
-            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.92rem', lineHeight: 1.78, color: CM.stardust, maxWidth: 520, margin: '0 auto' }}>Three premium platform directions — each with transparent pricing. Explore the visual language and see exactly what you get.</p>
+            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.92rem', lineHeight: 1.78, color: CM.stardust, maxWidth: 520, margin: '0 auto' }}>Three premium platform directions — each a fully realized concept. Explore the visual language and interact with the demos.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 22 }}>
-            {CM_CONCEPT_DETAILS.map((c, idx) => {
-              const savings = c.originalPrice - c.discountedPrice
-              const discountPct = Math.round((savings / c.originalPrice) * 100)
-              return (
-                <div key={idx} className="cm-card-hover" style={{ background: 'rgba(11,30,58,0.45)', backdropFilter: 'blur(16px) saturate(1.3)', WebkitBackdropFilter: 'blur(16px) saturate(1.3)', border: '1px solid rgba(111,168,255,0.14)', borderRadius: 24, overflow: 'hidden', boxShadow: '0 4px 36px rgba(3,7,18,0.45)', display: 'flex', flexDirection: 'column' }}>
-                  {/* Preview mock */}
-                  <div style={{ padding: '16px 16px 0' }}>
-                    <div style={{ background: c.bg, borderRadius: 14, overflow: 'hidden', border: `1px solid ${c.accentColor}22`, boxShadow: `0 8px 40px rgba(3,7,18,0.6),0 0 0 1px ${c.accentColor}12`, position: 'relative', height: 180 }}>
-                      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}><StarField count={14} /></div>
-                      <div style={{ background: 'rgba(7,17,38,0.7)', backdropFilter: 'blur(10px)', padding: '9px 14px', borderBottom: `1px solid ${c.accentColor}18`, display: 'flex', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
-                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: c.accentColor, opacity: 0.6 }} />
-                        <div style={{ flex: 1, height: 6, background: 'rgba(255,255,255,0.05)', borderRadius: 3 }} />
-                        <div style={{ width: 40, height: 6, background: `${c.accentColor}22`, borderRadius: 3 }} />
-                      </div>
-                      <div style={{ padding: '14px 16px', position: 'relative', zIndex: 1 }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
-                          {[0,1].map(j => (
-                            <div key={j} style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${c.accentColor}15`, borderRadius: 8, padding: 10 }}>
-                              <div style={{ height: 5, width: '45%', background: `${c.accentColor}30`, borderRadius: 3, marginBottom: 6 }} />
-                              <div style={{ height: 14, width: '70%', background: `${c.accentColor}18`, borderRadius: 4 }} />
-                            </div>
-                          ))}
-                        </div>
-                        <div style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${c.accentColor}12`, borderRadius: 8, padding: 10, display: 'flex', gap: 8, alignItems: 'center' }}>
-                          <div style={{ width: 28, height: 28, borderRadius: 7, background: `${c.accentColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: c.accentColor }}>
-                            {c.icon}
+            {CM_CONCEPT_DETAILS.map((c, idx) => (
+              <div key={idx} className="cm-card-hover" style={{ background: 'rgba(11,30,58,0.45)', backdropFilter: 'blur(16px) saturate(1.3)', WebkitBackdropFilter: 'blur(16px) saturate(1.3)', border: '1px solid rgba(111,168,255,0.14)', borderRadius: 24, overflow: 'hidden', boxShadow: '0 4px 36px rgba(3,7,18,0.45)', display: 'flex', flexDirection: 'column' }}>
+                {/* Preview mock */}
+                <div style={{ padding: '16px 16px 0' }}>
+                  <div style={{ background: c.bg, borderRadius: 14, overflow: 'hidden', border: `1px solid ${c.accentColor}22`, boxShadow: `0 8px 40px rgba(3,7,18,0.6),0 0 0 1px ${c.accentColor}12`, position: 'relative', height: 180 }}>
+                    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}><StarField count={14} /></div>
+                    <div style={{ background: 'rgba(7,17,38,0.7)', backdropFilter: 'blur(10px)', padding: '9px 14px', borderBottom: `1px solid ${c.accentColor}18`, display: 'flex', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
+                      <div style={{ width: 7, height: 7, borderRadius: '50%', background: c.accentColor, opacity: 0.6 }} />
+                      <div style={{ flex: 1, height: 6, background: 'rgba(255,255,255,0.05)', borderRadius: 3 }} />
+                      <div style={{ width: 40, height: 6, background: `${c.accentColor}22`, borderRadius: 3 }} />
+                    </div>
+                    <div style={{ padding: '14px 16px', position: 'relative', zIndex: 1 }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
+                        {[0,1].map(j => (
+                          <div key={j} style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${c.accentColor}15`, borderRadius: 8, padding: 10 }}>
+                            <div style={{ height: 5, width: '45%', background: `${c.accentColor}30`, borderRadius: 3, marginBottom: 6 }} />
+                            <div style={{ height: 14, width: '70%', background: `${c.accentColor}18`, borderRadius: 4 }} />
                           </div>
-                          <div style={{ flex: 1 }}>
-                            <div style={{ height: 4, width: '55%', background: `${c.accentColor}25`, borderRadius: 3, marginBottom: 5 }} />
-                            <div style={{ height: 4, width: '38%', background: 'rgba(255,255,255,0.06)', borderRadius: 3 }} />
-                          </div>
-                          <div style={{ width: 44, height: 18, background: `${c.accentColor}22`, borderRadius: 999 }} />
+                        ))}
+                      </div>
+                      <div style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${c.accentColor}12`, borderRadius: 8, padding: 10, display: 'flex', gap: 8, alignItems: 'center' }}>
+                        <div style={{ width: 28, height: 28, borderRadius: 7, background: `${c.accentColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: c.accentColor }}>
+                          {c.icon}
                         </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ height: 4, width: '55%', background: `${c.accentColor}25`, borderRadius: 3, marginBottom: 5 }} />
+                          <div style={{ height: 4, width: '38%', background: 'rgba(255,255,255,0.06)', borderRadius: 3 }} />
+                        </div>
+                        <div style={{ width: 44, height: 18, background: `${c.accentColor}22`, borderRadius: 999 }} />
                       </div>
-                      <div style={{ position: 'absolute', bottom: 10, right: 12, zIndex: 2 }}>
-                        <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.55rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: c.accentColor, opacity: 0.55 }}>{c.previewLabel}</span>
-                      </div>
-                      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 3 }}>
-                        <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.55rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', background: c.accentColor, color: '#030712', padding: '3px 9px', borderRadius: 999 }}>{discountPct}% OFF</span>
-                      </div>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 10, right: 12, zIndex: 2 }}>
+                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.55rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: c.accentColor, opacity: 0.55 }}>{c.previewLabel}</span>
                     </div>
                   </div>
-                  {/* Card content */}
-                  <div style={{ padding: '1.5rem clamp(1.25rem,3vw,1.75rem) clamp(1.5rem,3vw,2rem)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.85rem' }}>
-                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.58rem', fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase', color: c.accentColor, opacity: 0.7 }}>{c.num}</span>
-                      <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 500, letterSpacing: '.12em', textTransform: 'uppercase', color: 'rgba(143,168,214,0.45)', padding: '3px 10px', borderRadius: 999, background: 'rgba(111,168,255,0.06)', border: '1px solid rgba(111,168,255,0.12)' }}>{c.badge}</span>
-                    </div>
-                    <h3 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(1.25rem,2.5vw,1.55rem)', fontWeight: 500, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.2, marginBottom: '.4rem' }}>{c.title}</h3>
-                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.75rem', fontWeight: 500, color: c.accentColor, opacity: 0.75, marginBottom: '.85rem' }}>{c.theme}</p>
-                    <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.82rem', lineHeight: 1.74, color: CM.stardust, marginBottom: '1.25rem' }}>{c.desc}</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: '1.25rem' }}>
-                      {c.tags.map(tag => (
-                        <span key={tag} style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.66rem', color: CM.stardust, opacity: 0.75, padding: '4px 12px', borderRadius: 999, background: `${c.accentColor}0a`, border: `1px solid ${c.accentColor}20` }}>{tag}</span>
-                      ))}
-                    </div>
-                    {/* Pricing */}
-                    <div style={{ padding: '14px 16px', borderRadius: 14, marginBottom: '1.25rem', background: `${c.accentColor}07`, border: `1px solid ${c.accentColor}18` }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                        <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.55rem', fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', background: c.accentColor, color: '#030712', padding: '2px 8px', borderRadius: 999 }}>Special Price</span>
-                        <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.7rem', textDecoration: 'line-through', color: 'rgba(143,168,214,0.38)' }}>{formatRp(c.originalPrice)}</span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                        <span style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.4rem', fontWeight: 500, color: c.accentColor }}>{formatRp(c.discountedPrice)}</span>
-                        <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', color: 'rgba(143,168,214,0.5)' }}>starting from</span>
-                      </div>
-                      <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', color: 'rgba(143,168,214,0.4)', marginTop: 4 }}>Save {formatRp(savings)} · {discountPct}% off regular price</p>
-                    </div>
-                    {/* CTAs */}
-                    {idx === 0 && (
-                      <Link href={c.demoHref} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.8rem', fontWeight: 600, color: CM.aurora, background: `${CM.aurora}12`, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '10px 20px', borderRadius: 999, marginBottom: 8, border: `1px solid ${CM.aurora}45`, textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
-                        {c.demoIcon} {c.demoLabel}
-                      </Link>
-                    )}
-                    {idx === 1 && (
-                      <Link href={c.demoHref} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.8rem', fontWeight: 600, color: CM.nebulaGold, background: 'rgba(212,177,90,0.1)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '10px 20px', borderRadius: 999, marginBottom: 8, border: '1px solid rgba(212,177,90,0.38)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
-                        {c.demoIcon} {c.demoLabel}
-                      </Link>
-                    )}
-                    {idx === 2 && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 8 }}>
-                        <Link href={c.demoHref} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 600, color: '#A0C4FF', background: 'rgba(160,196,255,0.1)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 18px', borderRadius: 999, border: '1px solid rgba(160,196,255,0.35)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s' }}>
+                </div>
+                {/* Card content */}
+                <div style={{ padding: '1.5rem clamp(1.25rem,3vw,1.75rem) clamp(1.5rem,3vw,2rem)', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.85rem' }}>
+                    <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.58rem', fontWeight: 700, letterSpacing: '.18em', textTransform: 'uppercase', color: c.accentColor, opacity: 0.7 }}>{c.num}</span>
+                    <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 500, letterSpacing: '.12em', textTransform: 'uppercase', color: 'rgba(143,168,214,0.45)', padding: '3px 10px', borderRadius: 999, background: 'rgba(111,168,255,0.06)', border: '1px solid rgba(111,168,255,0.12)' }}>{c.badge}</span>
+                  </div>
+                  <h3 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(1.25rem,2.5vw,1.55rem)', fontWeight: 500, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.2, marginBottom: '.4rem' }}>{c.title}</h3>
+                  <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.75rem', fontWeight: 500, color: c.accentColor, opacity: 0.75, marginBottom: '.85rem' }}>{c.theme}</p>
+                  <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.82rem', lineHeight: 1.74, color: CM.stardust, marginBottom: '1.25rem' }}>{c.desc}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: '1.5rem' }}>
+                    {c.tags.map(tag => (
+                      <span key={tag} style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.66rem', color: CM.stardust, opacity: 0.75, padding: '4px 12px', borderRadius: 999, background: `${c.accentColor}0a`, border: `1px solid ${c.accentColor}20` }}>{tag}</span>
+                    ))}
+                  </div>
+                  {/* Demo buttons */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 'auto' }}>
+                    {idx === 2 ? (
+                      <>
+                        <Link href={c.demoHref} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 600, color: '#A0C4FF', background: 'rgba(160,196,255,0.1)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 18px', borderRadius: 999, border: '1px solid rgba(160,196,255,0.35)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
                           {c.demoIcon} {c.demoLabel}
                         </Link>
                         {c.demoHref2 && (
-                          <Link href={c.demoHref2} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 600, color: '#A0C4FF', background: 'rgba(160,196,255,0.07)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 18px', borderRadius: 999, border: '1px solid rgba(160,196,255,0.28)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s' }}>
+                          <Link href={c.demoHref2} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.77rem', fontWeight: 600, color: '#A0C4FF', background: 'rgba(160,196,255,0.07)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 18px', borderRadius: 999, border: '1px solid rgba(160,196,255,0.28)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
                             {c.demoIcon2} {c.demoLabel2}
                           </Link>
                         )}
-                      </div>
+                      </>
+                    ) : (
+                      <Link href={c.demoHref} style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.8rem', fontWeight: 600, color: c.accentColor, background: `${c.accentColor}12`, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '10px 20px', borderRadius: 999, border: `1px solid ${c.accentColor}45`, textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
+                        {c.demoIcon} {c.demoLabel}
+                      </Link>
                     )}
-                    <Link href="/contact" style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.8rem', fontWeight: 600, color: c.accentColor, background: 'transparent', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '10px 20px', borderRadius: 999, marginBottom: 8, border: `1px solid ${c.accentColor}45`, textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s', boxSizing: 'border-box' }}>
-                      <Receipt style={{ width: 12, height: 12 }} /> View Pricing & Details
-                    </Link>
-                    <Link href="/contact" style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.76rem', fontWeight: 500, color: 'rgba(143,168,214,0.55)', background: 'transparent', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 16px', borderRadius: 999, border: '1px solid rgba(111,168,255,0.12)', textDecoration: 'none', transition: 'color .2s,border-color .2s' }}>
-                      Contact to Start <ArrowRight style={{ width: 11, height: 11 }} />
+                    <Link href="/contact" style={{ width: '100%', fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.76rem', fontWeight: 500, color: 'rgba(143,168,214,0.55)', background: 'transparent', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 16px', borderRadius: 999, border: '1px solid rgba(111,168,255,0.12)', textDecoration: 'none', transition: 'color .2s,border-color .2s', boxSizing: 'border-box' }}>
+                      Discuss This Project <ArrowRight style={{ width: 11, height: 11 }} />
                     </Link>
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
           <div style={{ marginTop: '3.5rem', textAlign: 'center' }}>
             <p style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(1rem,2vw,1.3rem)', fontWeight: 400, fontStyle: 'italic', color: CM.stardust, opacity: 0.7, marginBottom: '1.5rem' }}>&ldquo;I want <em>my</em> platform to feel like this.&rdquo;</p>
             <Link href="/contact" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 600, color: CM.nebulaGold, background: 'transparent', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 999, border: '1px solid rgba(212,177,90,0.35)', textDecoration: 'none', transition: 'background .2s,box-shadow .2s,border-color .2s,transform .2s' }}>
               Discuss Your Vision <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* ── S6: Product Breakdown ─────────────────────────────── */}
+      <div style={{ background: `linear-gradient(180deg,${CM.void} 0%,${CM.midnight} 100%)`, padding: 'clamp(5rem,10vh,8rem) 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.4 }}>
+          <StarField count={35} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+          <ConstellationSVG w={1200} h={600} seed={17} />
+        </div>
+        <AstronautFloat img={4} style={{ right: '3%', top: '18%' }} size={90} dur={28} del={-5} rot={-8} />
+        <div className="max-w-4xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.22em', textTransform: 'uppercase', color: CM.nebulaGold, marginBottom: '1rem' }}>Pricing</p>
+            <h2 style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: 'clamp(2.4rem,6vw,4rem)', fontWeight: 400, fontStyle: 'italic', color: CM.moonlight, lineHeight: 1.05, marginBottom: '1rem' }}>Product Breakdown</h2>
+            <p style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.9rem', lineHeight: 1.75, color: CM.stardust, maxWidth: 480, margin: '0 auto' }}>Transparent scope and pricing for each service tier — know exactly what you're getting and how long it takes.</p>
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: '1.75rem' }}>
+            {PRODUCT_TIERS.map(tier => (
+              <button
+                key={tier.id}
+                onClick={() => setActiveTier(tier.id)}
+                style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.78rem', fontWeight: 500, padding: '8px 18px', borderRadius: 999, cursor: 'pointer', transition: 'all .18s', border: activeTier === tier.id ? `1px solid ${CM.nebulaGold}` : '1px solid rgba(111,168,255,0.18)', background: activeTier === tier.id ? CM.nebulaGold : 'rgba(11,30,58,0.5)', color: activeTier === tier.id ? CM.midnight : CM.stardust, letterSpacing: '.01em' }}
+              >
+                {tier.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Feature list */}
+          <div style={{ background: 'rgba(11,30,58,0.55)', backdropFilter: 'blur(14px)', border: '1px solid rgba(111,168,255,0.12)', borderRadius: 18, overflow: 'hidden', marginBottom: '1rem' }}>
+            <div style={{ padding: '12px 24px', borderBottom: '1px solid rgba(111,168,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.5 }}>Feature</span>
+              <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.62rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.5 }}>Est. Time</span>
+            </div>
+            {activeTierData.features.map((feat, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '13px 24px', borderBottom: i < activeTierData.features.length - 1 ? '1px solid rgba(111,168,255,0.07)' : 'none', gap: 12, transition: 'background .15s' }} className="cm-card-hover">
+                <div>
+                  <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.84rem', fontWeight: 500, color: CM.moonlight }}>{feat.name}</div>
+                  <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.72rem', color: CM.stardust, opacity: 0.6, marginTop: 2 }}>{feat.desc}</div>
+                </div>
+                <span style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.76rem', color: CM.stardust, opacity: 0.7, whiteSpace: 'nowrap' }}>{feat.time}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Price summary */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 1, background: 'rgba(111,168,255,0.08)', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(111,168,255,0.1)' }}>
+            <div style={{ background: 'rgba(11,30,58,0.6)', padding: '20px 22px' }}>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.45, marginBottom: 6 }}>Total Time</div>
+              <div style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.45rem', fontWeight: 500, color: CM.moonlight }}>{activeTierData.totalTime}</div>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.71rem', color: CM.stardust, opacity: 0.5, marginTop: 3 }}>{activeTierData.totalTimeDesc}</div>
+            </div>
+            <div style={{ background: 'rgba(11,30,58,0.6)', padding: '20px 22px', borderLeft: '1px solid rgba(111,168,255,0.08)', borderRight: '1px solid rgba(111,168,255,0.08)' }}>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: CM.stardust, opacity: 0.45, marginBottom: 6 }}>Standard Rate</div>
+              <div style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.45rem', fontWeight: 500, color: CM.moonlight }}>{activeTierData.originalPrice}</div>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.71rem', color: CM.stardust, opacity: 0.5, marginTop: 3 }}>{activeTierData.originalDesc}</div>
+            </div>
+            <div style={{ background: 'rgba(212,177,90,0.07)', padding: '20px 22px' }}>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.6rem', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: CM.nebulaGold, opacity: 0.7, marginBottom: 6 }}>Founding Rate</div>
+              <div style={{ fontFamily: 'var(--font-cormorant,"Cormorant Garamond",Georgia,serif)', fontSize: '1.45rem', fontWeight: 500, color: CM.nebulaGold }}>{activeTierData.foundingPrice}</div>
+              <div style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.71rem', color: CM.nebulaGold, opacity: 0.55, marginTop: 3 }}>{activeTierData.foundingDesc}</div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+            <Link href="/contact" className="cm-glow-btn" style={{ fontFamily: 'var(--font-outfit,"Outfit",sans-serif)', fontSize: '.85rem', fontWeight: 600, background: CM.nebulaGold, color: CM.midnight, padding: '14px 32px', borderRadius: 999, border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 9, letterSpacing: '.03em', textDecoration: 'none' }}>
+              Start a Project <ArrowRight style={{ width: 14, height: 14 }} />
             </Link>
           </div>
         </div>

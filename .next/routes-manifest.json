@@ -165,6 +165,12 @@
       "namedRegex": "^/croissantsmoon/login(?:/)?$"
     },
     {
+      "page": "/croissantsmoon/proposal",
+      "regex": "^/croissantsmoon/proposal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/croissantsmoon/proposal(?:/)?$"
+    },
+    {
       "page": "/croissantsmoon/proposals",
       "regex": "^/croissantsmoon/proposals(?:/)?$",
       "routeKeys": {},
