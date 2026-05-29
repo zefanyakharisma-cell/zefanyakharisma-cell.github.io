@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { updateProposal } from '@/lib/actions/proposals'
 import { useRouter } from 'next/navigation'
-import { Save, Plus, Trash2, GripVertical } from 'lucide-react'
+import { Save, Plus, Trash2, Eye, EyeOff } from 'lucide-react'
 import type { Proposal, ProposalContent, ProposalBlock, ProposalBlockType } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -36,17 +36,23 @@ function BlockEditor({ block, onChange, onRemove }: {
   }
 
   return (
-    <div className="bg-cm-elevated border border-cm-border rounded-xl p-4 space-y-3">
+    <div className={cn('bg-cm-elevated border rounded-xl p-4 space-y-3', block.visible ? 'border-cm-border' : 'border-cm-border/40 opacity-50')}>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <GripVertical size={14} className="text-cm-muted cursor-grab" />
-          <span className="text-xs font-medium text-cm-text uppercase tracking-wider">
-            {BLOCK_TYPES.find(b => b.type === block.type)?.label ?? block.type}
-          </span>
+        <span className={cn('text-xs font-medium uppercase tracking-wider', block.visible ? 'text-cm-text' : 'text-cm-muted line-through')}>
+          {BLOCK_TYPES.find(b => b.type === block.type)?.label ?? block.type}
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => onChange({ ...block, visible: !block.visible })}
+            className="text-cm-subtle hover:text-cm-text transition-colors p-1"
+            title={block.visible ? 'Hide section' : 'Show section'}
+          >
+            {block.visible ? <Eye size={13} /> : <EyeOff size={13} className="text-cm-muted" />}
+          </button>
+          <button onClick={onRemove} className="text-cm-subtle hover:text-red-400 transition-colors p-1">
+            <Trash2 size={13} />
+          </button>
         </div>
-        <button onClick={onRemove} className="text-cm-subtle hover:text-red-400 transition-colors p-1">
-          <Trash2 size={13} />
-        </button>
       </div>
 
       {block.type === 'hero' && (
@@ -83,6 +89,25 @@ function BlockEditor({ block, onChange, onRemove }: {
       )}
       {block.type === 'text' && (
         <Textarea label="Content" value={data.content ?? ''} onChange={e => setField('content', e.target.value)} rows={4} />
+      )}
+      {block.type === 'website_analysis' && (
+        <div className="space-y-3">
+          <Input label="Current Website URL" value={data.url ?? ''} onChange={e => setField('url', e.target.value)} placeholder="https://client-website.com" />
+          <Textarea label="Analysis Notes" value={data.notes ?? ''} onChange={e => setField('notes', e.target.value)} placeholder="Performance issues, outdated design, missing features..." rows={4} />
+        </div>
+      )}
+      {block.type === 'redesign_concept' && (
+        <div className="space-y-3">
+          <Input label="Concept Title" value={data.title ?? ''} onChange={e => setField('title', e.target.value)} placeholder="Modern Institutional Redesign" />
+          <Textarea label="Concept Description" value={data.description ?? ''} onChange={e => setField('description', e.target.value)} placeholder="Describe the visual direction, tone, and key design decisions..." rows={4} />
+          <Input label="Figma / Prototype URL (optional)" value={data.prototype_url ?? ''} onChange={e => setField('prototype_url', e.target.value)} placeholder="https://figma.com/..." />
+        </div>
+      )}
+      {block.type === 'infrastructure' && (
+        <div className="space-y-3">
+          <Textarea label="Hosting & Infrastructure Options (one per line)" value={data.options ?? ''} onChange={e => setField('options', e.target.value)} placeholder="Vercel — $20/mo — Managed CDN, auto-deploy&#10;VPS (DigitalOcean) — $12/mo — Full control, manual setup" rows={4} />
+          <Input label="Recommended Option" value={data.recommended ?? ''} onChange={e => setField('recommended', e.target.value)} placeholder="Vercel" />
+        </div>
       )}
       {block.type === 'demo_embed' && (
         <Input label="Embed URL" value={data.url ?? ''} onChange={e => setField('url', e.target.value)} placeholder="https://..." />
@@ -142,20 +167,7 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
       </div>
 
       <div className="p-5 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            label="Greeting"
-            value={content.greeting ?? ''}
-            onChange={e => setContent({ ...content, greeting: e.target.value })}
-            placeholder="Dear {{contact_person}}"
-          />
-          <Input
-            label="Organization (branding)"
-            value={content.branding?.org_name ?? ''}
-            onChange={e => setContent({ ...content, branding: { ...content.branding, org_name: e.target.value } })}
-            placeholder="Organization name"
-          />
-        </div>
+        <p className="text-xs text-cm-subtle">Use a <span className="text-cm-text font-medium">Personalized Greeting</span> block below to add an opening message. Use <span className="text-cm-text font-medium">{'{{contact_person}}'}</span> and <span className="text-cm-text font-medium">{'{{organization_name}}'}</span> as placeholders.</p>
 
         <div className="space-y-3 mt-2">
           {content.sections.map((block, i) => (

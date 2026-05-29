@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { ProposalStatusBadge } from '@/components/ui/Badge'
+import { ProposalStatusBadge, TemperatureBadge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Button } from '@/components/ui/Button'
 import { formatDate, timeAgo, daysUntil } from '@/lib/utils'
 import Link from 'next/link'
-import { FileText, Plus, Eye, Clock, Copy } from 'lucide-react'
+import { FileText, Plus, Eye, Search } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Proposals' }
 
@@ -36,12 +36,24 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
         </Link>
       </div>
 
+      <div className="mb-5">
+        <form className="relative max-w-sm">
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cm-muted pointer-events-none" />
+          <input
+            name="search"
+            defaultValue={search}
+            placeholder="Search proposals..."
+            className="w-full bg-cm-elevated border border-cm-border rounded-lg pl-9 pr-4 py-2.5 text-sm text-cm-text placeholder:text-cm-muted focus:outline-none focus:ring-1 focus:ring-cm-accent focus:border-cm-accent transition-colors"
+          />
+        </form>
+      </div>
+
       {proposals.length === 0 ? (
         <EmptyState
           icon={<FileText size={20} />}
-          title="No proposals yet"
-          description="Create your first proposal to share with a lead."
-          action={<Link href="/proposals/new"><Button variant="primary"><Plus size={14} /> New Proposal</Button></Link>}
+          title={search ? 'No proposals match your search' : 'No proposals yet'}
+          description={search ? `No results for "${search}".` : 'Create your first proposal to share with a lead.'}
+          action={!search ? <Link href="/proposals/new"><Button variant="primary"><Plus size={14} /> New Proposal</Button></Link> : undefined}
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
@@ -59,12 +71,17 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
                   className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
                 >
                   <div className="min-w-0">
-                    <Link href={`/proposal/${p.slug}`} className="block group/title">
+                    <Link href={`/proposals/${p.id}`} className="block group/title">
                       <p className="text-sm font-medium text-cm-text group-hover/title:text-cm-white truncate transition-colors">{p.title}</p>
                     </Link>
-                    <Link href={`/proposals/${p.id}`} className="text-xs text-cm-subtle hover:text-cm-text mt-0.5 font-mono transition-colors">/{p.slug}</Link>
+                    <a href={`/proposal/${p.slug}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cm-subtle hover:text-cm-accent mt-0.5 font-mono transition-colors">/{p.slug} ↗</a>
                   </div>
-                  <p className="text-sm text-cm-subtle truncate">{(p.lead as { organization?: string })?.organization ?? '—'}</p>
+                  <div className="min-w-0 space-y-0.5">
+                    <p className="text-sm text-cm-subtle truncate">{(p.lead as { organization?: string; temperature?: string })?.organization ?? '—'}</p>
+                    {(p.lead as { temperature?: string })?.temperature && (
+                      <TemperatureBadge temp={(p.lead as { temperature: string }).temperature as 'cold' | 'warm' | 'hot'} />
+                    )}
+                  </div>
                   <ProposalStatusBadge status={p.status} />
                   <span className="flex items-center gap-1 text-sm text-cm-subtle">
                     <Eye size={12} /> {p.views}

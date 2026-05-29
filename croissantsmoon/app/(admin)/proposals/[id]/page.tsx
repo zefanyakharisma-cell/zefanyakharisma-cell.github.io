@@ -9,6 +9,7 @@ import { ArrowLeft, Eye, ExternalLink } from 'lucide-react'
 import { ProposalActions } from '@/components/admin/ProposalActions'
 import { ProposalEditor } from '@/components/admin/ProposalEditor'
 import { CopyButton } from '@/components/ui/CopyButton'
+import { Button } from '@/components/ui/Button'
 
 export const metadata: Metadata = { title: 'Proposal Detail' }
 
@@ -41,11 +42,21 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
         <div>
           <h1 className="text-2xl font-semibold text-cm-white">{proposal.title}</h1>
           <p className="text-sm text-cm-subtle mt-1">
-            {(proposal.lead as { organization?: string })?.organization ?? '—'} · /{proposal.slug}
+            {(proposal.lead as { id?: string; organization?: string })?.id ? (
+              <Link href={`/leads/${(proposal.lead as { id: string }).id}`} className="hover:text-cm-text transition-colors">
+                {(proposal.lead as { organization?: string }).organization ?? '—'}
+              </Link>
+            ) : (
+              <span>{(proposal.lead as { organization?: string })?.organization ?? '—'}</span>
+            )}
+            {' · '}/{proposal.slug}
           </p>
         </div>
         <div className="flex items-center gap-3">
           <ProposalStatusBadge status={proposal.status} />
+          <a href={proposalUrl} target="_blank" rel="noopener noreferrer">
+            <Button variant="secondary" size="sm"><Eye size={13} /> Preview Portal</Button>
+          </a>
           <ProposalActions proposal={proposal} />
         </div>
       </div>
