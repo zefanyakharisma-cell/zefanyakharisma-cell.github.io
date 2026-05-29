@@ -54,14 +54,15 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
             {proposals.map(p => {
               const expiresIn = p.expires_at ? daysUntil(p.expires_at) : null
               return (
-                <Link
+                <div
                   key={p.id}
-                  href={`/proposals/${p.id}`}
                   className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
                 >
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{p.title}</p>
-                    <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
+                    <Link href={`/proposal/${p.slug}`} className="block group/title">
+                      <p className="text-sm font-medium text-cm-text group-hover/title:text-cm-white truncate transition-colors">{p.title}</p>
+                    </Link>
+                    <Link href={`/proposals/${p.id}`} className="text-xs text-cm-subtle hover:text-cm-text mt-0.5 font-mono transition-colors">/{p.slug}</Link>
                   </div>
                   <p className="text-sm text-cm-subtle truncate">{(p.lead as { organization?: string })?.organization ?? '—'}</p>
                   <ProposalStatusBadge status={p.status} />
@@ -76,7 +77,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
                       : '—'}
                   </span>
                   <span className="text-xs text-cm-subtle">{formatDate(p.created_at)}</span>
-                </Link>
+                </div>
               )
             })}
           </div>

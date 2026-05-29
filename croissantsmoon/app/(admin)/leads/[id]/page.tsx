@@ -108,10 +108,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             {lead.proposals && lead.proposals.length > 0 ? (
               <div className="divide-y divide-cm-border">
                 {lead.proposals.map((p: { id: string; title: string; slug: string; status: string; token_status: string; views: number; expires_at: string | null; created_at: string }) => (
-                  <Link key={p.id} href={`/proposals/${p.id}`} className="flex items-center justify-between px-6 py-4 hover:bg-cm-elevated/50 transition-colors group">
+                  <div key={p.id} className="flex items-center justify-between px-6 py-4 hover:bg-cm-elevated/50 transition-colors group">
                     <div>
-                      <p className="text-sm font-medium text-cm-text group-hover:text-cm-white transition-colors">{p.title}</p>
-                      <p className="text-xs text-cm-subtle mt-0.5">{formatDate(p.created_at)}</p>
+                      <Link href={`/proposal/${p.slug}`} className="group/title">
+                        <p className="text-sm font-medium text-cm-text group-hover/title:text-cm-white transition-colors">{p.title}</p>
+                      </Link>
+                      <Link href={`/proposals/${p.id}`} className="text-xs text-cm-subtle hover:text-cm-text mt-0.5 font-mono transition-colors">/{p.slug}</Link>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1 text-xs text-cm-subtle">
@@ -119,7 +121,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                       </span>
                       <ProposalStatusBadge status={p.status as 'draft' | 'active' | 'expired' | 'archived' | 'closed_won' | 'closed_lost'} />
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             ) : (
