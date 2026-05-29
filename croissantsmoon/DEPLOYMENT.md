@@ -66,7 +66,6 @@ ADMIN_EMAIL=your-admin-email@example.com
 TOKEN_SECRET=your-32-char-random-secret
 
 # Email (proposal outreach)
-ANTHROPIC_API_KEY=sk-ant-...        # get from console.anthropic.com
 RESEND_API_KEY=re_...               # get from resend.com
 RESEND_FROM_EMAIL=Zefanya @ CroissantsMoon <hello@croissantsmoon.studio>
 ```

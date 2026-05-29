@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import type { ProposalBlock } from '@/types'
-
-const anthropic = new Anthropic()
 
 export async function POST(req: Request) {
   try {
@@ -14,57 +11,37 @@ export async function POST(req: Request) {
     const blocks: ProposalBlock[] = proposal.content?.sections ?? []
     const get = (type: string) => blocks.find(b => b.type === type)?.data as Record<string, string> | undefined
 
-    const contentLines = [
-      get('audit_findings')?.findings ? `Audit findings: ${get('audit_findings')!.findings}` : null,
-      get('website_analysis')?.notes ? `Website analysis: ${get('website_analysis')!.notes}` : null,
-      get('website_analysis')?.url ? `Their current site: ${get('website_analysis')!.url}` : null,
-      get('features')?.features ? `Proposed features:\n${get('features')!.features}` : null,
-      get('pricing')?.package ? `Package: ${get('pricing')!.package} — ${get('pricing')!.price}` : null,
-    ].filter(Boolean).join('\n')
+    const findings = get('audit_findings')?.findings
+    const websiteNotes = get('website_analysis')?.notes
+    const problemsText = [findings, websiteNotes].filter(Boolean).join('\n\n')
 
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
-      system: `You write outreach emails for Zefanya Kharisma, founder of CroissantsMoon Studio — a boutique digital agency specializing in premium institutional websites, university portals, and corporate digital transformations, based in Indonesia. Zefanya's approach is research-driven, detail-oriented, and treats each project as a long-term partnership. Write in first person as Zefanya.`,
-      messages: [
-        {
-          role: 'user',
-          content: `Write a personalized outreach email to introduce CroissantsMoon and share a proposal with a lead.
+    const subject = `A Proposal for ${lead.organization} — ${proposal.title}`
 
-Lead:
-- Name: ${lead.contact_person}
-- Organization: ${lead.organization}
-- Industry: ${lead.industry ?? 'not specified'}
-- Current website: ${lead.website ?? 'not provided'}
-- Notes: ${lead.notes ?? 'none'}
+    const body = `Dear ${lead.contact_person},
 
-Proposal:
-- Title: ${proposal.title}
-- Proposal URL: ${proposalUrl}
-- Access Token: ${proposal.token}
-${contentLines ? `\nContent highlights:\n${contentLines}` : ''}
+My name is Zefanya Kharisma, founder of CroissantsMoon Studio — a boutique digital agency specializing in premium institutional websites, university portals, and corporate digital transformations.
 
-The email must include:
-1. Brief personal intro (Zefanya, CroissantsMoon Studio)
-2. Why you're reaching out — specific to their organization and industry context
-3. 2–3 specific problems you've identified with their digital presence (draw from the notes and industry; be concrete, not generic)
-4. How CroissantsMoon addresses those problems
-5. The proposal URL and access token on their own clearly labeled lines
-6. A CTA: invite them to reply or schedule a discovery call
+I'm reaching out because ${lead.organization} caught my attention${lead.industry ? `, particularly within the ${lead.industry} space` : ''}. After reviewing your current digital presence${lead.website ? ` at ${lead.website}` : ''}, I identified a few areas where a stronger digital foundation could make a meaningful difference:
 
-Tone: professional, warm, confident, consultative. Not salesy. Under 280 words.
+${problemsText || `Your organization deserves a digital presence that reflects the quality and credibility of your work. Many institutions in your space struggle with outdated design, slow performance, and limited functionality — gaps that quietly cost trust and opportunity.`}
 
-Return ONLY valid JSON with exactly two keys: {"subject": "...", "body": "..."}
-The body uses plain text. Use \\n for line breaks. No HTML tags.`,
-        },
-      ],
-    })
+At CroissantsMoon, we approach each project as a long-term partnership — combining strategic thinking with premium execution to deliver digital experiences that genuinely represent your organization's value.
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : ''
-    const jsonMatch = text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) throw new Error('Could not parse Claude response')
+I've prepared a detailed proposal specifically for ${lead.organization}:
 
-    const { subject, body } = JSON.parse(jsonMatch[0])
+  Proposal URL: ${proposalUrl}
+  Access Token: ${proposal.token}
+
+Visit the link above and enter the token to access your private proposal portal.
+
+I'd love to walk you through it and hear your thoughts. Feel free to reply to this email or suggest a time for a brief discovery call — I'm happy to work around your schedule.
+
+Looking forward to connecting,
+
+Zefanya Kharisma
+Founder, CroissantsMoon Studio
+contact@croissantsmoon.studio`
+
     return NextResponse.json({ subject, body })
   } catch (err) {
     console.error('[email/generate]', err)
