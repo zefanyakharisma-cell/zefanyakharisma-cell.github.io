@@ -77,23 +77,17 @@ export default async function ProposalPage() {
             <div className="divide-y divide-cm-border">
               {proposals.map(p => {
                 const expiresIn = p.expires_at ? daysUntil(p.expires_at) : null
-                const inner = (
-                  <>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{p.title}</p>
-                      <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
-                    </div>
+                const gridClass = `grid gap-4 px-6 py-4 items-center group ${isAdmin ? 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr_auto]' : 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr]'}`
 
+                const sharedCells = (
+                  <>
                     <p className="text-sm text-cm-subtle truncate">
                       {(p.lead as { organization?: string })?.organization ?? '—'}
                     </p>
-
                     <ProposalStatusBadge status={p.status} />
-
                     <span className="flex items-center gap-1 text-sm text-cm-subtle">
                       <Eye size={12} /> {p.views}
                     </span>
-
                     <span className={`text-xs ${expiresIn !== null && expiresIn <= 3 ? 'text-red-400' : 'text-cm-subtle'}`}>
                       {expiresIn !== null
                         ? expiresIn <= 0 ? 'Expired'
@@ -101,20 +95,27 @@ export default async function ProposalPage() {
                           : `${expiresIn}d`
                         : '—'}
                     </span>
-
                     {isAdmin && <ProposalActions proposal={p} />}
                   </>
                 )
 
-                const gridClass = `grid gap-4 px-6 py-4 items-center group ${isAdmin ? 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr_auto]' : 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr]'}`
-
                 return isAdmin ? (
-                  <Link key={p.id} href={`/proposals/${p.id}`} className={gridClass}>
-                    {inner}
-                  </Link>
+                  <div key={p.id} className={`${gridClass} hover:bg-cm-elevated/30 transition-colors`}>
+                    <div className="min-w-0">
+                      <Link href={`/proposal/${p.slug}`} className="block">
+                        <p className="text-sm font-medium text-cm-text hover:text-cm-white truncate transition-colors">{p.title}</p>
+                      </Link>
+                      <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
+                    </div>
+                    {sharedCells}
+                  </div>
                 ) : (
                   <Link key={p.id} href={`/proposal/${p.slug}`} className={`${gridClass} hover:bg-cm-elevated/30 transition-colors`}>
-                    {inner}
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors underline-offset-2 hover:underline">{p.title}</p>
+                      <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
+                    </div>
+                    {sharedCells}
                   </Link>
                 )
               })}
