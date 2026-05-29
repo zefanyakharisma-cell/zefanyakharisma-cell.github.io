@@ -100,7 +100,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-cm-white">Proposals</h2>
-                <Link href={`/proposals/new?lead=${lead.id}`} className="text-xs text-cm-accent hover:underline">
+                <Link href={`/croissantsmoon/proposals/new?lead=${lead.id}`} className="text-xs text-cm-accent hover:underline">
                   + New Proposal
                 </Link>
               </div>
@@ -108,7 +108,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             {lead.proposals && lead.proposals.length > 0 ? (
               <div className="divide-y divide-cm-border">
                 {lead.proposals.map((p: { id: string; title: string; slug: string; status: string; token_status: string; views: number; expires_at: string | null; created_at: string }) => (
-                  <Link key={p.id} href={`/proposals/${p.id}`} className="flex items-center justify-between px-6 py-4 hover:bg-cm-elevated/50 transition-colors group">
+                  <Link key={p.id} href={`/croissantsmoon/proposals/${p.id}`} className="flex items-center justify-between px-6 py-4 hover:bg-cm-elevated/50 transition-colors group">
                     <div>
                       <p className="text-sm font-medium text-cm-text group-hover:text-cm-white transition-colors">{p.title}</p>
                       <p className="text-xs text-cm-subtle mt-0.5">{formatDate(p.created_at)}</p>

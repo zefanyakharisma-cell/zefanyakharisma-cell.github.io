@@ -32,7 +32,7 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
 
   return (
     <div className="px-8 py-8 animate-fade-in">
-      <Link href="/proposals" className="flex items-center gap-2 text-sm text-cm-subtle hover:text-cm-text transition-colors mb-5">
+      <Link href="/croissantsmoon/proposals" className="flex items-center gap-2 text-sm text-cm-subtle hover:text-cm-text transition-colors mb-5">
         <ArrowLeft size={14} /> Back to Proposals
       </Link>
 

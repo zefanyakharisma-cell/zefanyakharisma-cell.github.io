@@ -44,7 +44,7 @@ export function NewProposalForm({ leads, templates, preselectedLead }: Props) {
         template_id: (form.get('template_id') as string) || undefined,
         expiration_days: Number(form.get('expiration_days') ?? 14),
       })
-      router.push(`/proposals/${proposal.id}`)
+      router.push(`/croissantsmoon/proposals/${proposal.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create proposal')
       setLoading(false)

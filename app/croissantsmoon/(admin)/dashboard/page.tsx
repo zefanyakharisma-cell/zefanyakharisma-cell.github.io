@@ -104,13 +104,13 @@ export default async function DashboardPage() {
               <TrendingUp size={15} className="text-cm-subtle" />
               <span className="text-sm font-medium text-cm-text">Top Proposals</span>
             </div>
-            <Link href="/proposals" className="text-xs text-cm-subtle hover:text-cm-accent transition-colors flex items-center gap-1">
+            <Link href="/croissantsmoon/proposals" className="text-xs text-cm-subtle hover:text-cm-accent transition-colors flex items-center gap-1">
               View all <ArrowRight size={11} />
             </Link>
           </div>
           <div className="divide-y divide-cm-border">
             {topProposals?.map((proposal, i) => (
-              <Link key={proposal.id} href={`/proposals/${proposal.id}`} className="flex items-center gap-4 px-6 py-3.5 hover:bg-cm-elevated/50 transition-colors group">
+              <Link key={proposal.id} href={`/croissantsmoon/proposals/${proposal.id}`} className="flex items-center gap-4 px-6 py-3.5 hover:bg-cm-elevated/50 transition-colors group">
                 <span className="text-xs font-mono text-cm-muted w-4 flex-shrink-0">{i + 1}</span>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{proposal.title}</p>

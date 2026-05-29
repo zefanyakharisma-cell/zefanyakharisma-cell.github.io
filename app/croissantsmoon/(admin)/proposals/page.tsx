@@ -31,7 +31,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
           <h1 className="text-2xl font-semibold text-cm-white">Proposals</h1>
           <p className="text-sm text-cm-subtle mt-1">{proposals.length} proposals</p>
         </div>
-        <Link href="/proposals/new">
+        <Link href="/croissantsmoon/proposals/new">
           <Button variant="primary"><Plus size={14} /> New Proposal</Button>
         </Link>
       </div>
@@ -41,7 +41,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
           icon={<FileText size={20} />}
           title="No proposals yet"
           description="Create your first proposal to share with a lead."
-          action={<Link href="/proposals/new"><Button variant="primary"><Plus size={14} /> New Proposal</Button></Link>}
+          action={<Link href="/croissantsmoon/proposals/new"><Button variant="primary"><Plus size={14} /> New Proposal</Button></Link>}
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
@@ -56,7 +56,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
               return (
                 <Link
                   key={p.id}
-                  href={`/proposals/${p.id}`}
+                  href={`/croissantsmoon/proposals/${p.id}`}
                   className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
                 >
                   <div className="min-w-0">

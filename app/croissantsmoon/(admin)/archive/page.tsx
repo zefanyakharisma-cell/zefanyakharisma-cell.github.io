@@ -45,7 +45,7 @@ export default async function ArchivePage() {
             {proposals.map(p => (
               <Link
                 key={p.id}
-                href={`/proposals/${p.id}`}
+                href={`/croissantsmoon/proposals/${p.id}`}
                 className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
               >
                 <div className="min-w-0">
