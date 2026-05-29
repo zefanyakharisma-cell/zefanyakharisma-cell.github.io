@@ -7,6 +7,7 @@ import { formatCurrency, formatDate, timeAgo } from '@/lib/utils'
 import Link from 'next/link'
 import { ArrowLeft, Globe, Mail, Building2, ExternalLink, Eye } from 'lucide-react'
 import { LeadActions } from '@/components/admin/LeadActions'
+import { EditLeadModal } from '@/components/admin/EditLeadModal'
 
 export const metadata: Metadata = { title: 'Lead Detail' }
 
@@ -48,6 +49,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <div className="flex items-center gap-3">
             <TemperatureBadge temp={lead.temperature} />
             <LeadStatusBadge status={lead.status} />
+            <EditLeadModal lead={lead} />
             <LeadActions lead={lead} />
           </div>
         </div>

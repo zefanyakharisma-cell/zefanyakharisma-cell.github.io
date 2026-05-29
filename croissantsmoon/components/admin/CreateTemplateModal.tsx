@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input, Select, Textarea } from '@/components/ui/Input'
-import { createClient } from '@/lib/supabase/client'
+import { createTemplate } from '@/lib/actions/templates'
 import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 
@@ -29,16 +29,11 @@ export function CreateTemplateModal() {
     setLoading(true)
     const form = new FormData(e.currentTarget)
     try {
-      const supabase = createClient()
-      const { error: err } = await supabase.from('proposal_templates').insert({
+      await createTemplate({
         name: form.get('name') as string,
-        description: form.get('description') as string || null,
+        description: (form.get('description') as string) || null,
         project_type: form.get('project_type') as string,
-        blocks: [],
-        placeholders: {},
-        is_archived: false,
       })
-      if (err) throw err
       setOpen(false)
       router.refresh()
     } catch (err) {

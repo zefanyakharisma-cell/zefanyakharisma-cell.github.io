@@ -11,6 +11,7 @@ import { ProposalEditor } from '@/components/admin/ProposalEditor'
 import { CopyButton } from '@/components/ui/CopyButton'
 import { Button } from '@/components/ui/Button'
 import { SendEmailModal } from '@/components/admin/SendEmailModal'
+import { EditProposalModal } from '@/components/admin/EditProposalModal'
 
 export const metadata: Metadata = { title: 'Proposal Detail' }
 
@@ -55,6 +56,7 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
         </div>
         <div className="flex items-center gap-3">
           <ProposalStatusBadge status={proposal.status} />
+          <EditProposalModal proposal={proposal} />
           <a href={proposalUrl} target="_blank" rel="noopener noreferrer">
             <Button variant="secondary" size="sm"><Eye size={13} /> Preview Portal</Button>
           </a>

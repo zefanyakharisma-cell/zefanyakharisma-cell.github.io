@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { formatDate } from '@/lib/utils'
-import { LayoutTemplate, Plus } from 'lucide-react'
+import { LayoutTemplate } from 'lucide-react'
 import { CreateTemplateModal } from '@/components/admin/CreateTemplateModal'
+import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Templates' }
 
@@ -68,6 +68,9 @@ export default async function TemplatesPage() {
               )}
               <div className="px-5 py-3 border-t border-cm-border flex items-center justify-between">
                 <span className="text-xs text-cm-subtle">{formatDate(t.created_at)}</span>
+                <Link href={`/templates/${t.id}`} className="text-xs text-cm-accent hover:underline">
+                  Edit →
+                </Link>
               </div>
             </Card>
           ))}
