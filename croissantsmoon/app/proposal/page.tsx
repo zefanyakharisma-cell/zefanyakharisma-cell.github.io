@@ -110,13 +110,15 @@ export default async function ProposalPage() {
                     {sharedCells}
                   </div>
                 ) : (
-                  <Link key={p.id} href={`/proposal/${p.slug}`} className={`${gridClass} hover:bg-cm-elevated/30 transition-colors`}>
+                  <div key={p.id} className={`${gridClass} hover:bg-cm-elevated/30 transition-colors`}>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors underline-offset-2 hover:underline">{p.title}</p>
+                      <Link href={`/proposal/${p.slug}`} className="block group/title">
+                        <p className="text-sm font-medium text-cm-text group-hover/title:text-cm-white truncate transition-colors">{p.title}</p>
+                      </Link>
                       <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
                     </div>
                     {sharedCells}
-                  </Link>
+                  </div>
                 )
               })}
             </div>
