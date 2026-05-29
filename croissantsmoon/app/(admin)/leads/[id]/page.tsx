@@ -12,12 +12,21 @@ export const metadata: Metadata = { title: 'Lead Detail' }
 
 async function getLead(id: string) {
   const supabase = await createClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('leads')
-    .select('*, proposals(id, title, slug, status, token_status, views, expires_at, created_at), followups(*)')
+    .select('*, proposals(id, title, slug, status, token_status, views, expires_at, created_at)')
     .eq('id', id)
     .single()
-  return data
+  if (error) {
+    console.error('[getLead]', error.message)
+    return null
+  }
+  const { data: followups } = await supabase
+    .from('followups')
+    .select('*')
+    .eq('lead_id', id)
+    .order('created_at', { ascending: false })
+  return { ...data, followups: followups ?? [] }
 }
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
