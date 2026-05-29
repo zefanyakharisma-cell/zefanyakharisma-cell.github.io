@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { ProposalStatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ProposalActions } from '@/components/admin/ProposalActions'
@@ -12,12 +12,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-async function getProposals() {
-  const supabase = await createClient()
-  const { data } = await supabase
+async function getProposals(isAdmin: boolean) {
+  const supabase = await createServiceClient()
+  let query = supabase
     .from('proposals')
     .select('*, lead:leads(organization)')
     .order('created_at', { ascending: false })
+  if (!isAdmin) query = query.eq('status', 'active')
+  const { data } = await query
   return data ?? []
 }
 
@@ -26,7 +28,7 @@ export default async function ProposalPage() {
   const { data: { user } } = await supabase.auth.getUser()
   const isAdmin = !!user
 
-  const proposals = await getProposals()
+  const proposals = await getProposals(isAdmin)
 
   return (
     <div className="min-h-screen bg-cm-black text-cm-text">
@@ -75,23 +77,11 @@ export default async function ProposalPage() {
             <div className="divide-y divide-cm-border">
               {proposals.map(p => {
                 const expiresIn = p.expires_at ? daysUntil(p.expires_at) : null
-                const row = (
-                  <div
-                    key={p.id}
-                    className={`grid gap-4 px-6 py-4 items-center ${isAdmin ? 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr_auto]' : 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr]'}`}
-                  >
+                const inner = (
+                  <>
                     <div className="min-w-0">
-                      {isAdmin ? (
-                        <Link href={`/proposals/${p.id}`} className="group">
-                          <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{p.title}</p>
-                          <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
-                        </Link>
-                      ) : (
-                        <>
-                          <p className="text-sm font-medium text-cm-text truncate">{p.title}</p>
-                          <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
-                        </>
-                      )}
+                      <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{p.title}</p>
+                      <p className="text-xs text-cm-subtle mt-0.5 font-mono">/{p.slug}</p>
                     </div>
 
                     <p className="text-sm text-cm-subtle truncate">
@@ -112,12 +102,21 @@ export default async function ProposalPage() {
                         : '—'}
                     </span>
 
-                    {isAdmin && (
-                      <ProposalActions proposal={p} />
-                    )}
-                  </div>
+                    {isAdmin && <ProposalActions proposal={p} />}
+                  </>
                 )
-                return row
+
+                const gridClass = `grid gap-4 px-6 py-4 items-center group ${isAdmin ? 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr_auto]' : 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr]'}`
+
+                return isAdmin ? (
+                  <Link key={p.id} href={`/proposals/${p.id}`} className={gridClass}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <Link key={p.id} href={`/proposal/${p.slug}`} className={`${gridClass} hover:bg-cm-elevated/30 transition-colors`}>
+                    {inner}
+                  </Link>
+                )
               })}
             </div>
           </div>

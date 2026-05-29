@@ -5,9 +5,10 @@ import { ProposalStatusBadge } from '@/components/ui/Badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { formatDate, formatCurrency, daysUntil, timeAgo } from '@/lib/utils'
 import Link from 'next/link'
-import { ArrowLeft, Eye, Copy, RefreshCw, Clock, ExternalLink, Archive } from 'lucide-react'
+import { ArrowLeft, Eye, ExternalLink } from 'lucide-react'
 import { ProposalActions } from '@/components/admin/ProposalActions'
 import { ProposalEditor } from '@/components/admin/ProposalEditor'
+import { CopyButton } from '@/components/ui/CopyButton'
 
 export const metadata: Metadata = { title: 'Proposal Detail' }
 
@@ -64,6 +65,7 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
                   <code className="flex-1 bg-cm-black border border-cm-border rounded-lg px-3 py-2 text-sm font-mono text-cm-gold">
                     {proposal.token}
                   </code>
+                  <CopyButton text={proposal.token} />
                 </div>
               </div>
               <div>
@@ -77,6 +79,7 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
                   >
                     {proposalUrl} <ExternalLink size={10} />
                   </a>
+                  <CopyButton text={proposalUrl} />
                 </div>
               </div>
               <div>
