@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { formatDate, timeAgo, daysUntil } from '@/lib/utils'
 import Link from 'next/link'
 import { FileText, Plus, Eye, Search } from 'lucide-react'
+import { ProposalRowActions } from '@/components/admin/ProposalRowActions'
 
 export const metadata: Metadata = { title: 'Proposals' }
 
@@ -57,8 +58,8 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
-          <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-3 border-b border-cm-border">
-            {['Proposal', 'Lead', 'Status', 'Views', 'Expires', 'Created'].map(h => (
+          <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr_32px] gap-4 px-6 py-3 border-b border-cm-border">
+            {['Proposal', 'Lead', 'Status', 'Views', 'Expires', 'Created', ''].map(h => (
               <span key={h} className="text-xs font-medium text-cm-subtle uppercase tracking-wider">{h}</span>
             ))}
           </div>
@@ -68,7 +69,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
               return (
                 <div
                   key={p.id}
-                  className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
+                  className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr_1fr_32px] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
                 >
                   <div className="min-w-0">
                     <Link href={`/proposals/${p.id}`} className="block group/title">
@@ -94,6 +95,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
                       : '—'}
                   </span>
                   <span className="text-xs text-cm-subtle">{formatDate(p.created_at)}</span>
+                  <ProposalRowActions id={p.id} title={p.title} status={p.status} />
                 </div>
               )
             })}

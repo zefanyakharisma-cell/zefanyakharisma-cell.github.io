@@ -7,6 +7,7 @@ import { formatCurrency, timeAgo } from '@/lib/utils'
 import Link from 'next/link'
 import { Plus, Users, Search } from 'lucide-react'
 import { CreateLeadModal } from '@/components/admin/CreateLeadModal'
+import { LeadRowActions } from '@/components/admin/LeadRowActions'
 
 export const metadata: Metadata = { title: 'Leads' }
 
@@ -57,22 +58,23 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
-          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-3 border-b border-cm-border">
-            {['Organization', 'Status', 'Temperature', 'Engagement', 'Value', 'Last Updated'].map(h => (
+          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_32px] gap-4 px-6 py-3 border-b border-cm-border">
+            {['Organization', 'Status', 'Temperature', 'Engagement', 'Value', 'Last Updated', ''].map(h => (
               <span key={h} className="text-xs font-medium text-cm-subtle uppercase tracking-wider">{h}</span>
             ))}
           </div>
           <div className="divide-y divide-cm-border">
             {leads.map(lead => (
-              <Link
+              <div
                 key={lead.id}
-                href={`/leads/${lead.id}`}
-                className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
+                className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_32px] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">
-                    {lead.organization}
-                  </p>
+                  <Link href={`/leads/${lead.id}`} className="block group/name">
+                    <p className="text-sm font-medium text-cm-text group-hover/name:text-cm-white truncate transition-colors">
+                      {lead.organization}
+                    </p>
+                  </Link>
                   <p className="text-xs text-cm-subtle mt-0.5 truncate">{lead.contact_person}</p>
                 </div>
                 <LeadStatusBadge status={lead.status} />
@@ -82,7 +84,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                   {lead.estimated_value ? formatCurrency(lead.estimated_value) : '—'}
                 </span>
                 <span className="text-xs text-cm-subtle">{timeAgo(lead.updated_at)}</span>
-              </Link>
+                <LeadRowActions id={lead.id} organization={lead.organization} />
+              </div>
             ))}
           </div>
         </div>

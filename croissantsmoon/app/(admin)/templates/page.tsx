@@ -5,6 +5,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { formatDate } from '@/lib/utils'
 import { LayoutTemplate } from 'lucide-react'
 import { CreateTemplateModal } from '@/components/admin/CreateTemplateModal'
+import { TemplateCardActions } from '@/components/admin/TemplateCardActions'
 import Link from 'next/link'
 
 export const metadata: Metadata = { title: 'Templates' }
@@ -68,9 +69,12 @@ export default async function TemplatesPage() {
               )}
               <div className="px-5 py-3 border-t border-cm-border flex items-center justify-between">
                 <span className="text-xs text-cm-subtle">{formatDate(t.created_at)}</span>
-                <Link href={`/templates/${t.id}`} className="text-xs text-cm-accent hover:underline">
-                  Edit →
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link href={`/templates/${t.id}`} className="text-xs text-cm-accent hover:underline">
+                    Edit →
+                  </Link>
+                  <TemplateCardActions id={t.id} name={t.name} />
+                </div>
               </div>
             </Card>
           ))}
