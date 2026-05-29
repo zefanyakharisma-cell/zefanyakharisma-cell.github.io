@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { trackEvent, trackSectionView } from '@/lib/analytics/tracker'
 import type { Proposal, ProposalBlock } from '@/types'
-import { Moon } from 'lucide-react'
+import { Moon, Sparkles } from 'lucide-react'
 
 function interpolate(text: string, vars: Record<string, string>): string {
   return text.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? `{{${key}}}`)
@@ -40,6 +40,16 @@ function SectionObserver({
   return <div ref={ref}>{children}</div>
 }
 
+function CelestialDivider() {
+  return (
+    <div className="flex items-center gap-3 mt-3 mb-8">
+      <div className="h-px flex-1 bg-gradient-to-r from-cm-gold/20 to-transparent" />
+      <span className="text-cm-gold/30 text-[10px]">✦</span>
+      <div className="h-px w-8 bg-cm-border/50" />
+    </div>
+  )
+}
+
 function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars: Record<string, string>; proposalId: string }) {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
@@ -48,15 +58,32 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
     case 'hero':
       return (
         <SectionObserver proposalId={proposalId} sectionType="hero">
-          <section className="py-24 px-8 text-center border-b border-cm-border">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-cm-white mb-6 text-balance leading-tight">
-              {interp(data.headline ?? 'A Strategic Proposal')}
-            </h1>
-            {data.subheadline && (
-              <p className="text-lg text-cm-subtle max-w-2xl mx-auto text-balance">
-                {interp(data.subheadline)}
-              </p>
-            )}
+          <section className="relative py-32 px-8 text-center border-b border-cm-border overflow-hidden">
+            {/* Hero atmospheric glow */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] blur-3xl opacity-50"
+                style={{ background: 'radial-gradient(ellipse at top, rgba(201,168,76,0.14) 0%, rgba(124,110,247,0.1) 45%, transparent 70%)' }}
+              />
+            </div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-2 mb-8">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-cm-gold/30" />
+                <Sparkles size={12} className="text-cm-gold/60" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-cm-gold/30" />
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light text-cm-white mb-6 text-balance leading-tight">
+                {interp(data.headline ?? 'A Strategic Proposal')}
+              </h1>
+              {data.subheadline && (
+                <p className="text-lg text-cm-subtle max-w-2xl mx-auto text-balance">
+                  {interp(data.subheadline)}
+                </p>
+              )}
+              <div className="flex items-center justify-center gap-2 mt-10">
+                <span className="text-cm-gold/20 tracking-[0.5em] text-xs">· · ·</span>
+              </div>
+            </div>
           </section>
         </SectionObserver>
       )
@@ -75,9 +102,11 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       return (
         <SectionObserver proposalId={proposalId} sectionType={block.type}>
           <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
-            <h2 className="text-2xl font-serif font-light text-cm-white mb-8">
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
               {block.type === 'audit_findings' ? 'Current State Analysis' : 'Website Analysis'}
             </h2>
+            <CelestialDivider />
             <div className="bg-cm-elevated border border-cm-border rounded-2xl p-8">
               <p className="text-sm text-cm-text leading-relaxed whitespace-pre-line">
                 {interp(data.findings ?? data.analysis ?? '')}
@@ -91,10 +120,14 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       return (
         <SectionObserver proposalId={proposalId} sectionType="features">
           <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
-            <h2 className="text-2xl font-serif font-light text-cm-white mb-8">Proposed Features</h2>
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Proposed Features
+            </h2>
+            <CelestialDivider />
             <div className="grid md:grid-cols-2 gap-3">
               {(data.features ?? '').split('\n').filter(Boolean).map((feature, i) => (
-                <div key={i} className="flex items-start gap-3 bg-cm-elevated border border-cm-border rounded-xl p-4">
+                <div key={i} className="flex items-start gap-3 bg-cm-elevated border border-cm-border rounded-xl p-4 hover:border-cm-accent/20 transition-colors">
                   <div className="w-5 h-5 rounded-full bg-cm-accent/10 border border-cm-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-cm-accent" />
                   </div>
@@ -110,8 +143,15 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       return (
         <SectionObserver proposalId={proposalId} sectionType="pricing">
           <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
-            <h2 className="text-2xl font-serif font-light text-cm-white mb-8">Investment</h2>
-            <div className="bg-cm-surface border border-cm-gold/20 rounded-2xl overflow-hidden">
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Investment
+            </h2>
+            <CelestialDivider />
+            <div
+              className="bg-cm-surface border border-cm-gold/20 rounded-2xl overflow-hidden"
+              style={{ boxShadow: '0 0 40px rgba(201,168,76,0.08)' }}
+            >
               <div className="px-8 py-6 bg-cm-gold/5 border-b border-cm-gold/10">
                 <p className="text-xs text-cm-gold uppercase tracking-widest mb-2">
                   {interp(data.package ?? 'Professional Package')}
@@ -139,7 +179,11 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       return (
         <SectionObserver proposalId={proposalId} sectionType="timeline">
           <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
-            <h2 className="text-2xl font-serif font-light text-cm-white mb-8">Project Timeline</h2>
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Project Timeline
+            </h2>
+            <CelestialDivider />
             <div className="space-y-3">
               {(data.timeline ?? '').split('\n').filter(Boolean).map((phase, i) => (
                 <div key={i} className="flex items-start gap-4">
@@ -162,22 +206,37 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
     case 'cta':
       return (
         <SectionObserver proposalId={proposalId} sectionType="cta">
-          <section className="py-20 px-8 border-t border-cm-border text-center">
-            <h2 className="text-3xl font-serif font-light text-cm-white mb-4">
-              {interp(data.heading ?? "Ready to Begin?")}
-            </h2>
-            <p className="text-sm text-cm-subtle mb-8 max-w-md mx-auto">
-              Let's schedule a discovery call to discuss your vision and next steps.
-            </p>
-            {data.email && (
-              <a
-                href={`mailto:${data.email}`}
-                onClick={() => trackEvent(proposalId, 'cta_click', { section: 'cta' })}
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-cm-gold/10 border border-cm-gold/20 text-cm-gold hover:bg-cm-gold/20 transition-all text-sm font-medium"
-              >
-                {interp(data.button ?? 'Get In Touch')}
-              </a>
-            )}
+          <section className="relative py-24 px-8 border-t border-cm-border text-center overflow-hidden">
+            {/* CTA warm glow */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-3xl opacity-40"
+                style={{ background: 'radial-gradient(ellipse at bottom, rgba(201,168,76,0.15) 0%, transparent 70%)' }}
+              />
+            </div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="h-px w-16 bg-gradient-to-r from-transparent to-cm-gold/20" />
+                <span className="text-cm-gold/40 text-xs">✦</span>
+                <div className="h-px w-16 bg-gradient-to-l from-transparent to-cm-gold/20" />
+              </div>
+              <h2 className="text-3xl font-serif font-light text-cm-white mb-4">
+                {interp(data.heading ?? "Ready to Begin?")}
+              </h2>
+              <p className="text-sm text-cm-subtle mb-8 max-w-md mx-auto">
+                Let's schedule a discovery call to discuss your vision and next steps.
+              </p>
+              {data.email && (
+                <a
+                  href={`mailto:${data.email}`}
+                  onClick={() => trackEvent(proposalId, 'cta_click', { section: 'cta' })}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-cm-gold/10 border border-cm-gold/20 text-cm-gold hover:bg-cm-gold/20 hover:border-cm-gold/40 transition-all text-sm font-medium"
+                  style={{ boxShadow: '0 0 20px rgba(201,168,76,0.08)' }}
+                >
+                  {interp(data.button ?? 'Get In Touch')}
+                </a>
+              )}
+            </div>
           </section>
         </SectionObserver>
       )
@@ -195,7 +254,11 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       return (
         <SectionObserver proposalId={proposalId} sectionType="demo">
           <section className="py-16 px-8 border-t border-cm-border max-w-5xl mx-auto w-full">
-            <h2 className="text-2xl font-serif font-light text-cm-white mb-6">Live Preview</h2>
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Live Preview
+            </h2>
+            <CelestialDivider />
             {data.url && (
               <div className="rounded-2xl overflow-hidden border border-cm-border bg-cm-elevated aspect-video">
                 <iframe src={data.url} className="w-full h-full" title="Demo" />
@@ -223,12 +286,25 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
   }, [proposal.id])
 
   return (
-    <div className="min-h-screen bg-cm-black text-cm-text">
-      <nav className="sticky top-0 z-20 bg-cm-black/80 backdrop-blur-xl border-b border-cm-border">
+    <div className="min-h-screen bg-cm-black text-cm-text relative">
+      {/* Fixed atmospheric layers — stay in place as content scrolls */}
+      <div className="fixed inset-0 pointer-events-none select-none z-0">
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[55vh] blur-3xl opacity-50"
+          style={{ background: 'radial-gradient(ellipse 70% 100% at 50% 0%, rgba(124,110,247,0.1) 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[30vh] blur-3xl opacity-30"
+          style={{ background: 'radial-gradient(ellipse 60% 100% at 50% 100%, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
+        />
+      </div>
+
+      <nav className="sticky top-0 z-20 bg-cm-black/90 backdrop-blur-xl border-b border-cm-border">
         <div className="max-w-5xl mx-auto px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Moon size={16} className="text-cm-gold" />
             <span className="text-sm font-medium text-cm-white">CroissantsMoon</span>
+            <Sparkles size={10} className="text-cm-gold/40 ml-0.5" />
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -237,7 +313,7 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto">
+      <main className="max-w-5xl mx-auto relative z-10">
         {proposal.content?.sections
           ?.filter(b => b.visible !== false)
           ?.sort((a, b) => a.order - b.order)
@@ -251,11 +327,18 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
           ))}
       </main>
 
-      <footer className="border-t border-cm-border py-8 px-8 text-center mt-12">
-        <p className="text-xs text-cm-muted">
-          Prepared exclusively for <span className="text-cm-subtle">{lead?.organization}</span> by CroissantsMoon Studio.
-          Confidential — not for distribution.
-        </p>
+      <footer className="relative z-10 border-t border-cm-border py-10 px-8 mt-12">
+        <div className="max-w-5xl mx-auto flex flex-col items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="h-px w-10 bg-gradient-to-r from-transparent to-cm-border" />
+            <Moon size={12} className="text-cm-gold/50" />
+            <div className="h-px w-10 bg-gradient-to-l from-transparent to-cm-border" />
+          </div>
+          <p className="text-xs text-cm-muted text-center">
+            Prepared exclusively for <span className="text-cm-subtle">{lead?.organization}</span> by CroissantsMoon Studio.
+          </p>
+          <p className="text-[10px] text-cm-muted/50 tracking-widest uppercase">Confidential — not for distribution</p>
+        </div>
       </footer>
     </div>
   )
