@@ -69,7 +69,7 @@ function DemoEmbed({ url }: { url: string }) {
 }
 
 function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars: Record<string, string>; proposalId: string }) {
-  const data = block.data as Record<string, string>
+  const data = (block.data ?? {}) as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
 
   switch (block.type) {
@@ -116,18 +116,40 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
       )
 
     case 'audit_findings':
-    case 'website_analysis':
       return (
-        <SectionObserver proposalId={proposalId} sectionType={block.type}>
+        <SectionObserver proposalId={proposalId} sectionType="audit_findings">
           <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
             <h2 className="text-2xl font-serif font-light text-cm-white">
               <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
-              {block.type === 'audit_findings' ? 'Current State Analysis' : 'Website Analysis'}
+              Current State Analysis
             </h2>
             <CelestialDivider />
             <div className="bg-cm-elevated border border-cm-border rounded-2xl p-8">
               <p className="text-sm text-cm-text leading-relaxed whitespace-pre-line">
-                {interp(data.findings ?? data.analysis ?? '')}
+                {interp(data.findings ?? '')}
+              </p>
+            </div>
+          </section>
+        </SectionObserver>
+      )
+
+    case 'website_analysis':
+      return (
+        <SectionObserver proposalId={proposalId} sectionType="website_analysis">
+          <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Website Analysis
+            </h2>
+            <CelestialDivider />
+            {data.url && (
+              <p className="text-xs text-cm-subtle mb-4">
+                Reviewing: <a href={data.url} target="_blank" rel="noopener noreferrer" className="text-cm-accent hover:underline">{data.url}</a>
+              </p>
+            )}
+            <div className="bg-cm-elevated border border-cm-border rounded-2xl p-8">
+              <p className="text-sm text-cm-text leading-relaxed whitespace-pre-line">
+                {interp(data.notes ?? '')}
               </p>
             </div>
           </section>
@@ -282,17 +304,80 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
         </SectionObserver>
       )
 
+    case 'redesign_concept':
+      return (
+        <SectionObserver proposalId={proposalId} sectionType="redesign_concept">
+          <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              {interp(data.title ?? 'Design Direction')}
+            </h2>
+            <CelestialDivider />
+            <div className="bg-cm-elevated border border-cm-border rounded-2xl p-8 space-y-4">
+              {data.description && (
+                <p className="text-sm text-cm-text leading-relaxed whitespace-pre-line">
+                  {interp(data.description)}
+                </p>
+              )}
+              {data.prototype_url && (
+                <a
+                  href={data.prototype_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cm-accent/10 border border-cm-accent/20 text-cm-accent text-sm hover:bg-cm-accent/20 transition-colors"
+                >
+                  View Prototype →
+                </a>
+              )}
+            </div>
+          </section>
+        </SectionObserver>
+      )
+
+    case 'infrastructure':
+      return (
+        <SectionObserver proposalId={proposalId} sectionType="infrastructure">
+          <section className="py-16 px-8 border-t border-cm-border max-w-4xl mx-auto w-full">
+            <h2 className="text-2xl font-serif font-light text-cm-white">
+              <span className="text-cm-gold/40 text-sm mr-2.5 font-sans">✦</span>
+              Infrastructure & Hosting
+            </h2>
+            <CelestialDivider />
+            <div className="space-y-3">
+              {(data.options ?? '').split('\n').filter(Boolean).map((option, i) => {
+                const isRecommended = data.recommended && option.toLowerCase().startsWith(data.recommended.toLowerCase())
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-start gap-3 rounded-xl border p-4 transition-colors ${isRecommended ? 'border-cm-gold/30 bg-cm-gold/5' : 'border-cm-border bg-cm-elevated'}`}
+                  >
+                    <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${isRecommended ? 'bg-cm-gold' : 'bg-cm-muted'}`} />
+                    <div>
+                      <p className="text-sm text-cm-text">{option}</p>
+                      {isRecommended && <p className="text-xs text-cm-gold mt-0.5">Recommended</p>}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        </SectionObserver>
+      )
+
+    case 'divider':
+      return <CelestialDivider />
+
     default:
       return null
   }
 }
 
 export function ProposalPortal({ proposal }: { proposal: Proposal }) {
-  const lead = proposal.lead as { organization?: string; contact_person?: string } | undefined
+  const lead = proposal.lead as { organization?: string; contact_person?: string; project_type?: string } | undefined
   const vars: Record<string, string> = {
     organization_name: lead?.organization ?? '',
     contact_person: lead?.contact_person ?? '',
-    project_type: proposal.content?.branding?.org_name ?? '',
+    project_type: lead?.project_type?.replace(/_/g, ' ') ?? '',
   }
 
   useEffect(() => {

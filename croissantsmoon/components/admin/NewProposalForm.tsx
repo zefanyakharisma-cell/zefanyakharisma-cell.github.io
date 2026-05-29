@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { createProposal } from '@/lib/actions/proposals'
@@ -67,6 +67,12 @@ export function NewProposalForm({ leads, templates, preselectedLead }: Props) {
     }
   }
 
+  useEffect(() => {
+    if (createdProposal && !selectedLead) {
+      router.push(`/proposals/${createdProposal.id}`)
+    }
+  }, [createdProposal, selectedLead, router])
+
   if (createdProposal && selectedLead) {
     return (
       <SendProposalEmail
@@ -76,10 +82,7 @@ export function NewProposalForm({ leads, templates, preselectedLead }: Props) {
     )
   }
 
-  if (createdProposal) {
-    router.push(`/proposals/${createdProposal.id}`)
-    return null
-  }
+  if (createdProposal) return null
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">

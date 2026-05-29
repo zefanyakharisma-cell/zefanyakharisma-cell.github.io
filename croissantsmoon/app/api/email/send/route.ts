@@ -10,13 +10,14 @@ export async function POST(req: Request) {
 
     const from = process.env.RESEND_FROM_EMAIL ?? 'Zefanya @ CroissantsMoon <hello@croissantsmoon.studio>'
 
-    const { error } = await resend.emails.send({
-      from,
-      to,
-      subject,
-      text: body,
-      html: body.split('\n').map((line: string) => line ? `<p style="margin:0 0 12px">${line}</p>` : '<br>').join(''),
-    })
+    function escapeHtml(s: string) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    }
+    const html = body.split('\n').map((line: string) =>
+      line ? `<p style="margin:0 0 12px;font-family:sans-serif;font-size:14px;color:#333">${escapeHtml(line)}</p>` : '<br>'
+    ).join('')
+
+    const { error } = await resend.emails.send({ from, to, subject, text: body, html })
 
     if (error) throw new Error(error.message)
 

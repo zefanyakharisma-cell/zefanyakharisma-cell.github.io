@@ -6,6 +6,12 @@ const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now()
+
+  // Purge expired entries to prevent unbounded growth
+  for (const [key, val] of rateLimitMap) {
+    if (val.resetAt < now) rateLimitMap.delete(key)
+  }
+
   const entry = rateLimitMap.get(ip)
   if (!entry || entry.resetAt < now) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 })

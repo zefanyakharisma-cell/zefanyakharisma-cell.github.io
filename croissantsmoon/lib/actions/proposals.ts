@@ -136,7 +136,7 @@ export async function getProposalBySlug(slug: string) {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('proposals')
-    .select('*, lead:leads(organization, contact_person)')
+    .select('*, lead:leads(organization, contact_person, project_type)')
     .eq('slug', slug)
     .single()
   if (error) return null

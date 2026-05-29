@@ -16,13 +16,17 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
   const [confirming, setConfirming] = useState<'regen' | 'archive' | 'delete' | null>(null)
   const router = useRouter()
 
-  async function run(action: string, fn: () => Promise<unknown>) {
+  async function run(action: string, fn: () => Promise<unknown>, navigate?: string) {
     setLoading(action)
     setConfirming(null)
     try {
       await fn()
-      setOpen(false)
-      router.refresh()
+      if (navigate) {
+        router.push(navigate)
+      } else {
+        setOpen(false)
+        router.refresh()
+      }
     } finally {
       setLoading(null)
     }
@@ -128,7 +132,7 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
             <div className="rounded-lg border border-red-400/30 bg-red-400/5 p-3 space-y-2">
               <p className="text-xs text-red-300">Permanently delete this proposal, all its versions, and all analytics data? This cannot be undone.</p>
               <div className="flex gap-2">
-                <Button variant="danger" size="sm" loading={loading === 'delete'} onClick={() => run('delete', async () => { await deleteProposal(proposal.id); router.push('/proposals') })}>
+                <Button variant="danger" size="sm" loading={loading === 'delete'} onClick={() => run('delete', () => deleteProposal(proposal.id), '/proposals')}>
                   Yes, delete forever
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>Cancel</Button>

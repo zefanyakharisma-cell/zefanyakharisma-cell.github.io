@@ -38,7 +38,7 @@ function BlockEditor({ block, onChange, onRemove }: {
   onChange: (b: ProposalBlock) => void
   onRemove: () => void
 }) {
-  const data = block.data as Record<string, string>
+  const data = (block.data ?? {}) as Record<string, string>
   function set(key: string, val: string) {
     onChange({ ...block, data: { ...block.data, [key]: val } })
   }
