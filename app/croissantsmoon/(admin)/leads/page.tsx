@@ -66,7 +66,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
             {leads.map(lead => (
               <Link
                 key={lead.id}
-                href={`/leads/${lead.id}`}
+                href={`/croissantsmoon/leads/${lead.id}`}
                 className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-4 hover:bg-cm-elevated/50 transition-colors group items-center"
               >
                 <div className="min-w-0">

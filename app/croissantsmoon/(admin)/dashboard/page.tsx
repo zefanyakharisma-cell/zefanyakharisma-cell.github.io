@@ -75,13 +75,13 @@ export default async function DashboardPage() {
               <Activity size={15} className="text-cm-subtle" />
               <span className="text-sm font-medium text-cm-text">Recent Leads</span>
             </div>
-            <Link href="/leads" className="text-xs text-cm-subtle hover:text-cm-accent transition-colors flex items-center gap-1">
+            <Link href="/croissantsmoon/leads" className="text-xs text-cm-subtle hover:text-cm-accent transition-colors flex items-center gap-1">
               View all <ArrowRight size={11} />
             </Link>
           </div>
           <div className="divide-y divide-cm-border">
             {recentLeads?.map(lead => (
-              <Link key={lead.id} href={`/leads/${lead.id}`} className="flex items-center justify-between px-6 py-3.5 hover:bg-cm-elevated/50 transition-colors group">
+              <Link key={lead.id} href={`/croissantsmoon/leads/${lead.id}`} className="flex items-center justify-between px-6 py-3.5 hover:bg-cm-elevated/50 transition-colors group">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-cm-text group-hover:text-cm-white truncate transition-colors">{lead.organization}</p>
                   <p className="text-xs text-cm-subtle mt-0.5">{lead.contact_person} · {timeAgo(lead.created_at)}</p>
