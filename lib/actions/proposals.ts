@@ -12,11 +12,12 @@ export async function createProposal(data: {
   project_type?: string
   expiration_days?: number
   content?: ProposalContent
+  custom_token?: string
 }) {
   const supabase = await createClient()
   const { data: lead } = await supabase.from('leads').select('organization').eq('id', data.lead_id).single()
   const slug = generateSlug(lead?.organization ?? data.title)
-  const token = generateToken()
+  const token = data.custom_token?.trim().toUpperCase() || generateToken()
   const expires_at = defaultExpiration(data.expiration_days ?? 14)
 
   const defaultContent: ProposalContent = {

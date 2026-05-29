@@ -25,6 +25,7 @@ const PROJECT_TYPE_LABELS: Record<string, string> = {
   dashboard_system: 'Dashboard System',
   international_office: 'International Office',
   university_digitalization: 'University Digitalization',
+  portfolio_website: 'Professional / Personal Portfolio Website',
   custom: 'Custom',
 }
 

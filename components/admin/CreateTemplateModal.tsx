@@ -14,6 +14,7 @@ const PROJECT_TYPE_OPTIONS = [
   { value: 'dashboard_system', label: 'Dashboard System' },
   { value: 'international_office', label: 'International Office' },
   { value: 'university_digitalization', label: 'University Digitalization' },
+  { value: 'portfolio_website', label: 'Professional / Personal Portfolio Website' },
   { value: 'custom', label: 'Custom' },
 ]
 
