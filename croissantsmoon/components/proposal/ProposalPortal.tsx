@@ -62,8 +62,8 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
             {/* Hero atmospheric glow */}
             <div className="absolute inset-0 pointer-events-none">
               <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] blur-3xl opacity-50"
-                style={{ background: 'radial-gradient(ellipse at top, rgba(201,168,76,0.14) 0%, rgba(124,110,247,0.1) 45%, transparent 70%)' }}
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] blur-3xl"
+                style={{ background: 'radial-gradient(ellipse at top, rgba(201,168,76,0.28) 0%, rgba(124,110,247,0.2) 45%, transparent 70%)' }}
               />
             </div>
             <div className="relative z-10">
@@ -150,7 +150,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
             <CelestialDivider />
             <div
               className="bg-cm-surface border border-cm-gold/20 rounded-2xl overflow-hidden"
-              style={{ boxShadow: '0 0 40px rgba(201,168,76,0.08)' }}
+              style={{ boxShadow: '0 0 40px rgba(201,168,76,0.15)' }}
             >
               <div className="px-8 py-6 bg-cm-gold/5 border-b border-cm-gold/10">
                 <p className="text-xs text-cm-gold uppercase tracking-widest mb-2">
@@ -210,8 +210,8 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
             {/* CTA warm glow */}
             <div className="absolute inset-0 pointer-events-none">
               <div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-3xl opacity-40"
-                style={{ background: 'radial-gradient(ellipse at bottom, rgba(201,168,76,0.15) 0%, transparent 70%)' }}
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-3xl"
+                style={{ background: 'radial-gradient(ellipse at bottom, rgba(201,168,76,0.22) 0%, transparent 70%)' }}
               />
             </div>
             <div className="relative z-10">
@@ -231,7 +231,7 @@ function BlockRenderer({ block, vars, proposalId }: { block: ProposalBlock; vars
                   href={`mailto:${data.email}`}
                   onClick={() => trackEvent(proposalId, 'cta_click', { section: 'cta' })}
                   className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-cm-gold/10 border border-cm-gold/20 text-cm-gold hover:bg-cm-gold/20 hover:border-cm-gold/40 transition-all text-sm font-medium"
-                  style={{ boxShadow: '0 0 20px rgba(201,168,76,0.08)' }}
+                  style={{ boxShadow: '0 0 20px rgba(201,168,76,0.15)' }}
                 >
                   {interp(data.button ?? 'Get In Touch')}
                 </a>
@@ -289,13 +289,14 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
     <div className="min-h-screen bg-cm-black text-cm-text relative">
       {/* Fixed atmospheric layers — stay in place as content scrolls */}
       <div className="fixed inset-0 pointer-events-none select-none z-0">
+        <div className="absolute inset-0 grid-bg opacity-60" />
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[55vh] blur-3xl opacity-50"
-          style={{ background: 'radial-gradient(ellipse 70% 100% at 50% 0%, rgba(124,110,247,0.1) 0%, transparent 70%)' }}
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[55vh] blur-3xl"
+          style={{ background: 'radial-gradient(ellipse 70% 100% at 50% 0%, rgba(124,110,247,0.22) 0%, transparent 70%)' }}
         />
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[30vh] blur-3xl opacity-30"
-          style={{ background: 'radial-gradient(ellipse 60% 100% at 50% 100%, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[30vh] blur-3xl"
+          style={{ background: 'radial-gradient(ellipse 60% 100% at 50% 100%, rgba(201,168,76,0.14) 0%, transparent 70%)' }}
         />
       </div>
 

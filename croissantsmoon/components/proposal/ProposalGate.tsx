@@ -75,20 +75,23 @@ export function ProposalGate({ slug, orgName }: Props) {
         />
         {/* Grid substrate */}
         <div className="absolute inset-0 grid-bg opacity-50" />
-        {/* Scattered stars */}
-        <div className="absolute top-[10%] left-[18%] w-0.5 h-0.5 bg-white/50 rounded-full" />
-        <div className="absolute top-[7%] right-[22%] w-px h-px bg-white/35 rounded-full" />
-        <div className="absolute top-[25%] left-[7%] w-0.5 h-0.5 bg-cm-gold/60 rounded-full" />
-        <div className="absolute top-[18%] right-[38%] w-0.5 h-0.5 bg-cm-accent/40 rounded-full" />
-        <div className="absolute top-[55%] right-[10%] w-0.5 h-0.5 bg-white/30 rounded-full" />
-        <div className="absolute top-[70%] left-[28%] w-px h-px bg-white/40 rounded-full" />
-        <div className="absolute top-[40%] left-[3%] w-0.5 h-0.5 bg-cm-gold/45 rounded-full" />
-        <div className="absolute top-[80%] right-[30%] w-0.5 h-0.5 bg-white/25 rounded-full" />
-        <div className="absolute top-[32%] right-[4%] w-px h-px bg-cm-accent/50 rounded-full" />
-        <div className="absolute top-[88%] left-[12%] w-0.5 h-0.5 bg-white/30 rounded-full" />
-        <div className="absolute top-[15%] left-[50%] w-px h-px bg-white/20 rounded-full" />
-        <div className="absolute top-[62%] right-[48%] w-0.5 h-0.5 bg-cm-gold/30 rounded-full" />
-        <div className="absolute top-[48%] left-[72%] w-px h-px bg-white/35 rounded-full" />
+        {/* Scattered stars — varied sizes so they read as a starfield */}
+        <div className="absolute top-[10%] left-[18%] w-1 h-1 bg-white/60 rounded-full" />
+        <div className="absolute top-[7%] right-[22%] w-0.5 h-0.5 bg-white/45 rounded-full" />
+        <div className="absolute top-[25%] left-[7%] w-1 h-1 bg-cm-gold/70 rounded-full" />
+        <div className="absolute top-[18%] right-[38%] w-0.5 h-0.5 bg-cm-accent/60 rounded-full" />
+        <div className="absolute top-[55%] right-[10%] w-1 h-1 bg-white/50 rounded-full" />
+        <div className="absolute top-[70%] left-[28%] w-0.5 h-0.5 bg-white/55 rounded-full" />
+        <div className="absolute top-[40%] left-[3%] w-0.5 h-0.5 bg-cm-gold/60 rounded-full" />
+        <div className="absolute top-[80%] right-[30%] w-0.5 h-0.5 bg-white/40 rounded-full" />
+        <div className="absolute top-[32%] right-[4%] w-1 h-1 bg-cm-accent/55 rounded-full" />
+        <div className="absolute top-[88%] left-[12%] w-0.5 h-0.5 bg-white/45 rounded-full" />
+        <div className="absolute top-[15%] left-[50%] w-0.5 h-0.5 bg-white/35 rounded-full" />
+        <div className="absolute top-[62%] right-[48%] w-0.5 h-0.5 bg-cm-gold/50 rounded-full" />
+        <div className="absolute top-[48%] left-[72%] w-0.5 h-0.5 bg-white/45 rounded-full" />
+        {/* A few brighter anchor stars */}
+        <div className="absolute top-[5%] left-[60%] w-1.5 h-1.5 bg-white/30 rounded-full blur-[1px]" />
+        <div className="absolute top-[90%] right-[15%] w-1.5 h-1.5 bg-cm-gold/25 rounded-full blur-[1px]" />
       </div>
 
       <div className="flex-1 flex items-center justify-center p-8 relative z-10">
