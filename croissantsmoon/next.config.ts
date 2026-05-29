@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   basePath: BASE_PATH,
   assetPrefix: BASE_PATH,
   output: 'standalone',
+  watchOptions: {
+    pollIntervalMs: 500,
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },
