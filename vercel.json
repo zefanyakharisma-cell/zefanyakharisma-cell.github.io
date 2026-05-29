@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/croissantsmoon/:path*",
-      "destination": "https://zefanyakharisma-cell-github-io.vercel.app/croissantsmoon/:path*"
+      "destination": "https://zefanyakharisma-cell-github-io.vercel.app/:path*"
     }
   ]
 }
