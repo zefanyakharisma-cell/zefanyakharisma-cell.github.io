@@ -2,10 +2,9 @@ import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: Request) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { to, subject, body, proposalId, leadId } = await req.json()
 
     const from = process.env.RESEND_FROM_EMAIL ?? 'Zefanya @ CroissantsMoon <hello@croissantsmoon.studio>'

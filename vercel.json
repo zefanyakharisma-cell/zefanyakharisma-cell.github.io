@@ -1,3 +1,9 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/croissantsmoon/:path*",
+      "destination": "https://CROISSANTSMOON_DEPLOYMENT_URL/croissantsmoon/:path*"
+    }
+  ]
 }
