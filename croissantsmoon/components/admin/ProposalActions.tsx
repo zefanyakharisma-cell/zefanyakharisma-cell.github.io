@@ -4,16 +4,16 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
-import { publishProposal, archiveProposal, regenerateToken, extendExpiration } from '@/lib/actions/proposals'
+import { publishProposal, archiveProposal, regenerateToken, extendExpiration, deleteProposal } from '@/lib/actions/proposals'
 import { useRouter } from 'next/navigation'
-import { MoreHorizontal, Send, Archive, RefreshCw, Clock, Copy, CheckCheck } from 'lucide-react'
+import { MoreHorizontal, Send, Archive, RefreshCw, Clock, Copy, CheckCheck, Trash2 } from 'lucide-react'
 
 export function ProposalActions({ proposal }: { proposal: { id: string; status: string; token: string; slug: string } }) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [days, setDays] = useState('14')
-  const [confirming, setConfirming] = useState<'regen' | 'archive' | null>(null)
+  const [confirming, setConfirming] = useState<'regen' | 'archive' | 'delete' | null>(null)
   const router = useRouter()
 
   async function run(action: string, fn: () => Promise<unknown>) {
@@ -108,8 +108,8 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
 
           {proposal.status !== 'archived' && (
             confirming === 'archive' ? (
-              <div className="rounded-lg border border-red-400/30 bg-red-400/5 p-3 space-y-2">
-                <p className="text-xs text-red-300">Archive this proposal? It will no longer be accessible to the client.</p>
+              <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 space-y-2">
+                <p className="text-xs text-amber-300">Archive this proposal? It will no longer be accessible to the client.</p>
                 <div className="flex gap-2">
                   <Button variant="danger" size="sm" loading={loading === 'archive'} onClick={() => run('archive', () => archiveProposal(proposal.id))}>
                     Yes, archive
@@ -118,15 +118,26 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
                 </div>
               </div>
             ) : (
-              <Button
-                variant="danger"
-                className="w-full justify-start"
-                disabled={!!loading}
-                onClick={() => setConfirming('archive')}
-              >
+              <Button variant="secondary" className="w-full justify-start" disabled={!!loading} onClick={() => setConfirming('archive')}>
                 <Archive size={14} /> Archive Proposal
               </Button>
             )
+          )}
+
+          {confirming === 'delete' ? (
+            <div className="rounded-lg border border-red-400/30 bg-red-400/5 p-3 space-y-2">
+              <p className="text-xs text-red-300">Permanently delete this proposal, all its versions, and all analytics data? This cannot be undone.</p>
+              <div className="flex gap-2">
+                <Button variant="danger" size="sm" loading={loading === 'delete'} onClick={() => run('delete', async () => { await deleteProposal(proposal.id); router.push('/proposals') })}>
+                  Yes, delete forever
+                </Button>
+                <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>Cancel</Button>
+              </div>
+            </div>
+          ) : (
+            <Button variant="danger" className="w-full justify-start" disabled={!!loading} onClick={() => setConfirming('delete')}>
+              <Trash2 size={14} /> Delete Permanently
+            </Button>
           )}
         </div>
       </Modal>

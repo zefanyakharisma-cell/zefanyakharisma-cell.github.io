@@ -45,3 +45,10 @@ export async function archiveTemplate(id: string) {
   if (error) throw new Error(error.message)
   revalidatePath('/templates')
 }
+
+export async function deleteTemplate(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('proposal_templates').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+  revalidatePath('/templates')
+}

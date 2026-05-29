@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input, Select, Textarea } from '@/components/ui/Input'
-import { updateTemplate, archiveTemplate } from '@/lib/actions/templates'
+import { updateTemplate, archiveTemplate, deleteTemplate } from '@/lib/actions/templates'
 import { useRouter } from 'next/navigation'
 import { Save, Plus, Trash2, Eye, EyeOff, Archive } from 'lucide-react'
 import type { ProposalBlock, ProposalBlockType, ProjectType } from '@/types'
@@ -137,7 +137,8 @@ export function TemplateEditor({ template }: { template: TemplateData }) {
   const [saved, setSaved] = useState(false)
   const [showBlockPicker, setShowBlockPicker] = useState(false)
   const [archiving, setArchiving] = useState(false)
-  const [confirmArchive, setConfirmArchive] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [confirming, setConfirming] = useState<'archive' | 'delete' | null>(null)
   const [error, setError] = useState('')
   const router = useRouter()
 
@@ -186,6 +187,16 @@ export function TemplateEditor({ template }: { template: TemplateData }) {
     }
   }
 
+  async function doDelete() {
+    setDeleting(true)
+    try {
+      await deleteTemplate(template.id)
+      router.push('/templates')
+    } finally {
+      setDeleting(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -198,16 +209,27 @@ export function TemplateEditor({ template }: { template: TemplateData }) {
           <Button variant={saved ? 'gold' : 'primary'} onClick={save} loading={saving}>
             <Save size={13} /> {saved ? 'Saved' : 'Save'}
           </Button>
-          {confirmArchive ? (
-            <div className="flex items-center gap-2 bg-red-400/5 border border-red-400/20 rounded-lg px-3 py-1.5">
-              <span className="text-xs text-red-300">Archive this template?</span>
+          {confirming === 'archive' ? (
+            <div className="flex items-center gap-2 bg-amber-400/5 border border-amber-400/20 rounded-lg px-3 py-1.5">
+              <span className="text-xs text-amber-300">Archive this template?</span>
               <Button variant="danger" size="sm" loading={archiving} onClick={doArchive}>Yes</Button>
-              <Button variant="ghost" size="sm" onClick={() => setConfirmArchive(false)}>No</Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>No</Button>
+            </div>
+          ) : confirming === 'delete' ? (
+            <div className="flex items-center gap-2 bg-red-400/5 border border-red-400/20 rounded-lg px-3 py-1.5">
+              <span className="text-xs text-red-300">Delete permanently? This cannot be undone.</span>
+              <Button variant="danger" size="sm" loading={deleting} onClick={doDelete}>Yes, delete</Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>No</Button>
             </div>
           ) : (
-            <Button variant="ghost" size="sm" onClick={() => setConfirmArchive(true)}>
-              <Archive size={13} /> Archive
-            </Button>
+            <>
+              <Button variant="ghost" size="sm" onClick={() => setConfirming('archive')}>
+                <Archive size={13} /> Archive
+              </Button>
+              <Button variant="danger" size="sm" onClick={() => setConfirming('delete')}>
+                <Trash2 size={13} /> Delete
+              </Button>
+            </>
           )}
         </div>
       </div>

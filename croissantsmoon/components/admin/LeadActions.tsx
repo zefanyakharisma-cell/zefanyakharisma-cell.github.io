@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { Select } from '@/components/ui/Input'
-import { updateLeadStatus, deleteLead } from '@/lib/actions/leads'
+import { updateLeadStatus, deleteLead, permanentlyDeleteLead } from '@/lib/actions/leads'
 import { useRouter } from 'next/navigation'
-import { MoreHorizontal, Pencil, Trash2, ArrowRight } from 'lucide-react'
+import { MoreHorizontal, Trash2, ArrowRight } from 'lucide-react'
 import type { Lead, LeadStatus } from '@/types'
 
 const STATUS_OPTIONS: { value: LeadStatus; label: string }[] = [
@@ -25,6 +25,7 @@ export function LeadActions({ lead }: { lead: Pick<Lead, 'id' | 'status'> }) {
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState<LeadStatus>(lead.status)
   const [loading, setLoading] = useState(false)
+  const [confirming, setConfirming] = useState<'archive' | 'delete' | null>(null)
   const router = useRouter()
 
   async function handleStatusChange() {
@@ -39,9 +40,23 @@ export function LeadActions({ lead }: { lead: Pick<Lead, 'id' | 'status'> }) {
   }
 
   async function handleArchive() {
-    if (!confirm('Archive this lead?')) return
-    await deleteLead(lead.id)
-    router.push('/leads')
+    setLoading(true)
+    try {
+      await deleteLead(lead.id)
+      router.push('/leads')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleDelete() {
+    setLoading(true)
+    try {
+      await permanentlyDeleteLead(lead.id)
+      router.push('/leads')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -49,21 +64,46 @@ export function LeadActions({ lead }: { lead: Pick<Lead, 'id' | 'status'> }) {
       <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
         <MoreHorizontal size={14} />
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)} title="Update Lead" size="sm">
-        <div className="px-6 py-5 space-y-4">
+      <Modal open={open} onClose={() => { setOpen(false); setConfirming(null) }} title="Lead Actions" size="sm">
+        <div className="px-6 py-5 space-y-2">
           <Select
             label="Status"
             value={status}
             onChange={e => setStatus(e.target.value as LeadStatus)}
             options={STATUS_OPTIONS}
           />
-          <div className="flex flex-col gap-2 pt-2">
-            <Button variant="primary" loading={loading} onClick={handleStatusChange} className="w-full">
-              <ArrowRight size={14} /> Update Status
-            </Button>
-            <Button variant="danger" onClick={handleArchive} className="w-full">
-              <Trash2 size={14} /> Archive Lead
-            </Button>
+          <Button variant="primary" loading={loading === true && confirming === null} onClick={handleStatusChange} className="w-full justify-start">
+            <ArrowRight size={14} /> Update Status
+          </Button>
+
+          <div className="pt-2 border-t border-cm-border space-y-2">
+            {confirming === 'archive' ? (
+              <div className="rounded-lg border border-amber-400/30 bg-amber-400/5 p-3 space-y-2">
+                <p className="text-xs text-amber-300">Archive this lead? It will be hidden from the pipeline.</p>
+                <div className="flex gap-2">
+                  <Button variant="danger" size="sm" loading={loading} onClick={handleArchive}>Yes, archive</Button>
+                  <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>Cancel</Button>
+                </div>
+              </div>
+            ) : (
+              <Button variant="secondary" className="w-full justify-start" disabled={!!loading} onClick={() => setConfirming('archive')}>
+                <Trash2 size={14} /> Archive Lead
+              </Button>
+            )}
+
+            {confirming === 'delete' ? (
+              <div className="rounded-lg border border-red-400/30 bg-red-400/5 p-3 space-y-2">
+                <p className="text-xs text-red-300">Permanently delete this lead and all its proposals and followups? This cannot be undone.</p>
+                <div className="flex gap-2">
+                  <Button variant="danger" size="sm" loading={loading} onClick={handleDelete}>Yes, delete forever</Button>
+                  <Button variant="ghost" size="sm" onClick={() => setConfirming(null)}>Cancel</Button>
+                </div>
+              </div>
+            ) : (
+              <Button variant="danger" className="w-full justify-start" disabled={!!loading} onClick={() => setConfirming('delete')}>
+                <Trash2 size={14} /> Delete Permanently
+              </Button>
+            )}
           </div>
         </div>
       </Modal>

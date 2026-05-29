@@ -59,6 +59,13 @@ export async function deleteLead(id: string) {
   revalidatePath('/leads')
 }
 
+export async function permanentlyDeleteLead(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('leads').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+  revalidatePath('/leads')
+}
+
 export async function getLeads(filters?: { status?: LeadStatus; search?: string }) {
   const supabase = await createClient()
   let query = supabase

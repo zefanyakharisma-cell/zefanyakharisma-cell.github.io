@@ -87,6 +87,15 @@ export async function archiveProposal(id: string) {
   return updateProposal(id, { status: 'archived', token_status: 'revoked' })
 }
 
+export async function deleteProposal(id: string) {
+  const supabase = await createClient()
+  const { data: proposal } = await supabase.from('proposals').select('slug').eq('id', id).single()
+  const { error } = await supabase.from('proposals').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+  revalidatePath('/proposals')
+  if (proposal?.slug) revalidatePath(`/proposal/${proposal.slug}`)
+}
+
 export async function regenerateToken(id: string) {
   const newToken = generateToken()
   return updateProposal(id, { token: newToken, token_status: 'active' })
