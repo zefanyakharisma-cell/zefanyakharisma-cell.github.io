@@ -22,7 +22,7 @@ export default async function ArchivePage() {
   const proposals = await getArchived()
 
   return (
-    <div className="px-8 py-8 animate-fade-in">
+    <div className="px-8 py-8 animate-cm-fade-in">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-cm-white">Archive</h1>
         <p className="text-sm text-cm-subtle mt-1">{proposals.length} archived proposals</p>

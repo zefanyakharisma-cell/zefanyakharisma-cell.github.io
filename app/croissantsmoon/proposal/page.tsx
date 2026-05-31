@@ -48,7 +48,7 @@ export default async function ProposalPage() {
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-8 py-10 animate-fade-in">
+      <div className="max-w-6xl mx-auto px-8 py-10 animate-cm-fade-in">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-cm-white">Proposals</h1>
           <p className="text-sm text-cm-subtle mt-1">{proposals.length} proposals</p>

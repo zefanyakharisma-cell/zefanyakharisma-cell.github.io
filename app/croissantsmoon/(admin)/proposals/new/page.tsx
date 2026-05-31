@@ -20,7 +20,7 @@ export default async function NewProposalPage({ searchParams }: { searchParams: 
   const { leads, templates } = await getLeadsAndTemplates()
 
   return (
-    <div className="px-8 py-8 animate-fade-in">
+    <div className="px-8 py-8 animate-cm-fade-in">
       <Link href="/croissantsmoon/proposals" className="flex items-center gap-2 text-sm text-cm-subtle hover:text-cm-text transition-colors mb-6">
         <ArrowLeft size={14} /> Back to Proposals
       </Link>

@@ -39,7 +39,7 @@ export default async function DashboardPage() {
   const { totalLeads, activeProposals, recentLeads, topProposals, hotLeads, pipelineValue, totalViews } = await getDashboardData()
 
   return (
-    <div className="px-8 py-8 space-y-8 animate-fade-in">
+    <div className="px-8 py-8 space-y-8 animate-cm-fade-in">
       <div>
         <h1 className="text-2xl font-semibold text-cm-white">Dashboard</h1>
         <p className="text-sm text-cm-subtle mt-1">CroissantsMoon Studio Operating System</p>

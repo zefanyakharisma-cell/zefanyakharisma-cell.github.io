@@ -25,7 +25,7 @@ export default async function ProposalsPage({ searchParams }: { searchParams: Pr
   const proposals = await getProposals(search)
 
   return (
-    <div className="px-8 py-8 animate-fade-in">
+    <div className="px-8 py-8 animate-cm-fade-in">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-cm-white">Proposals</h1>

@@ -26,7 +26,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   if (!lead) notFound()
 
   return (
-    <div className="px-8 py-8 animate-fade-in">
+    <div className="px-8 py-8 animate-cm-fade-in">
       <div className="mb-6">
         <Link href="/croissantsmoon/leads" className="flex items-center gap-2 text-sm text-cm-subtle hover:text-cm-text transition-colors mb-5">
           <ArrowLeft size={14} /> Back to Leads

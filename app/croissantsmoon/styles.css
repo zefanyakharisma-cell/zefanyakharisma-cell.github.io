@@ -12,14 +12,14 @@
 * { box-sizing: border-box; }
 
 html {
-  background: #060608;
+  background: #030712;
   color-scheme: dark;
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-inter);
-  background: #060608;
+  background: #030712;
   color: #c8c8d4;
   -webkit-font-smoothing: antialiased;
 }
