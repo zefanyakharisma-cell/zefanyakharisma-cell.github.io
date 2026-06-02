@@ -162,7 +162,7 @@ function PriceTier({
       </div>
 
       {inclusions.length > 0 && (
-        <div className="px-7 py-7 space-y-3.5 flex-1">
+        <div className={`px-7 py-7 flex-1 ${variant === 'solo' ? 'grid sm:grid-cols-2 gap-x-8 gap-y-3.5' : 'space-y-3.5'}`}>
           {inclusions.map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <div
@@ -399,7 +399,8 @@ function BlockRenderer({
         tiers.forEach((t, i) => { const v = parsePrice(t.price); if (v > max) { max = v; recIdx = i } })
       }
 
-      const containerMax = n === 1 ? 'max-w-md' : 'max-w-4xl'
+      // Match the editorial body width used by the surrounding sections
+      const containerMax = 'max-w-4xl'
       const gridClass = n === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 md:grid-cols-2 gap-5'
 
       return (
