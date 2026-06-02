@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { trackEvent, trackSectionView } from '@/lib/analytics/tracker'
 import type { Proposal, ProposalBlock } from '@/types'
-import { Moon, ArrowUpRight, Quote } from 'lucide-react'
+import { Moon, ArrowUpRight, Quote, Star } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
 
@@ -93,6 +93,89 @@ function GlassCard({
       }}
     >
       {children}
+    </div>
+  )
+}
+
+// ── Pricing tier card (solo / recommended / normal) ───────────
+function PriceTier({
+  name, price, inclusions, variant,
+}: {
+  name: string
+  price: string
+  inclusions: string[]
+  variant: 'recommended' | 'solo' | 'normal'
+}) {
+  const [hover, setHover] = useState(false)
+  const gold = variant === 'recommended' || variant === 'solo'
+  const recommended = variant === 'recommended'
+  const accent = gold ? GOLD : AURORA
+
+  return (
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      className="relative rounded-2xl overflow-hidden flex flex-col h-full transition-all duration-300"
+      style={{
+        background: gold ? 'rgba(18,27,46,0.66)' : hover ? 'rgba(13,34,64,0.6)' : 'rgba(11,30,58,0.46)',
+        border: `1px solid ${
+          recommended ? rgba(GOLD, 0.5) : gold ? rgba(GOLD, 0.28) : hover ? rgba(AURORA, 0.32) : 'rgba(111,168,255,0.1)'
+        }`,
+        backdropFilter: 'blur(16px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+        transform: recommended ? 'translateY(-4px)' : hover ? 'translateY(-5px)' : 'translateY(0)',
+        boxShadow: recommended
+          ? undefined
+          : hover
+          ? `0 28px 70px rgba(3,7,18,0.55), 0 0 48px ${rgba(accent, 0.16)}`
+          : '0 6px 28px rgba(3,7,18,0.32)',
+        animation: recommended ? 'cmGlowPulse 2.8s ease-in-out infinite' : undefined,
+      }}
+    >
+      {recommended && (
+        <div
+          className="py-2.5 text-center"
+          style={{ background: rgba(GOLD, 0.14), borderBottom: `1px solid ${rgba(GOLD, 0.22)}` }}
+        >
+          <span
+            className="text-[10px] font-semibold uppercase inline-flex items-center gap-1.5"
+            style={{ letterSpacing: '0.24em', color: GOLD }}
+          >
+            <Star size={10} fill={GOLD} strokeWidth={0} /> Recommended
+          </span>
+        </div>
+      )}
+
+      <div
+        className="px-7 py-9 text-center"
+        style={{ borderBottom: `1px solid ${rgba(accent, 0.1)}`, background: gold ? rgba(GOLD, 0.03) : 'transparent' }}
+      >
+        <p
+          className="text-[10px] font-semibold uppercase mb-5"
+          style={{ letterSpacing: '0.26em', color: rgba(accent, 0.65) }}
+        >
+          {name || 'Package'}
+        </p>
+        <p className="font-serif font-light" style={{ fontSize: 'clamp(2.4rem, 5vw, 3.4rem)', lineHeight: 1, color: accent }}>
+          {price}
+        </p>
+      </div>
+
+      {inclusions.length > 0 && (
+        <div className="px-7 py-7 space-y-3.5 flex-1">
+          {inclusions.map((item, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div
+                className="rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                style={{ width: 18, height: 18, background: rgba(accent, 0.08), border: `1px solid ${rgba(accent, 0.22)}` }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
+              </div>
+              <span className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.74) }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -283,41 +366,63 @@ function BlockRenderer({
     }
 
     case 'pricing': {
-      const inclusions = data.inclusions ? interp(data.inclusions).split('\n').filter(Boolean) : []
+      // New: up to 4 structured tiers. Fall back to legacy single package/price/inclusions.
+      const rawTiers = Array.isArray((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers)
+        ? ((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers ?? [])
+        : []
+      let tiers = rawTiers
+        .map(t => ({
+          name: interp(t.name ?? ''),
+          price: interp(t.price ?? ''),
+          inclusions: interp(t.inclusions ?? '').split('\n').filter(Boolean),
+        }))
+        .filter(t => t.price || t.name || t.inclusions.length)
+      if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
+        tiers = [{
+          name: interp(data.package ?? 'Package'),
+          price: interp(data.price ?? ''),
+          inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
+        }]
+      }
+      if (tiers.length === 0) return null
+      tiers = tiers.slice(0, 4)
+      const n = tiers.length
+
+      // Highest price → "Recommended" (only when more than one tier)
+      const parsePrice = (p: string) => {
+        const v = parseFloat(p.replace(/[^0-9.]/g, ''))
+        return isNaN(v) ? 0 : v
+      }
+      let recIdx = -1
+      if (n > 1) {
+        let max = -Infinity
+        tiers.forEach((t, i) => { const v = parsePrice(t.price); if (v > max) { max = v; recIdx = i } })
+      }
+
+      const containerMax = n === 1 ? 'max-w-md' : 'max-w-4xl'
+      const gridClass = n === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 md:grid-cols-2 gap-5'
+
       return (
         <SectionObserver proposalId={proposalId} sectionType="pricing">
-          <section className="py-24 px-8 max-w-2xl mx-auto w-full">
+          <section className={`py-24 px-8 ${containerMax} mx-auto w-full`}>
             <div className="cm-reveal">
-              <div className="text-center mb-9">
+              <div className="text-center mb-10">
                 <span className="text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.3em', color: rgba(GOLD, 0.65) }}>
-                  {meta.eyebrow}
+                  Investment
                 </span>
               </div>
-              <GlassCard accent={GOLD} className="overflow-hidden" style={{ boxShadow: `0 0 80px ${rgba(GOLD, 0.08)}, 0 6px 32px rgba(3,7,18,0.45)` }}>
-                <div className="px-8 py-12 text-center" style={{ borderBottom: `1px solid ${rgba(GOLD, 0.1)}`, background: rgba(GOLD, 0.03) }}>
-                  <p className="text-[10px] font-semibold uppercase mb-6" style={{ letterSpacing: '0.28em', color: rgba(GOLD, 0.6) }}>
-                    {interp(data.package ?? 'Professional Package')}
-                  </p>
-                  <p className="font-serif font-light" style={{ fontSize: 'clamp(3rem, 7vw, 4.5rem)', color: GOLD, lineHeight: 1 }}>
-                    {interp(data.price ?? '')}
-                  </p>
-                </div>
-                {inclusions.length > 0 && (
-                  <div className="px-8 py-9 grid sm:grid-cols-2 gap-x-8 gap-y-4">
-                    {inclusions.map((item, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div
-                          className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                          style={{ background: rgba(GOLD, 0.08), border: `1px solid ${rgba(GOLD, 0.22)}` }}
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: GOLD }} />
-                        </div>
-                        <span className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.74) }}>{item}</span>
-                      </div>
-                    ))}
+              <div className={gridClass}>
+                {tiers.map((t, i) => (
+                  <div key={i} className={n === 3 && i === 2 ? 'md:col-span-2' : ''}>
+                    <PriceTier
+                      name={t.name}
+                      price={t.price}
+                      inclusions={t.inclusions}
+                      variant={n === 1 ? 'solo' : i === recIdx ? 'recommended' : 'normal'}
+                    />
                   </div>
-                )}
-              </GlassCard>
+                ))}
+              </div>
             </div>
           </section>
         </SectionObserver>
@@ -325,32 +430,43 @@ function BlockRenderer({
     }
 
     case 'timeline': {
-      const phases = interp(data.timeline ?? '').split('\n').filter(Boolean)
+      // Table: one row per line, columns separated by " - "
+      const rows = interp(data.timeline ?? '')
+        .split('\n').map(l => l.trim()).filter(Boolean)
+        .map(line => line.split(/\s+-\s+/).map(c => c.trim()))
+      if (rows.length === 0) return null
+      const maxCols = Math.max(...rows.map(r => r.length))
       return (
         <SectionObserver proposalId={proposalId} sectionType="timeline">
-          <section className="py-20 px-8 max-w-3xl mx-auto w-full">
+          <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
               <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
-              <div className="relative">
-                <div className="absolute top-4 bottom-4 pointer-events-none" style={{ left: 18, width: 1, background: rgba(accent, 0.16) }} />
-                <div className="space-y-5">
-                  {phases.map((phase, i) => (
-                    <div key={i} className="flex gap-6 items-stretch">
-                      <div className="flex-shrink-0 relative z-10">
-                        <div
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-mono font-semibold"
-                          style={{ background: rgba(accent, 0.09), border: `1px solid ${rgba(accent, 0.28)}`, color: accent, boxShadow: `0 0 18px ${rgba(accent, 0.18)}` }}
-                        >
-                          {i + 1}
-                        </div>
-                      </div>
-                      <GlassCard accent={accent} className="flex-1 px-5 py-4">
-                        <p className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.76) }}>{phase}</p>
-                      </GlassCard>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <GlassCard accent={accent} className="overflow-hidden">
+                {rows.map((cells, i) => (
+                  <div
+                    key={i}
+                    className="grid items-center gap-x-5 px-6 py-4 transition-colors"
+                    style={{
+                      gridTemplateColumns: maxCols > 1 ? `minmax(110px, 0.7fr) repeat(${maxCols - 1}, 1fr)` : '1fr',
+                      borderTop: i > 0 ? `1px solid ${rgba(accent, 0.1)}` : 'none',
+                      background: i % 2 === 1 ? 'rgba(111,168,255,0.018)' : 'transparent',
+                    }}
+                  >
+                    {Array.from({ length: maxCols }).map((_, c) => (
+                      <span
+                        key={c}
+                        className="text-sm leading-relaxed"
+                        style={{
+                          color: c === 0 ? accent : rgba('#D9E6FF', 0.74),
+                          fontWeight: c === 0 ? 600 : 400,
+                        }}
+                      >
+                        {cells[c] ?? ''}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </GlassCard>
             </div>
           </section>
         </SectionObserver>

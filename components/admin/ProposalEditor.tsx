@@ -9,6 +9,8 @@ import { Save, Plus, Trash2, GripVertical } from 'lucide-react'
 import type { Proposal, ProposalContent, ProposalBlock, ProposalBlockType } from '@/types'
 import { cn } from '@/lib/utils'
 
+type PricingTier = { name?: string; price?: string; inclusions?: string }
+
 const BLOCK_TYPES: { type: ProposalBlockType; label: string }[] = [
   { type: 'hero', label: 'Hero Section' },
   { type: 'greeting', label: 'Personalized Greeting' },
@@ -64,15 +66,53 @@ function BlockEditor({ block, onChange, onRemove }: {
       {block.type === 'features' && (
         <Textarea label="Feature List (one per line)" value={data.features ?? ''} onChange={e => setField('features', e.target.value)} placeholder="Modern responsive design&#10;Advanced CMS integration&#10;Multi-language support" rows={5} />
       )}
-      {block.type === 'pricing' && (
-        <div className="space-y-3">
-          <Input label="Package Name" value={data.package ?? ''} onChange={e => setField('package', e.target.value)} placeholder="Professional Institutional Package" />
-          <Input label="Price" value={data.price ?? ''} onChange={e => setField('price', e.target.value)} placeholder="IDR 75,000,000" />
-          <Textarea label="Inclusions (one per line)" value={data.inclusions ?? ''} onChange={e => setField('inclusions', e.target.value)} rows={4} />
-        </div>
-      )}
+      {block.type === 'pricing' && (() => {
+        const existing = (block.data as { tiers?: PricingTier[] }).tiers
+        const tiers: PricingTier[] = existing && existing.length
+          ? existing
+          : [{ name: data.package ?? '', price: data.price ?? '', inclusions: data.inclusions ?? '' }]
+        const writeTiers = (next: PricingTier[]) => onChange({ ...block, data: { ...block.data, tiers: next } })
+        const updateTier = (i: number, key: keyof PricingTier, val: string) =>
+          writeTiers(tiers.map((t, x) => (x === i ? { ...t, [key]: val } : t)))
+        const addTier = () => { if (tiers.length < 4) writeTiers([...tiers, { name: '', price: '', inclusions: '' }]) }
+        const removeTier = (i: number) => writeTiers(tiers.filter((_, x) => x !== i))
+        return (
+          <div className="space-y-3">
+            <p className="text-[11px] text-cm-subtle leading-relaxed">
+              Up to 4 tiers (render side-by-side). The highest price is auto-highlighted as{' '}
+              <span className="text-cm-gold">Recommended</span>.
+            </p>
+            {tiers.map((t, i) => (
+              <div key={i} className="rounded-lg border border-cm-border bg-cm-surface/40 p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-cm-subtle">Tier {i + 1}</span>
+                  {tiers.length > 1 && (
+                    <button onClick={() => removeTier(i)} className="text-cm-subtle hover:text-red-400 transition-colors p-0.5">
+                      <Trash2 size={12} />
+                    </button>
+                  )}
+                </div>
+                <Input label="Package Name" value={t.name ?? ''} onChange={e => updateTier(i, 'name', e.target.value)} placeholder="Professional Package" />
+                <Input label="Price" value={t.price ?? ''} onChange={e => updateTier(i, 'price', e.target.value)} placeholder="IDR 75,000,000" />
+                <Textarea label="Inclusions (one per line)" value={t.inclusions ?? ''} onChange={e => updateTier(i, 'inclusions', e.target.value)} rows={3} />
+              </div>
+            ))}
+            {tiers.length < 4 && (
+              <button onClick={addTier} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-dashed border-cm-border text-cm-subtle hover:text-cm-text hover:border-cm-muted transition-all text-xs">
+                <Plus size={12} /> Add Tier ({tiers.length}/4)
+              </button>
+            )}
+          </div>
+        )
+      })()}
       {block.type === 'timeline' && (
-        <Textarea label="Timeline (one phase per line)" value={data.timeline ?? ''} onChange={e => setField('timeline', e.target.value)} placeholder="Week 1-2: Discovery & Planning&#10;Week 3-5: Design&#10;Week 6-9: Development&#10;Week 10-11: Testing&#10;Week 12: Launch" rows={5} />
+        <Textarea
+          label="Timeline table — one row per line, columns separated by  -  (space-dash-space)"
+          value={data.timeline ?? ''}
+          onChange={e => setField('timeline', e.target.value)}
+          placeholder="Phase 1 - Discovery & Planning - Week 1-2&#10;Phase 2 - Design - Week 3-5&#10;Phase 3 - Development - Week 6-9&#10;Phase 4 - Testing & Launch - Week 10-12"
+          rows={5}
+        />
       )}
       {block.type === 'cta' && (
         <div className="space-y-3">

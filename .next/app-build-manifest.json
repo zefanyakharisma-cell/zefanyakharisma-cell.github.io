@@ -13,7 +13,7 @@
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/css/991d05b87c0f6ed3.css",
-      "static/css/1add5c88af4c52bc.css",
+      "static/css/baffa4a8c9df7a59.css",
       "static/chunks/app/layout-7ff8f77fa266657a.js"
     ],
     "/croissantsmoon/api/analytics/route": [
@@ -53,16 +53,6 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/not-found-2a7846e37eb95dac.js"
     ],
-    "/(portfolio)/croissantsmoon/web-portfolio/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/9481-53c315ecc28555c0.js",
-      "static/chunks/9124-b33eff46c455a5a1.js",
-      "static/chunks/app/(portfolio)/croissantsmoon/web-portfolio/page-f61a5dc4e6ce6750.js"
-    ],
     "/(portfolio)/croissantsmoon/designs/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -77,15 +67,27 @@
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/croissantsmoon/page-15bbbba9a52d3e46.js"
+      "static/chunks/app/(portfolio)/croissantsmoon/page-2100855d142383aa.js"
     ],
-    "/(portfolio)/writing/[slug]/page": [
+    "/(portfolio)/croissantsmoon/web-dashboard-grants/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/writing/[slug]/page-2a7846e37eb95dac.js"
+      "static/chunks/9481-53c315ecc28555c0.js",
+      "static/chunks/9124-b33eff46c455a5a1.js",
+      "static/chunks/app/(portfolio)/croissantsmoon/web-dashboard-grants/page-dc324b35cd43779a.js"
+    ],
+    "/(portfolio)/croissantsmoon/web-portfolio/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/9481-53c315ecc28555c0.js",
+      "static/chunks/9124-b33eff46c455a5a1.js",
+      "static/chunks/app/(portfolio)/croissantsmoon/web-portfolio/page-f61a5dc4e6ce6750.js"
     ],
     "/(portfolio)/croissantsmoon/websites/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -103,6 +105,21 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/aci/page-c72b2154ce9f71d0.js"
     ],
+    "/(portfolio)/writing/[slug]/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/writing/[slug]/page-2a7846e37eb95dac.js"
+    ],
+    "/(portfolio)/contact/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/app/(portfolio)/contact/page-aa419f668056b8e1.js"
+    ],
     "/(portfolio)/croissantsmoon/web-dashboard-partnership/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -112,71 +129,6 @@
       "static/chunks/9481-53c315ecc28555c0.js",
       "static/chunks/9124-b33eff46c455a5a1.js",
       "static/chunks/app/(portfolio)/croissantsmoon/web-dashboard-partnership/page-4a2850c068bc94e0.js"
-    ],
-    "/(portfolio)/croissantsmoon/web-dashboard-grants/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/9481-53c315ecc28555c0.js",
-      "static/chunks/9124-b33eff46c455a5a1.js",
-      "static/chunks/app/(portfolio)/croissantsmoon/web-dashboard-grants/page-dc324b35cd43779a.js"
-    ],
-    "/(portfolio)/education/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/education/page-2a7846e37eb95dac.js"
-    ],
-    "/(portfolio)/engagement/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/engagement/page-2a7846e37eb95dac.js"
-    ],
-    "/(portfolio)/expertise/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/expertise/page-2a7846e37eb95dac.js"
-    ],
-    "/(portfolio)/contact/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/app/(portfolio)/contact/page-aa419f668056b8e1.js"
-    ],
-    "/(portfolio)/croissantsmoon/writing/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/croissantsmoon/writing/page-33a236b69d3d59dc.js"
-    ],
-    "/(portfolio)/about-overview/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/about-overview/page-496fca285f3001c5.js"
-    ],
-    "/(portfolio)/mou/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/mou/page-2a7846e37eb95dac.js"
     ],
     "/(portfolio)/aero/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -194,21 +146,21 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/amerta/page-fe4e69c582f16296.js"
     ],
-    "/(portfolio)/skillset/page": [
+    "/(portfolio)/expertise/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/skillset/page-2a7846e37eb95dac.js"
+      "static/chunks/app/(portfolio)/expertise/page-2a7846e37eb95dac.js"
     ],
-    "/(portfolio)/intl-grants/page": [
+    "/(portfolio)/engagement/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/intl-grants/page-2a7846e37eb95dac.js"
+      "static/chunks/app/(portfolio)/engagement/page-2a7846e37eb95dac.js"
     ],
     "/(portfolio)/experience/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -218,6 +170,22 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/experience/page-2a7846e37eb95dac.js"
     ],
+    "/(portfolio)/about-overview/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/about-overview/page-496fca285f3001c5.js"
+    ],
+    "/(portfolio)/intl-grants/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/intl-grants/page-2a7846e37eb95dac.js"
+    ],
     "/(portfolio)/partnerships/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -225,6 +193,38 @@
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/partnerships/page-a33b92f30b86a3b4.js"
+    ],
+    "/(portfolio)/mou/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/mou/page-2a7846e37eb95dac.js"
+    ],
+    "/(portfolio)/education/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/education/page-2a7846e37eb95dac.js"
+    ],
+    "/(portfolio)/croissantsmoon/writing/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/croissantsmoon/writing/page-33a236b69d3d59dc.js"
+    ],
+    "/(portfolio)/skillset/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/skillset/page-2a7846e37eb95dac.js"
     ],
     "/(portfolio)/values/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -242,13 +242,13 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/writing/page-2a7846e37eb95dac.js"
     ],
-    "/(portfolio)/projects-overview/page": [
+    "/(portfolio)/onboarding/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/projects-overview/page-7e6204999787bb30.js"
+      "static/chunks/app/(portfolio)/onboarding/page-9802c96bcc1278d3.js"
     ],
     "/(portfolio)/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -258,14 +258,6 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/page-8ecd3f6a544a4959.js"
     ],
-    "/(portfolio)/onboarding/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/(portfolio)/onboarding/page-9802c96bcc1278d3.js"
-    ],
     "/(portfolio)/pcu-global/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -274,23 +266,21 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/(portfolio)/pcu-global/page-2a7846e37eb95dac.js"
     ],
+    "/(portfolio)/projects-overview/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/(portfolio)/projects-overview/page-7e6204999787bb30.js"
+    ],
     "/croissantsmoon/layout": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-b28ea36bf0cdbd65.js",
       "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/css/904d8568de0fb6b3.css",
+      "static/css/e8a8b02ca96aecb5.css",
       "static/chunks/app/croissantsmoon/layout-43b63e959dcaa4dd.js"
-    ],
-    "/croissantsmoon/login/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/44530001-ef2edd53e6cfdfa8.js",
-      "static/chunks/8471-43d792dfb4211db7.js",
-      "static/chunks/3540-55d0e5312950b657.js",
-      "static/chunks/app/croissantsmoon/login/page-b43f7ed6999eaab9.js"
     ],
     "/croissantsmoon/proposal/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -302,6 +292,16 @@
       "static/chunks/5439-60defc341df2b44f.js",
       "static/chunks/app/croissantsmoon/proposal/page-8c92e01ea8ae3aa4.js"
     ],
+    "/croissantsmoon/login/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/44530001-ef2edd53e6cfdfa8.js",
+      "static/chunks/8471-43d792dfb4211db7.js",
+      "static/chunks/3540-55d0e5312950b657.js",
+      "static/chunks/app/croissantsmoon/login/page-b43f7ed6999eaab9.js"
+    ],
     "/croissantsmoon/proposal/[slug]/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -309,7 +309,7 @@
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/44530001-ef2edd53e6cfdfa8.js",
       "static/chunks/3540-55d0e5312950b657.js",
-      "static/chunks/app/croissantsmoon/proposal/[slug]/page-cd3925a692e61c8a.js"
+      "static/chunks/app/croissantsmoon/proposal/[slug]/page-03fe954d801a6a77.js"
     ],
     "/croissantsmoon/(admin)/layout": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -331,24 +331,6 @@
       "static/chunks/8471-43d792dfb4211db7.js",
       "static/chunks/app/croissantsmoon/(admin)/proposals/new/page-f5e9a55b6c288d41.js"
     ],
-    "/croissantsmoon/(admin)/dashboard/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/app/croissantsmoon/(admin)/dashboard/page-2a7846e37eb95dac.js"
-    ],
-    "/croissantsmoon/(admin)/proposals/[id]/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/2619-3c9e02e22d10480a.js",
-      "static/chunks/8471-43d792dfb4211db7.js",
-      "static/chunks/5439-60defc341df2b44f.js",
-      "static/chunks/app/croissantsmoon/(admin)/proposals/[id]/page-08e74691cb56b454.js"
-    ],
     "/croissantsmoon/(admin)/leads/[id]/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -366,16 +348,6 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/croissantsmoon/(admin)/proposals/page-2a7846e37eb95dac.js"
     ],
-    "/croissantsmoon/(admin)/templates/page": [
-      "static/chunks/webpack-c78cd9aafbca27d2.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-b28ea36bf0cdbd65.js",
-      "static/chunks/main-app-c43cf504a32f6ee7.js",
-      "static/chunks/44530001-ef2edd53e6cfdfa8.js",
-      "static/chunks/8471-43d792dfb4211db7.js",
-      "static/chunks/3540-55d0e5312950b657.js",
-      "static/chunks/app/croissantsmoon/(admin)/templates/page-c89b153a72db5ac4.js"
-    ],
     "/croissantsmoon/(admin)/archive/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -383,6 +355,24 @@
       "static/chunks/main-app-c43cf504a32f6ee7.js",
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/app/croissantsmoon/(admin)/archive/page-2a7846e37eb95dac.js"
+    ],
+    "/croissantsmoon/(admin)/dashboard/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/app/croissantsmoon/(admin)/dashboard/page-2a7846e37eb95dac.js"
+    ],
+    "/croissantsmoon/(admin)/proposals/[id]/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/2619-3c9e02e22d10480a.js",
+      "static/chunks/8471-43d792dfb4211db7.js",
+      "static/chunks/5439-60defc341df2b44f.js",
+      "static/chunks/app/croissantsmoon/(admin)/proposals/[id]/page-cf14c8a8e4cbe49d.js"
     ],
     "/croissantsmoon/(admin)/leads/page": [
       "static/chunks/webpack-c78cd9aafbca27d2.js",
@@ -392,6 +382,16 @@
       "static/chunks/2619-3c9e02e22d10480a.js",
       "static/chunks/8471-43d792dfb4211db7.js",
       "static/chunks/app/croissantsmoon/(admin)/leads/page-ca31d4eee4a01329.js"
+    ],
+    "/croissantsmoon/(admin)/templates/page": [
+      "static/chunks/webpack-c78cd9aafbca27d2.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-b28ea36bf0cdbd65.js",
+      "static/chunks/main-app-c43cf504a32f6ee7.js",
+      "static/chunks/44530001-ef2edd53e6cfdfa8.js",
+      "static/chunks/8471-43d792dfb4211db7.js",
+      "static/chunks/3540-55d0e5312950b657.js",
+      "static/chunks/app/croissantsmoon/(admin)/templates/page-c89b153a72db5ac4.js"
     ]
   }
 }
