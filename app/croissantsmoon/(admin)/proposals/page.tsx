@@ -3,9 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 import { ProposalStatusBadge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Button } from '@/components/ui/Button'
-import { formatDate, timeAgo, daysUntil } from '@/lib/utils'
+import { formatDate, daysUntil } from '@/lib/utils'
 import Link from 'next/link'
-import { FileText, Plus, Eye, Clock, Copy } from 'lucide-react'
+import { FileText, Plus, Eye } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Proposals' }
 

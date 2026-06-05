@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { updateProposal } from '@/lib/actions/proposals'
 import { useRouter } from 'next/navigation'
-import { Save, Plus, Trash2, GripVertical } from 'lucide-react'
+import { Save, Plus, Trash2, GripVertical, ChevronUp, ChevronDown, Eye, EyeOff, ExternalLink } from 'lucide-react'
 import type { Proposal, ProposalContent, ProposalBlock, ProposalBlockType } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -22,33 +22,105 @@ const BLOCK_TYPES: { type: ProposalBlockType; label: string }[] = [
   { type: 'timeline', label: 'Timeline' },
   { type: 'infrastructure', label: 'Infrastructure Options' },
   { type: 'demo_embed', label: 'Demo Embed' },
+  { type: 'gallery', label: 'Image Gallery' },
   { type: 'cta', label: 'Call to Action' },
   { type: 'text', label: 'Text Block' },
+  { type: 'divider', label: 'Divider' },
 ]
 
-function BlockEditor({ block, onChange, onRemove }: {
+function BlockEditor({
+  block, index, total, onChange, onRemove, onMove, onArmDrag, dragState,
+}: {
   block: ProposalBlock
+  index: number
+  total: number
   onChange: (b: ProposalBlock) => void
   onRemove: () => void
+  onMove: (to: number) => void
+  onArmDrag: (armed: boolean) => void
+  dragState: {
+    draggable: boolean
+    isDragging: boolean
+    isOver: boolean
+    onDragStart: () => void
+    onDragEnter: () => void
+    onDragEnd: () => void
+    onDrop: () => void
+  }
 }) {
   const data = block.data as Record<string, string>
+  const hidden = block.visible === false
 
   function setField(key: string, val: string) {
     onChange({ ...block, data: { ...block.data, [key]: val } })
   }
 
   return (
-    <div className="bg-cm-elevated border border-cm-border rounded-xl p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <GripVertical size={14} className="text-cm-muted cursor-grab" />
-          <span className="text-xs font-medium text-cm-text uppercase tracking-wider">
+    <div
+      draggable={dragState.draggable}
+      onDragStart={dragState.onDragStart}
+      onDragEnter={dragState.onDragEnter}
+      onDragOver={e => e.preventDefault()}
+      onDrop={dragState.onDrop}
+      onDragEnd={dragState.onDragEnd}
+      className={cn(
+        'bg-cm-elevated border border-cm-border rounded-xl p-4 space-y-3 transition-all',
+        dragState.isDragging && 'opacity-40',
+        dragState.isOver && 'ring-1 ring-cm-accent border-cm-accent/60',
+        hidden && 'opacity-60'
+      )}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <span
+            onMouseDown={() => onArmDrag(true)}
+            onMouseUp={() => onArmDrag(false)}
+            title="Drag to reorder (or use the arrows)"
+            className="text-cm-muted hover:text-cm-text cursor-grab active:cursor-grabbing touch-none"
+          >
+            <GripVertical size={14} />
+          </span>
+          <span className="text-xs font-medium text-cm-text uppercase tracking-wider truncate">
             {BLOCK_TYPES.find(b => b.type === block.type)?.label ?? block.type}
           </span>
+          {hidden && (
+            <span className="text-[9px] font-medium uppercase tracking-wider text-cm-subtle border border-cm-border rounded px-1.5 py-0.5 flex-shrink-0">
+              Hidden
+            </span>
+          )}
         </div>
-        <button type="button" onClick={onRemove} aria-label="Remove section" className="text-cm-subtle hover:text-red-400 transition-colors p-1">
-          <Trash2 size={13} />
-        </button>
+        <div className="flex items-center gap-0.5 flex-shrink-0">
+          <button
+            type="button"
+            onClick={() => onMove(index - 1)}
+            disabled={index === 0}
+            aria-label="Move section up"
+            className="text-cm-subtle hover:text-cm-text disabled:opacity-25 disabled:cursor-not-allowed transition-colors p-1"
+          >
+            <ChevronUp size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onMove(index + 1)}
+            disabled={index === total - 1}
+            aria-label="Move section down"
+            className="text-cm-subtle hover:text-cm-text disabled:opacity-25 disabled:cursor-not-allowed transition-colors p-1"
+          >
+            <ChevronDown size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onChange({ ...block, visible: hidden })}
+            aria-label={hidden ? 'Show section' : 'Hide section'}
+            title={hidden ? 'Show in proposal' : 'Hide from proposal'}
+            className="text-cm-subtle hover:text-cm-text transition-colors p-1"
+          >
+            {hidden ? <EyeOff size={13} /> : <Eye size={13} />}
+          </button>
+          <button type="button" onClick={onRemove} aria-label="Remove section" className="text-cm-subtle hover:text-red-400 transition-colors p-1">
+            <Trash2 size={13} />
+          </button>
+        </div>
       </div>
 
       {block.type === 'hero' && (
@@ -61,7 +133,13 @@ function BlockEditor({ block, onChange, onRemove }: {
         <Textarea label="Greeting Message" value={data.message ?? ''} onChange={e => setField('message', e.target.value)} placeholder="Dear {{contact_person}}, we've prepared this proposal specifically for {{organization_name}}..." rows={3} />
       )}
       {block.type === 'audit_findings' && (
-        <Textarea label="Findings" value={data.findings ?? ''} onChange={e => setField('findings', e.target.value)} placeholder="Current website audit observations..." rows={5} />
+        <Textarea label="Findings (one per line)" value={data.findings ?? ''} onChange={e => setField('findings', e.target.value)} placeholder="Current website audit observations..." rows={5} />
+      )}
+      {block.type === 'website_analysis' && (
+        <Textarea label="Analysis points (one per line)" value={data.findings ?? data.analysis ?? ''} onChange={e => setField('findings', e.target.value)} placeholder="Slow load times on mobile&#10;No clear calls to action&#10;Outdated visual design" rows={5} />
+      )}
+      {block.type === 'redesign_concept' && (
+        <Textarea label="Concept" value={data.concept ?? data.description ?? ''} onChange={e => setField('concept', e.target.value)} placeholder="Describe the redesign direction, tone, and key ideas..." rows={5} />
       )}
       {block.type === 'features' && (
         <Textarea label="Feature List (one per line)" value={data.features ?? ''} onChange={e => setField('features', e.target.value)} placeholder="Modern responsive design&#10;Advanced CMS integration&#10;Multi-language support" rows={5} />
@@ -114,6 +192,15 @@ function BlockEditor({ block, onChange, onRemove }: {
           rows={5}
         />
       )}
+      {block.type === 'infrastructure' && (
+        <Textarea label="Infrastructure model" value={data.model ?? data.content ?? ''} onChange={e => setField('model', e.target.value)} placeholder="Describe hosting, maintenance, and ongoing support options..." rows={5} />
+      )}
+      {block.type === 'gallery' && (
+        <div className="space-y-3">
+          <Input label="Title (optional)" value={data.title ?? ''} onChange={e => setField('title', e.target.value)} placeholder="Selected Work" />
+          <Textarea label="Image URLs (one per line)" value={data.images ?? ''} onChange={e => setField('images', e.target.value)} placeholder="https://.../shot-1.jpg&#10;https://.../shot-2.jpg" rows={4} />
+        </div>
+      )}
       {block.type === 'cta' && (
         <div className="space-y-3">
           <Input label="CTA Heading" value={data.heading ?? ''} onChange={e => setField('heading', e.target.value)} placeholder="Ready to Transform Your Digital Presence?" />
@@ -127,6 +214,9 @@ function BlockEditor({ block, onChange, onRemove }: {
       {block.type === 'demo_embed' && (
         <Input label="Embed URL" value={data.url ?? ''} onChange={e => setField('url', e.target.value)} placeholder="https://..." />
       )}
+      {block.type === 'divider' && (
+        <p className="text-[11px] text-cm-subtle leading-relaxed">A decorative divider — no content needed.</p>
+      )}
     </div>
   )
 }
@@ -136,6 +226,9 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [showBlockPicker, setShowBlockPicker] = useState(false)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [overIndex, setOverIndex] = useState<number | null>(null)
+  const [armed, setArmed] = useState(false)
   const router = useRouter()
 
   function updateBlock(index: number, block: ProposalBlock) {
@@ -145,7 +238,18 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
   }
 
   function removeBlock(index: number) {
-    setContent({ ...content, sections: content.sections.filter((_, i) => i !== index) })
+    setContent({
+      ...content,
+      sections: content.sections.filter((_, i) => i !== index).map((b, i) => ({ ...b, order: i })),
+    })
+  }
+
+  function moveBlock(from: number, to: number) {
+    if (to < 0 || to >= content.sections.length || from === to) return
+    const sections = [...content.sections]
+    const [moved] = sections.splice(from, 1)
+    sections.splice(to, 0, moved)
+    setContent({ ...content, sections: sections.map((b, i) => ({ ...b, order: i })) })
   }
 
   function addBlock(type: ProposalBlockType) {
@@ -163,7 +267,9 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
   async function save() {
     setSaving(true)
     try {
-      await updateProposal(proposal.id, { content })
+      // Persist order to match on-screen arrangement
+      const normalized = { ...content, sections: content.sections.map((b, i) => ({ ...b, order: i })) }
+      await updateProposal(proposal.id, { content: normalized })
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
       router.refresh()
@@ -172,13 +278,25 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
     }
   }
 
+  const previewUrl = `/croissantsmoon/proposal/${proposal.slug}`
+
   return (
     <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-cm-border">
+      <div className="flex items-center justify-between gap-3 px-6 py-4 border-b border-cm-border">
         <h3 className="text-sm font-semibold text-cm-white">Proposal Content</h3>
-        <Button variant={saved ? 'gold' : 'primary'} size="sm" onClick={save} loading={saving}>
-          <Save size={13} /> {saved ? 'Saved' : 'Save'}
-        </Button>
+        <div className="flex items-center gap-2">
+          <a
+            href={previewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-cm-subtle hover:text-cm-text transition-colors"
+          >
+            <ExternalLink size={13} /> Preview
+          </a>
+          <Button variant={saved ? 'gold' : 'primary'} size="sm" onClick={save} loading={saving}>
+            <Save size={13} /> {saved ? 'Saved' : 'Save'}
+          </Button>
+        </div>
       </div>
 
       <div className="p-5 space-y-4">
@@ -202,8 +320,30 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
             <BlockEditor
               key={block.id}
               block={block}
+              index={i}
+              total={content.sections.length}
               onChange={b => updateBlock(i, b)}
               onRemove={() => removeBlock(i)}
+              onMove={to => moveBlock(i, to)}
+              onArmDrag={setArmed}
+              dragState={{
+                draggable: armed,
+                isDragging: dragIndex === i,
+                isOver: overIndex === i && dragIndex !== i,
+                onDragStart: () => setDragIndex(i),
+                onDragEnter: () => setOverIndex(i),
+                onDrop: () => {
+                  if (dragIndex !== null) moveBlock(dragIndex, i)
+                  setDragIndex(null)
+                  setOverIndex(null)
+                  setArmed(false)
+                },
+                onDragEnd: () => {
+                  setDragIndex(null)
+                  setOverIndex(null)
+                  setArmed(false)
+                },
+              }}
             />
           ))}
         </div>

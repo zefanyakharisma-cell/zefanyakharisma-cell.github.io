@@ -5,9 +5,10 @@ import { ProposalStatusBadge } from '@/components/ui/Badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { formatDate, formatCurrency, daysUntil, timeAgo } from '@/lib/utils'
 import Link from 'next/link'
-import { ArrowLeft, Eye, Copy, RefreshCw, Clock, ExternalLink, Archive } from 'lucide-react'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { ProposalActions } from '@/components/admin/ProposalActions'
 import { ProposalEditor } from '@/components/admin/ProposalEditor'
+import { CopyButton } from '@/components/admin/CopyButton'
 
 export const metadata: Metadata = { title: 'Proposal Detail' }
 
@@ -49,8 +50,8 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
           <ProposalEditor proposal={proposal} />
         </div>
 
@@ -61,9 +62,10 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
               <div>
                 <p className="text-xs text-cm-subtle uppercase tracking-wider mb-2">Token</p>
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 bg-cm-black border border-cm-border rounded-lg px-3 py-2 text-sm font-mono text-cm-gold">
+                  <code className="flex-1 min-w-0 truncate bg-cm-black border border-cm-border rounded-lg px-3 py-2 text-sm font-mono text-cm-gold">
                     {proposal.token}
                   </code>
+                  <CopyButton value={proposal.token} label="Copy token" />
                 </div>
               </div>
               <div>
@@ -73,10 +75,11 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
                     href={proposalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 text-xs text-cm-accent hover:underline truncate flex items-center gap-1"
+                    className="flex-1 min-w-0 text-xs text-cm-accent hover:underline truncate flex items-center gap-1"
                   >
-                    {proposalUrl} <ExternalLink size={10} />
+                    {proposalUrl} <ExternalLink size={10} className="flex-shrink-0" />
                   </a>
+                  <CopyButton value={proposalUrl} label="Copy proposal URL" />
                 </div>
               </div>
               <div>

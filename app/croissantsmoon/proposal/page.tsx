@@ -63,6 +63,8 @@ export default async function ProposalPage() {
           </div>
         ) : (
           <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
+            <div className="overflow-x-auto">
+            <div className="min-w-[820px]">
             <div className={`grid gap-4 px-6 py-3 border-b border-cm-border text-xs font-medium text-cm-subtle uppercase tracking-wider ${isAdmin ? 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr_auto]' : 'grid-cols-[2fr_1.5fr_1fr_1fr_1fr]'}`}>
               <span>Proposal</span>
               <span>Lead</span>
@@ -116,6 +118,8 @@ export default async function ProposalPage() {
                   </div>
                 )
               })}
+            </div>
+            </div>
             </div>
           </div>
         )}

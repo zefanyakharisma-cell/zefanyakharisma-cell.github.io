@@ -101,15 +101,14 @@ export function ProposalGate({ slug, orgName }: Props) {
           </p>
 
           <h1
-            className="font-serif font-light text-[2rem] leading-tight mb-4"
+            className="font-serif font-light text-[2rem] leading-tight mb-4 text-balance"
             style={{ color: '#D9E6FF' }}
           >
-            Private Proposal<br />Portal
+            Private Proposal Portal
           </h1>
 
-          <p className="text-sm leading-relaxed" style={{ color: 'rgba(143,168,214,0.75)' }}>
-            A confidential proposal has been prepared<br />
-            exclusively for{' '}
+          <p className="text-sm leading-relaxed text-balance" style={{ color: 'rgba(143,168,214,0.75)' }}>
+            A confidential proposal has been prepared exclusively for{' '}
             <span style={{ color: '#D9E6FF', fontWeight: 500 }}>{orgName}</span>.
           </p>
         </div>

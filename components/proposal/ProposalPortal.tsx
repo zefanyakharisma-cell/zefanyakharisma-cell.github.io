@@ -41,6 +41,14 @@ const SECTION_META: Record<string, { eyebrow: string; accent: string; title: str
 
 const FEATURE_COLORS = [AURORA, VIOLET, SKY, MINT, GOLD]
 
+// Sections that show a numbered editorial header. `pricing` is intentionally
+// excluded — it renders its own centered header — so the visible numbering
+// stays contiguous (no skipped number).
+const NUMBERED_TYPES = new Set([
+  'audit_findings', 'website_analysis', 'redesign_concept',
+  'features', 'timeline', 'infrastructure', 'demo_embed', 'gallery',
+])
+
 // ── Analytics observer ────────────────────────────────────────
 function SectionObserver({
   proposalId, sectionType, children,
@@ -151,8 +159,8 @@ function PriceTier({
         style={{ borderBottom: `1px solid ${rgba(accent, 0.1)}`, background: gold ? rgba(GOLD, 0.03) : 'transparent' }}
       >
         <p
-          className="text-[10px] font-semibold uppercase mb-5"
-          style={{ letterSpacing: '0.26em', color: rgba(accent, 0.65) }}
+          className="text-[11px] font-semibold uppercase mb-5"
+          style={{ letterSpacing: '0.24em', color: rgba(accent, 0.88) }}
         >
           {name || 'Package'}
         </p>
@@ -195,8 +203,8 @@ function EditorialHeader({
           style={{ background: `linear-gradient(to right, ${accent}, transparent)` }}
         />
         <span
-          className="text-[10px] font-semibold uppercase"
-          style={{ letterSpacing: '0.26em', color: rgba(accent, 0.7) }}
+          className="text-[11px] font-semibold uppercase"
+          style={{ letterSpacing: '0.24em', color: rgba(accent, 0.92) }}
         >
           {eyebrow}
         </span>
@@ -388,40 +396,45 @@ function BlockRenderer({
       tiers = tiers.slice(0, 4)
       const n = tiers.length
 
-      // Highest price → "Recommended" (only when more than one tier)
+      // Highest price → "Recommended". Only highlight when more than one tier
+      // AND at least one price parses to a real positive number — otherwise
+      // (e.g. "Custom" / "Contact us") leave every tier un-highlighted.
       const parsePrice = (p: string) => {
         const v = parseFloat(p.replace(/[^0-9.]/g, ''))
         return isNaN(v) ? 0 : v
       }
       let recIdx = -1
       if (n > 1) {
-        let max = -Infinity
+        let max = 0
         tiers.forEach((t, i) => { const v = parsePrice(t.price); if (v > max) { max = v; recIdx = i } })
       }
 
-      // Match the editorial body width used by the surrounding sections
-      const containerMax = 'max-w-4xl'
-      const gridClass = n === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 md:grid-cols-2 gap-5'
+      // Give 3–4 tiers more room; keep editorial body width for 1–2.
+      const containerMax = n >= 3 ? 'max-w-6xl' : 'max-w-4xl'
+      const gridClass =
+        n === 1 ? 'grid grid-cols-1'
+        : n === 3 ? 'grid grid-cols-1 md:grid-cols-3 gap-5'
+        : n === 4 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'
+        : 'grid grid-cols-1 md:grid-cols-2 gap-5'
 
       return (
         <SectionObserver proposalId={proposalId} sectionType="pricing">
           <section className={`py-24 px-8 ${containerMax} mx-auto w-full`}>
             <div className="cm-reveal">
               <div className="text-center mb-10">
-                <span className="text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.3em', color: rgba(GOLD, 0.65) }}>
+                <span className="text-[11px] font-semibold uppercase" style={{ letterSpacing: '0.28em', color: rgba(GOLD, 0.85) }}>
                   Investment
                 </span>
               </div>
               <div className={gridClass}>
                 {tiers.map((t, i) => (
-                  <div key={i} className={n === 3 && i === 2 ? 'md:col-span-2' : ''}>
-                    <PriceTier
-                      name={t.name}
-                      price={t.price}
-                      inclusions={t.inclusions}
-                      variant={n === 1 ? 'solo' : i === recIdx ? 'recommended' : 'normal'}
-                    />
-                  </div>
+                  <PriceTier
+                    key={i}
+                    name={t.name}
+                    price={t.price}
+                    inclusions={t.inclusions}
+                    variant={n === 1 ? 'solo' : i === recIdx ? 'recommended' : 'normal'}
+                  />
                 ))}
               </div>
             </div>
@@ -446,25 +459,29 @@ function BlockRenderer({
                 {rows.map((cells, i) => (
                   <div
                     key={i}
-                    className="grid items-center gap-x-5 px-6 py-4 transition-colors"
+                    className="grid grid-cols-1 sm:grid-cols-[var(--tl-cols)] items-start sm:items-center gap-x-5 gap-y-0.5 px-6 py-4 transition-colors"
                     style={{
-                      gridTemplateColumns: maxCols > 1 ? `minmax(110px, 0.7fr) repeat(${maxCols - 1}, 1fr)` : '1fr',
+                      ['--tl-cols' as string]: maxCols > 1 ? `minmax(110px, 0.7fr) repeat(${maxCols - 1}, 1fr)` : '1fr',
                       borderTop: i > 0 ? `1px solid ${rgba(accent, 0.1)}` : 'none',
                       background: i % 2 === 1 ? 'rgba(111,168,255,0.018)' : 'transparent',
-                    }}
+                    } as React.CSSProperties}
                   >
-                    {Array.from({ length: maxCols }).map((_, c) => (
-                      <span
-                        key={c}
-                        className="text-sm leading-relaxed"
-                        style={{
-                          color: c === 0 ? accent : rgba('#D9E6FF', 0.74),
-                          fontWeight: c === 0 ? 600 : 400,
-                        }}
-                      >
-                        {cells[c] ?? ''}
-                      </span>
-                    ))}
+                    {Array.from({ length: maxCols }).map((_, c) => {
+                      const cell = cells[c] ?? ''
+                      if (!cell) return <span key={c} className="hidden sm:block" />
+                      return (
+                        <span
+                          key={c}
+                          className="text-sm leading-relaxed"
+                          style={{
+                            color: c === 0 ? accent : rgba('#D9E6FF', 0.74),
+                            fontWeight: c === 0 ? 600 : 400,
+                          }}
+                        >
+                          {cell}
+                        </span>
+                      )
+                    })}
                   </div>
                 ))}
               </GlassCard>
@@ -516,9 +533,26 @@ function BlockRenderer({
                       <ArrowUpRight size={11} className="flex-shrink-0" />
                     </a>
                   </div>
-                  <div className="aspect-video">
-                    <iframe src={data.url} loading="lazy" className="w-full h-full" title="Demo Preview" />
+                  <div className="relative aspect-video">
+                    {/* Fallback shown if the embedded site refuses framing or loads blank */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6 pointer-events-none">
+                      <ArrowUpRight size={22} style={{ color: rgba(accent, 0.4) }} />
+                      <p className="text-xs leading-relaxed max-w-xs" style={{ color: rgba('#8FA8D6', 0.5) }}>
+                        Loading preview… if it doesn&apos;t appear, the site can&apos;t be embedded — open it in a new tab below.
+                      </p>
+                    </div>
+                    <iframe src={data.url} loading="lazy" className="relative z-10 w-full h-full" title="Demo Preview" />
                   </div>
+                  <a
+                    href={data.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs hover:underline transition-colors"
+                    style={{ borderTop: `1px solid ${rgba(accent, 0.1)}`, background: 'rgba(3,7,18,0.4)', color: rgba('#8FA8D6', 0.6) }}
+                  >
+                    Open the live preview in a new tab
+                    <ArrowUpRight size={12} className="flex-shrink-0" />
+                  </a>
                 </GlassCard>
               )}
             </div>
@@ -683,7 +717,7 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
 
       <main className="relative z-10 max-w-5xl mx-auto">
         {sections.map(block => {
-          const numbered = SECTION_META[block.type] !== undefined
+          const numbered = NUMBERED_TYPES.has(block.type)
           const sectionNumber = numbered ? String(++counter).padStart(2, '0') : null
           return (
             <BlockRenderer

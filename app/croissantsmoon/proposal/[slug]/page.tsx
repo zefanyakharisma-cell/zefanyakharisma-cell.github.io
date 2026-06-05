@@ -72,7 +72,9 @@ function ExpiredScreen({ reason }: { reason: 'expired' | 'archived' | 'revoked' 
           </h1>
           <p className="text-sm leading-relaxed" style={{ color: 'rgba(143,168,214,0.65)' }}>
             This private proposal preview has{' '}
-            {reason === 'expired' ? 'expired' : 'been archived'}.{' '}
+            {reason === 'expired' ? 'expired'
+              : reason === 'revoked' ? 'had its access revoked'
+              : 'been archived'}.{' '}
             Please contact CroissantsMoon to reactivate access.
           </p>
         </div>

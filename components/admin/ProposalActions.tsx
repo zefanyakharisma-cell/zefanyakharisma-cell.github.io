@@ -72,6 +72,7 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
           <div className="flex gap-2">
             <Input
               type="number"
+              min={1}
               value={days}
               onChange={e => setDays(e.target.value)}
               placeholder="Days"
@@ -81,7 +82,7 @@ export function ProposalActions({ proposal }: { proposal: { id: string; status: 
               variant="secondary"
               className="flex-1 justify-center"
               loading={loading === 'extend'}
-              onClick={() => run('extend', () => extendExpiration(proposal.id, Number(days)))}
+              onClick={() => run('extend', () => extendExpiration(proposal.id, Math.max(1, Number(days) || 14)))}
             >
               <Clock size={14} /> Extend Expiry
             </Button>
