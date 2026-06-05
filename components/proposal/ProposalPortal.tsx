@@ -504,12 +504,20 @@ function BlockRenderer({
                         <div key={i} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />
                       ))}
                     </div>
-                    <div className="flex-1 mx-3 rounded px-3 py-1 text-xs font-mono truncate" style={{ background: 'rgba(3,7,18,0.45)', color: rgba('#8FA8D6', 0.4) }}>
-                      {data.url}
-                    </div>
+                    <a
+                      href={data.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open in a new tab"
+                      className="flex-1 mx-3 rounded px-3 py-1 text-xs font-mono truncate flex items-center gap-1.5 hover:underline transition-colors"
+                      style={{ background: 'rgba(3,7,18,0.45)', color: rgba('#8FA8D6', 0.4) }}
+                    >
+                      <span className="truncate">{data.url}</span>
+                      <ArrowUpRight size={11} className="flex-shrink-0" />
+                    </a>
                   </div>
                   <div className="aspect-video">
-                    <iframe src={data.url} className="w-full h-full" title="Demo Preview" />
+                    <iframe src={data.url} loading="lazy" className="w-full h-full" title="Demo Preview" />
                   </div>
                 </GlassCard>
               )}
@@ -530,7 +538,7 @@ function BlockRenderer({
                   {images.map((url, i) => (
                     <GlassCard key={i} accent={accent} className="overflow-hidden aspect-video p-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={url} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" />
+                      <img src={url} alt={`Gallery ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
                     </GlassCard>
                   ))}
                 </div>

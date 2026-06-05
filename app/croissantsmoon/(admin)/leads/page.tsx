@@ -28,8 +28,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
   const leads = await getLeads(search)
 
   return (
-    <div className="px-8 py-8 animate-cm-fade-in">
-      <div className="flex items-center justify-between mb-8">
+    <div className="px-4 md:px-8 py-8 animate-cm-fade-in">
+      <div className="flex items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-cm-white">Leads</h1>
           <p className="text-sm text-cm-subtle mt-1">{leads.length} active leads in pipeline</p>
@@ -57,6 +57,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
+          <div className="overflow-x-auto">
+          <div className="min-w-[720px]">
           <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-4 px-6 py-3 border-b border-cm-border">
             {['Organization', 'Status', 'Temperature', 'Engagement', 'Value', 'Last Updated'].map(h => (
               <span key={h} className="text-xs font-medium text-cm-subtle uppercase tracking-wider">{h}</span>
@@ -84,6 +86,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                 <span className="text-xs text-cm-subtle">{timeAgo(lead.updated_at)}</span>
               </Link>
             ))}
+          </div>
+          </div>
           </div>
         </div>
       )}

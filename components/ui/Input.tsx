@@ -10,6 +10,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, hint, id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
+    const errorId = inputId ? `${inputId}-error` : undefined
+    const hintId = inputId ? `${inputId}-hint` : undefined
     return (
       <div className="w-full">
         {label && (
@@ -20,6 +22,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           id={inputId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : hint ? hintId : undefined}
           className={cn(
             'w-full bg-cm-elevated border border-cm-border rounded-lg px-3.5 py-2.5 text-sm text-cm-text placeholder:text-cm-muted',
             'focus:outline-none focus:ring-1 focus:ring-cm-accent focus:border-cm-accent',
@@ -30,8 +34,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           {...props}
         />
-        {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="mt-1.5 text-xs text-cm-subtle">{hint}</p>}
+        {error && <p id={errorId} role="alert" className="mt-1.5 text-xs text-red-400">{error}</p>}
+        {hint && !error && <p id={hintId} className="mt-1.5 text-xs text-cm-subtle">{hint}</p>}
       </div>
     )
   }
@@ -46,6 +50,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
+    const errorId = inputId ? `${inputId}-error` : undefined
     return (
       <div className="w-full">
         {label && (
@@ -56,6 +61,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           id={inputId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
           className={cn(
             'w-full bg-cm-elevated border border-cm-border rounded-lg px-3.5 py-2.5 text-sm text-cm-text placeholder:text-cm-muted resize-none',
             'focus:outline-none focus:ring-1 focus:ring-cm-accent focus:border-cm-accent',
@@ -66,7 +73,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           rows={4}
           {...props}
         />
-        {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
+        {error && <p id={errorId} role="alert" className="mt-1.5 text-xs text-red-400">{error}</p>}
       </div>
     )
   }
@@ -82,6 +89,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, options, id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
+    const errorId = inputId ? `${inputId}-error` : undefined
     return (
       <div className="w-full">
         {label && (
@@ -92,6 +100,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           id={inputId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
           className={cn(
             'w-full bg-cm-elevated border border-cm-border rounded-lg px-3.5 py-2.5 text-sm text-cm-text',
             'focus:outline-none focus:ring-1 focus:ring-cm-accent focus:border-cm-accent',
@@ -107,7 +117,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
+        {error && <p id={errorId} role="alert" className="mt-1.5 text-xs text-red-400">{error}</p>}
       </div>
     )
   }

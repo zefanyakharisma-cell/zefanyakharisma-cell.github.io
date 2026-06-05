@@ -67,7 +67,7 @@ export default function TopBar() {
         >
           Contact
         </Link>
-        <button type="button" id="open-admin-login" aria-label="Open admin sign-in">···</button>
+        <Link href="/croissantsmoon/login" id="open-admin-login" aria-label="Admin sign-in">···</Link>
       </div>
     </div>
   )

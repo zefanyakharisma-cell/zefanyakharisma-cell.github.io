@@ -55,15 +55,15 @@ export function CreateLeadModal() {
       </Button>
       <Modal open={open} onClose={() => setOpen(false)} title="New Lead" description="Add a new prospect to your pipeline." size="lg">
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Organization *" name="organization" placeholder="Petra Christian University" required />
             <Input label="Contact Person *" name="contact_person" placeholder="Dr. John Smith" required />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Email *" name="email" type="email" placeholder="contact@example.com" required />
             <Input label="Website" name="website" type="url" placeholder="https://example.com" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Industry" name="industry" placeholder="Higher Education" />
             <Select label="Project Type" name="project_type" options={PROJECT_TYPE_OPTIONS} />
           </div>

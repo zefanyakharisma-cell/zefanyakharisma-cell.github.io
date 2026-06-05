@@ -22,7 +22,7 @@ export default async function ArchivePage() {
   const proposals = await getArchived()
 
   return (
-    <div className="px-8 py-8 animate-cm-fade-in">
+    <div className="px-4 md:px-8 py-8 animate-cm-fade-in">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-cm-white">Archive</h1>
         <p className="text-sm text-cm-subtle mt-1">{proposals.length} archived proposals</p>
@@ -36,6 +36,8 @@ export default async function ArchivePage() {
         />
       ) : (
         <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
+          <div className="overflow-x-auto">
+          <div className="min-w-[680px]">
           <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr] gap-4 px-6 py-3 border-b border-cm-border">
             {['Proposal', 'Lead', 'Status', 'Views', 'Archived'].map(h => (
               <span key={h} className="text-xs font-medium text-cm-subtle uppercase tracking-wider">{h}</span>
@@ -60,6 +62,8 @@ export default async function ArchivePage() {
                 <span className="text-xs text-cm-subtle">{formatDate(p.updated_at)}</span>
               </Link>
             ))}
+          </div>
+          </div>
           </div>
         </div>
       )}

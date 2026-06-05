@@ -92,24 +92,24 @@ export default function ContactForm() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16, marginBottom: 18 }}>
               <div>
                 <label htmlFor="cf-name" className="ct-label">Full Name</label>
-                <input id="cf-name" name="name" type="text" className={`ct-input${errors.name ? ' input-error' : ''}`} placeholder="Your name" />
-                {errors.name && <p style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.name}</p>}
+                <input id="cf-name" name="name" type="text" required aria-required="true" aria-invalid={errors.name ? true : undefined} aria-describedby={errors.name ? 'cf-name-error' : undefined} className={`ct-input${errors.name ? ' input-error' : ''}`} placeholder="Your name" />
+                {errors.name && <p id="cf-name-error" role="alert" style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.name}</p>}
               </div>
               <div>
                 <label htmlFor="cf-email" className="ct-label">Email Address</label>
-                <input id="cf-email" name="email" type="email" className={`ct-input${errors.email ? ' input-error' : ''}`} placeholder="your@email.com" />
-                {errors.email && <p style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.email}</p>}
+                <input id="cf-email" name="email" type="email" required aria-required="true" aria-invalid={errors.email ? true : undefined} aria-describedby={errors.email ? 'cf-email-error' : undefined} className={`ct-input${errors.email ? ' input-error' : ''}`} placeholder="your@email.com" />
+                {errors.email && <p id="cf-email-error" role="alert" style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.email}</p>}
               </div>
             </div>
             <div style={{ marginBottom: 18 }}>
               <label htmlFor="cf-subject" className="ct-label">Subject</label>
-              <input id="cf-subject" name="subject" type="text" className={`ct-input${errors.subject ? ' input-error' : ''}`} placeholder="What would you like to build?" />
-              {errors.subject && <p style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.subject}</p>}
+              <input id="cf-subject" name="subject" type="text" required aria-required="true" aria-invalid={errors.subject ? true : undefined} aria-describedby={errors.subject ? 'cf-subject-error' : undefined} className={`ct-input${errors.subject ? ' input-error' : ''}`} placeholder="What would you like to build?" />
+              {errors.subject && <p id="cf-subject-error" role="alert" style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.subject}</p>}
             </div>
             <div style={{ marginBottom: 24 }}>
               <label htmlFor="cf-msg" className="ct-label">Message</label>
-              <textarea id="cf-msg" name="message" rows={5} className={`ct-input${errors.message ? ' input-error' : ''}`} style={{ resize: 'none' }} placeholder="Tell me about your project, goals, and timeline..." />
-              {errors.message && <p style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.message}</p>}
+              <textarea id="cf-msg" name="message" rows={5} required aria-required="true" aria-invalid={errors.message ? true : undefined} aria-describedby={errors.message ? 'cf-msg-error' : undefined} className={`ct-input${errors.message ? ' input-error' : ''}`} style={{ resize: 'none' }} placeholder="Tell me about your project, goals, and timeline..." />
+              {errors.message && <p id="cf-msg-error" role="alert" style={{ color: 'rgba(220,80,80,0.85)', fontSize: '.72rem', marginTop: 5 }}>{errors.message}</p>}
             </div>
             <button type="submit" disabled={status === 'loading'} style={{ width: '100%', fontFamily: "'Outfit',sans-serif", fontSize: '.88rem', fontWeight: 700, background: '#D4B15A', color: '#071126', padding: '15px 28px', borderRadius: 999, border: 'none', cursor: status === 'loading' ? 'wait' : 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9, letterSpacing: '.04em', boxShadow: '0 0 28px rgba(212,177,90,0.35),0 4px 18px rgba(212,177,90,0.2)', animation: 'ctGlowPulse 2.8s ease-in-out infinite' }}>
               <Send style={{ width: 16, height: 16 }} />

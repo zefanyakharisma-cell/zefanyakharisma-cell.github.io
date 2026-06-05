@@ -138,6 +138,7 @@ export function ProposalGate({ slug, orgName }: Props) {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
+                htmlFor="cm-access-token"
                 className="block text-[10px] font-semibold uppercase mb-2.5"
                 style={{ letterSpacing: '0.15em', color: 'rgba(143,168,214,0.55)' }}
               >
@@ -145,11 +146,14 @@ export function ProposalGate({ slug, orgName }: Props) {
               </label>
               <input
                 ref={inputRef}
+                id="cm-access-token"
                 type="text"
                 value={token}
                 onChange={e => setToken(e.target.value.toUpperCase())}
                 placeholder="CM-XXXX-XXXX"
                 disabled={loading || attempts >= 5}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? 'cm-token-error' : undefined}
                 className="w-full rounded-xl px-4 py-3.5 text-center text-base font-mono focus:outline-none transition-all duration-200 placeholder:opacity-25 disabled:opacity-40 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(3,7,18,0.55)',
@@ -168,6 +172,8 @@ export function ProposalGate({ slug, orgName }: Props) {
 
             {error && (
               <div
+                id="cm-token-error"
+                role="alert"
                 className="flex items-center gap-2 text-sm rounded-lg px-3 py-2.5"
                 style={{
                   color: 'rgba(248,113,113,0.85)',

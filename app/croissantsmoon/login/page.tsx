@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: 'Login — CroissantsMoon' }
 export default function LoginPage() {
   return (
     <div className="min-h-screen bg-cm-black grid-bg flex flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm animate-slide-up">
+      <div className="w-full max-w-sm animate-cm-slide-up">
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cm-gold/10 border border-cm-gold/20 mb-6">
             <Moon size={22} className="text-cm-gold" />

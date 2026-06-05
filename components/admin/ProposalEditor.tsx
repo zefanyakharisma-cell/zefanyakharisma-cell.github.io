@@ -46,7 +46,7 @@ function BlockEditor({ block, onChange, onRemove }: {
             {BLOCK_TYPES.find(b => b.type === block.type)?.label ?? block.type}
           </span>
         </div>
-        <button onClick={onRemove} className="text-cm-subtle hover:text-red-400 transition-colors p-1">
+        <button type="button" onClick={onRemove} aria-label="Remove section" className="text-cm-subtle hover:text-red-400 transition-colors p-1">
           <Trash2 size={13} />
         </button>
       </div>
@@ -87,7 +87,7 @@ function BlockEditor({ block, onChange, onRemove }: {
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-medium uppercase tracking-wider text-cm-subtle">Tier {i + 1}</span>
                   {tiers.length > 1 && (
-                    <button onClick={() => removeTier(i)} className="text-cm-subtle hover:text-red-400 transition-colors p-0.5">
+                    <button type="button" onClick={() => removeTier(i)} aria-label={`Remove tier ${i + 1}`} className="text-cm-subtle hover:text-red-400 transition-colors p-0.5">
                       <Trash2 size={12} />
                     </button>
                   )}
@@ -98,7 +98,7 @@ function BlockEditor({ block, onChange, onRemove }: {
               </div>
             ))}
             {tiers.length < 4 && (
-              <button onClick={addTier} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-dashed border-cm-border text-cm-subtle hover:text-cm-text hover:border-cm-muted transition-all text-xs">
+              <button type="button" onClick={addTier} className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border border-dashed border-cm-border text-cm-subtle hover:text-cm-text hover:border-cm-muted transition-all text-xs">
                 <Plus size={12} /> Add Tier ({tiers.length}/4)
               </button>
             )}
@@ -182,7 +182,7 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
       </div>
 
       <div className="p-5 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
             label="Greeting"
             value={content.greeting ?? ''}

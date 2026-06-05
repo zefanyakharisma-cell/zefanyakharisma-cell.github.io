@@ -19,8 +19,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="relative z-10 flex-shrink-0">
         <Sidebar />
       </div>
-      <main className="relative z-10 flex-1 flex flex-col overflow-hidden">
-        <div className="flex-1 overflow-y-auto">
+      <main className="relative z-10 flex-1 flex flex-col overflow-hidden min-w-0">
+        <div className="flex-1 overflow-y-auto pt-14 md:pt-0">
           {children}
         </div>
       </main>
