@@ -18,12 +18,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       .maybeSingle()
     if (data) {
       return {
-        title: `${data.title} — Zefanya Kharisma Nugroho`,
+        title: data.title,
         description: data.excerpt || undefined,
+        alternates: { canonical: `/writing/${slug}` },
+        openGraph: {
+          type: 'article',
+          title: data.title,
+          description: data.excerpt || undefined,
+          url: `/writing/${slug}`,
+        },
       }
     }
   } catch {}
-  return { title: 'Article — Zefanya Kharisma Nugroho' }
+  return { title: 'Article', alternates: { canonical: `/writing/${slug}` } }
 }
 
 function formatDate(iso: string) {

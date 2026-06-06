@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowRight, Building2, Mic, Globe, Users, CalendarCheck, Rec
 import RotatingGallery from '@/components/projects/RotatingGallery'
 
 export const metadata: Metadata = {
-  title: 'AERO 2025 — Zefanya Kharisma Nugroho',
+  title: 'AERO 2025',
+  alternates: { canonical: '/aero' },
   description: 'AERO — Airlangga Expanding Reach & Opportunities, annual internationalization exhibition at Universitas Airlangga.',
 }
 

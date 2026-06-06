@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, FileCheck, CheckSquare, RefreshCw, BarChart2, Workflow, Archive, Bell, PieChart, LayoutDashboard } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'MoU / MoA Coordination — Zefanya Kharisma Nugroho',
+  title: 'MoU / MoA Coordination',
+  alternates: { canonical: '/mou' },
   description: 'Reviewing 25+ partnership agreements per month at PCU — ensuring compliance, institutional alignment, and timely processing.',
 }
 

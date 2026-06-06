@@ -5,7 +5,8 @@ import RotatingGallery from '@/components/projects/RotatingGallery'
 import AciStats from '@/components/projects/AciStats'
 
 export const metadata: Metadata = {
-  title: 'ACI — Zefanya Kharisma Nugroho',
+  title: 'ACI',
+  alternates: { canonical: '/aci' },
   description: 'Airlangga Cultural Immersion — cultural integration program for international students at Universitas Airlangga.',
 }
 

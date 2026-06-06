@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Experience — Zefanya Kharisma Nugroho',
+  title: 'Experience',
+  alternates: { canonical: '/experience' },
   description: '3+ years building international partnerships and supporting student mobility across Surabaya.',
 }
 

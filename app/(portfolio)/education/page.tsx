@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, GraduationCap, School, Trophy, Medal, BookOpen, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Education — Zefanya Kharisma Nugroho',
+  title: 'Education',
+  alternates: { canonical: '/education' },
   description: 'Academic background in International Relations and achievements that shaped professional expertise.',
 }
 

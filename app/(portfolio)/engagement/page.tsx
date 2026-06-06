@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { LogIn, HeartHandshake, Handshake, FileText, Award, ArrowRight, Users, Globe, Calendar, FileCheck } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'International Education — Zefanya Kharisma Nugroho',
+  title: 'International Education',
+  alternates: { canonical: '/engagement' },
   description: 'Supporting 480+ international students across welfare, mobility, engagement, and partnership programs at Airlangga Global Engagement and Petra Christian University.',
 }
 

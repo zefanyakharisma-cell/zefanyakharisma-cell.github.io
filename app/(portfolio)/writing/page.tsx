@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Writing — Zefanya Kharisma Nugroho',
+  title: 'Writing',
+  alternates: { canonical: '/writing' },
   description: 'Ideas, reflections, and perspectives — essays on international education, leadership, systems thinking, and digital craft.',
 }
 

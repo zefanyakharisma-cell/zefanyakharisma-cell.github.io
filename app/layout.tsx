@@ -33,24 +33,69 @@ const outfit = Outfit({
   display: 'swap',
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://zefanyakharisma.com'
+
 export const metadata: Metadata = {
-  title: 'Zefanya Kharisma Nugroho',
-  description: 'International Education Professional & Creative Technologist based in Surabaya.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist',
+    template: '%s — Zefanya Kharisma Nugroho',
+  },
+  description:
+    'International Education Professional & Creative Technologist based in Surabaya, Indonesia. Bridging global engagement, student mobility, and digital creativity.',
+  applicationName: 'Zefanya Kharisma Nugroho',
+  authors: [{ name: 'Zefanya Kharisma Nugroho', url: SITE_URL }],
+  creator: 'Zefanya Kharisma Nugroho',
+  publisher: 'Zefanya Kharisma Nugroho',
+  category: 'portfolio',
+  keywords: [
+    'Zefanya Kharisma Nugroho',
+    'international education',
+    'student mobility',
+    'exchange programs',
+    'Surabaya',
+    'Indonesia',
+    'Petra Christian University',
+    'global partnerships',
+    'creative technologist',
+    'web developer',
+    'UI/UX design',
+  ],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Zefanya Kharisma Nugroho — International Education & Creative Digital',
-    description: 'Bridging global engagement & digital creativity. International Education Professional based in Surabaya.',
-    url: 'https://zefanyakharisma.com',
+    type: 'website',
+    title: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist',
+    description:
+      'Bridging global engagement & digital creativity. International Education Professional based in Surabaya, Indonesia.',
+    url: SITE_URL,
     siteName: 'Zefanya Kharisma Nugroho',
     locale: 'en_US',
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist',
+    description:
+      'Bridging global engagement & digital creativity. International Education Professional based in Surabaya, Indonesia.',
     creator: '@zefanyakharisma',
   },
-  robots: { index: true, follow: true },
-  authors: [{ name: 'Zefanya Kharisma Nugroho' }],
-  keywords: ['international education', 'student mobility', 'exchange programs', 'Surabaya', 'Indonesia', 'Petra Christian University', 'global partnerships', 'creative technologist', 'web developer'],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  formatDetection: {
+    email: false,
+    telephone: false,
+    address: false,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

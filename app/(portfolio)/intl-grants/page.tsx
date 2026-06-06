@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, Construction, Layers, Zap, Calendar, GitMerge, Search, Bookmark, UploadCloud, PieChart, Shield, LayoutDashboard, Megaphone, ClipboardList, Users, CheckCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'International Grants Management — Zefanya Kharisma Nugroho',
+  title: 'International Grants Management',
+  alternates: { canonical: '/intl-grants' },
   description: 'Building a comprehensive system to inform, maintain, and execute international grants at Petra Christian University — digital dashboard and physical operational flow.',
 }
 

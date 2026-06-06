@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Skillset — Zefanya Kharisma Nugroho',
+  title: 'Skillset',
+  alternates: { canonical: '/skillset' },
   description: 'Core competencies and professional capabilities.',
 }
 

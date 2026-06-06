@@ -4,7 +4,8 @@ import { ArrowRight } from 'lucide-react'
 import ProjectsHero from '@/components/projects/ProjectsHero'
 
 export const metadata: Metadata = {
-  title: 'Projects — Zefanya Kharisma Nugroho',
+  title: 'Projects',
+  alternates: { canonical: '/projects-overview' },
   description: 'Portfolio of flagship programs: AMERTA, ACI, AERO, PCU Global.',
 }
 

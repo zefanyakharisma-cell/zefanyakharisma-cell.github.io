@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, Target, Users, Lightbulb, Handshake, Globe, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Values — Zefanya Kharisma Nugroho',
+  title: 'Values',
+  alternates: { canonical: '/values' },
   description: 'Professional values and principles guiding work in international education.',
 }
 

@@ -5,7 +5,8 @@ import RotatingGallery from '@/components/projects/RotatingGallery'
 import AmertaStats from '@/components/projects/AmertaStats'
 
 export const metadata: Metadata = {
-  title: 'AMERTA — Zefanya Kharisma Nugroho',
+  title: 'AMERTA',
+  alternates: { canonical: '/amerta' },
   description: 'Airlangga Mobility, Exchange, Research & Transfer Academic — flagship semester exchange program at Universitas Airlangga.',
 }
 

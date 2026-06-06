@@ -4,7 +4,8 @@ import { ArrowLeft, GraduationCap, ShieldCheck, Heart, Globe, Award, Users, Shar
 import StudentActivities from '@/components/projects/StudentActivities'
 
 export const metadata: Metadata = {
-  title: 'International Student Support — Zefanya Kharisma Nugroho',
+  title: 'International Student Support',
+  alternates: { canonical: '/onboarding' },
   description: 'Holistic support for 480+ international students from arrival to departure — visa, welfare, scholarships, and peer mentoring at Airlangga Global Engagement.',
 }
 

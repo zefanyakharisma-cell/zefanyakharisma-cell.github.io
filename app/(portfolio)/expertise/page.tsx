@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, Handshake, FileText, Plane, Heart, BarChart2, Languages } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Expertise — Zefanya Kharisma Nugroho',
+  title: 'Expertise',
+  alternates: { canonical: '/expertise' },
   description: 'Core competencies built through hands-on experience in international higher education.',
 }
 

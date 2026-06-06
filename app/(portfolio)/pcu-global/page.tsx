@@ -7,7 +7,8 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'PCU Global — Zefanya Kharisma Nugroho',
+  title: 'PCU Global',
+  alternates: { canonical: '/pcu-global' },
   description: 'PCU Global — rebuilding the front door of international education at Petra Christian University.',
 }
 

@@ -5,7 +5,8 @@ import ExperienceTimeline from '@/components/about/ExperienceTimeline'
 import SkillEcosystem from '@/components/about/SkillEcosystem'
 
 export const metadata: Metadata = {
-  title: 'About — Zefanya Kharisma Nugroho',
+  title: 'About',
+  alternates: { canonical: '/about-overview' },
   description: 'Profile overview: 3+ years in international higher education, global mobility, and creative digital work.',
 }
 

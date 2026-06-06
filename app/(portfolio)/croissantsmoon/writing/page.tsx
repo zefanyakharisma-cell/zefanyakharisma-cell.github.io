@@ -5,7 +5,8 @@ import StarField from '@/components/cm/StarField'
 import AstronautFloat from '@/components/cm/AstronautFloat'
 
 export const metadata: Metadata = {
-  title: 'Writing — CroissantsMoon · Zefanya Kharisma Nugroho',
+  title: { absolute: 'Writing — CroissantsMoon · Zefanya Kharisma Nugroho' },
+  alternates: { canonical: '/croissantsmoon/writing' },
   description: 'Academic research, institutional writing, strategic communications, and creative writing by Zefanya Kharisma Nugroho.',
 }
 

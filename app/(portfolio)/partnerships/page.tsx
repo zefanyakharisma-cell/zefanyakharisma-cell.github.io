@@ -4,7 +4,8 @@ import { ArrowLeft, Globe, Building2, BookOpen, Microscope, Users, Layers, Searc
 import PartnerDirectory from '@/components/projects/PartnerDirectory'
 
 export const metadata: Metadata = {
-  title: 'Partnership Development — Zefanya Kharisma Nugroho',
+  title: 'Partnership Development',
+  alternates: { canonical: '/partnerships' },
   description: 'Managing 505+ institutional partnerships across 32 countries and 52 domestic cities at Petra Christian University.',
 }
 
