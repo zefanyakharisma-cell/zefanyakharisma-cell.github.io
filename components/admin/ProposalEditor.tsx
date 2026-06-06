@@ -132,14 +132,29 @@ function BlockEditor({
       {block.type === 'greeting' && (
         <Textarea label="Greeting Message" value={data.message ?? ''} onChange={e => setField('message', e.target.value)} placeholder="Dear {{contact_person}}, we've prepared this proposal specifically for {{organization_name}}..." rows={3} />
       )}
-      {block.type === 'audit_findings' && (
-        <Textarea label="Findings (one per line)" value={data.findings ?? ''} onChange={e => setField('findings', e.target.value)} placeholder="Current website audit observations..." rows={5} />
-      )}
-      {block.type === 'website_analysis' && (
-        <Textarea label="Analysis points (one per line)" value={data.findings ?? data.analysis ?? ''} onChange={e => setField('findings', e.target.value)} placeholder="Slow load times on mobile&#10;No clear calls to action&#10;Outdated visual design" rows={5} />
+      {(block.type === 'audit_findings' || block.type === 'website_analysis') && (
+        <div className="space-y-3">
+          <p className="text-[11px] text-cm-subtle leading-relaxed">
+            Three parts, each one point per line: <span className="text-cm-text">What</span> we found,{' '}
+            <span className="text-cm-text">Why</span> it matters, and <span className="text-cm-text">How</span> we solve it.
+          </p>
+          <Textarea label="What — what we found (one per line)" value={data.what ?? ''} onChange={e => setField('what', e.target.value)} placeholder="Slow load times on mobile&#10;No clear calls to action&#10;Outdated visual design" rows={4} />
+          <Textarea label="Why — why it matters (one per line)" value={data.why ?? ''} onChange={e => setField('why', e.target.value)} placeholder="53% of mobile visitors leave after 3s&#10;Unclear next steps lose qualified leads" rows={4} />
+          <Textarea label="How — how we solve it (one per line)" value={data.how ?? ''} onChange={e => setField('how', e.target.value)} placeholder="Edge-cached, image-optimized rebuild&#10;Conversion-focused layout with a single primary CTA" rows={4} />
+        </div>
       )}
       {block.type === 'redesign_concept' && (
-        <Textarea label="Concept" value={data.concept ?? data.description ?? ''} onChange={e => setField('concept', e.target.value)} placeholder="Describe the redesign direction, tone, and key ideas..." rows={5} />
+        <div className="space-y-3">
+          <Textarea label="Direction — short paragraph" value={data.direction ?? data.concept ?? data.description ?? ''} onChange={e => setField('direction', e.target.value)} placeholder="The overall redesign direction in a sentence or two..." rows={3} />
+          <Textarea
+            label="Tone table — one row per line, columns separated by  -  (space-dash-space)"
+            value={data.tone ?? ''}
+            onChange={e => setField('tone', e.target.value)}
+            placeholder="Modern - Clean lines, generous whitespace&#10;Warm - Approachable, human language&#10;Confident - Bold type, decisive layout"
+            rows={4}
+          />
+          <Textarea label="Key Ideas (one per line)" value={data.key_ideas ?? ''} onChange={e => setField('key_ideas', e.target.value)} placeholder="Hero-led storytelling&#10;Interactive case studies&#10;Sticky conversion CTA" rows={4} />
+        </div>
       )}
       {block.type === 'features' && (
         <Textarea label="Feature List (one per line)" value={data.features ?? ''} onChange={e => setField('features', e.target.value)} placeholder="Modern responsive design&#10;Advanced CMS integration&#10;Multi-language support" rows={5} />
@@ -193,7 +208,13 @@ function BlockEditor({
         />
       )}
       {block.type === 'infrastructure' && (
-        <Textarea label="Infrastructure model" value={data.model ?? data.content ?? ''} onChange={e => setField('model', e.target.value)} placeholder="Describe hosting, maintenance, and ongoing support options..." rows={5} />
+        <Textarea
+          label="Infrastructure table — one row per line, columns separated by  -  (space-dash-space)"
+          value={data.model ?? data.content ?? ''}
+          onChange={e => setField('model', e.target.value)}
+          placeholder="Hosting - Vercel Edge Network - Included&#10;Maintenance - Monthly updates & monitoring - IDR 2,500,000/mo&#10;Support - Priority email & chat - Included"
+          rows={5}
+        />
       )}
       {block.type === 'gallery' && (
         <div className="space-y-3">

@@ -219,6 +219,83 @@ function EditorialHeader({
   )
 }
 
+// ── Sub-section label (used inside multi-part sections) ───────
+function SubLabel({ label, accent }: { label: string; accent: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <span
+        className="text-[11px] font-semibold uppercase"
+        style={{ letterSpacing: '0.2em', color: rgba(accent, 0.92) }}
+      >
+        {label}
+      </span>
+      <span className="flex-1 h-px" style={{ background: rgba(accent, 0.14) }} />
+    </div>
+  )
+}
+
+// ── Editorial table (shared by Timeline, Tone & Infrastructure) ─
+// One row per line; columns separated by " - " (space-dash-space).
+function parseTable(text: string): string[][] {
+  return text
+    .split('\n').map(l => l.trim()).filter(Boolean)
+    .map(line => line.split(/\s+-\s+/).map(c => c.trim()))
+}
+
+function DataTable({ rows, accent }: { rows: string[][]; accent: string }) {
+  if (rows.length === 0) return null
+  const maxCols = Math.max(...rows.map(r => r.length))
+  return (
+    <GlassCard accent={accent} className="overflow-hidden">
+      {rows.map((cells, i) => (
+        <div
+          key={i}
+          className="grid grid-cols-1 sm:grid-cols-[var(--tl-cols)] items-start sm:items-center gap-x-5 gap-y-0.5 px-6 py-4 transition-colors"
+          style={{
+            ['--tl-cols' as string]: maxCols > 1 ? `minmax(110px, 0.7fr) repeat(${maxCols - 1}, 1fr)` : '1fr',
+            borderTop: i > 0 ? `1px solid ${rgba(accent, 0.1)}` : 'none',
+            background: i % 2 === 1 ? 'rgba(111,168,255,0.018)' : 'transparent',
+          } as React.CSSProperties}
+        >
+          {Array.from({ length: maxCols }).map((_, c) => {
+            const cell = cells[c] ?? ''
+            if (!cell) return <span key={c} className="hidden sm:block" />
+            return (
+              <span
+                key={c}
+                className="text-sm leading-relaxed"
+                style={{
+                  color: c === 0 ? accent : rgba('#D9E6FF', 0.74),
+                  fontWeight: c === 0 ? 600 : 400,
+                }}
+              >
+                {cell}
+              </span>
+            )
+          })}
+        </div>
+      ))}
+    </GlassCard>
+  )
+}
+
+// ── Interactive point card (numbered, hover-lit) ──────────────
+function PointCard({ index, accent, children }: { index: number; accent: string; children: React.ReactNode }) {
+  return (
+    <GlassCard accent={accent} className="p-5">
+      <div className="flex items-start gap-3.5">
+        <span
+          className="font-mono text-xs font-semibold mt-0.5 flex-shrink-0"
+          style={{ color: rgba(accent, 0.7) }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <p className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.72) }}>{children}</p>
+      </div>
+    </GlassCard>
+  )
+}
+
 // ── Block renderer ────────────────────────────────────────────
 function BlockRenderer({
   block, vars, proposalId, sectionNumber,
@@ -298,48 +375,92 @@ function BlockRenderer({
 
     case 'audit_findings':
     case 'website_analysis': {
-      const lines = interp(data.findings ?? data.analysis ?? '').split('\n').filter(Boolean)
+      // Three editorial movements: What we found · Why it matters · How we solve it.
+      // Each gets its own accent to break the monotone; falls back to the legacy
+      // single "findings" list when the structured fields are empty.
+      const groups = [
+        { key: 'what', label: 'What We Found',   accent: AURORA },
+        { key: 'why',  label: 'Why It Matters',  accent: GOLD },
+        { key: 'how',  label: 'How We Solve It', accent: MINT },
+      ].map(g => ({ ...g, items: interp(data[g.key] ?? '').split('\n').filter(Boolean) }))
+      const hasStructured = groups.some(g => g.items.length)
+      const legacy = interp(data.findings ?? data.analysis ?? '').split('\n').filter(Boolean)
       return (
         <SectionObserver proposalId={proposalId} sectionType={block.type}>
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
               <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
-              <div className="grid sm:grid-cols-2 gap-4">
-                {lines.map((line, i) => (
-                  <GlassCard key={i} accent={accent} className="p-5">
-                    <div className="flex items-start gap-3.5">
-                      <span
-                        className="font-mono text-xs font-semibold mt-0.5 flex-shrink-0"
-                        style={{ color: rgba(accent, 0.7) }}
-                      >
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      <p className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.72) }}>{line}</p>
+              {hasStructured ? (
+                <div className="space-y-12">
+                  {groups.filter(g => g.items.length).map(g => (
+                    <div key={g.key}>
+                      <SubLabel label={g.label} accent={g.accent} />
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        {g.items.map((line, i) => (
+                          <PointCard key={i} index={i} accent={g.accent}>{line}</PointCard>
+                        ))}
+                      </div>
                     </div>
-                  </GlassCard>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {legacy.map((line, i) => (
+                    <PointCard key={i} index={i} accent={accent}>{line}</PointCard>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         </SectionObserver>
       )
     }
 
-    case 'redesign_concept':
+    case 'redesign_concept': {
+      // Three parts: Direction (paragraph) · Tone (timeline-style table) · Key Ideas (interactive points).
+      // Legacy single "concept"/"description" text maps to Direction.
+      const direction = interp(data.direction ?? data.concept ?? data.description ?? '')
+      const toneRows = parseTable(interp(data.tone ?? ''))
+      const ideas = interp(data.key_ideas ?? '').split('\n').filter(Boolean)
+      if (!direction && toneRows.length === 0 && ideas.length === 0) return null
       return (
         <SectionObserver proposalId={proposalId} sectionType="redesign_concept">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
               <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
-              <GlassCard accent={accent} className="p-8 md:p-10">
-                <p className="text-[15px] leading-[1.85] whitespace-pre-line" style={{ color: rgba('#D9E6FF', 0.76) }}>
-                  {interp(data.concept ?? data.description ?? '')}
-                </p>
-              </GlassCard>
+              <div className="space-y-12">
+                {direction && (
+                  <div>
+                    <SubLabel label="Direction" accent={accent} />
+                    <GlassCard accent={accent} className="p-8 md:p-10">
+                      <p className="text-[15px] leading-[1.85] whitespace-pre-line" style={{ color: rgba('#D9E6FF', 0.76) }}>
+                        {direction}
+                      </p>
+                    </GlassCard>
+                  </div>
+                )}
+                {toneRows.length > 0 && (
+                  <div>
+                    <SubLabel label="Tone" accent={accent} />
+                    <DataTable rows={toneRows} accent={accent} />
+                  </div>
+                )}
+                {ideas.length > 0 && (
+                  <div>
+                    <SubLabel label="Key Ideas" accent={accent} />
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {ideas.map((idea, i) => (
+                        <PointCard key={i} index={i} accent={accent}>{idea}</PointCard>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         </SectionObserver>
       )
+    }
 
     case 'features': {
       const features = interp(data.features ?? '').split('\n').filter(Boolean)
@@ -444,68 +565,34 @@ function BlockRenderer({
     }
 
     case 'timeline': {
-      // Table: one row per line, columns separated by " - "
-      const rows = interp(data.timeline ?? '')
-        .split('\n').map(l => l.trim()).filter(Boolean)
-        .map(line => line.split(/\s+-\s+/).map(c => c.trim()))
+      const rows = parseTable(interp(data.timeline ?? ''))
       if (rows.length === 0) return null
-      const maxCols = Math.max(...rows.map(r => r.length))
       return (
         <SectionObserver proposalId={proposalId} sectionType="timeline">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
               <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
-              <GlassCard accent={accent} className="overflow-hidden">
-                {rows.map((cells, i) => (
-                  <div
-                    key={i}
-                    className="grid grid-cols-1 sm:grid-cols-[var(--tl-cols)] items-start sm:items-center gap-x-5 gap-y-0.5 px-6 py-4 transition-colors"
-                    style={{
-                      ['--tl-cols' as string]: maxCols > 1 ? `minmax(110px, 0.7fr) repeat(${maxCols - 1}, 1fr)` : '1fr',
-                      borderTop: i > 0 ? `1px solid ${rgba(accent, 0.1)}` : 'none',
-                      background: i % 2 === 1 ? 'rgba(111,168,255,0.018)' : 'transparent',
-                    } as React.CSSProperties}
-                  >
-                    {Array.from({ length: maxCols }).map((_, c) => {
-                      const cell = cells[c] ?? ''
-                      if (!cell) return <span key={c} className="hidden sm:block" />
-                      return (
-                        <span
-                          key={c}
-                          className="text-sm leading-relaxed"
-                          style={{
-                            color: c === 0 ? accent : rgba('#D9E6FF', 0.74),
-                            fontWeight: c === 0 ? 600 : 400,
-                          }}
-                        >
-                          {cell}
-                        </span>
-                      )
-                    })}
-                  </div>
-                ))}
-              </GlassCard>
+              <DataTable rows={rows} accent={accent} />
             </div>
           </section>
         </SectionObserver>
       )
     }
 
-    case 'infrastructure':
+    case 'infrastructure': {
+      const rows = parseTable(interp(data.model ?? data.content ?? ''))
+      if (rows.length === 0) return null
       return (
         <SectionObserver proposalId={proposalId} sectionType="infrastructure">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
               <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
-              <GlassCard accent={accent} className="p-8 md:p-10">
-                <p className="text-[15px] leading-[1.85] whitespace-pre-line" style={{ color: rgba('#D9E6FF', 0.76) }}>
-                  {interp(data.model ?? data.content ?? '')}
-                </p>
-              </GlassCard>
+              <DataTable rows={rows} accent={accent} />
             </div>
           </section>
         </SectionObserver>
       )
+    }
 
     case 'demo_embed':
       return (
