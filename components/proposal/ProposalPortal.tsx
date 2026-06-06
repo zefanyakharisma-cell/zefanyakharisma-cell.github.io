@@ -107,17 +107,28 @@ function GlassCard({
 
 // ── Pricing tier card (solo / recommended / normal) ───────────
 function PriceTier({
-  name, price, inclusions, variant,
+  name, price, inclusions, variant, count,
 }: {
   name: string
   price: string
   inclusions: string[]
   variant: 'recommended' | 'solo' | 'normal'
+  count: number
 }) {
   const [hover, setHover] = useState(false)
   const gold = variant === 'recommended' || variant === 'solo'
   const recommended = variant === 'recommended'
   const accent = gold ? GOLD : AURORA
+
+  // Scale type & padding to how many tiers share the row so long names and
+  // prices (e.g. "IDR 75,000,000") fit inside the card instead of overflowing.
+  const padX = count >= 4 ? 'px-5' : count === 3 ? 'px-6' : 'px-7'
+  const priceSize =
+    count >= 4 ? 'clamp(1.55rem, 2.2vw, 2rem)'
+    : count === 3 ? 'clamp(1.75rem, 2.8vw, 2.4rem)'
+    : count === 2 ? 'clamp(2rem, 3.4vw, 2.9rem)'
+    : 'clamp(2.4rem, 5vw, 3.4rem)'
+  const nameTracking = count >= 3 ? '0.16em' : '0.24em'
 
   return (
     <div
@@ -155,22 +166,25 @@ function PriceTier({
       )}
 
       <div
-        className="px-7 py-9 text-center"
+        className={`${padX} py-9 text-center`}
         style={{ borderBottom: `1px solid ${rgba(accent, 0.1)}`, background: gold ? rgba(GOLD, 0.03) : 'transparent' }}
       >
         <p
-          className="text-[11px] font-semibold uppercase mb-5"
-          style={{ letterSpacing: '0.24em', color: rgba(accent, 0.88) }}
+          className="text-[11px] font-semibold uppercase mb-5 break-words"
+          style={{ letterSpacing: nameTracking, color: rgba(accent, 0.88) }}
         >
           {name || 'Package'}
         </p>
-        <p className="font-serif font-light" style={{ fontSize: 'clamp(2.4rem, 5vw, 3.4rem)', lineHeight: 1, color: accent }}>
+        <p
+          className="font-serif font-light break-words"
+          style={{ fontSize: priceSize, lineHeight: 1.05, color: accent, overflowWrap: 'anywhere' }}
+        >
           {price}
         </p>
       </div>
 
       {inclusions.length > 0 && (
-        <div className={`px-7 py-7 flex-1 ${variant === 'solo' ? 'grid sm:grid-cols-2 gap-x-8 gap-y-3.5' : 'space-y-3.5'}`}>
+        <div className={`${padX} py-7 flex-1 ${variant === 'solo' ? 'grid sm:grid-cols-2 gap-x-8 gap-y-3.5' : 'space-y-3.5'}`}>
           {inclusions.map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <div
@@ -179,7 +193,7 @@ function PriceTier({
               >
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
               </div>
-              <span className="text-sm leading-relaxed" style={{ color: rgba('#D9E6FF', 0.74) }}>{item}</span>
+              <span className="text-sm leading-relaxed break-words min-w-0" style={{ color: rgba('#D9E6FF', 0.74) }}>{item}</span>
             </div>
           ))}
         </div>
@@ -555,6 +569,7 @@ function BlockRenderer({
                     price={t.price}
                     inclusions={t.inclusions}
                     variant={n === 1 ? 'solo' : i === recIdx ? 'recommended' : 'normal'}
+                    count={n}
                   />
                 ))}
               </div>
