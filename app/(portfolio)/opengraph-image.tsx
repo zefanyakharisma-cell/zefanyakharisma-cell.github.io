@@ -44,6 +44,8 @@ export default function OpengraphImage() {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
+              display: 'flex',
+              flexDirection: 'column',
               color: '#FFFFFF',
               fontSize: 84,
               fontWeight: 800,
@@ -51,9 +53,8 @@ export default function OpengraphImage() {
               letterSpacing: -2,
             }}
           >
-            Zefanya Kharisma
-            <br />
-            Nugroho
+            <div>Zefanya Kharisma</div>
+            <div>Nugroho</div>
           </div>
           <div
             style={{
