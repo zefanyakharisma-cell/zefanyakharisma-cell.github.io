@@ -69,7 +69,6 @@ export const metadata: Metadata = {
     title: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist',
     description:
       'Bridging global engagement & digital creativity. International Education Professional based in Surabaya, Indonesia.',
-    url: SITE_URL,
     siteName: 'Zefanya Kharisma Nugroho',
     locale: 'en_US',
   },

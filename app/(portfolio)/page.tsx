@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: { absolute: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist' },
   alternates: { canonical: '/' },
   description: 'International Education Professional & Creative Technologist based in Surabaya.',
+  openGraph: { url: '/' },
 }
 
 export default function Home() {
