@@ -1,12 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
   LayoutDashboard, Users, FileText, LayoutTemplate,
-  Archive, LogOut, Moon, Sparkles, Menu, X
+  Archive, LogOut, Sparkles, Menu, X
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -22,9 +23,13 @@ const NAV = [
 function Brand() {
   return (
     <div className="flex items-center gap-3">
-      <div className="w-8 h-8 rounded-lg bg-cm-gold/10 border border-cm-gold/20 flex items-center justify-center">
-        <Moon size={15} className="text-cm-gold" />
-      </div>
+      <Image
+        src="/croissantsmoon/cm-logo-circle.png"
+        alt="CroissantsMoon"
+        width={32}
+        height={32}
+        className="w-8 h-8 rounded-lg border border-cm-gold/20"
+      />
       <div>
         <span className="text-sm font-semibold text-cm-white">CroissantsMoon</span>
         <div className="flex items-center gap-1 mt-0.5">

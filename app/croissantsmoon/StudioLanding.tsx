@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowRight, ArrowUpRight, Monitor, BarChart3, Palette,
   Github, ExternalLink, Send, Zap, Check, Quote,
@@ -200,7 +201,10 @@ export default function StudioLanding() {
       {/* ── Navigation ─────────────────────────────────────────── */}
       <nav id="cm-nav" className="cm-nav" aria-label="Primary">
         <div className="cm-nav-inner">
-          <a href="#top" className="cm-mono-link" aria-label="CroissantsMoon — back to top">CM</a>
+          <a href="#top" className="cm-brand-link" aria-label="CroissantsMoon — back to top">
+            <Image src="/croissantsmoon/cm-logo-circle.png" alt="" width={36} height={36} className="cm-brand-logo" priority />
+            <span className="cm-mono-link">CroissantsMoon</span>
+          </a>
           <Link href={PROPOSAL} className="cm-btn cm-btn-ghost cm-nav-cta">
             Request a Proposal
           </Link>
@@ -494,7 +498,10 @@ export default function StudioLanding() {
       <footer className="cm-footer">
         <div className="cm-wrap cm-footer-inner">
           <div className="cm-footer-row">
-            <span className="cm-footer-brand">CM · CroissantsMoon</span>
+            <span className="cm-footer-brand">
+              <Image src="/croissantsmoon/cm-logo-circle.png" alt="" width={28} height={28} className="cm-brand-logo" />
+              CroissantsMoon
+            </span>
             <nav className="cm-footer-links" aria-label="Footer">
               <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={12} /></a>
               <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={12} /></a>
@@ -568,6 +575,8 @@ const CSS = `
 .cm-nav.scrolled { background: rgba(7,17,38,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
 .cm-nav-inner { max-width: 1180px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
 .cm-mono-link { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 22px; letter-spacing: .02em; color: var(--moonlight); }
+.cm-brand-link { display: inline-flex; align-items: center; gap: 11px; }
+.cm-brand-logo { border-radius: 999px; box-shadow: 0 0 18px rgba(212,177,90,0.28); flex-shrink: 0; }
 
 /* Buttons */
 .cm-btn { position: relative; display: inline-flex; align-items: center; gap: 8px; font-family: var(--body); font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 999px; border: 1px solid transparent; cursor: pointer; white-space: nowrap; transition: color .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease, background .25s ease; }
@@ -694,7 +703,7 @@ const CSS = `
 .cm-footer { border-top: 1px solid var(--border); padding: 46px 0; background: var(--void); }
 .cm-footer-inner { display: flex; flex-direction: column; gap: 18px; }
 .cm-footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-.cm-footer-brand { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 17px; color: var(--moonlight); }
+.cm-footer-brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-style: italic; font-weight: 500; font-size: 17px; color: var(--moonlight); }
 .cm-footer-links { display: flex; gap: 22px; flex-wrap: wrap; }
 .cm-footer-links a { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--stardust); transition: color .2s ease; }
 .cm-footer-links a:hover { color: var(--gold); }

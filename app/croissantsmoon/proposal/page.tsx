@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/Button'
 import { ProposalActions } from '@/components/admin/ProposalActions'
 import { daysUntil } from '@/lib/utils'
 import Link from 'next/link'
-import { Moon, Plus, Eye, FileText } from 'lucide-react'
+import Image from 'next/image'
+import { Plus, Eye, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Proposals — CroissantsMoon',
@@ -33,7 +34,13 @@ export default async function ProposalPage() {
       <nav className="sticky top-0 z-20 bg-cm-black/80 backdrop-blur-xl border-b border-cm-border">
         <div className="max-w-6xl mx-auto px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Moon size={16} className="text-cm-gold" />
+            <Image
+              src="/croissantsmoon/cm-logo-circle.png"
+              alt="CroissantsMoon"
+              width={24}
+              height={24}
+              className="w-6 h-6 rounded-md"
+            />
             <span className="text-sm font-medium text-cm-white">CroissantsMoon</span>
           </div>
           {isAdmin ? (

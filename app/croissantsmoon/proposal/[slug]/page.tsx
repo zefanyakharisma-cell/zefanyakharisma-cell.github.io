@@ -5,7 +5,7 @@ import { ProposalGate } from '@/components/proposal/ProposalGate'
 import { ProposalPortal } from '@/components/proposal/ProposalPortal'
 import { cookies } from 'next/headers'
 import StarField from '@/components/cm/StarField'
-import { Moon } from 'lucide-react'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Private Proposal',
@@ -56,16 +56,17 @@ function ExpiredScreen({ reason }: { reason: 'expired' | 'archived' | 'revoked' 
         <StarField count={60} />
       </div>
       <div className="relative z-10 max-w-md text-center space-y-8">
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto"
+        <Image
+          src="/croissantsmoon/cm-logo-circle.png"
+          alt="CroissantsMoon"
+          width={64}
+          height={64}
+          className="w-16 h-16 rounded-2xl mx-auto"
           style={{
-            background: 'rgba(212,177,90,0.07)',
             border: '1px solid rgba(212,177,90,0.2)',
             boxShadow: '0 0 32px rgba(212,177,90,0.1)',
           }}
-        >
-          <Moon size={24} style={{ color: '#D4B15A' }} />
-        </div>
+        />
         <div>
           <h1 className="font-serif font-light text-2xl mb-4" style={{ color: '#D9E6FF' }}>
             This proposal is no longer available
