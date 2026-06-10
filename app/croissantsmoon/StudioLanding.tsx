@@ -385,7 +385,7 @@ export default function StudioLanding({ content }: { content: CMLandingContent }
             <span>{footer.copyright}</span>
             <span className="cm-footer-fine-right">
               {footer.location}
-              <Link href="/croissantsmoon/login" className="cm-footer-admin">
+              <Link href="/croissantsmoon/login?next=/croissantsmoon/landing" className="cm-footer-admin">
                 <Lock size={11} aria-hidden="true" /> Admin Login
               </Link>
             </span>

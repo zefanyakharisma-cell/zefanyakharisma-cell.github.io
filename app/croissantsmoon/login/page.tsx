@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { Suspense } from 'react'
 import { LoginForm } from '@/components/admin/LoginForm'
 
 export const metadata: Metadata = { title: 'Login — CroissantsMoon' }
@@ -23,7 +24,9 @@ export default function LoginPage() {
 
         <div className="bg-cm-surface border border-cm-border rounded-2xl p-8">
           <p className="text-xs text-cm-subtle uppercase tracking-widest mb-6">Admin Access</p>
-          <LoginForm />
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
         </div>
 
         <p className="text-center text-xs text-cm-muted mt-6">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -11,6 +11,13 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Only allow internal CroissantsMoon paths (prevents open-redirect abuse).
+  const nextParam = searchParams.get('next')
+  const destination = nextParam && nextParam.startsWith('/croissantsmoon/')
+    ? nextParam
+    : '/croissantsmoon/dashboard'
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -30,7 +37,7 @@ export function LoginForm() {
         return
       }
 
-      router.push('/croissantsmoon/dashboard')
+      router.push(destination)
       router.refresh()
     } catch {
       setError('Connection error. Please try again.')
