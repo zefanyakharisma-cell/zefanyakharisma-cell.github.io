@@ -16,7 +16,7 @@
 // ─────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useState } from 'react'
-import { Moon, Download, ArrowLeft, ExternalLink } from 'lucide-react'
+import { Moon, Download, ArrowLeft, ExternalLink, Globe, Mail, Instagram } from 'lucide-react'
 import type { Proposal, ProposalBlock } from '@/types'
 import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
 import { LangToggle } from '@/components/cm/LangToggle'
@@ -245,6 +245,106 @@ function WhatWhyHowTable({
   )
 }
 
+// ── Pricing — paginated: ≤2 stacked tiers per page when 4, 3 compact on one page ──
+type PricingTier = { name: string; price: string; inclusions: string[] }
+
+function buildPricingTiers(
+  block: ProposalBlock, vars: Record<string, string>, locale: CMLocale,
+): { tiers: PricingTier[]; recIdx: number } {
+  const data = block.data as Record<string, string>
+  const interp = (s: string) => interpolate(s, vars)
+  const t = PORTAL_UI[locale]
+  const rawTiers = Array.isArray((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers)
+    ? ((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers ?? [])
+    : []
+  let tiers: PricingTier[] = rawTiers
+    .map(tr => ({
+      name: interp(tr.name ?? ''),
+      price: interp(tr.price ?? ''),
+      inclusions: interp(tr.inclusions ?? '').split('\n').filter(Boolean),
+    }))
+    .filter(tr => tr.price || tr.name || tr.inclusions.length)
+  if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
+    tiers = [{
+      name: interp(data.package ?? t.packageFallback),
+      price: interp(data.price ?? ''),
+      inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
+    }]
+  }
+  tiers = tiers.slice(0, 4)
+
+  const parsePrice = (p: string) => {
+    const v = parseFloat(p.replace(/[^0-9.]/g, ''))
+    return isNaN(v) ? 0 : v
+  }
+  let recIdx = -1
+  if (tiers.length > 1) {
+    let max = 0
+    tiers.forEach((tr, i) => { const v = parsePrice(tr.price); if (v > max) { max = v; recIdx = i } })
+  }
+  return { tiers, recIdx }
+}
+
+function PricingCard({
+  tier, recommended, compact, locale,
+}: { tier: PricingTier; recommended: boolean; compact: boolean; locale: CMLocale }) {
+  const t = PORTAL_UI[locale]
+  const accentC = recommended ? GOLD : AURORA
+  return (
+    <div
+      className="pp-avoid-break"
+      style={{
+        border: `1px solid ${recommended ? rgba(GOLD, 0.5) : rgba('#6FA8FF', 0.14)}`,
+        borderRadius: '13px', overflow: 'hidden',
+        background: recommended ? rgba(GOLD, 0.06) : rgba('#0B1E3A', 0.5),
+        display: 'flex',
+      }}
+    >
+      {/* Left rail: package name + price */}
+      <div
+        style={{
+          width: compact ? '170px' : '210px', flexShrink: 0,
+          padding: compact ? '15px 16px' : '22px 20px', textAlign: 'center',
+          borderRight: `1px solid ${rgba('#6FA8FF', 0.1)}`,
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          background: recommended ? rgba(GOLD, 0.04) : 'transparent',
+        }}
+      >
+        {recommended && (
+          <span style={{ fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GOLD, marginBottom: '9px' }}>
+            ★ {t.recommended}
+          </span>
+        )}
+        <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: rgba(accentC, 0.85), margin: '0 0 10px' }}>
+          {tier.name || t.packageFallback}
+        </p>
+        <p className="pp-serif" style={{ fontSize: compact ? '23px' : '30px', fontWeight: 300, lineHeight: 1.1, color: accentC, margin: 0, overflowWrap: 'anywhere' }}>
+          {tier.price}
+        </p>
+      </div>
+      {/* Right: inclusions */}
+      {tier.inclusions.length > 0 && (
+        <div
+          style={{
+            flex: 1, padding: compact ? '14px 18px' : '18px 22px',
+            display: 'grid',
+            gridTemplateColumns: tier.inclusions.length > 4 ? '1fr 1fr' : '1fr',
+            gap: compact ? '7px 18px' : '10px 22px',
+            alignContent: 'center',
+          }}
+        >
+          {tier.inclusions.map((item, j) => (
+            <div key={j} style={{ display: 'flex', gap: '9px', alignItems: 'flex-start' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: accentC, flexShrink: 0, marginTop: compact ? '5px' : '6px' }} />
+              <span style={{ fontSize: compact ? '10.5px' : '11.5px', lineHeight: 1.5, color: rgba('#D9E6FF', 0.72) }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Block content (returns null when a section has nothing to show) ──
 function blockContent(
   block: ProposalBlock,
@@ -340,16 +440,14 @@ function blockContent(
       return (
         <>
           <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={title} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 14px' }}>
+          {/* Stacked vertically — one full-width card per feature. */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {features.map((feature, i) => (
-              <Card key={i} accent={accent}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '9px', marginBottom: '9px' }}>
-                  <span style={{ width: '24px', height: '24px', borderRadius: '7px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 600, background: rgba(accent, 0.12), border: `1px solid ${rgba(accent, 0.28)}`, color: accent }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span style={{ flex: 1, height: '1px', background: rgba(accent, 0.14) }} />
-                </div>
-                <p style={{ fontSize: '12.5px', lineHeight: 1.65, color: rgba('#D9E6FF', 0.74), margin: 0 }}>{feature}</p>
+              <Card key={i} accent={accent} style={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
+                <span style={{ width: '26px', height: '26px', flexShrink: 0, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 600, background: rgba(accent, 0.12), border: `1px solid ${rgba(accent, 0.28)}`, color: accent }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p style={{ fontSize: '12.5px', lineHeight: 1.6, color: rgba('#D9E6FF', 0.74), margin: 0 }}>{feature}</p>
               </Card>
             ))}
           </div>
@@ -357,105 +455,9 @@ function blockContent(
       )
     }
 
-    case 'pricing': {
-      const rawTiers = Array.isArray((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers)
-        ? ((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers ?? [])
-        : []
-      let tiers = rawTiers
-        .map(tr => ({
-          name: interp(tr.name ?? ''),
-          price: interp(tr.price ?? ''),
-          inclusions: interp(tr.inclusions ?? '').split('\n').filter(Boolean),
-        }))
-        .filter(tr => tr.price || tr.name || tr.inclusions.length)
-      if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
-        tiers = [{
-          name: interp(data.package ?? t.packageFallback),
-          price: interp(data.price ?? ''),
-          inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
-        }]
-      }
-      if (tiers.length === 0) return null
-      tiers = tiers.slice(0, 4)
-
-      const parsePrice = (p: string) => {
-        const v = parseFloat(p.replace(/[^0-9.]/g, ''))
-        return isNaN(v) ? 0 : v
-      }
-      let recIdx = -1
-      if (tiers.length > 1) {
-        let max = 0
-        tiers.forEach((tr, i) => { const v = parsePrice(tr.price); if (v > max) { max = v; recIdx = i } })
-      }
-
-      return (
-        <>
-          <SectionHeader number={sectionNumber} accent={GOLD} eyebrow={eyebrow} title={title} />
-          {/* Stacked vertically — one full-width card per tier. */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {tiers.map((tr, i) => {
-              const recommended = i === recIdx
-              const accentC = recommended ? GOLD : AURORA
-              return (
-                <div
-                  key={i}
-                  className="pp-avoid-break"
-                  style={{
-                    border: `1px solid ${recommended ? rgba(GOLD, 0.5) : rgba('#6FA8FF', 0.14)}`,
-                    borderRadius: '13px',
-                    overflow: 'hidden',
-                    background: recommended ? rgba(GOLD, 0.06) : rgba('#0B1E3A', 0.5),
-                    display: 'flex',
-                  }}
-                >
-                  {/* Left rail: package name + price */}
-                  <div
-                    style={{
-                      width: '210px', flexShrink: 0,
-                      padding: '22px 20px', textAlign: 'center',
-                      borderRight: `1px solid ${rgba('#6FA8FF', 0.1)}`,
-                      display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                      background: recommended ? rgba(GOLD, 0.04) : 'transparent',
-                    }}
-                  >
-                    {recommended && (
-                      <span style={{ fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GOLD, marginBottom: '10px' }}>
-                        ★ {t.recommended}
-                      </span>
-                    )}
-                    <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: rgba(accentC, 0.85), margin: '0 0 11px' }}>
-                      {tr.name || t.packageFallback}
-                    </p>
-                    <p className="pp-serif" style={{ fontSize: '30px', fontWeight: 300, lineHeight: 1.1, color: accentC, margin: 0, overflowWrap: 'anywhere' }}>
-                      {tr.price}
-                    </p>
-                  </div>
-                  {/* Right: inclusions */}
-                  {tr.inclusions.length > 0 && (
-                    <div
-                      style={{
-                        flex: 1, padding: '18px 22px',
-                        display: 'grid',
-                        gridTemplateColumns: tr.inclusions.length > 4 ? '1fr 1fr' : '1fr',
-                        gap: '10px 22px',
-                        alignContent: 'center',
-                      }}
-                    >
-                      {tr.inclusions.map((item, j) => (
-                        <div key={j} style={{ display: 'flex', gap: '9px', alignItems: 'flex-start' }}>
-                          <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: accentC, flexShrink: 0, marginTop: '6px' }} />
-                          <span style={{ fontSize: '11.5px', lineHeight: 1.55, color: rgba('#D9E6FF', 0.72) }}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </>
-      )
-    }
+    case 'pricing':
+      // Paginated explicitly in the document body (see buildPricingTiers / PricingCard).
+      return null
 
     case 'timeline': {
       const rows = parseTable(interp(data.timeline ?? ''))
@@ -562,6 +564,26 @@ function RunningHeader({ label }: { label: string }) {
   )
 }
 
+// ── Running footer (page number + contact, on every page but the cover) ──
+function RunningFooter({ page, total }: { page: number; total: number }) {
+  const link: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: '4px',
+    fontSize: '8.5px', color: rgba('#8FA8D6', 0.55), textDecoration: 'none',
+  }
+  return (
+    <div style={{ marginTop: '24px', paddingTop: '11px', borderTop: `1px solid ${rgba('#6FA8FF', 0.1)}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+      <span style={{ fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.1em', color: rgba(GOLD, 0.65) }}>
+        {String(page).padStart(2, '0')} / {String(total).padStart(2, '0')}
+      </span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+        <a href="https://zefanyakharisma.com/croissantsmoon" style={link}><Globe size={10} /> zefanyakharisma.com/croissantsmoon</a>
+        <a href="mailto:zefanya.kharisma@croissantsmoon.com" style={link}><Mail size={10} /> zefanya.kharisma@croissantsmoon.com</a>
+        <a href="https://instagram.com/croissantsmoon" style={link}><Instagram size={10} /> @croissantsmoon</a>
+      </span>
+    </div>
+  )
+}
+
 // ── Document ──────────────────────────────────────────────────
 export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Proposal; autoPrint?: boolean }) {
   const [locale, setLocale] = useState<CMLocale>('en')
@@ -592,6 +614,36 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
   const pages: Page[] = []
   for (const block of sections) {
     if (block.type === 'hero') continue
+
+    // Investment: paginate explicitly — 4 tiers → 2 stacked per page; 3 → one compact page.
+    if (block.type === 'pricing') {
+      const { tiers, recIdx } = buildPricingTiers(block, vars, locale)
+      if (tiers.length === 0) continue
+      const sec = PORTAL_SECTION_TEXT[locale].pricing
+      const perPage = tiers.length === 4 ? 2 : tiers.length
+      const compact = tiers.length >= 3
+      for (let start = 0; start < tiers.length; start += perPage) {
+        const chunk = tiers.slice(start, start + perPage)
+        const node = (
+          <>
+            <SectionHeader
+              number={null}
+              accent={GOLD}
+              eyebrow={sec?.eyebrow ?? ''}
+              title={(sec?.title ?? 'Investment') + (start > 0 ? ' (cont.)' : '')}
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {chunk.map((tier, i) => (
+                <PricingCard key={i} tier={tier} recommended={start + i === recIdx} compact={compact} locale={locale} />
+              ))}
+            </div>
+          </>
+        )
+        pages.push({ id: `${block.id}-${start}`, nodes: [node] })
+      }
+      continue
+    }
+
     const number = NUMBERED_TYPES.has(block.type) ? String(counter + 1).padStart(2, '0') : null
     const node = blockContent(block, vars, number, locale)
     if (node === null) continue
@@ -602,8 +654,8 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
       pages[pages.length - 1].nodes.push(node)
       continue
     }
-    // CTA gets its own page, vertically centred.
-    pages.push({ id: block.id, nodes: [node], center: block.type === 'cta' })
+    // Greeting (personalized message) and CTA are vertically centred on their page.
+    pages.push({ id: block.id, nodes: [node], center: block.type === 'cta' || block.type === 'greeting' })
   }
 
   const handlePrint = useCallback(() => window.print(), [])
@@ -669,8 +721,8 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
           </div>
         </div>
 
-        {/* ── One page per section (text blocks ride along; CTA is centred) ── */}
-        {pages.map(page => (
+        {/* ── Content pages (text rides along; pricing pre-split; greeting/CTA centred) ── */}
+        {pages.map((page, i) => (
           <div key={page.id} className={`pp-sheet${page.center ? ' pp-sheet-center' : ''}`}>
             <RunningHeader label={t.confidentialProposal} />
             <div className={page.center ? 'pp-center-body' : 'pp-sheet-body'}>
@@ -678,6 +730,7 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
                 <div key={idx} style={{ marginTop: idx > 0 ? '30px' : 0 }}>{n}</div>
               ))}
             </div>
+            <RunningFooter page={i + 1} total={pages.length} />
           </div>
         ))}
       </div>
@@ -737,11 +790,13 @@ const printStyles = `
     background-color: #050a18;
     color: #D9E6FF;
     box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
   }
   .pp-sheet:not(:first-child) { break-before: page; }
 
-  /* Cover & centred (CTA) pages use flex to position their content. */
-  .pp-cover, .pp-sheet-center { display: flex; flex-direction: column; }
+  /* Body fills the page so the running footer settles at the bottom edge. */
+  .pp-sheet-body { flex: 1; }
   .pp-center-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
   /* Keep atomic blocks whole when a tall section splits across two pages. */
