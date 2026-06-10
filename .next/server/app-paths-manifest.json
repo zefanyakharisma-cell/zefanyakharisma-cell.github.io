@@ -1,5 +1,4 @@
 {
   "/croissantsmoon/page": "app/croissantsmoon/page.js",
-  "/croissantsmoon/login/page": "app/croissantsmoon/login/page.js",
-  "/croissantsmoon/(admin)/landing/page": "app/croissantsmoon/(admin)/landing/page.js"
+  "/croissantsmoon/login/page": "app/croissantsmoon/login/page.js"
 }

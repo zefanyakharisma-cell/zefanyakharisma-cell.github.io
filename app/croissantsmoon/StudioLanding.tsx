@@ -6,7 +6,7 @@ import Image from 'next/image'
 import {
   ArrowRight, ArrowUpRight, Monitor, BarChart3, Palette,
   Github, ExternalLink, Send, Zap, Check, Quote,
-  Sparkles, Globe, Code, PenTool, Rocket, Layers, type LucideIcon,
+  Sparkles, Globe, Code, PenTool, Rocket, Layers, Lock, type LucideIcon,
 } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
@@ -586,6 +586,9 @@ const CSS = `
 .cm-footer-links a { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--stardust); transition: color .2s ease; }
 .cm-footer-links a:hover { color: var(--gold); }
 .cm-footer-fine { font-family: var(--body); font-size: 12px; color: var(--stardust); opacity: 0.6; }
+.cm-footer-fine-right { display: inline-flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.cm-footer-admin { display: inline-flex; align-items: center; gap: 5px; color: var(--stardust); opacity: 0.7; transition: color .2s ease, opacity .2s ease; }
+.cm-footer-admin:hover { color: var(--gold); opacity: 1; }
 
 /* Keyframes */
 @keyframes cmFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }

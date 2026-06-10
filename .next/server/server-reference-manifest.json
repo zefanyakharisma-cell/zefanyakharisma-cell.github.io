@@ -5,15 +5,10 @@
         "app/croissantsmoon/page": {
           "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FVolumes%2FV-GEN%2FWebsite%20Portfolio%2Flib%2Factions%2Fcm-landing.ts%22%2C%5B%7B%22id%22%3A%22005d12a7040ef7460d204e58a1c538384e8eeb36d4%22%2C%22exportedName%22%3A%22getLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%2C%7B%22id%22%3A%22600d03c54412d3e49480e81e13f2463ca08b064dde%22%2C%22exportedName%22%3A%22updateLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
-        },
-        "app/croissantsmoon/(admin)/landing/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FVolumes%2FV-GEN%2FWebsite%20Portfolio%2Flib%2Factions%2Fcm-landing.ts%22%2C%5B%7B%22id%22%3A%22005d12a7040ef7460d204e58a1c538384e8eeb36d4%22%2C%22exportedName%22%3A%22getLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%2C%7B%22id%22%3A%22600d03c54412d3e49480e81e13f2463ca08b064dde%22%2C%22exportedName%22%3A%22updateLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
         }
       },
       "layer": {
-        "app/croissantsmoon/page": "rsc",
-        "app/croissantsmoon/(admin)/landing/page": "rsc"
+        "app/croissantsmoon/page": "rsc"
       },
       "filename": "lib/actions/cm-landing.ts",
       "exportedName": "getLandingContent"
@@ -23,15 +18,10 @@
         "app/croissantsmoon/page": {
           "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FVolumes%2FV-GEN%2FWebsite%20Portfolio%2Flib%2Factions%2Fcm-landing.ts%22%2C%5B%7B%22id%22%3A%22005d12a7040ef7460d204e58a1c538384e8eeb36d4%22%2C%22exportedName%22%3A%22getLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%2C%7B%22id%22%3A%22600d03c54412d3e49480e81e13f2463ca08b064dde%22%2C%22exportedName%22%3A%22updateLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
-        },
-        "app/croissantsmoon/(admin)/landing/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FVolumes%2FV-GEN%2FWebsite%20Portfolio%2Flib%2Factions%2Fcm-landing.ts%22%2C%5B%7B%22id%22%3A%22005d12a7040ef7460d204e58a1c538384e8eeb36d4%22%2C%22exportedName%22%3A%22getLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%2C%7B%22id%22%3A%22600d03c54412d3e49480e81e13f2463ca08b064dde%22%2C%22exportedName%22%3A%22updateLandingContent%22%2C%22filename%22%3A%22lib%2Factions%2Fcm-landing.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
         }
       },
       "layer": {
-        "app/croissantsmoon/page": "rsc",
-        "app/croissantsmoon/(admin)/landing/page": "rsc"
+        "app/croissantsmoon/page": "rsc"
       },
       "filename": "lib/actions/cm-landing.ts",
       "exportedName": "updateLandingContent"
