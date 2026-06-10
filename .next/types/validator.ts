@@ -101,15 +101,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
-// Validate ../../app/(portfolio)/croissantsmoon/page.tsx
-{
-  type __IsExpected<Specific extends AppPageConfig<"/croissantsmoon">> = Specific
-  const handler = {} as typeof import("../../app/(portfolio)/croissantsmoon/page.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 // Validate ../../app/(portfolio)/croissantsmoon/web-dashboard-grants/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/croissantsmoon/web-dashboard-grants">> = Specific
@@ -366,6 +357,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends AppPageConfig<"/croissantsmoon/login">> = Specific
   const handler = {} as typeof import("../../app/croissantsmoon/login/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/croissantsmoon/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/croissantsmoon">> = Specific
+  const handler = {} as typeof import("../../app/croissantsmoon/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

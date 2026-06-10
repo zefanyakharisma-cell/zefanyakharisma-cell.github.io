@@ -1,0 +1,16 @@
+{
+  "name": "CroissantsMoon",
+  "short_name": "CM",
+  "description": "Boutique web development and design studio. Digital presence crafted with intention.",
+  "start_url": "/croissantsmoon",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "icons": [
+    {
+      "src": "/croissantsmoon/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
