@@ -71,7 +71,7 @@ function SectionHeader({
   number, accent, eyebrow, title,
 }: { number?: string | null; accent: string; eyebrow: string; title: string }) {
   return (
-    <div style={{ marginBottom: '22px' }}>
+    <div className="pp-keep-next" style={{ marginBottom: '22px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
         {number && (
           <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '13px', fontWeight: 600, color: accent }}>
@@ -391,9 +391,11 @@ function blockContent(
       return (
         <>
           <SectionHeader number={sectionNumber} accent={GOLD} eyebrow={eyebrow} title={title} />
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${tiers.length}, 1fr)`, gap: '12px' }}>
+          {/* Stacked vertically — one full-width card per tier. */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {tiers.map((tr, i) => {
               const recommended = i === recIdx
+              const accentC = recommended ? GOLD : AURORA
               return (
                 <div
                   key={i}
@@ -403,28 +405,45 @@ function blockContent(
                     borderRadius: '13px',
                     overflow: 'hidden',
                     background: recommended ? rgba(GOLD, 0.06) : rgba('#0B1E3A', 0.5),
+                    display: 'flex',
                   }}
                 >
-                  {recommended && (
-                    <div style={{ padding: '7px', textAlign: 'center', background: rgba(GOLD, 0.14), borderBottom: `1px solid ${rgba(GOLD, 0.22)}` }}>
-                      <span style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: GOLD }}>
-                        {t.recommended}
+                  {/* Left rail: package name + price */}
+                  <div
+                    style={{
+                      width: '210px', flexShrink: 0,
+                      padding: '22px 20px', textAlign: 'center',
+                      borderRight: `1px solid ${rgba('#6FA8FF', 0.1)}`,
+                      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                      background: recommended ? rgba(GOLD, 0.04) : 'transparent',
+                    }}
+                  >
+                    {recommended && (
+                      <span style={{ fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GOLD, marginBottom: '10px' }}>
+                        ★ {t.recommended}
                       </span>
-                    </div>
-                  )}
-                  <div style={{ padding: '20px 16px', textAlign: 'center', borderBottom: `1px solid ${rgba('#6FA8FF', 0.1)}` }}>
-                    <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: rgba(recommended ? GOLD : AURORA, 0.85), margin: '0 0 12px' }}>
+                    )}
+                    <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: rgba(accentC, 0.85), margin: '0 0 11px' }}>
                       {tr.name || t.packageFallback}
                     </p>
-                    <p className="pp-serif" style={{ fontSize: tiers.length >= 3 ? '24px' : '32px', fontWeight: 300, lineHeight: 1.1, color: recommended ? GOLD : AURORA, margin: 0, overflowWrap: 'anywhere' }}>
+                    <p className="pp-serif" style={{ fontSize: '30px', fontWeight: 300, lineHeight: 1.1, color: accentC, margin: 0, overflowWrap: 'anywhere' }}>
                       {tr.price}
                     </p>
                   </div>
+                  {/* Right: inclusions */}
                   {tr.inclusions.length > 0 && (
-                    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '9px' }}>
+                    <div
+                      style={{
+                        flex: 1, padding: '18px 22px',
+                        display: 'grid',
+                        gridTemplateColumns: tr.inclusions.length > 4 ? '1fr 1fr' : '1fr',
+                        gap: '10px 22px',
+                        alignContent: 'center',
+                      }}
+                    >
                       {tr.inclusions.map((item, j) => (
                         <div key={j} style={{ display: 'flex', gap: '9px', alignItems: 'flex-start' }}>
-                          <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: recommended ? GOLD : AURORA, flexShrink: 0, marginTop: '6px' }} />
+                          <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: accentC, flexShrink: 0, marginTop: '6px' }} />
                           <span style={{ fontSize: '11.5px', lineHeight: 1.55, color: rgba('#D9E6FF', 0.72) }}>{item}</span>
                         </div>
                       ))}
@@ -506,7 +525,7 @@ function blockContent(
           <p style={{ fontSize: '13px', color: rgba('#8FA8D6', 0.72), margin: '0 auto 20px', maxWidth: '440px', lineHeight: 1.65 }}>{t.ctaSub}</p>
           {data.email && (
             <a href={`mailto:${data.email}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 600, color: GOLD, padding: '11px 22px', borderRadius: '11px', border: `1px solid ${rgba(GOLD, 0.32)}`, background: rgba(GOLD, 0.08) }}>
-              <Moon size={14} /> {interp(data.button ?? t.ctaButtonFallback)}
+              <Moon size={14} /> {data.email}
             </a>
           )}
         </div>
@@ -568,15 +587,23 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
   })
 
   // Resolve renderable section pages up-front so empty blocks don't yield blank pages.
+  type Page = { id: string; nodes: React.ReactNode[]; center?: boolean }
   let counter = 0
-  const pages: { id: string; node: React.ReactNode }[] = []
+  const pages: Page[] = []
   for (const block of sections) {
     if (block.type === 'hero') continue
     const number = NUMBERED_TYPES.has(block.type) ? String(counter + 1).padStart(2, '0') : null
     const node = blockContent(block, vars, number, locale)
     if (node === null) continue
     if (NUMBERED_TYPES.has(block.type)) counter++
-    pages.push({ id: block.id, node })
+
+    // Text blocks always ride on the previous section's page — never a new one.
+    if (block.type === 'text' && pages.length > 0) {
+      pages[pages.length - 1].nodes.push(node)
+      continue
+    }
+    // CTA gets its own page, vertically centred.
+    pages.push({ id: block.id, nodes: [node], center: block.type === 'cta' })
   }
 
   const handlePrint = useCallback(() => window.print(), [])
@@ -642,15 +669,14 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
           </div>
         </div>
 
-        {/* ── One page per section ── */}
+        {/* ── One page per section (text blocks ride along; CTA is centred) ── */}
         {pages.map(page => (
-          <div key={page.id} className="pp-sheet">
+          <div key={page.id} className={`pp-sheet${page.center ? ' pp-sheet-center' : ''}`}>
             <RunningHeader label={t.confidentialProposal} />
-            <div className="pp-sheet-body">{page.node}</div>
-            <div className="pp-sheet-footer">
-              <span style={{ fontSize: '9.5px', color: FAINT }}>
-                {t.footerPrefix} <span style={{ color: rgba('#8FA8D6', 0.6) }}>{lead?.organization}</span> · CroissantsMoon Studio
-              </span>
+            <div className={page.center ? 'pp-center-body' : 'pp-sheet-body'}>
+              {page.nodes.map((n, idx) => (
+                <div key={idx} style={{ marginTop: idx > 0 ? '30px' : 0 }}>{n}</div>
+              ))}
             </div>
           </div>
         ))}
@@ -700,31 +726,27 @@ const printStyles = `
 
   .pp-doc { padding: 28px 0; }
 
-  /* A4 page. Full-bleed celestial background, MS-Word "Normal" 25.4mm inner margins. */
+  /* A4 page. Full-bleed celestial background, MS-Word "Narrow" 12.7mm inner margins. */
   .pp-sheet {
     width: 210mm;
     min-height: 297mm;
     box-sizing: border-box;
     margin: 0 auto 28px;
-    padding: 25.4mm;
+    padding: 12.7mm;
     background: ${CELESTIAL_BG};
     background-color: #050a18;
     color: #D9E6FF;
     box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-    display: flex;
-    flex-direction: column;
   }
   .pp-sheet:not(:first-child) { break-before: page; }
 
-  .pp-cover { }
-  .pp-sheet-body { flex: 1; }
-  .pp-sheet-footer {
-    margin-top: 28px; padding-top: 14px;
-    border-top: 1px solid rgba(111,168,255,0.1);
-    text-align: center;
-  }
+  /* Cover & centred (CTA) pages use flex to position their content. */
+  .pp-cover, .pp-sheet-center { display: flex; flex-direction: column; }
+  .pp-center-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
+  /* Keep atomic blocks whole when a tall section splits across two pages. */
   .pp-avoid-break { break-inside: avoid; }
+  .pp-keep-next { break-after: avoid; }
 
   @page {
     size: A4;
