@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
+import { LangToggle } from '@/components/cm/LangToggle'
+import { LANDING_UI, type CMLocale } from '@/lib/cm/i18n'
 import type { CMIconName, CMLandingContent } from '@/types'
 
 // ── Icon registry (resolves stored icon-name strings) ──────────
@@ -37,8 +39,11 @@ function Deco({ stars = 40, seed = 1, constellation = true }: { stars?: number; 
 }
 
 // ── Component ──────────────────────────────────────────────────
-export default function StudioLanding({ content }: { content: CMLandingContent }) {
-  const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = content
+export default function StudioLanding({ content, contentId }: { content: CMLandingContent; contentId: CMLandingContent }) {
+  const [locale, setLocale] = useState<CMLocale>('en')
+  const active = locale === 'id' ? contentId : content
+  const ui = LANDING_UI[locale]
+  const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = active
   const PROPOSAL = meta.proposalHref
 
   useEffect(() => {
@@ -81,9 +86,12 @@ export default function StudioLanding({ content }: { content: CMLandingContent }
             <Image src={meta.logoSrc} alt="" width={36} height={36} className="cm-brand-logo" priority />
             <span className="cm-mono-link">{footer.brand}</span>
           </a>
-          <Link href={hero.primaryCta.href} className="cm-btn cm-btn-ghost cm-nav-cta">
-            {hero.primaryCta.label}
-          </Link>
+          <div className="cm-nav-actions">
+            <LangToggle locale={locale} onChange={setLocale} compact />
+            <Link href={hero.primaryCta.href} className="cm-btn cm-btn-ghost cm-nav-cta">
+              {hero.primaryCta.label}
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -118,7 +126,7 @@ export default function StudioLanding({ content }: { content: CMLandingContent }
           </div>
 
           <div className="cm-scroll-cue" aria-hidden="true">
-            <span>Explore</span>
+            <span>{ui.explore}</span>
             <span className="cm-scroll-line" />
           </div>
         </section>
@@ -170,7 +178,7 @@ export default function StudioLanding({ content }: { content: CMLandingContent }
                       <Github size={14} aria-hidden="true" /> GitHub
                     </a>
                     <a href={p.live} target="_blank" rel="noopener noreferrer" className="cm-link-icon cm-link-accent">
-                      <ExternalLink size={14} aria-hidden="true" /> Live Preview
+                      <ExternalLink size={14} aria-hidden="true" /> {ui.livePreview}
                     </a>
                   </div>
                 </article>
@@ -253,7 +261,7 @@ export default function StudioLanding({ content }: { content: CMLandingContent }
               <div className="cm-grid-4">
                 {pricing.items.map((t) => (
                   <article key={t.id} className={`cm-card cm-tier reveal${t.featured ? ' cm-tier-featured' : ''}`}>
-                    {t.featured && <span className="cm-tier-flag">Most common</span>}
+                    {t.featured && <span className="cm-tier-flag">{ui.mostCommon}</span>}
                     <h3 className="cm-tier-name">{t.name}</h3>
                     <p className="cm-tier-timeline">{t.timeline}</p>
                     <p className="cm-tier-price">{t.price}</p>
@@ -454,6 +462,7 @@ const CSS = `
 .cm-nav-inner { max-width: 1180px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
 .cm-mono-link { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 22px; letter-spacing: .02em; color: var(--moonlight); }
 .cm-brand-link { display: inline-flex; align-items: center; gap: 11px; }
+.cm-nav-actions { display: inline-flex; align-items: center; gap: 14px; }
 .cm-brand-logo { border-radius: 999px; box-shadow: 0 0 18px rgba(212,177,90,0.28); flex-shrink: 0; }
 
 /* Buttons */

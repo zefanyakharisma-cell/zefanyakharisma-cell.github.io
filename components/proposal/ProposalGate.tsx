@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Moon, Lock, AlertCircle, Sparkles, Quote, ArrowDown, Check } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
+import { LangToggle } from '@/components/cm/LangToggle'
+import { GATE_UI, type CMLocale } from '@/lib/cm/i18n'
 import type { ProposalTeaser } from '@/lib/proposal/teaser'
 
 interface Props {
@@ -26,6 +28,8 @@ function rgba(hex: string, a: number): string {
 }
 
 export function ProposalGate({ slug, teaser }: Props) {
+  const [locale, setLocale] = useState<CMLocale>('en')
+  const t = GATE_UI[locale]
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -55,14 +59,14 @@ export function ProposalGate({ slug, teaser }: Props) {
       } else {
         setAttempts(a => a + 1)
         setError(
-          data.reason === 'expired'  ? 'This proposal has expired.' :
-          data.reason === 'revoked'  ? 'Access has been revoked.' :
-          data.reason === 'archived' ? 'This proposal is no longer available.' :
-          'Invalid access token. Please check and try again.'
+          data.reason === 'expired'  ? t.errExpired :
+          data.reason === 'revoked'  ? t.errRevoked :
+          data.reason === 'archived' ? t.errArchived :
+          t.errInvalid
         )
       }
     } catch {
-      setError('Connection error. Please try again.')
+      setError(t.errConnection)
     } finally {
       setLoading(false)
     }
@@ -93,9 +97,12 @@ export function ProposalGate({ slug, teaser }: Props) {
             <Moon size={15} style={{ color: GOLD }} />
             <span className="text-sm font-medium" style={{ color: '#D9E6FF' }}>CroissantsMoon</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Lock size={11} style={{ color: rgba(GOLD, 0.5) }} />
-            <span className="text-xs" style={{ color: rgba('#8FA8D6', 0.55) }}>Preview</span>
+          <div className="flex items-center gap-4">
+            <LangToggle locale={locale} onChange={setLocale} compact />
+            <div className="flex items-center gap-2">
+              <Lock size={11} style={{ color: rgba(GOLD, 0.5) }} />
+              <span className="text-xs" style={{ color: rgba('#8FA8D6', 0.55) }}>{t.preview}</span>
+            </div>
           </div>
         </div>
       </nav>
@@ -122,12 +129,12 @@ export function ProposalGate({ slug, teaser }: Props) {
             >
               <Sparkles size={12} style={{ color: GOLD }} />
               <span className="text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.28em', color: rgba(GOLD, 0.85) }}>
-                Confidential Proposal
+                {t.confidentialProposal}
               </span>
             </div>
 
             <p className="text-sm mb-6" style={{ color: rgba('#8FA8D6', 0.7) }}>
-              Prepared exclusively for{' '}
+              {t.preparedForPrefix}{' '}
               <span style={{ color: '#D9E6FF', fontWeight: 500 }}>{teaser.orgName}</span>
             </p>
 
@@ -156,13 +163,13 @@ export function ProposalGate({ slug, teaser }: Props) {
               style={{ background: rgba(GOLD, 0.1), border: `1px solid ${rgba(GOLD, 0.3)}`, color: GOLD }}
             >
               <Lock size={14} />
-              Unlock the full proposal
+              {t.unlockFull}
             </button>
           </div>
 
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.35 }}>
             <ArrowDown size={16} style={{ color: rgba('#8FA8D6', 0.7) }} className="animate-bounce" />
-            <span className="text-[9px] uppercase" style={{ letterSpacing: '0.2em', color: rgba('#8FA8D6', 0.7) }}>Preview</span>
+            <span className="text-[9px] uppercase" style={{ letterSpacing: '0.2em', color: rgba('#8FA8D6', 0.7) }}>{t.preview}</span>
           </div>
         </section>
 
@@ -173,7 +180,7 @@ export function ProposalGate({ slug, teaser }: Props) {
               <div className="flex md:flex-col items-center md:items-start gap-3 md:pt-3">
                 <Quote size={20} style={{ color: rgba(GOLD, 0.5) }} />
                 <span className="text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.24em', color: rgba(GOLD, 0.55) }}>
-                  A Note For You
+                  {t.aNoteForYou}
                 </span>
               </div>
               <p
@@ -191,10 +198,10 @@ export function ProposalGate({ slug, teaser }: Props) {
           <section className="py-16 px-8 max-w-5xl mx-auto w-full">
             <div className="text-center mb-10">
               <span className="text-[11px] font-semibold uppercase" style={{ letterSpacing: '0.28em', color: rgba(AURORA, 0.8) }}>
-                What&apos;s Inside
+                {t.whatsInside}
               </span>
               <h2 className="font-serif font-light mt-4" style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.4rem)', color: '#D9E6FF' }}>
-                A complete proposal, prepared for you
+                {t.whatsInsideHeading}
               </h2>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -235,7 +242,7 @@ export function ProposalGate({ slug, teaser }: Props) {
           <section className="py-16 px-8 max-w-5xl mx-auto w-full">
             <div className="mb-8 text-center">
               <span className="text-[11px] font-semibold uppercase" style={{ letterSpacing: '0.28em', color: rgba(SKY, 0.8) }}>
-                A Taste of What&apos;s Proposed
+                {t.aTaste}
               </span>
             </div>
             <div className="grid md:grid-cols-3 gap-4 mb-5">
@@ -269,7 +276,7 @@ export function ProposalGate({ slug, teaser }: Props) {
                 style={{ background: rgba(GOLD, 0.05), border: `1px dashed ${rgba(GOLD, 0.22)}`, color: rgba(GOLD, 0.85) }}
               >
                 <Lock size={13} />
-                + {teaser.lockedFeatureCount} more {teaser.lockedFeatureCount === 1 ? 'capability' : 'capabilities'}, plus pricing &amp; timeline — unlock to view
+                {t.moreCapabilities(teaser.lockedFeatureCount)}
               </div>
             )}
           </section>
@@ -280,9 +287,9 @@ export function ProposalGate({ slug, teaser }: Props) {
           <section className="py-8 px-8 max-w-5xl mx-auto w-full">
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                teaser.hasPricing  && { label: 'Investment', accent: GOLD },
-                teaser.hasTimeline && { label: 'Timeline',   accent: MINT },
-                teaser.hasDemo     && { label: 'Live Preview', accent: AURORA },
+                teaser.hasPricing  && { label: t.investment, accent: GOLD },
+                teaser.hasTimeline && { label: t.timeline,   accent: MINT },
+                teaser.hasDemo     && { label: t.livePreview, accent: AURORA },
               ].filter(Boolean).map((item, i) => {
                 const it = item as { label: string; accent: string }
                 return (
@@ -330,12 +337,12 @@ export function ProposalGate({ slug, teaser }: Props) {
                 <Lock size={24} style={{ color: GOLD }} />
               </div>
               <h2 className="font-serif font-light text-[2rem] leading-tight mb-4 text-balance" style={{ color: '#D9E6FF' }}>
-                Access the full proposal
+                {t.accessFull}
               </h2>
               <p className="text-sm leading-relaxed text-balance" style={{ color: rgba('#8FA8D6', 0.75) }}>
-                Enter the access token sent to{' '}
+                {t.enterTokenPre}{' '}
                 <span style={{ color: '#D9E6FF', fontWeight: 500 }}>{teaser.contactPerson ?? teaser.orgName}</span>{' '}
-                to view pricing, timeline and every detail.
+                {t.enterTokenPost}
               </p>
             </div>
 
@@ -352,7 +359,7 @@ export function ProposalGate({ slug, teaser }: Props) {
               <div className="flex items-center gap-2 mb-6">
                 <Lock size={11} style={{ color: rgba(GOLD, 0.45) }} />
                 <span className="text-[10px] font-medium uppercase" style={{ letterSpacing: '0.2em', color: rgba(GOLD, 0.45) }}>
-                  Secure Access Required
+                  {t.secureAccess}
                 </span>
               </div>
 
@@ -363,7 +370,7 @@ export function ProposalGate({ slug, teaser }: Props) {
                     className="block text-[10px] font-semibold uppercase mb-2.5"
                     style={{ letterSpacing: '0.15em', color: rgba('#8FA8D6', 0.55) }}
                   >
-                    Access Token
+                    {t.accessToken}
                   </label>
                   <input
                     ref={inputRef}
@@ -407,7 +414,7 @@ export function ProposalGate({ slug, teaser }: Props) {
 
                 {attempts >= 5 && (
                   <p className="text-xs text-center" style={{ color: rgba('#8FA8D6', 0.45) }}>
-                    Too many attempts. Please contact CroissantsMoon for assistance.
+                    {t.tooManyAttempts}
                   </p>
                 )}
 
@@ -434,12 +441,12 @@ export function ProposalGate({ slug, teaser }: Props) {
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
                       <span className="w-4 h-4 border-2 rounded-full animate-spin" style={{ borderColor: GOLD, borderTopColor: 'transparent' }} />
-                      Verifying...
+                      {t.verifying}
                     </span>
                   ) : (
                     <span className="flex items-center justify-center gap-2">
                       <Sparkles size={14} />
-                      Access Proposal
+                      {t.accessProposal}
                     </span>
                   )}
                 </button>
@@ -447,8 +454,8 @@ export function ProposalGate({ slug, teaser }: Props) {
             </div>
 
             <p className="text-center text-[11px] mt-6 leading-relaxed relative z-10" style={{ color: 'rgba(111,168,255,0.28)' }}>
-              This is a private, confidential proposal.<br />
-              Not intended for public distribution.
+              {t.privateFootnote1}<br />
+              {t.privateFootnote2}
             </p>
           </div>
         </section>
@@ -457,9 +464,9 @@ export function ProposalGate({ slug, teaser }: Props) {
       <footer className="relative z-10 py-12 px-8 text-center mt-4" style={{ borderTop: '1px solid rgba(111,168,255,0.07)' }}>
         <Moon size={14} className="mx-auto mb-3" style={{ color: rgba(GOLD, 0.25) }} />
         <p className="text-[11px] leading-relaxed" style={{ color: 'rgba(111,168,255,0.28)' }}>
-          Prepared exclusively for{' '}
+          {t.footerPrefix}{' '}
           <span style={{ color: rgba('#8FA8D6', 0.45) }}>{teaser.orgName}</span>{' '}
-          by CroissantsMoon Studio. Confidential — not for distribution.
+          {t.footerSuffix}
         </p>
       </footer>
     </div>

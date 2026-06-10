@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import StudioLanding from './StudioLanding'
 import { getLandingContent } from '@/lib/actions/cm-landing'
+import { LANDING_DEFAULTS_ID } from '@/lib/cm/landing-defaults-id'
 
 const URL = 'https://zefanyakharisma.com/croissantsmoon'
 
@@ -103,7 +104,7 @@ export default async function CroissantsMoonStudioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(seo.description)) }}
       />
-      <StudioLanding content={content} />
+      <StudioLanding content={content} contentId={LANDING_DEFAULTS_ID} />
     </>
   )
 }

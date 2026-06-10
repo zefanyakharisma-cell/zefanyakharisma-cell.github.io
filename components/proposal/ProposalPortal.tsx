@@ -6,6 +6,8 @@ import type { Proposal, ProposalBlock } from '@/types'
 import { Moon, ArrowUpRight, Quote, Star } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
+import { LangToggle } from '@/components/cm/LangToggle'
+import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
 
 // ── Helpers ───────────────────────────────────────────────────
 function interpolate(text: string, vars: Record<string, string>): string {
@@ -107,14 +109,16 @@ function GlassCard({
 
 // ── Pricing tier card (solo / recommended / normal) ───────────
 function PriceTier({
-  name, price, inclusions, variant, count,
+  name, price, inclusions, variant, count, locale,
 }: {
   name: string
   price: string
   inclusions: string[]
   variant: 'recommended' | 'solo' | 'normal'
   count: number
+  locale: CMLocale
 }) {
+  const t = PORTAL_UI[locale]
   const [hover, setHover] = useState(false)
   const gold = variant === 'recommended' || variant === 'solo'
   const recommended = variant === 'recommended'
@@ -160,7 +164,7 @@ function PriceTier({
             className="text-[10px] font-semibold uppercase inline-flex items-center gap-1.5"
             style={{ letterSpacing: '0.24em', color: GOLD }}
           >
-            <Star size={10} fill={GOLD} strokeWidth={0} /> Recommended
+            <Star size={10} fill={GOLD} strokeWidth={0} /> {t.recommended}
           </span>
         </div>
       )}
@@ -173,7 +177,7 @@ function PriceTier({
           className="text-[11px] font-semibold uppercase mb-5 break-words"
           style={{ letterSpacing: nameTracking, color: rgba(accent, 0.88) }}
         >
-          {name || 'Package'}
+          {name || t.packageFallback}
         </p>
         <p
           className="font-serif font-light break-words"
@@ -312,17 +316,22 @@ function PointCard({ index, accent, children }: { index: number; accent: string;
 
 // ── Block renderer ────────────────────────────────────────────
 function BlockRenderer({
-  block, vars, proposalId, sectionNumber,
+  block, vars, proposalId, sectionNumber, locale,
 }: {
   block: ProposalBlock
   vars: Record<string, string>
   proposalId: string
   sectionNumber: string | null
+  locale: CMLocale
 }) {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
+  const t = PORTAL_UI[locale]
   const meta = SECTION_META[block.type]
+  const sec = PORTAL_SECTION_TEXT[locale][block.type]
   const accent = meta?.accent ?? AURORA
+  const eyebrow = sec?.eyebrow ?? meta?.eyebrow ?? ''
+  const title = sec?.title ?? meta?.title ?? ''
 
   switch (block.type) {
 
@@ -339,13 +348,13 @@ function BlockRenderer({
             />
             <div className="relative z-10 cm-reveal max-w-4xl">
               <p className="text-[10px] font-semibold uppercase mb-8" style={{ letterSpacing: '0.38em', color: rgba(GOLD, 0.7) }}>
-                Confidential Proposal
+                {t.confidentialProposal}
               </p>
               <h1
                 className="font-serif font-light leading-[1.08] text-balance mb-8"
                 style={{ fontSize: 'clamp(2.6rem, 6.2vw, 5.25rem)', color: '#D9E6FF' }}
               >
-                {interp(data.headline ?? 'A Strategic Proposal')}
+                {interp(data.headline ?? t.heroHeadlineFallback)}
               </h1>
               <div className="flex items-center justify-center gap-4 mb-8">
                 <div style={{ width: 60, height: 1, background: `linear-gradient(to right, transparent, ${rgba(GOLD, 0.55)})` }} />
@@ -360,7 +369,7 @@ function BlockRenderer({
             </div>
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.35 }}>
               <div style={{ width: 1, height: 38, background: `linear-gradient(to bottom, transparent, ${rgba('#8FA8D6', 0.7)})` }} />
-              <span className="text-[9px] uppercase" style={{ letterSpacing: '0.2em', color: rgba('#8FA8D6', 0.7) }}>Scroll</span>
+              <span className="text-[9px] uppercase" style={{ letterSpacing: '0.2em', color: rgba('#8FA8D6', 0.7) }}>{t.scroll}</span>
             </div>
           </section>
         </SectionObserver>
@@ -374,7 +383,7 @@ function BlockRenderer({
             <div className="flex md:flex-col items-center md:items-start gap-3 md:pt-3">
               <Quote size={20} style={{ color: rgba(GOLD, 0.5) }} />
               <span className="text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.24em', color: rgba(GOLD, 0.55) }}>
-                A Note For You
+                {t.aNoteForYou}
               </span>
             </div>
             <p
@@ -393,9 +402,9 @@ function BlockRenderer({
       // Each gets its own accent to break the monotone; falls back to the legacy
       // single "findings" list when the structured fields are empty.
       const groups = [
-        { key: 'what', label: 'What We Found',   accent: AURORA },
-        { key: 'why',  label: 'Why It Matters',  accent: GOLD },
-        { key: 'how',  label: 'How We Solve It', accent: MINT },
+        { key: 'what', label: t.whatWeFound,   accent: AURORA },
+        { key: 'why',  label: t.whyItMatters,  accent: GOLD },
+        { key: 'how',  label: t.howWeSolveIt, accent: MINT },
       ].map(g => ({ ...g, items: interp(data[g.key] ?? '').split('\n').filter(Boolean) }))
       const hasStructured = groups.some(g => g.items.length)
       const legacy = interp(data.findings ?? data.analysis ?? '').split('\n').filter(Boolean)
@@ -403,7 +412,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType={block.type}>
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               {hasStructured ? (
                 <div className="space-y-12">
                   {groups.filter(g => g.items.length).map(g => (
@@ -441,11 +450,11 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="redesign_concept">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               <div className="space-y-12">
                 {direction && (
                   <div>
-                    <SubLabel label="Direction" accent={accent} />
+                    <SubLabel label={t.direction} accent={accent} />
                     <GlassCard accent={accent} className="p-8 md:p-10">
                       <p className="text-[15px] leading-[1.85] whitespace-pre-line" style={{ color: rgba('#D9E6FF', 0.76) }}>
                         {direction}
@@ -455,13 +464,13 @@ function BlockRenderer({
                 )}
                 {toneRows.length > 0 && (
                   <div>
-                    <SubLabel label="Tone" accent={accent} />
+                    <SubLabel label={t.tone} accent={accent} />
                     <DataTable rows={toneRows} accent={accent} />
                   </div>
                 )}
                 {ideas.length > 0 && (
                   <div>
-                    <SubLabel label="Key Ideas" accent={accent} />
+                    <SubLabel label={t.keyIdeas} accent={accent} />
                     <div className="grid sm:grid-cols-2 gap-4">
                       {ideas.map((idea, i) => (
                         <PointCard key={i} index={i} accent={accent}>{idea}</PointCard>
@@ -482,7 +491,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="features">
           <section className="py-20 px-8 max-w-5xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {features.map((feature, i) => {
                   const c = FEATURE_COLORS[i % FEATURE_COLORS.length]
@@ -522,7 +531,7 @@ function BlockRenderer({
         .filter(t => t.price || t.name || t.inclusions.length)
       if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
         tiers = [{
-          name: interp(data.package ?? 'Package'),
+          name: interp(data.package ?? t.packageFallback),
           price: interp(data.price ?? ''),
           inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
         }]
@@ -558,7 +567,7 @@ function BlockRenderer({
             <div className="cm-reveal">
               <div className="text-center mb-10">
                 <span className="text-[11px] font-semibold uppercase" style={{ letterSpacing: '0.28em', color: rgba(GOLD, 0.85) }}>
-                  Investment
+                  {t.investment}
                 </span>
               </div>
               <div className={gridClass}>
@@ -570,6 +579,7 @@ function BlockRenderer({
                     inclusions={t.inclusions}
                     variant={n === 1 ? 'solo' : i === recIdx ? 'recommended' : 'normal'}
                     count={n}
+                    locale={locale}
                   />
                 ))}
               </div>
@@ -586,7 +596,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="timeline">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               <DataTable rows={rows} accent={accent} />
             </div>
           </section>
@@ -601,7 +611,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="infrastructure">
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               <DataTable rows={rows} accent={accent} />
             </div>
           </section>
@@ -614,7 +624,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="demo">
           <section className="py-20 px-8 max-w-5xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={title} />
               {data.url && (
                 <GlassCard accent={accent} className="overflow-hidden" style={{ boxShadow: `0 24px 64px rgba(3,7,18,0.55)` }}>
                   <div className="px-4 py-3 flex items-center gap-2.5" style={{ borderBottom: `1px solid ${rgba(accent, 0.1)}`, background: 'rgba(3,7,18,0.4)' }}>
@@ -640,7 +650,7 @@ function BlockRenderer({
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6 pointer-events-none">
                       <ArrowUpRight size={22} style={{ color: rgba(accent, 0.4) }} />
                       <p className="text-xs leading-relaxed max-w-xs" style={{ color: rgba('#8FA8D6', 0.5) }}>
-                        Loading preview… if it doesn&apos;t appear, the site can&apos;t be embedded — open it in a new tab below.
+                        {t.loadingPreview}
                       </p>
                     </div>
                     <iframe src={data.url} loading="lazy" className="relative z-10 w-full h-full" title="Demo Preview" />
@@ -652,7 +662,7 @@ function BlockRenderer({
                     className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs hover:underline transition-colors"
                     style={{ borderTop: `1px solid ${rgba(accent, 0.1)}`, background: 'rgba(3,7,18,0.4)', color: rgba('#8FA8D6', 0.6) }}
                   >
-                    Open the live preview in a new tab
+                    {t.openInNewTab}
                     <ArrowUpRight size={12} className="flex-shrink-0" />
                   </a>
                 </GlassCard>
@@ -668,7 +678,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="gallery">
           <section className="py-20 px-8 max-w-5xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={meta.eyebrow} title={data.title ? interp(data.title) : meta.title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={data.title ? interp(data.title) : title} />
               {images.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {images.map((url, i) => (
@@ -695,10 +705,10 @@ function BlockRenderer({
                 {[0, 1, 2].map(i => <div key={i} className="w-1 h-1 rounded-full" style={{ background: rgba(GOLD, 0.45) }} />)}
               </div>
               <h2 className="font-serif font-light leading-tight text-balance mb-6" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.6rem)', color: '#D9E6FF' }}>
-                {interp(data.heading ?? 'Ready to Begin?')}
+                {interp(data.heading ?? t.ctaHeadingFallback)}
               </h2>
               <p className="text-sm mb-10 max-w-md mx-auto leading-relaxed" style={{ color: rgba('#8FA8D6', 0.68) }}>
-                Let&apos;s schedule a discovery call to discuss your vision and next steps.
+                {t.ctaSub}
               </p>
               {data.email && (
                 <a
@@ -708,7 +718,7 @@ function BlockRenderer({
                   style={{ background: rgba(GOLD, 0.1), border: `1px solid ${rgba(GOLD, 0.3)}`, color: GOLD }}
                 >
                   <Moon size={15} />
-                  {interp(data.button ?? 'Get In Touch')}
+                  {interp(data.button ?? t.ctaButtonFallback)}
                   <ArrowUpRight size={15} />
                 </a>
               )}
@@ -748,6 +758,8 @@ function BlockRenderer({
 
 // ── Main portal ───────────────────────────────────────────────
 export function ProposalPortal({ proposal }: { proposal: Proposal }) {
+  const [locale, setLocale] = useState<CMLocale>('en')
+  const t = PORTAL_UI[locale]
   const lead = proposal.lead as { organization?: string; contact_person?: string } | undefined
   const vars: Record<string, string> = {
     organization_name: lead?.organization ?? '',
@@ -810,9 +822,12 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
             <Moon size={15} style={{ color: GOLD }} />
             <span className="text-sm font-medium" style={{ color: '#D9E6FF' }}>CroissantsMoon</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs" style={{ color: rgba('#8FA8D6', 0.55) }}>Private Proposal</span>
+          <div className="flex items-center gap-4">
+            <LangToggle locale={locale} onChange={setLocale} compact />
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs" style={{ color: rgba('#8FA8D6', 0.55) }}>{t.privateProposal}</span>
+            </div>
           </div>
         </div>
       </nav>
@@ -828,6 +843,7 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
               vars={vars}
               proposalId={proposal.id}
               sectionNumber={sectionNumber}
+              locale={locale}
             />
           )
         })}
@@ -836,9 +852,9 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
       <footer className="relative z-10 py-12 px-8 text-center mt-8" style={{ borderTop: '1px solid rgba(111,168,255,0.07)' }}>
         <Moon size={14} className="mx-auto mb-3" style={{ color: rgba(GOLD, 0.25) }} />
         <p className="text-[11px] leading-relaxed" style={{ color: 'rgba(111,168,255,0.28)' }}>
-          Prepared exclusively for{' '}
+          {t.footerPrefix}{' '}
           <span style={{ color: rgba('#8FA8D6', 0.45) }}>{lead?.organization}</span>{' '}
-          by CroissantsMoon Studio. Confidential — not for distribution.
+          {t.footerSuffix}
         </p>
       </footer>
     </div>
