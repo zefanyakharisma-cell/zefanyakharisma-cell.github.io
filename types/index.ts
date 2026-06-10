@@ -176,3 +176,169 @@ export interface EngagementScore {
   }
   updated_at: string
 }
+
+// ─── CroissantsMoon Landing CMS ──────────────────────────────────
+// The entire public /croissantsmoon landing page, stored as one JSONB
+// document. Icons are stored as lucide-react component name strings
+// (see CM_ICONS in StudioLanding) so the shape stays serializable.
+
+export type CMIconName =
+  | 'Monitor' | 'BarChart3' | 'Palette' | 'Zap' | 'Sparkles'
+  | 'Globe' | 'Code' | 'PenTool' | 'Rocket' | 'Layers'
+
+export interface CMLink {
+  label: string
+  href: string
+}
+
+export interface CMService {
+  id: string
+  num: string
+  name: string
+  icon: CMIconName
+  desc: string
+  price: string
+}
+
+export interface CMProject {
+  id: string
+  cat: string
+  name: string
+  desc: string
+  stack: string[]
+  github: string
+  live: string
+}
+
+export interface CMTestimonial {
+  id: string
+  quote: string
+  who: string
+}
+
+export interface CMStat {
+  id: string
+  value: string
+  label: string
+}
+
+export interface CMProcessStep {
+  id: string
+  num: string
+  name: string
+  text: string
+}
+
+export interface CMTier {
+  id: string
+  name: string
+  timeline: string
+  price: string
+  note: string
+  featured: boolean
+  features: string[]
+}
+
+export interface CMDemo {
+  id: string
+  num: string
+  cat: string
+  title: string
+  desc: string
+  tags: string[]
+  links: CMLink[]
+}
+
+export interface CMDesign {
+  id: string
+  title: string
+  cat: string
+  inst: string
+  folder: string
+  href: string
+}
+
+export interface CMLandingContent {
+  meta: {
+    proposalHref: string
+    email: string
+    githubUrl: string
+    linkedinUrl: string
+    siteUrl: string
+    logoSrc: string
+  }
+  hero: {
+    eyebrow: string
+    titleLine1: string
+    titleLine2: string
+    subtitle: string
+    primaryCta: CMLink
+    ghostCta: CMLink
+    trust: string
+    wordmark: string
+  }
+  services: { label: string; heading: string; items: CMService[] }
+  projects: {
+    label: string
+    heading: string
+    items: CMProject[]
+    viewAll: CMLink
+  }
+  proof: {
+    label: string
+    heading: string
+    items: CMTestimonial[]
+    stats: CMStat[]
+  }
+  process: { label: string; heading: string; items: CMProcessStep[] }
+  pricing: {
+    label: string
+    heading: string
+    foundingNote: string
+    foundingCta: CMLink
+    items: CMTier[]
+    paymentTerms: string
+  }
+  demos: {
+    label: string
+    heading: string
+    items: CMDemo[]
+    discussLabel: string
+  }
+  designs: {
+    label: string
+    heading: string
+    items: CMDesign[]
+    imageBase: string
+    viewAll: CMLink
+  }
+  finalCta: {
+    label: string
+    heading: string
+    subtitle: string
+    primaryCta: CMLink
+    ghostLabel: string
+  }
+  footer: {
+    brand: string
+    links: CMLink[]
+    copyright: string
+    location: string
+  }
+}
+
+export interface CMLandingSeo {
+  title: string
+  description: string
+  ogTitle: string
+  ogDescription: string
+  ogImage: string
+  keywords: string[]
+}
+
+export interface CMLanding {
+  id: string
+  content: CMLandingContent
+  seo: CMLandingSeo
+  updated_at: string
+}

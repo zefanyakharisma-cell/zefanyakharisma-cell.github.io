@@ -1,75 +1,66 @@
 import type { Metadata } from 'next'
 import StudioLanding from './StudioLanding'
+import { getLandingContent } from '@/lib/actions/cm-landing'
 
 const URL = 'https://zefanyakharisma.com/croissantsmoon'
 
-export const metadata: Metadata = {
-  title: 'CroissantsMoon — Web Development & Design Studio, Surabaya',
-  description:
-    'CroissantsMoon is a boutique web development and graphic design studio crafting digital presence for institutions and organizations across Indonesia. Web · Dashboard · Visual Identity.',
-  applicationName: 'CroissantsMoon',
-  authors: [{ name: 'Zefanya Kharisma Nugroho', url: 'https://zefanyakharisma.com' }],
-  keywords: [
-    'web development Surabaya',
-    'jasa web design Indonesia',
-    'dashboard development',
-    'visual identity Indonesia',
-    'CroissantsMoon',
-    'boutique web studio',
-    'Next.js developer Surabaya',
-    'web developer universitas Indonesia',
-    'Petra Christian University',
-  ],
-  creator: 'Zefanya Kharisma Nugroho',
-  publisher: 'CroissantsMoon',
-  alternates: { canonical: URL },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getLandingContent()
+  return {
+    title: seo.title,
+    description: seo.description,
+    applicationName: 'CroissantsMoon',
+    authors: [{ name: 'Zefanya Kharisma Nugroho', url: 'https://zefanyakharisma.com' }],
+    keywords: seo.keywords,
+    creator: 'Zefanya Kharisma Nugroho',
+    publisher: 'CroissantsMoon',
+    alternates: { canonical: URL },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'id_ID',
-    alternateLocale: 'en_US',
-    url: URL,
-    siteName: 'CroissantsMoon',
-    title: 'CroissantsMoon — Celestial Studio',
-    description:
-      'Web development, dashboard systems, and visual identity for organizations that mean something. Based in Surabaya, Indonesia.',
-    images: [
-      { url: '/croissantsmoon/og-image.png', width: 1200, height: 630, alt: 'CroissantsMoon — Celestial Studio' },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@zefanyakharisma',
-    creator: '@zefanyakharisma',
-    title: 'CroissantsMoon — Celestial Studio',
-    description:
-      'Web development, dashboards, and visual identity crafted with intention. Based in Surabaya, Indonesia.',
-    images: ['/croissantsmoon/twitter-image.png'],
-  },
-  manifest: '/croissantsmoon/site.webmanifest',
+    openGraph: {
+      type: 'website',
+      locale: 'id_ID',
+      alternateLocale: 'en_US',
+      url: URL,
+      siteName: 'CroissantsMoon',
+      title: seo.ogTitle,
+      description: seo.ogDescription,
+      images: [
+        { url: seo.ogImage, width: 1200, height: 630, alt: seo.ogTitle },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@zefanyakharisma',
+      creator: '@zefanyakharisma',
+      title: seo.ogTitle,
+      description: seo.ogDescription,
+      images: ['/croissantsmoon/twitter-image.png'],
+    },
+    manifest: '/croissantsmoon/site.webmanifest',
+  }
 }
 
 export const viewport = {
   themeColor: '#071126',
 }
 
-const JSON_LD = {
+function buildJsonLd(description: string) {
+ return {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: 'CroissantsMoon',
   alternateName: 'CM Studio',
-  description:
-    'Boutique web development and graphic design studio crafting digital presence for institutions and organizations across Indonesia.',
+  description,
   url: URL,
   image: `${URL}/og-image.png`,
   founder: {
@@ -101,16 +92,18 @@ const JSON_LD = {
     contactType: 'sales',
     url: `${URL}/proposal`,
   },
+ }
 }
 
-export default function CroissantsMoonStudioPage() {
+export default async function CroissantsMoonStudioPage() {
+  const { content, seo } = await getLandingContent()
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(seo.description)) }}
       />
-      <StudioLanding />
+      <StudioLanding content={content} />
     </>
   )
 }

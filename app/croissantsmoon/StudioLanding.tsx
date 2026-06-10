@@ -6,143 +6,16 @@ import Image from 'next/image'
 import {
   ArrowRight, ArrowUpRight, Monitor, BarChart3, Palette,
   Github, ExternalLink, Send, Zap, Check, Quote,
+  Sparkles, Globe, Code, PenTool, Rocket, Layers, type LucideIcon,
 } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
+import type { CMIconName, CMLandingContent } from '@/types'
 
-// ── Links ──────────────────────────────────────────────────────
-const PROPOSAL = '/croissantsmoon/proposal'
-const EMAIL = 'mailto:zefanya.kharisma@gmail.com'
-const GITHUB = 'https://github.com/croissantsmoon'
-const LINKEDIN = 'https://www.linkedin.com/in/zefanyakharisma'
-const SITE = 'https://zefanyakharisma.com'
-
-// ── Data ───────────────────────────────────────────────────────
-const SERVICES = [
-  { n: '01', name: 'Web Development', icon: Monitor,
-    desc: 'Landing pages, institutional websites, and web applications — built with Next.js, Tailwind, and Supabase.',
-    price: 'From Rp 2.5jt' },
-  { n: '02', name: 'Dashboard & Data', icon: BarChart3,
-    desc: 'Operational dashboards and internal platforms for organizations that need clarity in their data.',
-    price: 'From Rp 8jt' },
-  { n: '03', name: 'Visual Identity', icon: Palette,
-    desc: 'Branding systems, institutional materials, and communication design for organizations that want to be remembered.',
-    price: 'On request' },
-]
-
-const PROJECTS = [
-  {
-    cat: 'Institutional · Web App',
-    name: 'PCU Global — International Office Platform',
-    desc: 'Full international office platform with news CMS, partnership directory, inbound & outbound programs. Mobile-first.',
-    stack: ['HTML/CSS', 'JavaScript', 'Tailwind', 'Supabase'],
-    github: 'https://github.com/zefanyakharisma-cell/International-Office-Website',
-    live: 'https://international-office-website.vercel.app/',
-  },
-  {
-    cat: 'Data · Dashboard',
-    name: 'Partnership Dashboard',
-    desc: 'Interactive dashboard visualising institutional partnerships — workflow engine, analytics, archive.',
-    stack: ['JavaScript', 'Chart.js', 'Tailwind'],
-    github: 'https://github.com/zefanyakharisma-cell/Dashboard-Partnership',
-    live: 'https://dashboard-partnership.vercel.app/',
-  },
-  {
-    cat: 'Portfolio · SPA',
-    name: 'Personal Portfolio System',
-    desc: 'Premium editorial-style single-page portfolio — vanilla JS, Tailwind, Supabase, and Formspree.',
-    stack: ['HTML/CSS', 'JavaScript', 'Tailwind', 'Supabase'],
-    github: 'https://github.com/zefanyakharisma-cell/zefanyakharisma-cell.github.io',
-    live: 'https://zefanyakharisma.com/',
-  },
-  {
-    cat: 'Data · Dashboard',
-    name: 'International Grants Dashboard',
-    desc: 'Grants discovery and management platform — deadline timeline, realtime updates, admin suite.',
-    stack: ['JavaScript', 'Chart.js', 'Supabase'],
-    github: 'https://github.com/zefanyakharisma-cell/Dashboard-International-Grants',
-    live: 'https://dashboard-international-grants.vercel.app/',
-  },
-]
-
-const TESTIMONIALS = [
-  {
-    quote: 'The dashboard they built transformed how we manage our partnership data. What took us hours in spreadsheets now takes minutes.',
-    who: 'International Office Staff, Petra Christian University',
-  },
-  {
-    quote: 'CroissantsMoon delivered exactly what we needed — a site that looks world-class but was built for our actual audience.',
-    who: 'Client, Educational Institution',
-  },
-]
-
-const STATS = [
-  { v: '12+', l: 'Projects Delivered' },
-  { v: '5+', l: 'Institutional Clients' },
-  { v: '3', l: 'Service Verticals' },
-  { v: '2026', l: 'Studio Founded' },
-]
-
-const PROCESS = [
-  { n: '01', name: 'Discover', text: "We audit your digital presence and identify exactly what's holding you back." },
-  { n: '02', name: 'Propose', text: 'You receive a tailored prototype and a transparent proposal — before any commitment.' },
-  { n: '03', name: 'Align', text: 'We agree on scope, timeline, and payment. No surprises, ever.' },
-  { n: '04', name: 'Build', text: 'Design, development, QA, and deployment — handled end to end.' },
-  { n: '05', name: 'Maintain', text: "Choose a retainer or handoff with full documentation. You're never left stranded." },
-]
-
-const TIERS = [
-  {
-    name: 'Landing — Basic', timeline: '2–3 days',
-    price: 'Rp 2.5jt', note: 'Founding Rate · Rp 5jt standard', featured: false,
-    features: ['Clean, modern 1-page layout', 'Mobile + desktop responsive', 'Contact form (email submission)', 'Domain setup + SSL', 'Vercel deployment', '1 round of revisions'],
-  },
-  {
-    name: 'Landing — Pro', timeline: '4–6 days',
-    price: 'Rp 3.5jt', note: 'Founding Rate · Rp 7jt standard', featured: false,
-    features: ['Multi-section landing page', 'Custom animations & interactions', 'CMS integration (blog/news)', 'SEO optimisation', 'Analytics setup', '2 rounds of revisions'],
-  },
-  {
-    name: 'Org Website', timeline: '2–3 weeks',
-    price: 'Rp 6jt', note: 'Founding Rate · Rp 12jt standard', featured: true,
-    features: ['Full multi-page website', 'Admin dashboard', 'Supabase backend + auth', 'Partnership/program directory', 'Mobile-first, WCAG-aware', '3 rounds of revisions'],
-  },
-  {
-    name: 'Dashboard System', timeline: '3–4 weeks',
-    price: 'Rp 9jt', note: 'Founding Rate · Rp 18jt standard', featured: false,
-    features: ['Data dashboard + analytics', 'Role-based access control', 'Real-time data (Supabase)', 'Export + reporting features', 'Admin interface', 'Ongoing maintenance option'],
-  },
-]
-
-const DEMOS = [
-  {
-    n: '01', cat: 'Personal · Portfolio', title: 'Premium Portfolio System',
-    desc: 'A narrative-driven digital identity platform for creatives and international professionals. Every element — from typography to motion — tells your story.',
-    tags: ['Editorial Design', 'Portfolio CMS', 'Personal Branding', 'Motion'],
-    demos: [{ label: 'View Live Demo', href: '/croissantsmoon/web-portfolio' }],
-  },
-  {
-    n: '02', cat: 'Institutional · International', title: 'International Office Platform',
-    desc: 'A sophisticated digital platform for universities. Features partnership directories, student onboarding systems, and global announcement boards.',
-    tags: ['Partnership Directory', 'Student Onboarding', 'Mobility Programs'],
-    demos: [{ label: 'View Live Demo', href: '/croissantsmoon/websites' }],
-  },
-  {
-    n: '03', cat: 'Data · Operations', title: 'Modern Dashboard System',
-    desc: 'A premium internal platform for organizations that need clarity in complexity. Analytics, workflow management, and admin interfaces.',
-    tags: ['Analytics Dashboard', 'Workflow Engine', 'Admin Interface'],
-    demos: [
-      { label: 'Partnership Dashboard Demo', href: '/croissantsmoon/web-dashboard-partnership' },
-      { label: 'Grants Dashboard Demo', href: '/croissantsmoon/web-dashboard-grants' },
-    ],
-  },
-]
-
-const DESIGNS = [
-  { title: 'AERO 2025 Presentation', cat: 'Event Materials', inst: 'Universitas Airlangga', folder: 'aero-2025-unair' },
-  { title: 'Airlangga Accommodation Guide', cat: 'Print & Digital', inst: 'Universitas Airlangga', folder: 'accommodation-guidebook-unair' },
-  { title: 'Airlangga International Students Guide', cat: 'Social Media Kits', inst: 'Universitas Airlangga', folder: 'international-students-guidebook-unair' },
-]
+// ── Icon registry (resolves stored icon-name strings) ──────────
+const CM_ICONS: Record<CMIconName, LucideIcon> = {
+  Monitor, BarChart3, Palette, Zap, Sparkles, Globe, Code, PenTool, Rocket, Layers,
+}
 
 // ── Celestial moon mark ────────────────────────────────────────
 function Moon({ size = 160, className = '' }: { size?: number; className?: string }) {
@@ -164,7 +37,10 @@ function Deco({ stars = 40, seed = 1, constellation = true }: { stars?: number; 
 }
 
 // ── Component ──────────────────────────────────────────────────
-export default function StudioLanding() {
+export default function StudioLanding({ content }: { content: CMLandingContent }) {
+  const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = content
+  const PROPOSAL = meta.proposalHref
+
   useEffect(() => {
     const nav = document.getElementById('cm-nav')
     const onScroll = () => {
@@ -202,11 +78,11 @@ export default function StudioLanding() {
       <nav id="cm-nav" className="cm-nav" aria-label="Primary">
         <div className="cm-nav-inner">
           <a href="#top" className="cm-brand-link" aria-label="CroissantsMoon — back to top">
-            <Image src="/croissantsmoon/cm-logo-circle.png" alt="" width={36} height={36} className="cm-brand-logo" priority />
-            <span className="cm-mono-link">CroissantsMoon</span>
+            <Image src={meta.logoSrc} alt="" width={36} height={36} className="cm-brand-logo" priority />
+            <span className="cm-mono-link">{footer.brand}</span>
           </a>
-          <Link href={PROPOSAL} className="cm-btn cm-btn-ghost cm-nav-cta">
-            Request a Proposal
+          <Link href={hero.primaryCta.href} className="cm-btn cm-btn-ghost cm-nav-cta">
+            {hero.primaryCta.label}
           </Link>
         </div>
       </nav>
@@ -219,27 +95,26 @@ export default function StudioLanding() {
           <div className="cm-glow cm-glow-aurora" aria-hidden="true" />
           <div className="cm-glow cm-glow-gold" aria-hidden="true" />
           <Moon size={170} className="cm-hero-moon" />
-          <span className="cm-hero-wordmark" aria-hidden="true">CroissantsMoon</span>
+          <span className="cm-hero-wordmark" aria-hidden="true">{hero.wordmark}</span>
           <span className="cm-corner-mono" aria-hidden="true">CM</span>
 
           <div className="cm-hero-inner">
-            <p className="cm-eyebrow reveal">Celestial Studio · Digital Presence Crafted with Intention</p>
+            <p className="cm-eyebrow reveal">{hero.eyebrow}</p>
             <h1 className="cm-hero-title reveal">
-              Digital presence,<br />crafted with intention.
+              {hero.titleLine1}<br />{hero.titleLine2}
             </h1>
             <p className="cm-hero-sub reveal">
-              Web development, dashboard systems, and visual identity for
-              organizations that mean something.
+              {hero.subtitle}
             </p>
             <div className="cm-hero-cta reveal">
-              <Link href={PROPOSAL} className="cm-btn cm-btn-primary">
-                Request a Proposal <ArrowRight size={16} />
+              <Link href={hero.primaryCta.href} className="cm-btn cm-btn-primary">
+                {hero.primaryCta.label} <ArrowRight size={16} />
               </Link>
-              <a href="#work" className="cm-btn cm-btn-ghost">
-                View Our Work <ArrowRight size={16} />
+              <a href={hero.ghostCta.href} className="cm-btn cm-btn-ghost">
+                {hero.ghostCta.label} <ArrowRight size={16} />
               </a>
             </div>
-            <p className="cm-hero-trust reveal">Based in Surabaya · Working across Indonesia</p>
+            <p className="cm-hero-trust reveal">{hero.trust}</p>
           </div>
 
           <div className="cm-scroll-cue" aria-hidden="true">
@@ -252,17 +127,17 @@ export default function StudioLanding() {
         <section className="cm-section" aria-labelledby="services-h">
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">What We Build</p>
-              <h2 id="services-h" className="cm-h2">Three ways we craft your presence.</h2>
+              <p className="cm-label">{services.label}</p>
+              <h2 id="services-h" className="cm-h2">{services.heading}</h2>
             </header>
             <div className="cm-grid-3">
-              {SERVICES.map((s) => {
-                const Icon = s.icon
+              {services.items.map((s) => {
+                const Icon = CM_ICONS[s.icon] ?? Monitor
                 return (
-                  <article key={s.n} className="cm-card cm-service reveal">
+                  <article key={s.id} className="cm-card cm-service reveal">
                     <span className="cm-accent-line" aria-hidden="true" />
                     <Icon className="cm-service-icon" size={26} aria-hidden="true" />
-                    <p className="cm-service-num">{s.n}</p>
+                    <p className="cm-service-num">{s.num}</p>
                     <h3 className="cm-h3">{s.name}</h3>
                     <p className="cm-body">{s.desc}</p>
                     <p className="cm-price-anchor">{s.price}</p>
@@ -278,12 +153,12 @@ export default function StudioLanding() {
           <Deco stars={36} seed={7} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">Selected Work</p>
-              <h2 id="work-h" className="cm-h2">Featured projects.</h2>
+              <p className="cm-label">{projects.label}</p>
+              <h2 id="work-h" className="cm-h2">{projects.heading}</h2>
             </header>
             <div className="cm-grid-2">
-              {PROJECTS.map((p) => (
-                <article key={p.name} className="cm-card cm-project reveal">
+              {projects.items.map((p) => (
+                <article key={p.id} className="cm-card cm-project reveal">
                   <p className="cm-eyebrow-sm">{p.cat}</p>
                   <h3 className="cm-h3">{p.name}</h3>
                   <p className="cm-body">{p.desc}</p>
@@ -302,8 +177,8 @@ export default function StudioLanding() {
               ))}
             </div>
             <div className="cm-center">
-              <Link href="/croissantsmoon/websites" className="cm-text-link">
-                View All Projects <ArrowRight size={14} />
+              <Link href={projects.viewAll.href} className="cm-text-link">
+                {projects.viewAll.label} <ArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -313,12 +188,12 @@ export default function StudioLanding() {
         <section className="cm-section" aria-labelledby="proof-h">
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">Trusted Work</p>
-              <h2 id="proof-h" className="cm-h2">What clients say.</h2>
+              <p className="cm-label">{proof.label}</p>
+              <h2 id="proof-h" className="cm-h2">{proof.heading}</h2>
             </header>
             <div className="cm-grid-2">
-              {TESTIMONIALS.map((t, i) => (
-                <figure key={i} className="cm-card cm-quote reveal">
+              {proof.items.map((t) => (
+                <figure key={t.id} className="cm-card cm-quote reveal">
                   <Quote className="cm-quote-mark" size={28} aria-hidden="true" />
                   <blockquote className="cm-quote-text">{t.quote}</blockquote>
                   <figcaption className="cm-quote-who">— {t.who}</figcaption>
@@ -326,10 +201,10 @@ export default function StudioLanding() {
               ))}
             </div>
             <div className="cm-statbar reveal">
-              {STATS.map((s) => (
-                <div key={s.l} className="cm-stat">
-                  <span className="cm-stat-v">{s.v}</span>
-                  <span className="cm-stat-l">{s.l}</span>
+              {proof.stats.map((s) => (
+                <div key={s.id} className="cm-stat">
+                  <span className="cm-stat-v">{s.value}</span>
+                  <span className="cm-stat-l">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -341,13 +216,13 @@ export default function StudioLanding() {
           <Deco stars={26} seed={2} constellation={false} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">How It Works</p>
-              <h2 id="how-h" className="cm-h2">From first audit to long-term care.</h2>
+              <p className="cm-label">{process.label}</p>
+              <h2 id="how-h" className="cm-h2">{process.heading}</h2>
             </header>
             <ol className="cm-steps reveal">
-              {PROCESS.map((step) => (
-                <li key={step.n} className="cm-step">
-                  <span className="cm-step-num">{step.n}</span>
+              {process.items.map((step) => (
+                <li key={step.id} className="cm-step">
+                  <span className="cm-step-num">{step.num}</span>
                   <h3 className="cm-step-name">{step.name}</h3>
                   <p className="cm-step-text">{step.text}</p>
                 </li>
@@ -360,25 +235,24 @@ export default function StudioLanding() {
         <section id="pricing" className="cm-section" aria-labelledby="pricing-h">
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">Pricing</p>
-              <h2 id="pricing-h" className="cm-h2">Transparent tiers. No surprises.</h2>
+              <p className="cm-label">{pricing.label}</p>
+              <h2 id="pricing-h" className="cm-h2">{pricing.heading}</h2>
             </header>
 
             <div className="cm-founding reveal">
               <Zap size={16} aria-hidden="true" />
               <p>
-                <strong>Founding Rate</strong> — available to the first 10 clients.
-                Lock in 50% off the standard rate for your first project.
+                <strong>Founding Rate</strong> — {pricing.foundingNote}
               </p>
-              <Link href={PROPOSAL} className="cm-text-link cm-founding-cta">
-                Check Availability <ArrowRight size={14} />
+              <Link href={pricing.foundingCta.href} className="cm-text-link cm-founding-cta">
+                {pricing.foundingCta.label} <ArrowRight size={14} />
               </Link>
             </div>
 
             <div className="cm-pricing-scroll">
               <div className="cm-grid-4">
-                {TIERS.map((t) => (
-                  <article key={t.name} className={`cm-card cm-tier reveal${t.featured ? ' cm-tier-featured' : ''}`}>
+                {pricing.items.map((t) => (
+                  <article key={t.id} className={`cm-card cm-tier reveal${t.featured ? ' cm-tier-featured' : ''}`}>
                     {t.featured && <span className="cm-tier-flag">Most common</span>}
                     <h3 className="cm-tier-name">{t.name}</h3>
                     <p className="cm-tier-timeline">{t.timeline}</p>
@@ -393,7 +267,7 @@ export default function StudioLanding() {
                 ))}
               </div>
             </div>
-            <p className="cm-payment reveal">Payment terms: 50% upfront · 25% mid-delivery · 25% on launch</p>
+            <p className="cm-payment reveal">{pricing.paymentTerms}</p>
           </div>
         </section>
 
@@ -402,27 +276,27 @@ export default function StudioLanding() {
           <Deco stars={45} seed={9} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">Demo Experiences</p>
-              <h2 id="demo-h" className="cm-h2">Feel the quality before you commit.</h2>
+              <p className="cm-label">{demos.label}</p>
+              <h2 id="demo-h" className="cm-h2">{demos.heading}</h2>
             </header>
             <div className="cm-demos">
-              {DEMOS.map((d) => (
-                <article key={d.n} className="cm-card cm-demo reveal">
+              {demos.items.map((d) => (
+                <article key={d.id} className="cm-card cm-demo reveal">
                   <div className="cm-demo-body">
-                    <p className="cm-demo-num">{d.n} · {d.cat}</p>
+                    <p className="cm-demo-num">{d.num} · {d.cat}</p>
                     <h3 className="cm-h3">{d.title}</h3>
                     <p className="cm-body">{d.desc}</p>
                     <ul className="cm-stack" aria-label="Highlights">
                       {d.tags.map((t) => <li key={t} className="cm-pill">{t}</li>)}
                     </ul>
                     <div className="cm-demo-cta">
-                      {d.demos.map((dm) => (
+                      {d.links.map((dm) => (
                         <Link key={dm.href} href={dm.href} className="cm-btn cm-btn-aurora">
                           {dm.label} <ArrowUpRight size={14} />
                         </Link>
                       ))}
                       <Link href={PROPOSAL} className="cm-text-link">
-                        Discuss This Project <ArrowRight size={14} />
+                        {demos.discussLabel} <ArrowRight size={14} />
                       </Link>
                     </div>
                   </div>
@@ -431,7 +305,7 @@ export default function StudioLanding() {
                       <span className="cm-demo-dot" />
                       <span className="cm-demo-bar" />
                       <span className="cm-demo-bar cm-demo-bar-2" />
-                      <span className="cm-demo-num-art">{d.n}</span>
+                      <span className="cm-demo-num-art">{d.num}</span>
                     </div>
                   </div>
                 </article>
@@ -444,15 +318,15 @@ export default function StudioLanding() {
         <section className="cm-section" aria-labelledby="design-h">
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">Visual Identity</p>
-              <h2 id="design-h" className="cm-h2">Design work, beyond the screen.</h2>
+              <p className="cm-label">{designs.label}</p>
+              <h2 id="design-h" className="cm-h2">{designs.heading}</h2>
             </header>
             <div className="cm-grid-3">
-              {DESIGNS.map((g) => (
-                <Link key={g.folder} href="/croissantsmoon/designs" className="cm-card cm-design reveal">
+              {designs.items.map((g) => (
+                <Link key={g.id} href={g.href} className="cm-card cm-design reveal">
                   <span className="cm-design-img">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/assets/images/graphic-designs/${g.folder}/1.png`} alt={g.title} loading="lazy" />
+                    <img src={`${designs.imageBase}/${g.folder}/1.png`} alt={g.title} loading="lazy" />
                   </span>
                   <span className="cm-design-meta">
                     <span className="cm-eyebrow-sm">{g.cat}</span>
@@ -463,8 +337,8 @@ export default function StudioLanding() {
               ))}
             </div>
             <div className="cm-center">
-              <Link href="/croissantsmoon/designs" className="cm-text-link">
-                View All Design Work <ArrowRight size={14} />
+              <Link href={designs.viewAll.href} className="cm-text-link">
+                {designs.viewAll.label} <ArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -476,18 +350,17 @@ export default function StudioLanding() {
           <div className="cm-glow cm-glow-gold cm-glow-final" aria-hidden="true" />
           <Moon size={420} className="cm-final-moon" />
           <div className="cm-wrap cm-center-block">
-            <p className="cm-label reveal">Let&apos;s Work Together</p>
-            <h2 id="final-h" className="cm-final-title reveal">Let&apos;s build something that lasts.</h2>
+            <p className="cm-label reveal">{finalCta.label}</p>
+            <h2 id="final-h" className="cm-final-title reveal">{finalCta.heading}</h2>
             <p className="cm-final-sub reveal">
-              Whether you need a website, a dashboard, or a brand identity —
-              CroissantsMoon is open for new projects.
+              {finalCta.subtitle}
             </p>
             <div className="cm-hero-cta cm-center reveal">
-              <Link href={PROPOSAL} className="cm-btn cm-btn-primary">
-                Request a Proposal <ArrowRight size={16} />
+              <Link href={finalCta.primaryCta.href} className="cm-btn cm-btn-primary">
+                {finalCta.primaryCta.label} <ArrowRight size={16} />
               </Link>
-              <a href={EMAIL} className="cm-btn cm-btn-ghost">
-                Start a Conversation <Send size={15} />
+              <a href={meta.email} className="cm-btn cm-btn-ghost">
+                {finalCta.ghostLabel} <Send size={15} />
               </a>
             </div>
           </div>
@@ -499,18 +372,18 @@ export default function StudioLanding() {
         <div className="cm-wrap cm-footer-inner">
           <div className="cm-footer-row">
             <span className="cm-footer-brand">
-              <Image src="/croissantsmoon/cm-logo-circle.png" alt="" width={28} height={28} className="cm-brand-logo" />
-              CroissantsMoon
+              <Image src={meta.logoSrc} alt="" width={28} height={28} className="cm-brand-logo" />
+              {footer.brand}
             </span>
             <nav className="cm-footer-links" aria-label="Footer">
-              <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={12} /></a>
-              <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={12} /></a>
-              <a href={SITE} target="_blank" rel="noopener noreferrer">zefanyakharisma.com <ArrowUpRight size={12} /></a>
+              {footer.links.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">{l.label} <ArrowUpRight size={12} /></a>
+              ))}
             </nav>
           </div>
           <div className="cm-footer-row cm-footer-fine">
-            <span>© 2026 Zefanya Kharisma Nugroho</span>
-            <span>Surabaya, Indonesia</span>
+            <span>{footer.copyright}</span>
+            <span>{footer.location}</span>
           </div>
         </div>
       </footer>
