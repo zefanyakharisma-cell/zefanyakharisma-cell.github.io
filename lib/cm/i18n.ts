@@ -71,6 +71,7 @@ export const PORTAL_UI: Record<CMLocale, {
   ctaSub: string
   ctaButtonFallback: string
   privateProposal: string
+  downloadPdf: string
   footerPrefix: string
   footerSuffix: string
 }> = {
@@ -94,6 +95,7 @@ export const PORTAL_UI: Record<CMLocale, {
     ctaSub: "Let's schedule a discovery call to discuss your vision and next steps.",
     ctaButtonFallback: 'Get In Touch',
     privateProposal: 'Private Proposal',
+    downloadPdf: 'Download PDF',
     footerPrefix: 'Prepared exclusively for',
     footerSuffix: 'by CroissantsMoon Studio. Confidential — not for distribution.',
   },
@@ -117,6 +119,7 @@ export const PORTAL_UI: Record<CMLocale, {
     ctaSub: 'Mari jadwalkan sesi diskusi untuk membahas visi Anda dan langkah selanjutnya.',
     ctaButtonFallback: 'Hubungi Kami',
     privateProposal: 'Proposal Pribadi',
+    downloadPdf: 'Unduh PDF',
     footerPrefix: 'Disiapkan khusus untuk',
     footerSuffix: 'oleh CroissantsMoon Studio. Rahasia — tidak untuk disebarluaskan.',
   },

@@ -5,7 +5,7 @@ import { ProposalStatusBadge } from '@/components/ui/Badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { formatDate, formatCurrency, daysUntil, timeAgo } from '@/lib/utils'
 import Link from 'next/link'
-import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ExternalLink, FileDown } from 'lucide-react'
 import { ProposalActions } from '@/components/admin/ProposalActions'
 import { ProposalEditor } from '@/components/admin/ProposalEditor'
 import { CopyButton } from '@/components/admin/CopyButton'
@@ -81,6 +81,14 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
                   </a>
                   <CopyButton value={proposalUrl} label="Copy proposal URL" />
                 </div>
+                <a
+                  href={`${proposalUrl}/print?auto=1`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-cm-gold border border-cm-gold/25 bg-cm-gold/5 hover:bg-cm-gold/10 transition-colors"
+                >
+                  <FileDown size={13} /> Download PDF
+                </a>
               </div>
               <div>
                 <p className="text-xs text-cm-subtle uppercase tracking-wider mb-1">Expires</p>
