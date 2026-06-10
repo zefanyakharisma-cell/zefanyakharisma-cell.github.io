@@ -43,6 +43,9 @@ export const metadata: Metadata = {
     title: 'CroissantsMoon — Celestial Studio',
     description:
       'Web development, dashboard systems, and visual identity for organizations that mean something. Based in Surabaya, Indonesia.',
+    images: [
+      { url: '/croissantsmoon/og-image.png', width: 1200, height: 630, alt: 'CroissantsMoon — Celestial Studio' },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -51,6 +54,7 @@ export const metadata: Metadata = {
     title: 'CroissantsMoon — Celestial Studio',
     description:
       'Web development, dashboards, and visual identity crafted with intention. Based in Surabaya, Indonesia.',
+    images: ['/croissantsmoon/twitter-image.png'],
   },
   manifest: '/croissantsmoon/site.webmanifest',
 }
@@ -67,7 +71,7 @@ const JSON_LD = {
   description:
     'Boutique web development and graphic design studio crafting digital presence for institutions and organizations across Indonesia.',
   url: URL,
-  image: `${URL}/opengraph-image`,
+  image: `${URL}/og-image.png`,
   founder: {
     '@type': 'Person',
     name: 'Zefanya Kharisma Nugroho',
