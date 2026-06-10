@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getProposalBySlug } from '@/lib/actions/proposals'
 import { ProposalGate } from '@/components/proposal/ProposalGate'
 import { ProposalPortal } from '@/components/proposal/ProposalPortal'
+import { buildProposalTeaser } from '@/lib/proposal/teaser'
 import { cookies } from 'next/headers'
 import StarField from '@/components/cm/StarField'
 import Image from 'next/image'
@@ -35,12 +36,7 @@ export default async function ProposalPage({ params }: { params: Promise<{ slug:
   }
 
   if (!hasAccess) {
-    return (
-      <ProposalGate
-        slug={slug}
-        orgName={(proposal.lead as { organization?: string })?.organization ?? 'Your Organization'}
-      />
-    )
+    return <ProposalGate slug={slug} teaser={buildProposalTeaser(proposal)} />
   }
 
   return <ProposalPortal proposal={proposal} />
