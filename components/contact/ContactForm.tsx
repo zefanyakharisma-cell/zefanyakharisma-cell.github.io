@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Send, Mail, Linkedin, MessageCircle, MapPin, Clock } from 'lucide-react'
+import { sendContactMessage } from '@/lib/actions/contact'
 
 function buildStars(count: number) {
   return Array.from({ length: count }, (_, i) => ({
@@ -55,11 +56,26 @@ export default function ContactForm() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setErrors({})
     setStatus('loading')
-    const mailto = `mailto:zefanya.kharisma@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`From: ${data.name} <${data.email}>\n\n${data.message}`)}`
-    window.open(mailto)
-    setMsg('Opening your email client…')
-    setStatus('idle')
-    form.reset()
+    setMsg('')
+    try {
+      const res = await sendContactMessage({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+      })
+      if (res.ok) {
+        setStatus('success')
+        setMsg('Thank you — your message has been sent. I’ll get back to you within 24–48 hours.')
+        form.reset()
+      } else {
+        setStatus('error')
+        setMsg(res.error)
+      }
+    } catch {
+      setStatus('error')
+      setMsg('Something went wrong. Please try again or email me directly.')
+    }
   }
 
   return (
@@ -115,7 +131,7 @@ export default function ContactForm() {
               <Send style={{ width: 16, height: 16 }} />
               {status === 'loading' ? 'Sending…' : 'Send Message'}
             </button>
-            {msg && <p role="status" aria-live="polite" style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.8rem', textAlign: 'center', marginTop: '1rem', fontWeight: 500, color: '#8FA8D6' }}>{msg}</p>}
+            {msg && <p role="status" aria-live="polite" style={{ fontFamily: "'Outfit',sans-serif", fontSize: '.8rem', textAlign: 'center', marginTop: '1rem', fontWeight: 500, color: status === 'error' ? 'rgba(220,80,80,0.9)' : status === 'success' ? '#D4B15A' : '#8FA8D6' }}>{msg}</p>}
           </form>
         </div>
 
