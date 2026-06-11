@@ -233,7 +233,13 @@ function BlockEditor({
         <Textarea label="Content" value={data.content ?? ''} onChange={e => setField('content', e.target.value)} rows={4} />
       )}
       {block.type === 'demo_embed' && (
-        <Input label="Embed URL" value={data.url ?? ''} onChange={e => setField('url', e.target.value)} placeholder="https://..." />
+        <Textarea
+          label="Preview URL(s) — one per line"
+          value={data.url ?? ''}
+          onChange={e => setField('url', e.target.value)}
+          rows={3}
+          placeholder={'https://demo.example.com\nhttps://demo.example.com/about'}
+        />
       )}
       {block.type === 'divider' && (
         <p className="text-[11px] text-cm-subtle leading-relaxed">A decorative divider — no content needed.</p>

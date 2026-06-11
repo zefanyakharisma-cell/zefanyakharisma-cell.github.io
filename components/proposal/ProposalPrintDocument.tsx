@@ -16,7 +16,7 @@
 // ─────────────────────────────────────────────────────────────────
 
 import { useCallback, useEffect, useState } from 'react'
-import { Moon, Download, ArrowLeft, ExternalLink, Globe, Mail, Instagram } from 'lucide-react'
+import { Moon, Download, ArrowLeft, ExternalLink, Globe, Mail, Instagram, Clock } from 'lucide-react'
 import type { Proposal, ProposalBlock } from '@/types'
 import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
 import { LangToggle } from '@/components/cm/LangToggle'
@@ -226,6 +226,88 @@ function FeatureCard({ index, text }: { index: number; text: string }) {
         {String(index + 1).padStart(2, '0')}
       </span>
       <p style={{ fontSize: '12.5px', lineHeight: 1.6, color: rgba('#D9E6FF', 0.74), margin: 0 }}>{text}</p>
+    </Card>
+  )
+}
+
+// ── Live preview: proposal access details + page screenshots ──
+const SITE_BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://zefanyakharisma.com'
+
+// Free, keyless screenshot service (swap here if you move providers). Renders the
+// given page at ~1200px wide, cropped to a 16:10-ish viewport so it fits one A4 page.
+function screenshotSrc(url: string): string {
+  return `https://image.thum.io/get/width/1200/crop/750/noanimate/${url}`
+}
+
+function demoText(locale: CMLocale) {
+  return locale === 'id'
+    ? { access: 'Akses Proposal', proposalUrl: 'URL Proposal', token: 'Token Akses', validity: 'Token akses berlaku selama 14 hari', until: 'hingga', livePreview: 'Tautan Pratinjau', preview: 'Pratinjau' }
+    : { access: 'Proposal Access', proposalUrl: 'Proposal URL', token: 'Access Token', validity: 'This access token is valid for 14 days', until: 'until', livePreview: 'Live Preview Link', preview: 'Preview' }
+}
+
+function AccessCard({
+  slug, token, expiresAt, urls, locale,
+}: { slug: string; token: string; expiresAt: string | null; urls: string[]; locale: CMLocale }) {
+  const L = demoText(locale)
+  const proposalUrl = `${SITE_BASE}/croissantsmoon/proposal/${slug}`
+  const untilDate = expiresAt
+    ? new Date(expiresAt).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    : null
+
+  const row = (label: string, value: React.ReactNode) => (
+    <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '14px', alignItems: 'baseline', padding: '12px 0' }}>
+      <span style={{ fontSize: '9.5px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: rgba('#8FA8D6', 0.6) }}>{label}</span>
+      <div style={{ minWidth: 0 }}>{value}</div>
+    </div>
+  )
+
+  return (
+    <Card accent={AURORA} style={{ padding: '6px 22px' }}>
+      {row(L.proposalUrl, (
+        <a href={proposalUrl} style={{ fontSize: '12.5px', color: AURORA, wordBreak: 'break-all' }}>{proposalUrl}</a>
+      ))}
+      <div style={{ borderTop: `1px solid ${rgba('#6FA8FF', 0.1)}` }} />
+      {row(L.token, (
+        <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '15px', fontWeight: 700, letterSpacing: '0.18em', color: GOLD }}>{token}</span>
+      ))}
+      <div style={{ borderTop: `1px solid ${rgba('#6FA8FF', 0.1)}` }} />
+      {row('', (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', fontSize: '11px', color: rgba(GOLD, 0.85) }}>
+          <Clock size={12} /> {L.validity}{untilDate ? ` — ${L.until} ${untilDate}` : ''}.
+        </span>
+      ))}
+      {urls.length > 0 && (
+        <>
+          <div style={{ borderTop: `1px solid ${rgba('#6FA8FF', 0.1)}` }} />
+          {row(L.livePreview, (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {urls.map((u, i) => (
+                <a key={i} href={u} style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', fontSize: '12px', color: AURORA, wordBreak: 'break-all' }}>
+                  <ExternalLink size={12} style={{ flexShrink: 0 }} /> {u}
+                </a>
+              ))}
+            </div>
+          ))}
+        </>
+      )}
+    </Card>
+  )
+}
+
+function BrowserScreenshot({ url }: { url: string }) {
+  return (
+    <Card accent={AURORA} style={{ padding: 0, overflow: 'hidden' }}>
+      {/* Browser chrome bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 13px', borderBottom: `1px solid ${rgba('#6FA8FF', 0.12)}`, background: rgba('#030712', 0.5) }}>
+        <span style={{ display: 'flex', gap: '5px' }}>
+          {['rgba(248,113,113,0.5)', 'rgba(251,191,36,0.5)', 'rgba(74,222,128,0.5)'].map((c, i) => (
+            <span key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: c }} />
+          ))}
+        </span>
+        <span style={{ flex: 1, fontFamily: 'ui-monospace, monospace', fontSize: '9.5px', color: rgba('#8FA8D6', 0.55), overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{url}</span>
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={screenshotSrc(url)} alt={`Preview of ${url}`} style={{ display: 'block', width: '100%', height: 'auto' }} />
     </Card>
   )
 }
@@ -519,18 +601,9 @@ function blockContent(
       )
     }
 
-    case 'demo_embed': {
-      if (!data.url) return null
-      return (
-        <>
-          <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={title} />
-          <Card accent={accent} style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
-            <ExternalLink size={15} color={accent} />
-            <a href={data.url} style={{ fontSize: '12.5px', color: accent, wordBreak: 'break-all' }}>{data.url}</a>
-          </Card>
-        </>
-      )
-    }
+    case 'demo_embed':
+      // Built explicitly in the document body (needs proposal slug/token + screenshots).
+      return null
 
     case 'gallery': {
       const images = interp(data.images ?? '').split('\n').filter(Boolean)
@@ -717,6 +790,42 @@ export function ProposalPrintDocument({
       continue
     }
 
+    // Live Preview: an access page (proposal URL + token + 14-day note) followed by
+    // one full-width screenshot page per preview URL (newline-separated in the field).
+    if (block.type === 'demo_embed') {
+      const urls = interpolate((block.data as Record<string, string>).url ?? '', vars)
+        .split('\n').map(s => s.trim()).filter(Boolean)
+      counter++
+      const number = String(counter).padStart(2, '0')
+      const sec = PORTAL_SECTION_TEXT[locale].demo_embed
+      const title = sec?.title ?? 'Live Preview'
+      const eyebrow = sec?.eyebrow ?? ''
+      const L = demoText(locale)
+
+      pages.push({
+        id: `${block.id}-access`,
+        nodes: [(
+          <>
+            <SectionHeader number={number} accent={AURORA} eyebrow={eyebrow} title={title} />
+            <AccessCard slug={proposal.slug} token={proposal.token} expiresAt={proposal.expires_at} urls={urls} locale={locale} />
+          </>
+        )],
+      })
+
+      urls.forEach((u, idx) => {
+        pages.push({
+          id: `${block.id}-shot-${idx}`,
+          nodes: [(
+            <>
+              <SectionHeader number={number} accent={AURORA} eyebrow={eyebrow} title={`${title} — ${L.preview}${urls.length > 1 ? ` ${idx + 1}` : ''}`} />
+              <BrowserScreenshot url={u} />
+            </>
+          )],
+        })
+      })
+      continue
+    }
+
     const number = NUMBERED_TYPES.has(block.type) ? String(counter + 1).padStart(2, '0') : null
     const node = blockContent(block, vars, number, locale)
     if (node === null) continue
@@ -734,8 +843,18 @@ export function ProposalPrintDocument({
 
   useEffect(() => {
     if (!autoPrint) return
-    const id = setTimeout(() => window.print(), 700)
-    return () => clearTimeout(id)
+    let cancelled = false
+    // Wait for remote screenshots (preview images) to settle before printing,
+    // capped so a slow/failed image never blocks the export indefinitely.
+    const imgs = Array.from(document.images)
+    const loaded = imgs.map(img =>
+      img.complete ? Promise.resolve() : new Promise<void>(res => { img.onload = img.onerror = () => res() })
+    )
+    const cap = new Promise<void>(res => setTimeout(res, 9000))
+    Promise.race([Promise.all(loaded).then(() => undefined), cap]).then(() => {
+      if (!cancelled) window.print()
+    })
+    return () => { cancelled = true }
   }, [autoPrint])
 
   // Count a view when this is the client-facing slug page (not the admin export).
