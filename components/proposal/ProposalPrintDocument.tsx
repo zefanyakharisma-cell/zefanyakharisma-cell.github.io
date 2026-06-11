@@ -39,6 +39,22 @@ function parseTable(text: string): string[][] {
     .map(line => line.split(/\s+-\s+/).map(c => c.trim()))
 }
 
+// Split `total` items into [start, end) page chunks of `size`, but if the final
+// chunk would hold fewer than `minLast` items, fold it back into the previous
+// page (so a sparse trailing page is never created).
+function chunkBounds(total: number, size: number, minLast: number): Array<[number, number]> {
+  const bounds: Array<[number, number]> = []
+  for (let start = 0; start < total; start += size) bounds.push([start, Math.min(start + size, total)])
+  if (bounds.length > 1) {
+    const last = bounds[bounds.length - 1]
+    if (last[1] - last[0] < minLast) {
+      bounds[bounds.length - 2][1] = last[1]
+      bounds.pop()
+    }
+  }
+  return bounds
+}
+
 // ── Celestial palette ─────────────────────────────────────────
 const TEXT = '#D9E6FF'
 const MUTED = '#8FA8D6'
@@ -314,10 +330,11 @@ function BrowserScreenshot({ url }: { url: string }) {
 
 // What we found · Why it matters · How we solve it — one aligned row per finding.
 function WhatWhyHowTable({
-  what, why, how, labels,
+  what, why, how, labels, startIndex = 0,
 }: {
   what: string[]; why: string[]; how: string[]
   labels: { what: string; why: string; how: string }
+  startIndex?: number
 }) {
   const cols = [
     { items: what, label: labels.what, accent: AURORA },
@@ -362,7 +379,7 @@ function WhatWhyHowTable({
           }}
         >
           <span style={{ padding: '12px 0 12px 12px', fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 600, color: rgba(GOLD, 0.7) }}>
-            {String(i + 1).padStart(2, '0')}
+            {String(startIndex + i + 1).padStart(2, '0')}
           </span>
           {cols.map(col => (
             <span
@@ -515,27 +532,9 @@ function blockContent(
     }
 
     case 'audit_findings':
-    case 'website_analysis': {
-      const what = interp(data.what ?? '').split('\n').filter(Boolean)
-      const why = interp(data.why ?? '').split('\n').filter(Boolean)
-      const how = interp(data.how ?? '').split('\n').filter(Boolean)
-      const hasStructured = what.length || why.length || how.length
-      const legacy = interp(data.findings ?? data.analysis ?? '').split('\n').filter(Boolean)
-      if (!hasStructured && legacy.length === 0) return null
-      return (
-        <>
-          <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={title} />
-          {hasStructured ? (
-            <WhatWhyHowTable
-              what={what} why={why} how={how}
-              labels={{ what: t.whatWeFound, why: t.whyItMatters, how: t.howWeSolveIt }}
-            />
-          ) : (
-            <PointList items={legacy} accent={accent} />
-          )}
-        </>
-      )
-    }
+    case 'website_analysis':
+      // Paginated explicitly (5 findings per page) in the document body.
+      return null
 
     case 'redesign_concept': {
       const direction = interp(data.direction ?? data.concept ?? data.description ?? '')
@@ -733,7 +732,55 @@ export function ProposalPrintDocument({
   for (const block of sections) {
     if (block.type === 'hero') continue
 
-    // Proposed Features: 6 per page; remaining features overflow onto the next page.
+    // Current State Analysis: 5 findings per page; a trailing chunk of <3 folds
+    // back into the previous page (so a sparse last page is never created).
+    if (block.type === 'audit_findings' || block.type === 'website_analysis') {
+      const d = block.data as Record<string, string>
+      const what = interpolate(d.what ?? '', vars).split('\n').filter(Boolean)
+      const why = interpolate(d.why ?? '', vars).split('\n').filter(Boolean)
+      const how = interpolate(d.how ?? '', vars).split('\n').filter(Boolean)
+      const hasStructured = what.length || why.length || how.length
+      const legacy = interpolate(d.findings ?? d.analysis ?? '', vars).split('\n').filter(Boolean)
+      if (!hasStructured && legacy.length === 0) continue
+      counter++
+      const number = String(counter).padStart(2, '0')
+      const sec = PORTAL_SECTION_TEXT[locale][block.type]
+      const title = sec?.title ?? ''
+      const eyebrow = sec?.eyebrow ?? ''
+
+      if (!hasStructured) {
+        pages.push({
+          id: block.id,
+          nodes: [(
+            <>
+              <SectionHeader number={number} accent={AURORA} eyebrow={eyebrow} title={title} />
+              <PointList items={legacy} accent={AURORA} />
+            </>
+          )],
+        })
+        continue
+      }
+
+      const labels = { what: t.whatWeFound, why: t.whyItMatters, how: t.howWeSolveIt }
+      const n = Math.max(what.length, why.length, how.length)
+      for (const [start, end] of chunkBounds(n, 5, 3)) {
+        pages.push({
+          id: `${block.id}-${start}`,
+          nodes: [(
+            <>
+              <SectionHeader number={number} accent={AURORA} eyebrow={eyebrow} title={title + (start > 0 ? ' (cont.)' : '')} />
+              <WhatWhyHowTable
+                what={what.slice(start, end)} why={why.slice(start, end)} how={how.slice(start, end)}
+                labels={labels} startIndex={start}
+              />
+            </>
+          )],
+        })
+      }
+      continue
+    }
+
+    // Proposed Features: 6 per page; a trailing page of <4 folds into the previous one.
     if (block.type === 'features') {
       const raw = (block.data as Record<string, string>).features ?? ''
       const features = interpolate(raw, vars).split('\n').filter(Boolean)
@@ -741,8 +788,8 @@ export function ProposalPrintDocument({
       counter++
       const number = String(counter).padStart(2, '0')
       const sec = PORTAL_SECTION_TEXT[locale].features
-      for (let start = 0; start < features.length; start += 6) {
-        const chunk = features.slice(start, start + 6)
+      for (const [start, end] of chunkBounds(features.length, 6, 4)) {
+        const chunk = features.slice(start, end)
         const node = (
           <>
             <SectionHeader
