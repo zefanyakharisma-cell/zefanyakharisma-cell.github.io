@@ -47,9 +47,12 @@ function truncate(text: string, max: number): string {
 
 export function buildProposalTeaser(proposal: Proposal): ProposalTeaser {
   const lead = proposal.lead as { organization?: string; contact_person?: string } | undefined
-  const orgName = lead?.organization?.trim() || 'Your Organization'
+  const orgName =
+    lead?.organization?.trim() ||
+    proposal.content?.branding?.org_name?.trim() ||
+    'Your Organization'
   const vars: Record<string, string> = {
-    organization_name: lead?.organization ?? '',
+    organization_name: lead?.organization?.trim() || proposal.content?.branding?.org_name?.trim() || '',
     contact_person:    lead?.contact_person ?? '',
   }
   const interp = (s: string) => interpolate(s, vars)
