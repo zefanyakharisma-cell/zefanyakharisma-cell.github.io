@@ -11,7 +11,7 @@ const ContactSchema = z.object({
   message: z.string().trim().min(1, 'Please enter a message.').max(10000),
 })
 
-const TO_EMAIL = 'zefanya.kharisma@gmail.com'
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? 'zefanya.kharisma@croissantsmoon.com'
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'Portfolio Contact <contact@croissantsmoon.studio>'
 
 function escapeHtml(s: string) {
