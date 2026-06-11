@@ -20,6 +20,7 @@ import { Moon, Download, ArrowLeft, ExternalLink, Globe, Mail, Instagram } from 
 import type { Proposal, ProposalBlock } from '@/types'
 import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
 import { LangToggle } from '@/components/cm/LangToggle'
+import { trackEvent } from '@/lib/analytics/tracker'
 
 // ── Helpers ───────────────────────────────────────────────────
 function interpolate(text: string, vars: Record<string, string>): string {
@@ -622,7 +623,14 @@ function RunningFooter({ page, total }: { page: number; total: number }) {
 }
 
 // ── Document ──────────────────────────────────────────────────
-export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Proposal; autoPrint?: boolean }) {
+export function ProposalPrintDocument({
+  proposal, autoPrint, showBack = true, trackViews = false,
+}: {
+  proposal: Proposal
+  autoPrint?: boolean
+  showBack?: boolean   // hide the toolbar "Back" when this is the primary view
+  trackViews?: boolean // record a 'view' event (slug page only, not admin export)
+}) {
   const [locale, setLocale] = useState<CMLocale>('en')
   const t = PORTAL_UI[locale]
   const lead = proposal.lead as { organization?: string; contact_person?: string } | undefined
@@ -730,15 +738,22 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
     return () => clearTimeout(id)
   }, [autoPrint])
 
+  // Count a view when this is the client-facing slug page (not the admin export).
+  useEffect(() => {
+    if (trackViews) trackEvent(proposal.id, 'view')
+  }, [trackViews, proposal.id])
+
   return (
     <div className="pp-root">
       <style>{printStyles}</style>
 
       {/* Toolbar — screen only */}
       <div className="pp-toolbar">
-        <button onClick={() => window.history.back()} className="pp-tbtn" type="button">
-          <ArrowLeft size={14} /> Back
-        </button>
+        {showBack && (
+          <button onClick={() => window.history.back()} className="pp-tbtn" type="button">
+            <ArrowLeft size={14} /> Back
+          </button>
+        )}
         <div className="pp-toolbar-spacer" />
         <LangToggle locale={locale} onChange={setLocale} compact />
         <button onClick={handlePrint} className="pp-tbtn pp-tbtn-gold" type="button">
