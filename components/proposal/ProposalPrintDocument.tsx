@@ -175,6 +175,60 @@ function DataTable({ rows, accent }: { rows: string[][]; accent: string }) {
   )
 }
 
+// Vertical timeline: a connecting line with a glowing dot per row (week / phase).
+function Timeline({ rows, accent }: { rows: string[][]; accent: string }) {
+  return (
+    <div>
+      {rows.map((cells, i) => {
+        const last = i === rows.length - 1
+        const label = cells[0] ?? ''
+        const desc = cells.slice(1).filter(Boolean).join('  ·  ')
+        return (
+          <div
+            key={i}
+            className="pp-avoid-break"
+            style={{ display: 'grid', gridTemplateColumns: '108px 26px 1fr', alignItems: 'stretch' }}
+          >
+            {/* Week / phase label */}
+            <div style={{ textAlign: 'right', paddingRight: '16px', paddingTop: '11px' }}>
+              <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '11px', fontWeight: 600, color: accent, letterSpacing: '0.02em' }}>
+                {label}
+              </span>
+            </div>
+            {/* Rail: dot + connecting line */}
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: rgba(accent, 0.16), border: `2px solid ${accent}`, boxShadow: `0 0 0 4px ${rgba(accent, 0.08)}`, flexShrink: 0, marginTop: '10px', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: accent }} />
+              </div>
+              {!last && (
+                <span style={{ flex: 1, width: '2px', minHeight: '20px', background: `linear-gradient(to bottom, ${rgba(accent, 0.55)}, ${rgba(accent, 0.15)})` }} />
+              )}
+            </div>
+            {/* Content */}
+            <div style={{ paddingLeft: '16px', paddingBottom: last ? 0 : '16px' }}>
+              <Card accent={accent} style={{ padding: '11px 16px' }}>
+                <p style={{ fontSize: '12.5px', lineHeight: 1.6, color: rgba('#D9E6FF', 0.78), margin: 0 }}>{desc || label}</p>
+              </Card>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// Single full-width feature row (paginated 6 per page in the document body).
+function FeatureCard({ index, text }: { index: number; text: string }) {
+  return (
+    <Card accent={SKY} style={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
+      <span style={{ width: '26px', height: '26px', flexShrink: 0, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 600, background: rgba(SKY, 0.12), border: `1px solid ${rgba(SKY, 0.28)}`, color: SKY }}>
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <p style={{ fontSize: '12.5px', lineHeight: 1.6, color: rgba('#D9E6FF', 0.74), margin: 0 }}>{text}</p>
+    </Card>
+  )
+}
+
 // What we found · Why it matters · How we solve it — one aligned row per finding.
 function WhatWhyHowTable({
   what, why, how, labels,
@@ -434,26 +488,9 @@ function blockContent(
       )
     }
 
-    case 'features': {
-      const features = interp(data.features ?? '').split('\n').filter(Boolean)
-      if (features.length === 0) return null
-      return (
-        <>
-          <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={title} />
-          {/* Stacked vertically — one full-width card per feature. */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {features.map((feature, i) => (
-              <Card key={i} accent={accent} style={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
-                <span style={{ width: '26px', height: '26px', flexShrink: 0, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'ui-monospace, monospace', fontSize: '10px', fontWeight: 600, background: rgba(accent, 0.12), border: `1px solid ${rgba(accent, 0.28)}`, color: accent }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <p style={{ fontSize: '12.5px', lineHeight: 1.6, color: rgba('#D9E6FF', 0.74), margin: 0 }}>{feature}</p>
-              </Card>
-            ))}
-          </div>
-        </>
-      )
-    }
+    case 'features':
+      // Paginated explicitly (6 per page) in the document body — see FeatureCard.
+      return null
 
     case 'pricing':
       // Paginated explicitly in the document body (see buildPricingTiers / PricingCard).
@@ -465,7 +502,7 @@ function blockContent(
       return (
         <>
           <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={title} />
-          <DataTable rows={rows} accent={accent} />
+          <Timeline rows={rows} accent={accent} />
         </>
       )
     }
@@ -609,11 +646,39 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
   })
 
   // Resolve renderable section pages up-front so empty blocks don't yield blank pages.
-  type Page = { id: string; nodes: React.ReactNode[]; center?: boolean }
+  type Page = { id: string; nodes: React.ReactNode[] }
   let counter = 0
   const pages: Page[] = []
   for (const block of sections) {
     if (block.type === 'hero') continue
+
+    // Proposed Features: 6 per page; remaining features overflow onto the next page.
+    if (block.type === 'features') {
+      const raw = (block.data as Record<string, string>).features ?? ''
+      const features = interpolate(raw, vars).split('\n').filter(Boolean)
+      if (features.length === 0) continue
+      counter++
+      const number = String(counter).padStart(2, '0')
+      const sec = PORTAL_SECTION_TEXT[locale].features
+      for (let start = 0; start < features.length; start += 6) {
+        const chunk = features.slice(start, start + 6)
+        const node = (
+          <>
+            <SectionHeader
+              number={number}
+              accent={SKY}
+              eyebrow={sec?.eyebrow ?? ''}
+              title={(sec?.title ?? 'Proposed Features') + (start > 0 ? ' (cont.)' : '')}
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {chunk.map((feature, i) => <FeatureCard key={i} index={start + i} text={feature} />)}
+            </div>
+          </>
+        )
+        pages.push({ id: `${block.id}-${start}`, nodes: [node] })
+      }
+      continue
+    }
 
     // Investment: paginate explicitly — 4 tiers → 2 stacked per page; 3 → one compact page.
     if (block.type === 'pricing') {
@@ -654,8 +719,7 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
       pages[pages.length - 1].nodes.push(node)
       continue
     }
-    // Greeting (personalized message) and CTA are vertically centred on their page.
-    pages.push({ id: block.id, nodes: [node], center: block.type === 'cta' || block.type === 'greeting' })
+    pages.push({ id: block.id, nodes: [node] })
   }
 
   const handlePrint = useCallback(() => window.print(), [])
@@ -721,14 +785,16 @@ export function ProposalPrintDocument({ proposal, autoPrint }: { proposal: Propo
           </div>
         </div>
 
-        {/* ── Content pages (text rides along; pricing pre-split; greeting/CTA centred) ── */}
+        {/* ── Content pages — every section vertically centred on its page ── */}
         {pages.map((page, i) => (
-          <div key={page.id} className={`pp-sheet${page.center ? ' pp-sheet-center' : ''}`}>
+          <div key={page.id} className="pp-sheet">
             <RunningHeader label={t.confidentialProposal} />
-            <div className={page.center ? 'pp-center-body' : 'pp-sheet-body'}>
-              {page.nodes.map((n, idx) => (
-                <div key={idx} style={{ marginTop: idx > 0 ? '30px' : 0 }}>{n}</div>
-              ))}
+            <div className="pp-center-body">
+              <div className="pp-center-inner">
+                {page.nodes.map((n, idx) => (
+                  <div key={idx} style={{ marginTop: idx > 0 ? '30px' : 0 }}>{n}</div>
+                ))}
+              </div>
             </div>
             <RunningFooter page={i + 1} total={pages.length} />
           </div>
@@ -795,9 +861,11 @@ const printStyles = `
   }
   .pp-sheet:not(:first-child) { break-before: page; }
 
-  /* Body fills the page so the running footer settles at the bottom edge. */
-  .pp-sheet-body { flex: 1; }
-  .pp-center-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  /* Body fills the page (footer settles at the bottom edge); the inner wrapper
+     centres content vertically via auto margins, which collapse when a section
+     is taller than the page so nothing gets clipped. */
+  .pp-center-body { flex: 1; display: flex; flex-direction: column; }
+  .pp-center-inner { margin: auto 0; width: 100%; }
 
   /* Keep atomic blocks whole when a tall section splits across two pages. */
   .pp-avoid-break { break-inside: avoid; }
