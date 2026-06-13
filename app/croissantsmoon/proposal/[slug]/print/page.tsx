@@ -19,10 +19,10 @@ export default async function ProposalPrintPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ auto?: string }>
+  searchParams: Promise<{ auto?: string; contactless?: string }>
 }) {
   const { slug } = await params
-  const { auto } = await searchParams
+  const { auto, contactless } = await searchParams
   const proposal = await getProposalBySlug(slug)
   if (!proposal) notFound()
 
@@ -41,5 +41,5 @@ export default async function ProposalPrintPage({
     redirect(`/croissantsmoon/proposal/${slug}`)
   }
 
-  return <ProposalPrintDocument proposal={proposal} autoPrint={auto === '1'} />
+  return <ProposalPrintDocument proposal={proposal} autoPrint={auto === '1'} contactless={contactless === '1'} />
 }

@@ -81,14 +81,24 @@ export default async function ProposalDetailPage({ params }: { params: Promise<{
                   </a>
                   <CopyButton value={proposalUrl} label="Copy proposal URL" />
                 </div>
-                <a
-                  href={`${proposalUrl}/print?auto=1`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-cm-gold border border-cm-gold/25 bg-cm-gold/5 hover:bg-cm-gold/10 transition-colors"
-                >
-                  <FileDown size={13} /> Download PDF
-                </a>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <a
+                    href={`${proposalUrl}/print?auto=1`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-cm-gold border border-cm-gold/25 bg-cm-gold/5 hover:bg-cm-gold/10 transition-colors"
+                  >
+                    <FileDown size={13} /> Download PDF
+                  </a>
+                  <a
+                    href={`${proposalUrl}/print?auto=1&contactless=1`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-cm-subtle border border-cm-border bg-cm-black/40 hover:text-cm-text hover:border-cm-gold/25 transition-colors"
+                  >
+                    <FileDown size={13} /> Download Contactless PDF
+                  </a>
+                </div>
               </div>
               <div>
                 <p className="text-xs text-cm-subtle uppercase tracking-wider mb-1">Expires</p>

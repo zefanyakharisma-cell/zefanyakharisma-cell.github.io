@@ -505,6 +505,7 @@ function blockContent(
   vars: Record<string, string>,
   sectionNumber: string | null,
   locale: CMLocale,
+  contactless?: boolean,
 ): React.ReactNode | null {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
@@ -635,7 +636,7 @@ function blockContent(
           </div>
           <h2 className="pp-serif" style={{ fontSize: '30px', fontWeight: 300, color: TEXT, margin: '0 0 14px' }}>{heading}</h2>
           <p style={{ fontSize: '13px', color: rgba('#8FA8D6', 0.72), margin: '0 auto 20px', maxWidth: '440px', lineHeight: 1.65 }}>{t.ctaSub}</p>
-          {data.email && (
+          {!contactless && data.email && (
             <a href={`mailto:${data.email}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 600, color: GOLD, padding: '11px 22px', borderRadius: '11px', border: `1px solid ${rgba(GOLD, 0.32)}`, background: rgba(GOLD, 0.08) }}>
               <Moon size={14} /> {data.email}
             </a>
@@ -675,7 +676,8 @@ function RunningHeader({ label }: { label: string }) {
 }
 
 // ── Running footer (page number + contact, on every page but the cover) ──
-function RunningFooter({ page, total }: { page: number; total: number }) {
+// In `contactless` mode the email / website / instagram links are omitted.
+function RunningFooter({ page, total, contactless }: { page: number; total: number; contactless?: boolean }) {
   const link: React.CSSProperties = {
     display: 'inline-flex', alignItems: 'center', gap: '4px',
     fontSize: '8.5px', color: rgba('#8FA8D6', 0.55), textDecoration: 'none',
@@ -685,23 +687,26 @@ function RunningFooter({ page, total }: { page: number; total: number }) {
       <span style={{ fontSize: '8.5px', fontWeight: 700, letterSpacing: '0.1em', color: rgba(GOLD, 0.65) }}>
         {String(page).padStart(2, '0')} / {String(total).padStart(2, '0')}
       </span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-        <a href="https://zefanyakharisma.com/croissantsmoon" style={link}><Globe size={10} /> zefanyakharisma.com/croissantsmoon</a>
-        <a href="mailto:zefanya.kharisma@croissantsmoon.com" style={link}><Mail size={10} /> zefanya.kharisma@croissantsmoon.com</a>
-        <a href="https://instagram.com/croissantsmoon" style={link}><Instagram size={10} /> @croissantsmoon</a>
-      </span>
+      {!contactless && (
+        <span style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <a href="https://zefanyakharisma.com/croissantsmoon" style={link}><Globe size={10} /> zefanyakharisma.com/croissantsmoon</a>
+          <a href="mailto:zefanya.kharisma@croissantsmoon.com" style={link}><Mail size={10} /> zefanya.kharisma@croissantsmoon.com</a>
+          <a href="https://instagram.com/croissantsmoon" style={link}><Instagram size={10} /> @croissantsmoon</a>
+        </span>
+      )}
     </div>
   )
 }
 
 // ── Document ──────────────────────────────────────────────────
 export function ProposalPrintDocument({
-  proposal, autoPrint, showBack = true, trackViews = false,
+  proposal, autoPrint, showBack = true, trackViews = false, contactless = false,
 }: {
   proposal: Proposal
   autoPrint?: boolean
-  showBack?: boolean   // hide the toolbar "Back" when this is the primary view
-  trackViews?: boolean // record a 'view' event (slug page only, not admin export)
+  showBack?: boolean    // hide the toolbar "Back" when this is the primary view
+  trackViews?: boolean  // record a 'view' event (slug page only, not admin export)
+  contactless?: boolean // omit email / website / instagram contact links
 }) {
   const [locale, setLocale] = useState<CMLocale>('en')
   const t = PORTAL_UI[locale]
@@ -874,7 +879,7 @@ export function ProposalPrintDocument({
     }
 
     const number = NUMBERED_TYPES.has(block.type) ? String(counter + 1).padStart(2, '0') : null
-    const node = blockContent(block, vars, number, locale)
+    const node = blockContent(block, vars, number, locale, contactless)
     if (node === null) continue
     if (NUMBERED_TYPES.has(block.type)) counter++
 
@@ -977,7 +982,7 @@ export function ProposalPrintDocument({
                 ))}
               </div>
             </div>
-            <RunningFooter page={i + 1} total={pages.length} />
+            <RunningFooter page={i + 1} total={pages.length} contactless={contactless} />
           </div>
         ))}
       </div>
