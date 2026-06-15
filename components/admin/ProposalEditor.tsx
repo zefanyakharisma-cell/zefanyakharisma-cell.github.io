@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { updateProposal } from '@/lib/actions/proposals'
 import { useRouter } from 'next/navigation'
-import { Save, Plus, Trash2, GripVertical, ChevronUp, ChevronDown, Eye, EyeOff, ExternalLink } from 'lucide-react'
+import { Save, Plus, Trash2, GripVertical, ChevronUp, ChevronDown, Eye, EyeOff, ExternalLink, Printer } from 'lucide-react'
 import type { Proposal, ProposalContent, ProposalBlock, ProposalBlockType } from '@/types'
 import { cn } from '@/lib/utils'
 import { LangToggle } from '@/components/cm/LangToggle'
@@ -317,6 +317,7 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
   }
 
   const previewUrl = `/croissantsmoon/proposal/${proposal.slug}`
+  const printUrl = `/croissantsmoon/proposal/${proposal.slug}/print`
 
   return (
     <div className="bg-cm-surface border border-cm-border rounded-xl overflow-hidden">
@@ -331,6 +332,14 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
             className="inline-flex items-center gap-1.5 text-xs text-cm-subtle hover:text-cm-text transition-colors"
           >
             <ExternalLink size={13} /> Preview
+          </a>
+          <a
+            href={printUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-cm-subtle hover:text-cm-text transition-colors"
+          >
+            <Printer size={13} /> PDF
           </a>
           <Button variant={saved ? 'gold' : 'primary'} size="sm" onClick={save} loading={saving}>
             <Save size={13} /> {saved ? 'Saved' : 'Save'}

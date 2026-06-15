@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { trackEvent, trackSectionView } from '@/lib/analytics/tracker'
 import type { Proposal, ProposalBlock } from '@/types'
-import { Moon, ArrowUpRight, Quote, Star, Download } from 'lucide-react'
+import { Moon, ArrowUpRight, Quote, Star } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
 import { LangToggle } from '@/components/cm/LangToggle'
@@ -829,17 +829,6 @@ export function ProposalPortal({ proposal }: { proposal: Proposal }) {
           </div>
           <div className="flex items-center gap-4">
             <LangToggle locale={locale} onChange={setLocale} compact />
-            <a
-              href={`/croissantsmoon/proposal/${proposal.slug}/print`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={t.downloadPdf}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors"
-              style={{ background: rgba(GOLD, 0.08), border: `1px solid ${rgba(GOLD, 0.24)}`, color: GOLD }}
-            >
-              <Download size={13} />
-              <span className="hidden sm:inline">{t.downloadPdf}</span>
-            </a>
             <div className="hidden md:flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs" style={{ color: rgba('#8FA8D6', 0.55) }}>{t.privateProposal}</span>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProposalBySlug } from '@/lib/actions/proposals'
 import { ProposalGate } from '@/components/proposal/ProposalGate'
-import { ProposalPrintDocument } from '@/components/proposal/ProposalPrintDocument'
+import { ProposalPortal } from '@/components/proposal/ProposalPortal'
 import { buildProposalTeaser } from '@/lib/proposal/teaser'
 import { cookies } from 'next/headers'
 import StarField from '@/components/cm/StarField'
@@ -44,7 +44,7 @@ export default async function ProposalPage({ params }: { params: Promise<{ slug:
     )
   }
 
-  return <ProposalPrintDocument proposal={proposal} showBack={false} trackViews />
+  return <ProposalPortal proposal={proposal} />
 }
 
 function ExpiredScreen({ reason }: { reason: 'expired' | 'archived' | 'revoked' }) {

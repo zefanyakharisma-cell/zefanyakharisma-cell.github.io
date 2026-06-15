@@ -7,7 +7,7 @@ import ConstellationSVG from '@/components/cm/ConstellationSVG'
 import type { Proposal } from '@/types'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Plus, Sparkles, FileText, Moon, Mail, ArrowRight } from 'lucide-react'
+import { LayoutDashboard, Sparkles, FileText, Moon, Mail, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Proposals — CroissantsMoon',
@@ -88,11 +88,11 @@ export default async function ProposalPage() {
             <span className="text-sm font-medium" style={{ color: '#D9E6FF' }}>CroissantsMoon</span>
           </Link>
           {isAdmin ? (
-            <Link href="/croissantsmoon/proposals/new">
-              <Button variant="primary" size="sm"><Plus size={14} /> New Proposal</Button>
+            <Link href="/croissantsmoon/proposals">
+              <Button variant="primary" size="sm"><LayoutDashboard size={14} /> Studio</Button>
             </Link>
           ) : (
-            <Link href="/croissantsmoon/login" className="text-xs transition-colors hover:text-cm-text" style={{ color: rgba('#8FA8D6', 0.6) }}>
+            <Link href="/croissantsmoon/login?next=/croissantsmoon/proposals" className="text-xs transition-colors hover:text-cm-text" style={{ color: rgba('#8FA8D6', 0.6) }}>
               Admin
             </Link>
           )}
