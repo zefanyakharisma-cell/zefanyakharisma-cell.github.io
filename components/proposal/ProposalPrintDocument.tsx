@@ -18,7 +18,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Moon, Download, ArrowLeft, ExternalLink, Globe, Mail, Instagram, Clock } from 'lucide-react'
 import type { Proposal, ProposalBlock } from '@/types'
-import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
+import { PORTAL_SECTION_TEXT, PORTAL_UI, proposalField, type CMLocale } from '@/lib/cm/i18n'
 import { LangToggle } from '@/components/cm/LangToggle'
 import { trackEvent } from '@/lib/analytics/tracker'
 
@@ -412,17 +412,20 @@ function buildPricingTiers(
     ? ((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers ?? [])
     : []
   let tiers: PricingTier[] = rawTiers
-    .map(tr => ({
-      name: interp(tr.name ?? ''),
-      price: interp(tr.price ?? ''),
-      inclusions: interp(tr.inclusions ?? '').split('\n').filter(Boolean),
-    }))
+    .map(tr => {
+      const td = tr as Record<string, string | undefined>
+      return {
+        name: interp(proposalField(td, 'name', locale) ?? ''),
+        price: interp(td.price ?? ''),
+        inclusions: interp(proposalField(td, 'inclusions', locale) ?? '').split('\n').filter(Boolean),
+      }
+    })
     .filter(tr => tr.price || tr.name || tr.inclusions.length)
-  if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
+  if (tiers.length === 0 && (data.price || proposalField(data, 'package', locale) || proposalField(data, 'inclusions', locale))) {
     tiers = [{
-      name: interp(data.package ?? t.packageFallback),
+      name: interp(proposalField(data, 'package', locale) ?? t.packageFallback),
       price: interp(data.price ?? ''),
-      inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
+      inclusions: interp(proposalField(data, 'inclusions', locale) ?? '').split('\n').filter(Boolean),
     }]
   }
   tiers = tiers.slice(0, 4)
@@ -509,6 +512,8 @@ function blockContent(
 ): React.ReactNode | null {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
+  // Locale-aware field read: Indonesian value (`${key}_id`) with EN fallback.
+  const f = (key: string) => proposalField(data, key, locale)
   const t = PORTAL_UI[locale]
   const sec = PORTAL_SECTION_TEXT[locale][block.type]
   const accent = SECTION_ACCENT[block.type] ?? AURORA
@@ -520,7 +525,7 @@ function blockContent(
       return null // rendered on the cover
 
     case 'greeting': {
-      const message = interp(data.message ?? '')
+      const message = interp(f('message') ?? '')
       if (!message) return null
       return (
         <>
@@ -538,9 +543,9 @@ function blockContent(
       return null
 
     case 'redesign_concept': {
-      const direction = interp(data.direction ?? data.concept ?? data.description ?? '')
-      const toneRows = parseTable(interp(data.tone ?? ''))
-      const ideas = interp(data.key_ideas ?? '').split('\n').filter(Boolean)
+      const direction = interp(f('direction') ?? f('concept') ?? f('description') ?? '')
+      const toneRows = parseTable(interp(f('tone') ?? ''))
+      const ideas = interp(f('key_ideas') ?? '').split('\n').filter(Boolean)
       if (!direction && toneRows.length === 0 && ideas.length === 0) return null
       return (
         <>
@@ -580,7 +585,7 @@ function blockContent(
       return null
 
     case 'timeline': {
-      const rows = parseTable(interp(data.timeline ?? ''))
+      const rows = parseTable(interp(f('timeline') ?? ''))
       if (rows.length === 0) return null
       return (
         <>
@@ -591,7 +596,7 @@ function blockContent(
     }
 
     case 'infrastructure': {
-      const rows = parseTable(interp(data.model ?? data.content ?? ''))
+      const rows = parseTable(interp(f('model') ?? f('content') ?? ''))
       if (rows.length === 0) return null
       return (
         <>
@@ -610,7 +615,7 @@ function blockContent(
       if (images.length === 0) return null
       return (
         <>
-          <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={data.title ? interp(data.title) : title} />
+          <SectionHeader number={sectionNumber} accent={accent} eyebrow={eyebrow} title={f('title') ? interp(f('title') ?? '') : title} />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
             {images.map((url, i) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -628,7 +633,7 @@ function blockContent(
     }
 
     case 'cta': {
-      const heading = interp(data.heading ?? t.ctaHeadingFallback)
+      const heading = interp(f('heading') ?? t.ctaHeadingFallback)
       return (
         <div style={{ textAlign: 'center', padding: '32px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginBottom: '24px' }}>
@@ -646,7 +651,7 @@ function blockContent(
     }
 
     case 'text': {
-      const content = interp(data.content ?? '')
+      const content = interp(f('content') ?? '')
       if (!content) return null
       return (
         <p style={{ fontSize: '13.5px', lineHeight: 1.85, color: rgba('#D9E6FF', 0.72), whiteSpace: 'pre-line', margin: 0 }}>{content}</p>
@@ -723,8 +728,9 @@ export function ProposalPrintDocument({
 
   const hero = sections.find(b => b.type === 'hero')
   const heroData = (hero?.data ?? {}) as Record<string, string>
-  const headline = interpolate(heroData.headline ?? proposal.title ?? t.heroHeadlineFallback, vars)
-  const subheadline = heroData.subheadline ? interpolate(heroData.subheadline, vars) : ''
+  const headline = interpolate(proposalField(heroData, 'headline', locale) ?? proposal.title ?? t.heroHeadlineFallback, vars)
+  const heroSub = proposalField(heroData, 'subheadline', locale)
+  const subheadline = heroSub ? interpolate(heroSub, vars) : ''
 
   const today = new Date().toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
     year: 'numeric', month: 'long', day: 'numeric',
@@ -741,11 +747,11 @@ export function ProposalPrintDocument({
     // back into the previous page (so a sparse last page is never created).
     if (block.type === 'audit_findings' || block.type === 'website_analysis') {
       const d = block.data as Record<string, string>
-      const what = interpolate(d.what ?? '', vars).split('\n').filter(Boolean)
-      const why = interpolate(d.why ?? '', vars).split('\n').filter(Boolean)
-      const how = interpolate(d.how ?? '', vars).split('\n').filter(Boolean)
+      const what = interpolate(proposalField(d, 'what', locale) ?? '', vars).split('\n').filter(Boolean)
+      const why = interpolate(proposalField(d, 'why', locale) ?? '', vars).split('\n').filter(Boolean)
+      const how = interpolate(proposalField(d, 'how', locale) ?? '', vars).split('\n').filter(Boolean)
       const hasStructured = what.length || why.length || how.length
-      const legacy = interpolate(d.findings ?? d.analysis ?? '', vars).split('\n').filter(Boolean)
+      const legacy = interpolate(proposalField(d, 'findings', locale) ?? proposalField(d, 'analysis', locale) ?? '', vars).split('\n').filter(Boolean)
       if (!hasStructured && legacy.length === 0) continue
       counter++
       const number = String(counter).padStart(2, '0')
@@ -787,7 +793,7 @@ export function ProposalPrintDocument({
 
     // Proposed Features: 6 per page; a trailing page of <4 folds into the previous one.
     if (block.type === 'features') {
-      const raw = (block.data as Record<string, string>).features ?? ''
+      const raw = proposalField(block.data as Record<string, string>, 'features', locale) ?? ''
       const features = interpolate(raw, vars).split('\n').filter(Boolean)
       if (features.length === 0) continue
       counter++

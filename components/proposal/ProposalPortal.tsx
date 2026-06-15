@@ -7,7 +7,7 @@ import { Moon, ArrowUpRight, Quote, Star, Download } from 'lucide-react'
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
 import { LangToggle } from '@/components/cm/LangToggle'
-import { PORTAL_SECTION_TEXT, PORTAL_UI, type CMLocale } from '@/lib/cm/i18n'
+import { PORTAL_SECTION_TEXT, PORTAL_UI, proposalField, type CMLocale } from '@/lib/cm/i18n'
 
 // ── Helpers ───────────────────────────────────────────────────
 function interpolate(text: string, vars: Record<string, string>): string {
@@ -326,6 +326,8 @@ function BlockRenderer({
 }) {
   const data = block.data as Record<string, string>
   const interp = (s: string) => interpolate(s, vars)
+  // Locale-aware field read: Indonesian value (`${key}_id`) with EN fallback.
+  const f = (key: string) => proposalField(data, key, locale)
   const t = PORTAL_UI[locale]
   const meta = SECTION_META[block.type]
   const sec = PORTAL_SECTION_TEXT[locale][block.type]
@@ -354,16 +356,16 @@ function BlockRenderer({
                 className="font-serif font-light leading-[1.08] text-balance mb-8"
                 style={{ fontSize: 'clamp(2.6rem, 6.2vw, 5.25rem)', color: '#D9E6FF' }}
               >
-                {interp(data.headline ?? t.heroHeadlineFallback)}
+                {interp(f('headline') ?? t.heroHeadlineFallback)}
               </h1>
               <div className="flex items-center justify-center gap-4 mb-8">
                 <div style={{ width: 60, height: 1, background: `linear-gradient(to right, transparent, ${rgba(GOLD, 0.55)})` }} />
                 <div style={{ width: 5, height: 5, borderRadius: '50%', background: rgba(GOLD, 0.8) }} />
                 <div style={{ width: 60, height: 1, background: `linear-gradient(to left, transparent, ${rgba(GOLD, 0.55)})` }} />
               </div>
-              {data.subheadline && (
+              {f('subheadline') && (
                 <p className="text-lg md:text-xl leading-relaxed max-w-2xl mx-auto text-balance" style={{ color: rgba('#8FA8D6', 0.78) }}>
-                  {interp(data.subheadline)}
+                  {interp(f('subheadline') ?? '')}
                 </p>
               )}
             </div>
@@ -390,7 +392,7 @@ function BlockRenderer({
               className="font-serif font-light whitespace-pre-line"
               style={{ fontSize: 'clamp(1.35rem, 2.6vw, 1.9rem)', lineHeight: 1.55, color: rgba('#D9E6FF', 0.85) }}
             >
-              {interp(data.message ?? '')}
+              {interp(f('message') ?? '')}
             </p>
           </div>
         </section>
@@ -405,9 +407,9 @@ function BlockRenderer({
         { key: 'what', label: t.whatWeFound,   accent: AURORA },
         { key: 'why',  label: t.whyItMatters,  accent: GOLD },
         { key: 'how',  label: t.howWeSolveIt, accent: MINT },
-      ].map(g => ({ ...g, items: interp(data[g.key] ?? '').split('\n').filter(Boolean) }))
+      ].map(g => ({ ...g, items: interp(f(g.key) ?? '').split('\n').filter(Boolean) }))
       const hasStructured = groups.some(g => g.items.length)
-      const legacy = interp(data.findings ?? data.analysis ?? '').split('\n').filter(Boolean)
+      const legacy = interp(f('findings') ?? f('analysis') ?? '').split('\n').filter(Boolean)
       return (
         <SectionObserver proposalId={proposalId} sectionType={block.type}>
           <section className="py-20 px-8 max-w-4xl mx-auto w-full">
@@ -442,9 +444,9 @@ function BlockRenderer({
     case 'redesign_concept': {
       // Three parts: Direction (paragraph) · Tone (timeline-style table) · Key Ideas (interactive points).
       // Legacy single "concept"/"description" text maps to Direction.
-      const direction = interp(data.direction ?? data.concept ?? data.description ?? '')
-      const toneRows = parseTable(interp(data.tone ?? ''))
-      const ideas = interp(data.key_ideas ?? '').split('\n').filter(Boolean)
+      const direction = interp(f('direction') ?? f('concept') ?? f('description') ?? '')
+      const toneRows = parseTable(interp(f('tone') ?? ''))
+      const ideas = interp(f('key_ideas') ?? '').split('\n').filter(Boolean)
       if (!direction && toneRows.length === 0 && ideas.length === 0) return null
       return (
         <SectionObserver proposalId={proposalId} sectionType="redesign_concept">
@@ -486,7 +488,7 @@ function BlockRenderer({
     }
 
     case 'features': {
-      const features = interp(data.features ?? '').split('\n').filter(Boolean)
+      const features = interp(f('features') ?? '').split('\n').filter(Boolean)
       return (
         <SectionObserver proposalId={proposalId} sectionType="features">
           <section className="py-20 px-8 max-w-5xl mx-auto w-full">
@@ -523,17 +525,20 @@ function BlockRenderer({
         ? ((block.data as { tiers?: Array<{ name?: string; price?: string; inclusions?: string }> }).tiers ?? [])
         : []
       let tiers = rawTiers
-        .map(t => ({
-          name: interp(t.name ?? ''),
-          price: interp(t.price ?? ''),
-          inclusions: interp(t.inclusions ?? '').split('\n').filter(Boolean),
-        }))
-        .filter(t => t.price || t.name || t.inclusions.length)
-      if (tiers.length === 0 && (data.price || data.package || data.inclusions)) {
+        .map(tr => {
+          const td = tr as Record<string, string | undefined>
+          return {
+            name: interp(proposalField(td, 'name', locale) ?? ''),
+            price: interp(td.price ?? ''),
+            inclusions: interp(proposalField(td, 'inclusions', locale) ?? '').split('\n').filter(Boolean),
+          }
+        })
+        .filter(tr => tr.price || tr.name || tr.inclusions.length)
+      if (tiers.length === 0 && (data.price || f('package') || f('inclusions'))) {
         tiers = [{
-          name: interp(data.package ?? t.packageFallback),
+          name: interp(f('package') ?? t.packageFallback),
           price: interp(data.price ?? ''),
-          inclusions: interp(data.inclusions ?? '').split('\n').filter(Boolean),
+          inclusions: interp(f('inclusions') ?? '').split('\n').filter(Boolean),
         }]
       }
       if (tiers.length === 0) return null
@@ -590,7 +595,7 @@ function BlockRenderer({
     }
 
     case 'timeline': {
-      const rows = parseTable(interp(data.timeline ?? ''))
+      const rows = parseTable(interp(f('timeline') ?? ''))
       if (rows.length === 0) return null
       return (
         <SectionObserver proposalId={proposalId} sectionType="timeline">
@@ -605,7 +610,7 @@ function BlockRenderer({
     }
 
     case 'infrastructure': {
-      const rows = parseTable(interp(data.model ?? data.content ?? ''))
+      const rows = parseTable(interp(f('model') ?? f('content') ?? ''))
       if (rows.length === 0) return null
       return (
         <SectionObserver proposalId={proposalId} sectionType="infrastructure">
@@ -678,7 +683,7 @@ function BlockRenderer({
         <SectionObserver proposalId={proposalId} sectionType="gallery">
           <section className="py-20 px-8 max-w-5xl mx-auto w-full">
             <div className="cm-reveal">
-              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={data.title ? interp(data.title) : title} />
+              <EditorialHeader number={sectionNumber ?? undefined} accent={accent} eyebrow={eyebrow} title={f('title') ? interp(f('title') ?? '') : title} />
               {images.length > 0 && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {images.map((url, i) => (
@@ -705,7 +710,7 @@ function BlockRenderer({
                 {[0, 1, 2].map(i => <div key={i} className="w-1 h-1 rounded-full" style={{ background: rgba(GOLD, 0.45) }} />)}
               </div>
               <h2 className="font-serif font-light leading-tight text-balance mb-6" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.6rem)', color: '#D9E6FF' }}>
-                {interp(data.heading ?? t.ctaHeadingFallback)}
+                {interp(f('heading') ?? t.ctaHeadingFallback)}
               </h2>
               <p className="text-sm mb-10 max-w-md mx-auto leading-relaxed" style={{ color: rgba('#8FA8D6', 0.68) }}>
                 {t.ctaSub}
@@ -718,7 +723,7 @@ function BlockRenderer({
                   style={{ background: rgba(GOLD, 0.1), border: `1px solid ${rgba(GOLD, 0.3)}`, color: GOLD }}
                 >
                   <Moon size={15} />
-                  {interp(data.button ?? t.ctaButtonFallback)}
+                  {interp(f('button') ?? t.ctaButtonFallback)}
                   <ArrowUpRight size={15} />
                 </a>
               )}
@@ -732,7 +737,7 @@ function BlockRenderer({
         <section className="py-14 px-8 max-w-3xl mx-auto w-full">
           <div className="cm-reveal">
             <p className="text-[15px] leading-[1.85] whitespace-pre-line" style={{ color: rgba('#D9E6FF', 0.7) }}>
-              {interp(data.content ?? '')}
+              {interp(f('content') ?? '')}
             </p>
           </div>
         </section>

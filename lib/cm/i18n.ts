@@ -14,6 +14,34 @@ export type CMLocale = 'en' | 'id'
 
 export const CM_LOCALES: CMLocale[] = ['en', 'id']
 
+// ── Bilingual proposal body copy ─────────────────────────────────
+// Admin-authored block fields are stored EN-first. Their Indonesian variant (when
+// provided) lives under `${key}_id`; when that is empty it falls back to the EN
+// value, so single-language proposals written before this feature keep rendering
+// unchanged. A handful of fields are language-neutral (URLs, image lists, emails,
+// raw prices) and are never suffixed — they're shared across both languages.
+export const NEUTRAL_PROPOSAL_FIELDS = new Set(['url', 'images', 'email', 'price'])
+
+// The storage key a field's value lives under for the given locale. Used by the
+// editor to read/write the right slot, and by renderers to read it back.
+export function proposalFieldKey(key: string, locale: CMLocale): string {
+  return locale === 'id' && !NEUTRAL_PROPOSAL_FIELDS.has(key) ? `${key}_id` : key
+}
+
+// Read a (possibly localized) block field, falling back to the EN/base value when
+// the Indonesian variant is empty.
+export function proposalField(
+  data: Record<string, string | undefined>,
+  key: string,
+  locale: CMLocale,
+): string | undefined {
+  if (locale === 'id' && !NEUTRAL_PROPOSAL_FIELDS.has(key)) {
+    const v = data[`${key}_id`]
+    return v != null && v !== '' ? v : data[key]
+  }
+  return data[key]
+}
+
 // ── Public landing — UI chrome only (body copy is in CMLandingContent) ──
 export const LANDING_UI: Record<CMLocale, {
   explore: string

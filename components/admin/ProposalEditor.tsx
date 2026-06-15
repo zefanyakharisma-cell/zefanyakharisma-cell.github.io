@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 import { Save, Plus, Trash2, GripVertical, ChevronUp, ChevronDown, Eye, EyeOff, ExternalLink } from 'lucide-react'
 import type { Proposal, ProposalContent, ProposalBlock, ProposalBlockType } from '@/types'
 import { cn } from '@/lib/utils'
-
-type PricingTier = { name?: string; price?: string; inclusions?: string }
+import { LangToggle } from '@/components/cm/LangToggle'
+import { proposalFieldKey, type CMLocale } from '@/lib/cm/i18n'
 
 const BLOCK_TYPES: { type: ProposalBlockType; label: string }[] = [
   { type: 'hero', label: 'Hero Section' },
@@ -29,11 +29,12 @@ const BLOCK_TYPES: { type: ProposalBlockType; label: string }[] = [
 ]
 
 function BlockEditor({
-  block, index, total, onChange, onRemove, onMove, onArmDrag, dragState,
+  block, index, total, locale, onChange, onRemove, onMove, onArmDrag, dragState,
 }: {
   block: ProposalBlock
   index: number
   total: number
+  locale: CMLocale
   onChange: (b: ProposalBlock) => void
   onRemove: () => void
   onMove: (to: number) => void
@@ -51,8 +52,15 @@ function BlockEditor({
   const data = block.data as Record<string, string>
   const hidden = block.visible === false
 
+  // Localized field storage key (`${key}_id` for ID, base key for EN or for
+  // language-neutral fields like URLs/images/email/price).
+  const lf = (key: string) => proposalFieldKey(key, locale)
+  // Read the value for the active editor language (empty when the ID variant
+  // hasn't been filled yet — it falls back to EN only at render time).
+  const v = (key: string) => data[lf(key)] ?? ''
+
   function setField(key: string, val: string) {
-    onChange({ ...block, data: { ...block.data, [key]: val } })
+    onChange({ ...block, data: { ...block.data, [lf(key)]: val } })
   }
 
   return (
@@ -125,12 +133,12 @@ function BlockEditor({
 
       {block.type === 'hero' && (
         <div className="space-y-3">
-          <Input label="Headline" value={data.headline ?? ''} onChange={e => setField('headline', e.target.value)} placeholder="Transforming {{organization_name}}'s Digital Presence" />
-          <Input label="Subheadline" value={data.subheadline ?? ''} onChange={e => setField('subheadline', e.target.value)} placeholder="A Strategic Digital Modernization Proposal" />
+          <Input label="Headline" value={v('headline')} onChange={e => setField('headline', e.target.value)} placeholder="Transforming {{organization_name}}'s Digital Presence" />
+          <Input label="Subheadline" value={v('subheadline')} onChange={e => setField('subheadline', e.target.value)} placeholder="A Strategic Digital Modernization Proposal" />
         </div>
       )}
       {block.type === 'greeting' && (
-        <Textarea label="Greeting Message" value={data.message ?? ''} onChange={e => setField('message', e.target.value)} placeholder="Dear {{contact_person}}, we've prepared this proposal specifically for {{organization_name}}..." rows={3} />
+        <Textarea label="Greeting Message" value={v('message')} onChange={e => setField('message', e.target.value)} placeholder="Dear {{contact_person}}, we've prepared this proposal specifically for {{organization_name}}..." rows={3} />
       )}
       {(block.type === 'audit_findings' || block.type === 'website_analysis') && (
         <div className="space-y-3">
@@ -138,34 +146,36 @@ function BlockEditor({
             Three parts, each one point per line: <span className="text-cm-text">What</span> we found,{' '}
             <span className="text-cm-text">Why</span> it matters, and <span className="text-cm-text">How</span> we solve it.
           </p>
-          <Textarea label="What — what we found (one per line)" value={data.what ?? ''} onChange={e => setField('what', e.target.value)} placeholder="Slow load times on mobile&#10;No clear calls to action&#10;Outdated visual design" rows={4} />
-          <Textarea label="Why — why it matters (one per line)" value={data.why ?? ''} onChange={e => setField('why', e.target.value)} placeholder="53% of mobile visitors leave after 3s&#10;Unclear next steps lose qualified leads" rows={4} />
-          <Textarea label="How — how we solve it (one per line)" value={data.how ?? ''} onChange={e => setField('how', e.target.value)} placeholder="Edge-cached, image-optimized rebuild&#10;Conversion-focused layout with a single primary CTA" rows={4} />
+          <Textarea label="What — what we found (one per line)" value={v('what')} onChange={e => setField('what', e.target.value)} placeholder="Slow load times on mobile&#10;No clear calls to action&#10;Outdated visual design" rows={4} />
+          <Textarea label="Why — why it matters (one per line)" value={v('why')} onChange={e => setField('why', e.target.value)} placeholder="53% of mobile visitors leave after 3s&#10;Unclear next steps lose qualified leads" rows={4} />
+          <Textarea label="How — how we solve it (one per line)" value={v('how')} onChange={e => setField('how', e.target.value)} placeholder="Edge-cached, image-optimized rebuild&#10;Conversion-focused layout with a single primary CTA" rows={4} />
         </div>
       )}
       {block.type === 'redesign_concept' && (
         <div className="space-y-3">
-          <Textarea label="Direction — short paragraph" value={data.direction ?? data.concept ?? data.description ?? ''} onChange={e => setField('direction', e.target.value)} placeholder="The overall redesign direction in a sentence or two..." rows={3} />
+          <Textarea label="Direction — short paragraph" value={v('direction') || v('concept') || v('description')} onChange={e => setField('direction', e.target.value)} placeholder="The overall redesign direction in a sentence or two..." rows={3} />
           <Textarea
             label="Tone table — one row per line, columns separated by  -  (space-dash-space)"
-            value={data.tone ?? ''}
+            value={v('tone')}
             onChange={e => setField('tone', e.target.value)}
             placeholder="Modern - Clean lines, generous whitespace&#10;Warm - Approachable, human language&#10;Confident - Bold type, decisive layout"
             rows={4}
           />
-          <Textarea label="Key Ideas (one per line)" value={data.key_ideas ?? ''} onChange={e => setField('key_ideas', e.target.value)} placeholder="Hero-led storytelling&#10;Interactive case studies&#10;Sticky conversion CTA" rows={4} />
+          <Textarea label="Key Ideas (one per line)" value={v('key_ideas')} onChange={e => setField('key_ideas', e.target.value)} placeholder="Hero-led storytelling&#10;Interactive case studies&#10;Sticky conversion CTA" rows={4} />
         </div>
       )}
       {block.type === 'features' && (
-        <Textarea label="Feature List (one per line)" value={data.features ?? ''} onChange={e => setField('features', e.target.value)} placeholder="Modern responsive design&#10;Advanced CMS integration&#10;Multi-language support" rows={5} />
+        <Textarea label="Feature List (one per line)" value={v('features')} onChange={e => setField('features', e.target.value)} placeholder="Modern responsive design&#10;Advanced CMS integration&#10;Multi-language support" rows={5} />
       )}
       {block.type === 'pricing' && (() => {
-        const existing = (block.data as { tiers?: PricingTier[] }).tiers
-        const tiers: PricingTier[] = existing && existing.length
+        // Tiers are stored as flat records so localized variants (name_id,
+        // inclusions_id) can live alongside the base keys; price is neutral.
+        const existing = (block.data as { tiers?: Record<string, string>[] }).tiers
+        const tiers: Record<string, string>[] = existing && existing.length
           ? existing
-          : [{ name: data.package ?? '', price: data.price ?? '', inclusions: data.inclusions ?? '' }]
-        const writeTiers = (next: PricingTier[]) => onChange({ ...block, data: { ...block.data, tiers: next } })
-        const updateTier = (i: number, key: keyof PricingTier, val: string) =>
+          : [{ [lf('name')]: v('package'), price: data.price ?? '', [lf('inclusions')]: v('inclusions') }]
+        const writeTiers = (next: Record<string, string>[]) => onChange({ ...block, data: { ...block.data, tiers: next } })
+        const updateTier = (i: number, key: string, val: string) =>
           writeTiers(tiers.map((t, x) => (x === i ? { ...t, [key]: val } : t)))
         const addTier = () => { if (tiers.length < 4) writeTiers([...tiers, { name: '', price: '', inclusions: '' }]) }
         const removeTier = (i: number) => writeTiers(tiers.filter((_, x) => x !== i))
@@ -185,9 +195,9 @@ function BlockEditor({
                     </button>
                   )}
                 </div>
-                <Input label="Package Name" value={t.name ?? ''} onChange={e => updateTier(i, 'name', e.target.value)} placeholder="Professional Package" />
+                <Input label="Package Name" value={t[lf('name')] ?? ''} onChange={e => updateTier(i, lf('name'), e.target.value)} placeholder="Professional Package" />
                 <Input label="Price" value={t.price ?? ''} onChange={e => updateTier(i, 'price', e.target.value)} placeholder="IDR 75,000,000" />
-                <Textarea label="Inclusions (one per line)" value={t.inclusions ?? ''} onChange={e => updateTier(i, 'inclusions', e.target.value)} rows={3} />
+                <Textarea label="Inclusions (one per line)" value={t[lf('inclusions')] ?? ''} onChange={e => updateTier(i, lf('inclusions'), e.target.value)} rows={3} />
               </div>
             ))}
             {tiers.length < 4 && (
@@ -201,7 +211,7 @@ function BlockEditor({
       {block.type === 'timeline' && (
         <Textarea
           label="Timeline table — one row per line, columns separated by  -  (space-dash-space)"
-          value={data.timeline ?? ''}
+          value={v('timeline')}
           onChange={e => setField('timeline', e.target.value)}
           placeholder="Phase 1 - Discovery & Planning - Week 1-2&#10;Phase 2 - Design - Week 3-5&#10;Phase 3 - Development - Week 6-9&#10;Phase 4 - Testing & Launch - Week 10-12"
           rows={5}
@@ -210,7 +220,7 @@ function BlockEditor({
       {block.type === 'infrastructure' && (
         <Textarea
           label="Infrastructure table — one row per line, columns separated by  -  (space-dash-space)"
-          value={data.model ?? data.content ?? ''}
+          value={v('model') || v('content')}
           onChange={e => setField('model', e.target.value)}
           placeholder="Hosting - Vercel Edge Network - Included&#10;Maintenance - Monthly updates & monitoring - IDR 2,500,000/mo&#10;Support - Priority email & chat - Included"
           rows={5}
@@ -218,24 +228,24 @@ function BlockEditor({
       )}
       {block.type === 'gallery' && (
         <div className="space-y-3">
-          <Input label="Title (optional)" value={data.title ?? ''} onChange={e => setField('title', e.target.value)} placeholder="Selected Work" />
-          <Textarea label="Image URLs (one per line)" value={data.images ?? ''} onChange={e => setField('images', e.target.value)} placeholder="https://.../shot-1.jpg&#10;https://.../shot-2.jpg" rows={4} />
+          <Input label="Title (optional)" value={v('title')} onChange={e => setField('title', e.target.value)} placeholder="Selected Work" />
+          <Textarea label="Image URLs (one per line)" value={v('images')} onChange={e => setField('images', e.target.value)} placeholder="https://.../shot-1.jpg&#10;https://.../shot-2.jpg" rows={4} />
         </div>
       )}
       {block.type === 'cta' && (
         <div className="space-y-3">
-          <Input label="CTA Heading" value={data.heading ?? ''} onChange={e => setField('heading', e.target.value)} placeholder="Ready to Transform Your Digital Presence?" />
-          <Input label="Button Label" value={data.button ?? ''} onChange={e => setField('button', e.target.value)} placeholder="Schedule a Discovery Call" />
-          <Input label="Contact Email" value={data.email ?? ''} onChange={e => setField('email', e.target.value)} placeholder="contact@croissantsmoon.studio" />
+          <Input label="CTA Heading" value={v('heading')} onChange={e => setField('heading', e.target.value)} placeholder="Ready to Transform Your Digital Presence?" />
+          <Input label="Button Label" value={v('button')} onChange={e => setField('button', e.target.value)} placeholder="Schedule a Discovery Call" />
+          <Input label="Contact Email" value={v('email')} onChange={e => setField('email', e.target.value)} placeholder="contact@croissantsmoon.studio" />
         </div>
       )}
       {block.type === 'text' && (
-        <Textarea label="Content" value={data.content ?? ''} onChange={e => setField('content', e.target.value)} rows={4} />
+        <Textarea label="Content" value={v('content')} onChange={e => setField('content', e.target.value)} rows={4} />
       )}
       {block.type === 'demo_embed' && (
         <Textarea
           label="Preview URL(s) — one per line"
-          value={data.url ?? ''}
+          value={v('url')}
           onChange={e => setField('url', e.target.value)}
           rows={3}
           placeholder={'https://demo.example.com\nhttps://demo.example.com/about'}
@@ -250,6 +260,7 @@ function BlockEditor({
 
 export function ProposalEditor({ proposal }: { proposal: Proposal }) {
   const [content, setContent] = useState<ProposalContent>(proposal.content ?? { sections: [] })
+  const [editLocale, setEditLocale] = useState<CMLocale>('en')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [showBlockPicker, setShowBlockPicker] = useState(false)
@@ -312,6 +323,7 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
       <div className="flex items-center justify-between gap-3 px-6 py-4 border-b border-cm-border">
         <h3 className="text-sm font-semibold text-cm-white">Proposal Content</h3>
         <div className="flex items-center gap-2">
+          <LangToggle locale={editLocale} onChange={setEditLocale} compact />
           <a
             href={previewUrl}
             target="_blank"
@@ -327,6 +339,13 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
       </div>
 
       <div className="p-5 space-y-4">
+        {editLocale === 'id' && (
+          <div className="rounded-lg border border-cm-gold/30 bg-cm-gold/5 px-3.5 py-2.5 text-[11px] leading-relaxed text-cm-subtle">
+            Editing the <span className="text-cm-gold font-medium">Bahasa Indonesia</span> version. Any field left blank
+            falls back to its English text when the proposal is viewed in Indonesian. URLs, image links, email and price
+            are shared across both languages.
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
             label="Greeting"
@@ -349,6 +368,7 @@ export function ProposalEditor({ proposal }: { proposal: Proposal }) {
               block={block}
               index={i}
               total={content.sections.length}
+              locale={editLocale}
               onChange={b => updateBlock(i, b)}
               onRemove={() => removeBlock(i)}
               onMove={to => moveBlock(i, to)}

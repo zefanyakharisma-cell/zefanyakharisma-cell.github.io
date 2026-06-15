@@ -11,7 +11,7 @@ import type { ProposalTeaser } from '@/lib/proposal/teaser'
 
 interface Props {
   slug: string
-  teaser: ProposalTeaser
+  teasers: Record<CMLocale, ProposalTeaser>
 }
 
 // ── Palette (matches the full ProposalPortal) ─────────────────
@@ -27,9 +27,10 @@ function rgba(hex: string, a: number): string {
   return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})`
 }
 
-export function ProposalGate({ slug, teaser }: Props) {
+export function ProposalGate({ slug, teasers }: Props) {
   const [locale, setLocale] = useState<CMLocale>('en')
   const t = GATE_UI[locale]
+  const teaser = teasers[locale] ?? teasers.en
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

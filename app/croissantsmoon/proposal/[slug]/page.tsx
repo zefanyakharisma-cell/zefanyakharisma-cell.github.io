@@ -36,7 +36,12 @@ export default async function ProposalPage({ params }: { params: Promise<{ slug:
   }
 
   if (!hasAccess) {
-    return <ProposalGate slug={slug} teaser={buildProposalTeaser(proposal)} />
+    return (
+      <ProposalGate
+        slug={slug}
+        teasers={{ en: buildProposalTeaser(proposal, 'en'), id: buildProposalTeaser(proposal, 'id') }}
+      />
+    )
   }
 
   return <ProposalPrintDocument proposal={proposal} showBack={false} trackViews />
