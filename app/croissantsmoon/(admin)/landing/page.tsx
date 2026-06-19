@@ -5,6 +5,13 @@ import LandingEditor from '@/components/admin/LandingEditor'
 export const metadata: Metadata = { title: 'Landing Page' }
 
 export default async function LandingCmsPage() {
-  const { contentEn, contentId, seo } = await getLandingContentBoth()
-  return <LandingEditor initialContentEn={contentEn} initialContentId={contentId} initialSeo={seo} />
+  const { contentEn, contentId, seoEn, seoId } = await getLandingContentBoth()
+  return (
+    <LandingEditor
+      initialContentEn={contentEn}
+      initialContentId={contentId}
+      initialSeoEn={seoEn}
+      initialSeoId={seoId}
+    />
+  )
 }

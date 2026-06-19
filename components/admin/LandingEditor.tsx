@@ -141,12 +141,14 @@ function AddButton({ onClick, label }: { onClick: () => void; label: string }) {
 }
 
 // ── Editor ──────────────────────────────────────────────────────
-export default function LandingEditor({ initialContentEn, initialContentId, initialSeo }: {
-  initialContentEn: CMLandingContent; initialContentId: CMLandingContent; initialSeo: CMLandingSeo
+export default function LandingEditor({ initialContentEn, initialContentId, initialSeoEn, initialSeoId }: {
+  initialContentEn: CMLandingContent; initialContentId: CMLandingContent
+  initialSeoEn: CMLandingSeo; initialSeoId: CMLandingSeo
 }) {
   const [contentEn, setContentEn] = useState<CMLandingContent>(initialContentEn)
   const [contentId, setContentId] = useState<CMLandingContent>(initialContentId)
-  const [seo, setSeo] = useState<CMLandingSeo>(initialSeo)
+  const [seoEn, setSeoEn] = useState<CMLandingSeo>(initialSeoEn)
+  const [seoId, setSeoId] = useState<CMLandingSeo>(initialSeoId)
   const [editLocale, setEditLocale] = useState<'en' | 'id'>('en')
   const [pending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
@@ -156,6 +158,8 @@ export default function LandingEditor({ initialContentEn, initialContentId, init
   // saved together so the public page can fall back EN→ID per field.
   const content = editLocale === 'en' ? contentEn : contentId
   const setContent = editLocale === 'en' ? setContentEn : setContentId
+  const seo = editLocale === 'en' ? seoEn : seoId
+  const setSeo = editLocale === 'en' ? setSeoEn : setSeoId
 
   // Immutable editing via structuredClone of the active-locale document.
   function edit(fn: (d: CMLandingContent) => void) {
@@ -177,7 +181,7 @@ export default function LandingEditor({ initialContentEn, initialContentId, init
     setError(null)
     startTransition(async () => {
       try {
-        await updateLandingContent(contentEn, seo, contentId)
+        await updateLandingContent(contentEn, seoEn, contentId, seoId)
         setStatus('saved')
       } catch (e) {
         setStatus('error')
@@ -191,9 +195,10 @@ export default function LandingEditor({ initialContentEn, initialContentId, init
     if (!confirm(`Reset the ${isEn ? 'English' : 'Indonesian'} fields to the built-in defaults? This only changes the editor — you still need to Save.`)) return
     if (isEn) {
       setContentEn(structuredClone(LANDING_DEFAULTS))
-      setSeo(structuredClone(SEO_DEFAULTS))
+      setSeoEn(structuredClone(SEO_DEFAULTS))
     } else {
       setContentId(structuredClone(LANDING_DEFAULTS_ID))
+      setSeoId(structuredClone(SEO_DEFAULTS))
     }
     setStatus('idle')
   }

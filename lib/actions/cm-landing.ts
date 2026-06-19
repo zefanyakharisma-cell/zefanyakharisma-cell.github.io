@@ -50,7 +50,7 @@ export async function getLandingContent(
   const supabase = await createClient()
   const { data } = await supabase
     .from('cm_landing')
-    .select('content, seo, content_id')
+    .select('content, seo, content_id, seo_id')
     .eq('id', LANDING_ID)
     .maybeSingle()
 
@@ -60,7 +60,11 @@ export async function getLandingContent(
       ? merge(merge(en, LANDING_DEFAULTS_ID), data?.content_id)
       : en
 
-  return { content, seo: merge(SEO_DEFAULTS, data?.seo) }
+  const seoEn = merge(SEO_DEFAULTS, data?.seo)
+  // ID SEO falls back to the resolved EN value per field when seo_id is empty.
+  const seo = locale === 'id' ? merge(seoEn, data?.seo_id) : seoEn
+
+  return { content, seo }
 }
 
 // Fetch both language documents as authored (no cross-locale fallback) so the
@@ -68,19 +72,21 @@ export async function getLandingContent(
 export async function getLandingContentBoth(): Promise<{
   contentEn: CMLandingContent
   contentId: CMLandingContent
-  seo: CMLandingSeo
+  seoEn: CMLandingSeo
+  seoId: CMLandingSeo
 }> {
   const supabase = await createClient()
   const { data } = await supabase
     .from('cm_landing')
-    .select('content, seo, content_id')
+    .select('content, seo, content_id, seo_id')
     .eq('id', LANDING_ID)
     .maybeSingle()
 
   return {
     contentEn: merge(LANDING_DEFAULTS, data?.content),
     contentId: merge(LANDING_DEFAULTS_ID, data?.content_id),
-    seo: merge(SEO_DEFAULTS, data?.seo),
+    seoEn: merge(SEO_DEFAULTS, data?.seo),
+    seoId: merge(SEO_DEFAULTS, data?.seo_id),
   }
 }
 
@@ -88,6 +94,7 @@ export async function updateLandingContent(
   content: CMLandingContent,
   seo: CMLandingSeo,
   contentId?: CMLandingContent,
+  seoId?: CMLandingSeo,
 ) {
   const supabase = await createClient()
   const row: Record<string, unknown> = {
@@ -97,6 +104,7 @@ export async function updateLandingContent(
     updated_at: new Date().toISOString(),
   }
   if (contentId !== undefined) row.content_id = contentId
+  if (seoId !== undefined) row.seo_id = seoId
 
   const { error } = await supabase.from('cm_landing').upsert(row)
 
