@@ -13,9 +13,19 @@ import ConstellationSVG from '@/components/cm/ConstellationSVG'
 import { LangToggle } from '@/components/cm/LangToggle'
 import { LANDING_UI, QUOTE_UI, type CMLocale, type QuoteDict } from '@/lib/cm/i18n'
 import { submitQuoteRequest } from '@/lib/actions/cm-quote'
-import type { CMIconName, CMLandingContent, CMLink, CMProjectCard, CMProjectType } from '@/types'
+import type {
+  CMIconName, CMLandingContent, CMLink, CMProjectCard, CMProjectType,
+  CMSectionConfig, CMSectionKey,
+} from '@/types'
 
 type LandingUi = (typeof LANDING_UI)[CMLocale]
+
+// Fallback order when a stored document predates section config.
+const DEFAULT_SECTIONS: CMSectionConfig[] = [
+  { key: 'services', visible: true }, { key: 'work', visible: true }, { key: 'proof', visible: true },
+  { key: 'process', visible: true }, { key: 'pricing', visible: true }, { key: 'demos', visible: true },
+  { key: 'designs', visible: true }, { key: 'quote', visible: true }, { key: 'finalCta', visible: true },
+]
 
 // Prefers-reduced-motion check (client). Drives carousel auto-rotation.
 function usePrefersReducedMotion() {
@@ -378,6 +388,14 @@ export default function StudioLanding({
   const PROPOSAL = meta.proposalHref
   const reduced = usePrefersReducedMotion()
 
+  // Editor-controlled section order + visibility (flexbox `order` on <main>).
+  const sectionCfg: CMSectionConfig[] = active.sections ?? DEFAULT_SECTIONS
+  const secStyle = (key: CMSectionKey): React.CSSProperties => {
+    const i = sectionCfg.findIndex((s) => s.key === key)
+    const cfg = sectionCfg.find((s) => s.key === key)
+    return { order: i < 0 ? 99 : i, display: cfg && !cfg.visible ? 'none' : undefined }
+  }
+
   useEffect(() => {
     const nav = document.getElementById('cm-nav')
     const onScroll = () => {
@@ -427,10 +445,10 @@ export default function StudioLanding({
         </div>
       </nav>
 
-      <main id="top">
+      <main id="top" className="cm-main">
 
         {/* ── SECTION 1 · Hero ─────────────────────────────────── */}
-        <section className="cm-hero" aria-label="Introduction">
+        <section className="cm-hero" aria-label="Introduction" style={{ order: -1 }}>
           <HeroCarousel slides={projects} ui={ui} reduced={reduced} />
           <Deco stars={90} seed={3} />
           <div className="cm-glow cm-glow-aurora" aria-hidden="true" />
@@ -465,7 +483,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 2 · Services ─────────────────────────────── */}
-        <section className="cm-section" aria-labelledby="services-h">
+        <section className="cm-section" aria-labelledby="services-h" style={secStyle('services')}>
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
               <p className="cm-label">{services.label}</p>
@@ -490,7 +508,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 3 · Featured Projects ────────────────────── */}
-        <section id="work" className="cm-section cm-section-alt" aria-labelledby="work-h">
+        <section id="work" className="cm-section cm-section-alt" aria-labelledby="work-h" style={secStyle('work')}>
           <Deco stars={36} seed={7} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
@@ -507,7 +525,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 4 · Social Proof ─────────────────────────── */}
-        <section className="cm-section" aria-labelledby="proof-h">
+        <section className="cm-section" aria-labelledby="proof-h" style={secStyle('proof')}>
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
               <p className="cm-label">{proof.label}</p>
@@ -534,7 +552,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 5 · How It Works ─────────────────────────── */}
-        <section className="cm-section cm-section-alt" aria-labelledby="how-h">
+        <section className="cm-section cm-section-alt" aria-labelledby="how-h" style={secStyle('process')}>
           <Deco stars={26} seed={2} constellation={false} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
@@ -554,7 +572,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 6 · Pricing ──────────────────────────────── */}
-        <section id="pricing" className="cm-section" aria-labelledby="pricing-h">
+        <section id="pricing" className="cm-section" aria-labelledby="pricing-h" style={secStyle('pricing')}>
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
               <p className="cm-label">{pricing.label}</p>
@@ -594,7 +612,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 7 · Demo Experiences ─────────────────────── */}
-        <section className="cm-section cm-section-alt" aria-labelledby="demo-h">
+        <section className="cm-section cm-section-alt" aria-labelledby="demo-h" style={secStyle('demos')}>
           <Deco stars={45} seed={9} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
@@ -637,7 +655,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 8 · Visual Identity ──────────────────────── */}
-        <section className="cm-section" aria-labelledby="design-h">
+        <section className="cm-section" aria-labelledby="design-h" style={secStyle('designs')}>
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
               <p className="cm-label">{designs.label}</p>
@@ -667,7 +685,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION · Request a Quote ────────────────────────── */}
-        <section id="quote" className="cm-section cm-section-alt" aria-labelledby="quote-h">
+        <section id="quote" className="cm-section cm-section-alt" aria-labelledby="quote-h" style={secStyle('quote')}>
           <Deco stars={30} seed={11} constellation={false} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
@@ -680,7 +698,7 @@ export default function StudioLanding({
         </section>
 
         {/* ── SECTION 9 · Final CTA ────────────────────────────── */}
-        <section className="cm-section cm-final" aria-labelledby="final-h">
+        <section className="cm-section cm-final" aria-labelledby="final-h" style={secStyle('finalCta')}>
           <Deco stars={55} seed={5} />
           <div className="cm-glow cm-glow-gold cm-glow-final" aria-hidden="true" />
           <Moon size={420} className="cm-final-moon" />
@@ -755,6 +773,8 @@ const CSS = `
 }
 .cm-studio *, .cm-studio *::before, .cm-studio *::after { box-sizing: border-box; }
 .cm-studio a { color: inherit; text-decoration: none; }
+/* Flex column lets the editor reorder sections via the CSS order property. */
+.cm-main { display: flex; flex-direction: column; }
 
 /* Decoration layer */
 .cm-deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }

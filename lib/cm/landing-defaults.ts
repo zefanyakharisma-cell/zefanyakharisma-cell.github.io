@@ -8,6 +8,17 @@ import type { CMLandingContent, CMLandingSeo } from '@/types'
 // ─────────────────────────────────────────────────────────────────
 
 export const LANDING_DEFAULTS: CMLandingContent = {
+  sections: [
+    { key: 'services', visible: true },
+    { key: 'work', visible: true },
+    { key: 'proof', visible: true },
+    { key: 'process', visible: true },
+    { key: 'pricing', visible: true },
+    { key: 'demos', visible: true },
+    { key: 'designs', visible: true },
+    { key: 'quote', visible: true },
+    { key: 'finalCta', visible: true },
+  ],
   meta: {
     proposalHref: '/croissantsmoon/proposal',
     email: 'mailto:zefanya.kharisma@gmail.com',

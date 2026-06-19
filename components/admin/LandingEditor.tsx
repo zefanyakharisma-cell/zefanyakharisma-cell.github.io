@@ -59,6 +59,12 @@ const ICON_OPTIONS: { value: CMIconName; label: string }[] = [
   { value: 'Layers', label: 'Layers' },
 ]
 
+const SECTION_LABELS: Record<string, string> = {
+  services: 'Services', work: 'Featured Projects', proof: 'Testimonials & Stats',
+  process: 'How It Works', pricing: 'Pricing', demos: 'Demo Experiences',
+  designs: 'Visual Identity', quote: 'Request a Quote', finalCta: 'Final CTA',
+}
+
 const uid = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `id-${Date.now()}-${Math.random()}`)
 const toLines = (arr: string[]) => arr.join('\n')
 const fromLines = (s: string) => s.split('\n').map(l => l.trim()).filter(Boolean)
@@ -246,6 +252,35 @@ export default function LandingEditor({ initialContentEn, initialContentId, init
       </div>
 
       <div className="space-y-4 max-w-3xl pb-28">
+
+        {/* PAGE SECTIONS — order + visibility (locale-neutral, edit in EN) */}
+        {editLocale === 'en' && content.sections && (
+          <Section title="Page Sections" subtitle="Reorder or hide sections. Order &amp; visibility apply to both languages.">
+            <div className="space-y-2">
+              {content.sections.map((s, i) => (
+                <div key={s.key} className="flex items-center gap-3 bg-cm-elevated/40 border border-cm-border rounded-lg px-3 py-2">
+                  <span className="text-xs text-cm-subtle w-5 text-center">{i + 1}</span>
+                  <span className="flex-1 text-sm text-cm-text">{SECTION_LABELS[s.key] ?? s.key}</span>
+                  <label className="flex items-center gap-1.5 text-xs text-cm-subtle select-none">
+                    <input type="checkbox" checked={s.visible} className="accent-cm-gold"
+                      onChange={(e) => edit((d) => { if (d.sections) d.sections[i].visible = e.target.checked })} />
+                    Visible
+                  </label>
+                  <button type="button" disabled={i === 0} aria-label={`Move ${SECTION_LABELS[s.key] ?? s.key} up`}
+                    onClick={() => edit((d) => { if (d.sections) move(d.sections, i, -1) })}
+                    className="p-1.5 rounded-md text-cm-subtle hover:text-cm-text hover:bg-cm-elevated disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                    <ArrowUp size={13} />
+                  </button>
+                  <button type="button" disabled={i === content.sections!.length - 1} aria-label={`Move ${SECTION_LABELS[s.key] ?? s.key} down`}
+                    onClick={() => edit((d) => { if (d.sections) move(d.sections, i, 1) })}
+                    className="p-1.5 rounded-md text-cm-subtle hover:text-cm-text hover:bg-cm-elevated disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                    <ArrowDown size={13} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
 
         {/* GLOBAL LINKS */}
         <Section title="Global Links" subtitle="Shared targets used across CTAs, footer and branding.">

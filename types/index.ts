@@ -289,7 +289,20 @@ export interface CMProjectCard {
   isFeatured: boolean
 }
 
+// Editor-controlled order + visibility for the reorderable landing sections.
+// Locale-neutral (lives in the EN document; the ID document never overrides it),
+// so both languages render the same structure.
+export type CMSectionKey =
+  | 'services' | 'work' | 'proof' | 'process' | 'pricing'
+  | 'demos' | 'designs' | 'quote' | 'finalCta'
+
+export interface CMSectionConfig {
+  key: CMSectionKey
+  visible: boolean
+}
+
 export interface CMLandingContent {
+  sections?: CMSectionConfig[]
   meta: {
     proposalHref: string
     email: string

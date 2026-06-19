@@ -4,8 +4,11 @@ import { useState, useTransition } from 'react'
 import { Input, Textarea, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { saveProjects, type CMProjectInput } from '@/lib/actions/cm-projects'
+import { createClient } from '@/lib/supabase/client'
 import type { CMProjectRow, CMProjectType } from '@/types'
-import { Plus, Trash2, ArrowUp, ArrowDown, Save, ExternalLink, Star, EyeOff } from 'lucide-react'
+import { Plus, Trash2, ArrowUp, ArrowDown, Save, ExternalLink, Star, EyeOff, Upload, Loader2 } from 'lucide-react'
+
+const IMAGE_BUCKET = 'cm-projects'
 
 const TYPE_OPTIONS: { value: CMProjectType; label: string }[] = [
   { value: 'landing', label: 'Landing Page' },
@@ -59,6 +62,8 @@ export default function ProjectsManager({ initial }: { initial: CMProjectRow[] }
   const [pending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
+  const [uploading, setUploading] = useState<string | null>(null)
+  const [supabase] = useState(() => createClient())
 
   function edit(i: number, patch: Partial<Draft>) {
     setStatus('idle')
@@ -81,6 +86,30 @@ export default function ProjectsManager({ initial }: { initial: CMProjectRow[] }
   function add() {
     setStatus('idle')
     setRows((prev) => [...prev, blank()])
+  }
+
+  // Upload an image to the public cm-projects bucket and store its URL on the
+  // row. The admin is authenticated, so storage RLS permits the write.
+  async function uploadImage(i: number, file: File) {
+    const row = rows[i]
+    setStatus('idle')
+    setError(null)
+    setUploading(row.key)
+    try {
+      const ext = (file.name.split('.').pop() || 'png').toLowerCase()
+      const path = `${row.id ?? row.key}-${Date.now()}.${ext}`
+      const { error: upErr } = await supabase.storage
+        .from(IMAGE_BUCKET)
+        .upload(path, file, { cacheControl: '3600', upsert: true })
+      if (upErr) throw upErr
+      const { data } = supabase.storage.from(IMAGE_BUCKET).getPublicUrl(path)
+      edit(i, { image_url: data.publicUrl })
+    } catch (e) {
+      setStatus('error')
+      setError(e instanceof Error ? e.message : 'Image upload failed')
+    } finally {
+      setUploading(null)
+    }
   }
 
   function save() {
@@ -163,8 +192,32 @@ export default function ProjectsManager({ initial }: { initial: CMProjectRow[] }
                 onChange={(e) => edit(i, { type: e.target.value as CMProjectType })} />
               <Input label="Link (See the build)" value={r.link_url ?? ''} onChange={(e) => edit(i, { link_url: e.target.value })} />
             </div>
-            <Input label="Image URL" value={r.image_url ?? ''} onChange={(e) => edit(i, { image_url: e.target.value })}
-              hint="Full URL (e.g. Supabase Storage public URL). Optional — a gradient backdrop is used when empty." />
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                {r.image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={r.image_url} alt="" className="w-20 h-14 rounded-md object-cover border border-cm-border flex-shrink-0" />
+                ) : (
+                  <div className="w-20 h-14 rounded-md border border-dashed border-cm-border flex items-center justify-center text-cm-muted flex-shrink-0">
+                    <Upload size={15} />
+                  </div>
+                )}
+                <div className="flex flex-col gap-1.5">
+                  <label className="inline-flex items-center gap-2 text-sm text-cm-accent hover:text-cm-white transition-colors cursor-pointer w-fit">
+                    {uploading === r.key ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                    {uploading === r.key ? 'Uploading…' : 'Upload image'}
+                    <input type="file" accept="image/*" className="sr-only" disabled={uploading === r.key}
+                      onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(i, f); e.target.value = '' }} />
+                  </label>
+                  {r.image_url && (
+                    <button type="button" onClick={() => edit(i, { image_url: '' })}
+                      className="text-xs text-cm-subtle hover:text-red-400 transition-colors w-fit">Remove image</button>
+                  )}
+                </div>
+              </div>
+              <Input label="Image URL" value={r.image_url ?? ''} onChange={(e) => edit(i, { image_url: e.target.value })}
+                hint="Uploaded automatically above, or paste a URL. Optional — a gradient backdrop is used when empty." />
+            </div>
 
             <div className="flex flex-wrap items-center gap-5 pt-1">
               <label className="flex items-center gap-2 text-sm text-cm-text">
