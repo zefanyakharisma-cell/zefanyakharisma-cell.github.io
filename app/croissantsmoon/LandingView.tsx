@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import StudioLanding from './StudioLanding'
 import { getLandingContent } from '@/lib/actions/cm-landing'
+import { getProjects } from '@/lib/actions/cm-projects'
 import type { CMLocale } from '@/lib/cm/i18n'
 
 const SITE = 'https://zefanyakharisma.com'
@@ -108,14 +109,17 @@ function buildJsonLd(description: string, locale: CMLocale) {
 
 // Shared server view rendered by both /croissantsmoon/en and /id.
 export default async function LandingView({ locale }: { locale: CMLocale }) {
-  const { content, seo } = await getLandingContent(locale)
+  const [{ content, seo }, projects] = await Promise.all([
+    getLandingContent(locale),
+    getProjects(locale),
+  ])
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(seo.description, locale)) }}
       />
-      <StudioLanding content={content} locale={locale} />
+      <StudioLanding content={content} locale={locale} projects={projects} />
     </>
   )
 }

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
   LayoutDashboard, Users, FileText, LayoutTemplate,
-  Archive, LogOut, Sparkles, Menu, X, Globe
+  Archive, LogOut, Sparkles, Menu, X, Globe, Boxes
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 const NAV = [
   { href: '/croissantsmoon/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/croissantsmoon/landing', label: 'Landing Page', icon: Globe },
+  { href: '/croissantsmoon/projects', label: 'Projects', icon: Boxes },
   { href: '/croissantsmoon/leads', label: 'Leads', icon: Users },
   { href: '/croissantsmoon/proposals', label: 'Proposals', icon: FileText },
   { href: '/croissantsmoon/templates', label: 'Templates', icon: LayoutTemplate },

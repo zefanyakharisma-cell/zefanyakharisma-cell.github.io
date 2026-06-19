@@ -258,6 +258,37 @@ export interface CMDesign {
   href: string
 }
 
+// ─── CroissantsMoon projects (single source: hero carousel + §3 grid) ───
+// Stored in the cm_projects table (column-per-language for editable copy).
+
+export type CMProjectType = 'landing' | 'webapp' | 'saas'
+
+export interface CMProjectRow {
+  id: string
+  title_en: string
+  title_id: string | null
+  outcome_en: string
+  outcome_id: string | null
+  type: CMProjectType
+  image_url: string | null
+  link_url: string | null
+  sort_order: number
+  is_featured: boolean
+  is_visible: boolean
+  created_at: string
+}
+
+// One project resolved for a single locale, ready to render.
+export interface CMProjectCard {
+  id: string
+  title: string
+  outcome: string
+  type: CMProjectType
+  imageUrl: string | null
+  linkUrl: string | null
+  isFeatured: boolean
+}
+
 export interface CMLandingContent {
   meta: {
     proposalHref: string

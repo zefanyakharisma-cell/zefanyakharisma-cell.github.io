@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -11,8 +11,194 @@ import {
 import StarField from '@/components/cm/StarField'
 import ConstellationSVG from '@/components/cm/ConstellationSVG'
 import { LangToggle } from '@/components/cm/LangToggle'
-import { LANDING_UI, type CMLocale } from '@/lib/cm/i18n'
-import type { CMIconName, CMLandingContent } from '@/types'
+import { LANDING_UI, QUOTE_UI, type CMLocale, type QuoteDict } from '@/lib/cm/i18n'
+import { submitQuoteRequest } from '@/lib/actions/cm-quote'
+import type { CMIconName, CMLandingContent, CMLink, CMProjectCard, CMProjectType } from '@/types'
+
+type LandingUi = (typeof LANDING_UI)[CMLocale]
+
+// Prefers-reduced-motion check (client). Drives carousel auto-rotation.
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return reduced
+}
+
+const TYPE_LABEL = (ui: LandingUi): Record<CMProjectType, string> => ({
+  landing: ui.typeLanding,
+  webapp: ui.typeWebapp,
+  saas: ui.typeSaas,
+})
+
+// ── Hero carousel ──────────────────────────────────────────────
+// Two-layer hero: a fixed foreground (in StudioLanding) over this rotating
+// project backdrop. Cross-fades every 6.5s, pauses on hover/focus. The
+// moon-phase row doubles as progress + manual control (waxes left→right,
+// full moon on the last slide). Under reduced motion it pins the featured
+// slide and drops rotation + the moon control entirely.
+function HeroCarousel({ slides, ui, reduced }: { slides: CMProjectCard[]; ui: LandingUi; reduced: boolean }) {
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const total = slides.length
+
+  const featuredIndex = Math.max(0, slides.findIndex((s) => s.isFeatured))
+  const activeIndex = reduced ? featuredIndex : index
+
+  useEffect(() => {
+    if (reduced || paused || total <= 1) return
+    const id = setInterval(() => setIndex((i) => (i + 1) % total), 6500)
+    return () => clearInterval(id)
+  }, [reduced, paused, total])
+
+  if (total === 0) return null
+
+  const labels = TYPE_LABEL(ui)
+  const go = (i: number) => setIndex(((i % total) + total) % total)
+  const current = slides[activeIndex]
+
+  return (
+    <div
+      className="cm-hero-carousel"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={ui.featuredWork}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
+      <div className="cm-hero-slides" aria-hidden="true">
+        {slides.map((s, i) => (
+          <div
+            key={s.id}
+            className={`cm-hero-slide cm-hero-slide-${s.type}${i === activeIndex ? ' is-active' : ''}`}
+            style={s.imageUrl ? { backgroundImage: `url("${s.imageUrl}")` } : undefined}
+          />
+        ))}
+        <div className="cm-hero-scrim" />
+      </div>
+
+      <div className="cm-hero-caption" aria-live="polite">
+        <span className="cm-hero-caption-type">{labels[current.type]}</span>
+        <span className="cm-hero-caption-title">{current.title}</span>
+        {current.linkUrl && (
+          <a href={current.linkUrl} target="_blank" rel="noopener noreferrer" className="cm-hero-caption-link">
+            {ui.seeTheBuild} <ArrowUpRight size={13} aria-hidden="true" />
+          </a>
+        )}
+      </div>
+
+      {!reduced && total > 1 && (
+        <div className="cm-moonphase" role="group" aria-label={ui.featuredWork}>
+          {slides.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              className={`cm-moon-dot${i === activeIndex ? ' is-active' : ''}`}
+              aria-label={`${ui.goToSlide}: ${s.title}`}
+              aria-current={i === activeIndex ? 'true' : undefined}
+              onClick={() => go(i)}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowRight') { e.preventDefault(); go(activeIndex + 1) }
+                if (e.key === 'ArrowLeft') { e.preventDefault(); go(activeIndex - 1) }
+              }}
+            >
+              <span className="cm-moon-fill" style={{ width: `${Math.round(((i + 1) / total) * 100)}%` }} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Selected-work grid ─────────────────────────────────────────
+// Driven by cm_projects (single source of truth) with type filters. Falls
+// back to the legacy content-authored grid when no DB projects exist, so the
+// live page is never empty mid-migration.
+function ProjectsGrid({ projects, fallback, viewAll, ui }: {
+  projects: CMProjectCard[]
+  fallback: CMLandingContent['projects']['items']
+  viewAll: CMLink
+  ui: LandingUi
+}) {
+  const [filter, setFilter] = useState<'all' | CMProjectType>('all')
+
+  if (projects.length === 0) {
+    return (
+      <>
+        <div className="cm-grid-2">
+          {fallback.map((p) => (
+            <article key={p.id} className="cm-card cm-project reveal">
+              <p className="cm-eyebrow-sm">{p.cat}</p>
+              <h3 className="cm-h3">{p.name}</h3>
+              <p className="cm-body">{p.desc}</p>
+              <ul className="cm-stack" aria-label="Tech stack">
+                {p.stack.map((t) => <li key={t} className="cm-pill">{t}</li>)}
+              </ul>
+              <div className="cm-project-links">
+                <a href={p.github} target="_blank" rel="noopener noreferrer" className="cm-link-icon">
+                  <Github size={14} aria-hidden="true" /> GitHub
+                </a>
+                <a href={p.live} target="_blank" rel="noopener noreferrer" className="cm-link-icon cm-link-accent">
+                  <ExternalLink size={14} aria-hidden="true" /> {ui.livePreview}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="cm-center">
+          <Link href={viewAll.href} className="cm-text-link">{viewAll.label} <ArrowRight size={14} /></Link>
+        </div>
+      </>
+    )
+  }
+
+  const labels = TYPE_LABEL(ui)
+  const types = Array.from(new Set(projects.map((p) => p.type)))
+  const shown = filter === 'all' ? projects : projects.filter((p) => p.type === filter)
+
+  return (
+    <>
+      <div className="cm-filters reveal" role="group" aria-label="Filter projects by type">
+        <button type="button" className={`cm-filter${filter === 'all' ? ' is-active' : ''}`}
+          aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>{ui.filterAll}</button>
+        {types.map((t) => (
+          <button key={t} type="button" className={`cm-filter${filter === t ? ' is-active' : ''}`}
+            aria-pressed={filter === t} onClick={() => setFilter(t)}>{labels[t]}</button>
+        ))}
+      </div>
+      <div className="cm-grid-2">
+        {shown.map((p) => (
+          <article key={p.id} className="cm-card cm-project reveal">
+            <div className="cm-project-top">
+              <span className="cm-project-tag">{labels[p.type]}</span>
+              {p.isFeatured && <span className="cm-project-featured">{ui.featured}</span>}
+            </div>
+            <h3 className="cm-h3">{p.title}</h3>
+            <p className="cm-body">{p.outcome}</p>
+            {p.linkUrl && (
+              <div className="cm-project-links">
+                <a href={p.linkUrl} target="_blank" rel="noopener noreferrer" className="cm-link-icon cm-link-accent">
+                  <ExternalLink size={14} aria-hidden="true" /> {ui.seeTheBuild}
+                </a>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+      <div className="cm-center">
+        <Link href={viewAll.href} className="cm-text-link">{viewAll.label} <ArrowRight size={14} /></Link>
+      </div>
+    </>
+  )
+}
 
 // ── Icon registry (resolves stored icon-name strings) ──────────
 const CM_ICONS: Record<CMIconName, LucideIcon> = {
@@ -38,12 +224,159 @@ function Deco({ stars = 40, seed = 1, constellation = true }: { stars?: number; 
   )
 }
 
+// ── Quote form (§6) ────────────────────────────────────────────
+// Qualifying lead form. Validates client + server side, posts via a server
+// action (saves to cm_quote_requests + emails the owner), shows a localized
+// success state. The "what happens next" panel reduces form anxiety.
+function QuoteForm({ locale, dict }: { locale: CMLocale; dict: QuoteDict }) {
+  const [name, setName] = useState('')
+  const [emailVal, setEmailVal] = useState('')
+  const [company, setCompany] = useState('')
+  const [building, setBuilding] = useState<string[]>([])
+  const [stage, setStage] = useState('')
+  const [budget, setBudget] = useState('')
+  const [timeline, setTimeline] = useState('')
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+  const [fieldErr, setFieldErr] = useState<{ name?: boolean; email?: boolean }>({})
+  const [errMsg, setErrMsg] = useState<string | null>(null)
+
+  const toggleBuild = (v: string) =>
+    setBuilding((b) => (b.includes(v) ? b.filter((x) => x !== v) : [...b, v]))
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const errs = {
+      name: name.trim() === '',
+      email: !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailVal.trim()),
+    }
+    setFieldErr(errs)
+    if (errs.name || errs.email) {
+      setErrMsg(errs.name ? dict.errName : dict.errEmail)
+      return
+    }
+    setStatus('sending')
+    setErrMsg(null)
+    const res = await submitQuoteRequest({
+      name, email: emailVal, company, building, stage, budget, timeline, message, locale,
+    })
+    if (res.ok) {
+      setStatus('done')
+    } else {
+      setStatus('error')
+      if (res.error === 'name') { setFieldErr((f) => ({ ...f, name: true })); setErrMsg(dict.errName) }
+      else if (res.error === 'email') { setFieldErr((f) => ({ ...f, email: true })); setErrMsg(dict.errEmail) }
+      else setErrMsg(dict.errGeneric)
+    }
+  }
+
+  if (status === 'done') {
+    return (
+      <div className="cm-quote-success reveal" role="status">
+        <Sparkles size={26} aria-hidden="true" />
+        <h3 className="cm-h3">{dict.successTitle}</h3>
+        <p className="cm-body">{dict.successBody}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="cm-quote-grid reveal">
+      <form className="cm-quote-form" onSubmit={onSubmit} noValidate>
+        <div className="cm-field-row">
+          <label className="cm-field">
+            <span className="cm-field-label">{dict.name}</span>
+            <input className={`cm-input${fieldErr.name ? ' cm-input-err' : ''}`} value={name}
+              onChange={(e) => setName(e.target.value)} required aria-invalid={fieldErr.name || undefined} />
+          </label>
+          <label className="cm-field">
+            <span className="cm-field-label">{dict.email}</span>
+            <input type="email" className={`cm-input${fieldErr.email ? ' cm-input-err' : ''}`} value={emailVal}
+              onChange={(e) => setEmailVal(e.target.value)} required aria-invalid={fieldErr.email || undefined} />
+          </label>
+        </div>
+        <label className="cm-field">
+          <span className="cm-field-label">{dict.company} <span className="cm-field-opt">{dict.optional}</span></span>
+          <input className="cm-input" value={company} onChange={(e) => setCompany(e.target.value)} />
+        </label>
+
+        <fieldset className="cm-fieldset">
+          <legend className="cm-field-label">{dict.buildingLabel}</legend>
+          <div className="cm-chips">
+            {dict.building.map((o) => {
+              const on = building.includes(o.value)
+              return (
+                <button type="button" key={o.value} className={`cm-chip${on ? ' is-active' : ''}`}
+                  aria-pressed={on} onClick={() => toggleBuild(o.value)}>
+                  {on && <Check size={13} aria-hidden="true" />} {o.label}
+                </button>
+              )
+            })}
+          </div>
+        </fieldset>
+
+        <div className="cm-field-row">
+          <label className="cm-field">
+            <span className="cm-field-label">{dict.stageLabel}</span>
+            <select className="cm-input" value={stage} onChange={(e) => setStage(e.target.value)}>
+              <option value="">—</option>
+              {dict.stage.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+          <label className="cm-field">
+            <span className="cm-field-label">{dict.budgetLabel}</span>
+            <select className="cm-input" value={budget} onChange={(e) => setBudget(e.target.value)}>
+              <option value="">—</option>
+              {dict.budget.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
+        </div>
+        <label className="cm-field">
+          <span className="cm-field-label">{dict.timelineLabel}</span>
+          <select className="cm-input" value={timeline} onChange={(e) => setTimeline(e.target.value)}>
+            <option value="">—</option>
+            {dict.timeline.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </label>
+        <label className="cm-field">
+          <span className="cm-field-label">{dict.messageLabel}</span>
+          <textarea className="cm-input cm-textarea" rows={4} value={message}
+            placeholder={dict.messagePlaceholder} onChange={(e) => setMessage(e.target.value)} />
+        </label>
+
+        {errMsg && <p className="cm-quote-error" role="alert">{errMsg}</p>}
+        <button type="submit" className="cm-btn cm-btn-primary cm-quote-submit" disabled={status === 'sending'}>
+          {status === 'sending' ? dict.submitting : dict.submit} <ArrowRight size={16} />
+        </button>
+      </form>
+
+      <aside className="cm-next-panel">
+        <h3 className="cm-next-title">{dict.nextTitle}</h3>
+        <ol className="cm-next-list">
+          {dict.nextSteps.map((s, i) => (
+            <li key={i}><span className="cm-next-num">{i + 1}</span> <span>{s}</span></li>
+          ))}
+        </ol>
+      </aside>
+    </div>
+  )
+}
+
 // ── Component ──────────────────────────────────────────────────
-export default function StudioLanding({ content, locale }: { content: CMLandingContent; locale: CMLocale }) {
+export default function StudioLanding({
+  content,
+  locale,
+  projects = [],
+}: {
+  content: CMLandingContent
+  locale: CMLocale
+  projects?: CMProjectCard[]
+}) {
   const active = content
   const ui = LANDING_UI[locale]
-  const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = active
+  const { meta, hero, services, projects: contentProjects, proof, process, pricing, demos, designs, finalCta, footer } = active
   const PROPOSAL = meta.proposalHref
+  const reduced = usePrefersReducedMotion()
 
   useEffect(() => {
     const nav = document.getElementById('cm-nav')
@@ -98,10 +431,11 @@ export default function StudioLanding({ content, locale }: { content: CMLandingC
 
         {/* ── SECTION 1 · Hero ─────────────────────────────────── */}
         <section className="cm-hero" aria-label="Introduction">
+          <HeroCarousel slides={projects} ui={ui} reduced={reduced} />
           <Deco stars={90} seed={3} />
           <div className="cm-glow cm-glow-aurora" aria-hidden="true" />
           <div className="cm-glow cm-glow-gold" aria-hidden="true" />
-          <Moon size={170} className="cm-hero-moon" />
+          {projects.length === 0 && <Moon size={170} className="cm-hero-moon" />}
           <span className="cm-hero-wordmark" aria-hidden="true">{hero.wordmark}</span>
           <span className="cm-corner-mono" aria-hidden="true">CM</span>
 
@@ -160,34 +494,15 @@ export default function StudioLanding({ content, locale }: { content: CMLandingC
           <Deco stars={36} seed={7} />
           <div className="cm-wrap">
             <header className="cm-section-head reveal">
-              <p className="cm-label">{projects.label}</p>
-              <h2 id="work-h" className="cm-h2">{projects.heading}</h2>
+              <p className="cm-label">{contentProjects.label}</p>
+              <h2 id="work-h" className="cm-h2">{contentProjects.heading}</h2>
             </header>
-            <div className="cm-grid-2">
-              {projects.items.map((p) => (
-                <article key={p.id} className="cm-card cm-project reveal">
-                  <p className="cm-eyebrow-sm">{p.cat}</p>
-                  <h3 className="cm-h3">{p.name}</h3>
-                  <p className="cm-body">{p.desc}</p>
-                  <ul className="cm-stack" aria-label="Tech stack">
-                    {p.stack.map((t) => <li key={t} className="cm-pill">{t}</li>)}
-                  </ul>
-                  <div className="cm-project-links">
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="cm-link-icon">
-                      <Github size={14} aria-hidden="true" /> GitHub
-                    </a>
-                    <a href={p.live} target="_blank" rel="noopener noreferrer" className="cm-link-icon cm-link-accent">
-                      <ExternalLink size={14} aria-hidden="true" /> {ui.livePreview}
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-            <div className="cm-center">
-              <Link href={projects.viewAll.href} className="cm-text-link">
-                {projects.viewAll.label} <ArrowRight size={14} />
-              </Link>
-            </div>
+            <ProjectsGrid
+              projects={projects}
+              fallback={contentProjects.items}
+              viewAll={contentProjects.viewAll}
+              ui={ui}
+            />
           </div>
         </section>
 
@@ -348,6 +663,19 @@ export default function StudioLanding({ content, locale }: { content: CMLandingC
                 {designs.viewAll.label} <ArrowRight size={14} />
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ── SECTION · Request a Quote ────────────────────────── */}
+        <section id="quote" className="cm-section cm-section-alt" aria-labelledby="quote-h">
+          <Deco stars={30} seed={11} constellation={false} />
+          <div className="cm-wrap">
+            <header className="cm-section-head reveal">
+              <p className="cm-label">{QUOTE_UI[locale].label}</p>
+              <h2 id="quote-h" className="cm-h2">{QUOTE_UI[locale].heading}</h2>
+              <p className="cm-quote-sub cm-body">{QUOTE_UI[locale].sub}</p>
+            </header>
+            <QuoteForm locale={locale} dict={QUOTE_UI[locale]} />
           </div>
         </section>
 
@@ -605,6 +933,73 @@ const CSS = `
   .cm-hero-moon, .cm-scroll-line { animation: none; }
 }
 
+/* Hero carousel (rotating project backdrop) */
+.cm-hero-carousel { position: absolute; inset: 0; z-index: 0; }
+.cm-hero-slides { position: absolute; inset: 0; overflow: hidden; }
+.cm-hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.4s ease; }
+.cm-hero-slide.is-active { opacity: 1; }
+.cm-hero-slide-webapp { background-image: radial-gradient(ellipse 70% 60% at 74% 26%, rgba(111,168,255,0.22), transparent 60%), linear-gradient(150deg, var(--deepspace), var(--void)); }
+.cm-hero-slide-saas { background-image: radial-gradient(ellipse 70% 60% at 70% 30%, rgba(212,177,90,0.18), transparent 60%), linear-gradient(150deg, var(--deepspace), var(--void)); }
+.cm-hero-slide-landing { background-image: radial-gradient(ellipse 70% 60% at 72% 28%, rgba(143,168,214,0.2), transparent 60%), linear-gradient(150deg, var(--deepspace), var(--void)); }
+.cm-hero-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(3,7,18,0.94) 0%, rgba(3,7,18,0.8) 44%, rgba(3,7,18,0.5) 100%), linear-gradient(0deg, rgba(3,7,18,0.85), transparent 55%); backdrop-filter: blur(2px); }
+.cm-hero-caption { position: absolute; right: clamp(16px,4vw,40px); bottom: clamp(74px,12vh,104px); z-index: 3; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; max-width: 320px; text-align: right; padding: 12px 16px; background: rgba(7,17,38,0.6); border: 1px solid var(--border); border-radius: 14px; backdrop-filter: blur(8px); }
+.cm-hero-caption-type { font-family: var(--body); font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.cm-hero-caption-title { font-family: var(--display); font-style: italic; font-size: 17px; line-height: 1.2; color: var(--moonlight); }
+.cm-hero-caption-link { display: inline-flex; align-items: center; gap: 5px; font-family: var(--body); font-size: 12px; font-weight: 600; color: var(--stardust); margin-top: 2px; transition: color .2s ease; }
+.cm-hero-caption-link:hover { color: var(--gold); }
+
+/* Moon-phase progress + manual control (waxes left→right, full on last slide) */
+.cm-moonphase { position: absolute; left: clamp(16px,4vw,40px); bottom: clamp(74px,12vh,104px); z-index: 3; display: inline-flex; align-items: center; gap: 10px; }
+.cm-moon-dot { position: relative; width: 18px; height: 18px; border-radius: 999px; border: 1px solid rgba(212,177,90,0.5); background: rgba(7,17,38,0.6); overflow: hidden; cursor: pointer; padding: 0; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.cm-moon-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); opacity: .85; }
+.cm-moon-dot.is-active { transform: scale(1.18); box-shadow: 0 0 14px rgba(212,177,90,0.6); border-color: var(--gold); }
+.cm-moon-dot:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Project filters + DB-driven cards */
+.cm-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 30px; }
+.cm-filter { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--stardust); padding: 7px 16px; border-radius: 999px; border: 1px solid var(--border); background: rgba(11,30,58,0.4); cursor: pointer; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+.cm-filter:hover { color: var(--moonlight); border-color: rgba(212,177,90,0.4); }
+.cm-filter.is-active { color: var(--midnight); background: var(--gold); border-color: var(--gold); }
+.cm-filter:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.cm-project-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.cm-project-tag { font-family: var(--body); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); padding: 4px 10px; border: 1px solid rgba(212,177,90,0.3); border-radius: 999px; }
+.cm-project-featured { font-family: var(--body); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--aurora); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-hero-slide { transition: none; }
+}
+
+/* Quote form (§6) */
+.cm-quote-sub { max-width: 520px; margin-top: 16px; }
+.cm-quote-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; align-items: start; }
+.cm-quote-form { display: flex; flex-direction: column; gap: 18px; background: rgba(11,30,58,0.46); border: 1px solid var(--border); border-radius: 18px; padding: clamp(22px,3vw,34px); }
+.cm-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cm-field { display: flex; flex-direction: column; gap: 8px; }
+.cm-field-label { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--stardust); }
+.cm-field-opt { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .6; }
+.cm-input { font-family: var(--body); font-size: 15px; color: var(--moonlight); background: rgba(7,17,38,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; width: 100%; transition: border-color .2s ease, box-shadow .2s ease; }
+.cm-input::placeholder { color: var(--stardust); opacity: .5; }
+.cm-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,177,90,0.18); }
+.cm-input-err { border-color: #e3787a; }
+.cm-textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+select.cm-input { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--stardust) 50%), linear-gradient(135deg, var(--stardust) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+.cm-input option { background: var(--midnight); color: var(--moonlight); }
+.cm-fieldset { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.cm-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.cm-chip { display: inline-flex; align-items: center; gap: 5px; font-family: var(--body); font-size: 13px; font-weight: 500; color: var(--stardust); padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: rgba(7,17,38,0.5); cursor: pointer; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+.cm-chip:hover { color: var(--moonlight); border-color: rgba(212,177,90,0.4); }
+.cm-chip.is-active { color: var(--midnight); background: var(--gold); border-color: var(--gold); }
+.cm-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.cm-quote-error { color: #e89a9c; font-size: 13px; margin: 0; }
+.cm-quote-submit { align-self: flex-start; margin-top: 4px; }
+.cm-quote-success { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; max-width: 520px; margin: 0 auto; padding: clamp(34px,5vw,60px); background: rgba(11,30,58,0.46); border: 1px solid rgba(212,177,90,0.3); border-radius: 18px; }
+.cm-quote-success svg { color: var(--gold); }
+.cm-next-panel { background: linear-gradient(160deg, rgba(212,177,90,0.1), rgba(111,168,255,0.05)); border: 1px solid rgba(212,177,90,0.22); border-radius: 18px; padding: clamp(22px,3vw,30px); }
+.cm-next-title { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 22px; color: var(--moonlight); margin: 0 0 20px; }
+.cm-next-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 18px; }
+.cm-next-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.6; color: var(--stardust); }
+.cm-next-num { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; font-family: var(--display); font-style: italic; font-size: 14px; color: var(--gold); border: 1px solid rgba(212,177,90,0.4); border-radius: 999px; background: var(--midnight); }
+
 /* Responsive */
 @media (max-width: 900px) {
   .cm-grid-3 { grid-template-columns: repeat(2,1fr); }
@@ -618,6 +1013,7 @@ const CSS = `
   .cm-demo-art { display: none; }
   .cm-hero-moon { right: -6vw; top: 8%; opacity: 0.5; }
   .cm-hero-wordmark { display: none; }
+  .cm-quote-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .cm-section { padding: 68px 0; }
@@ -625,5 +1021,8 @@ const CSS = `
   .cm-grid-2 { grid-template-columns: 1fr; }
   .cm-grid-4 { grid-template-columns: 1fr; }
   .cm-statbar { grid-template-columns: 1fr 1fr; }
+  .cm-hero-caption { display: none; }
+  .cm-moonphase { bottom: 30px; }
+  .cm-field-row { grid-template-columns: 1fr; }
 }
 `

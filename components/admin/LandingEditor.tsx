@@ -11,6 +11,40 @@ import {
   Plus, Trash2, ArrowUp, ArrowDown, ChevronDown, Save, ExternalLink, RotateCcw,
 } from 'lucide-react'
 import { LANDING_DEFAULTS, SEO_DEFAULTS } from '@/lib/cm/landing-defaults'
+import { LANDING_DEFAULTS_ID } from '@/lib/cm/landing-defaults-id'
+
+// Language-neutral keys (URLs, emails, icon names, image folders, raw prices)
+// are never flagged as "missing ID" — they're shared across both languages.
+const NEUTRAL_KEYS = new Set([
+  'href', 'github', 'live', 'logoSrc', 'email', 'githubUrl', 'linkedinUrl',
+  'siteUrl', 'proposalHref', 'imageBase', 'folder', 'ogImage', 'icon', 'id', 'num', 'price',
+])
+
+// Count string leaves that look untranslated in the ID document: empty, or
+// still identical to the resolved English value.
+function countUntranslated(en: unknown, id: unknown, key?: string): number {
+  if (key && NEUTRAL_KEYS.has(key)) return 0
+  if (typeof en === 'string') {
+    if (typeof id !== 'string') return 0
+    const e = en.trim()
+    if (e === '') return 0
+    const i = id.trim()
+    return i === '' || i === e ? 1 : 0
+  }
+  if (Array.isArray(en) && Array.isArray(id)) {
+    let n = 0
+    for (let k = 0; k < en.length; k++) n += countUntranslated(en[k], id[k])
+    return n
+  }
+  if (en && id && typeof en === 'object' && typeof id === 'object') {
+    let n = 0
+    for (const k of Object.keys(en as Record<string, unknown>)) {
+      n += countUntranslated((en as Record<string, unknown>)[k], (id as Record<string, unknown>)[k], k)
+    }
+    return n
+  }
+  return 0
+}
 
 const ICON_OPTIONS: { value: CMIconName; label: string }[] = [
   { value: 'Monitor', label: 'Monitor' },
@@ -30,13 +64,16 @@ const toLines = (arr: string[]) => arr.join('\n')
 const fromLines = (s: string) => s.split('\n').map(l => l.trim()).filter(Boolean)
 
 // ── Layout primitives ──────────────────────────────────────────
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
+function Section({ title, subtitle, badge, children }: { title: string; subtitle?: string; badge?: ReactNode; children: ReactNode }) {
   return (
     <details className="group bg-cm-surface border border-cm-border rounded-xl overflow-hidden" open>
       <summary className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none select-none hover:bg-cm-elevated/40 transition-colors">
-        <div>
-          <h2 className="text-sm font-semibold text-cm-white">{title}</h2>
-          {subtitle && <p className="text-xs text-cm-subtle mt-0.5">{subtitle}</p>}
+        <div className="flex items-center gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-cm-white">{title}</h2>
+            {subtitle && <p className="text-xs text-cm-subtle mt-0.5">{subtitle}</p>}
+          </div>
+          {badge}
         </div>
         <ChevronDown size={16} className="text-cm-subtle transition-transform group-open:rotate-180 flex-shrink-0" />
       </summary>
@@ -98,16 +135,23 @@ function AddButton({ onClick, label }: { onClick: () => void; label: string }) {
 }
 
 // ── Editor ──────────────────────────────────────────────────────
-export default function LandingEditor({ initialContent, initialSeo }: {
-  initialContent: CMLandingContent; initialSeo: CMLandingSeo
+export default function LandingEditor({ initialContentEn, initialContentId, initialSeo }: {
+  initialContentEn: CMLandingContent; initialContentId: CMLandingContent; initialSeo: CMLandingSeo
 }) {
-  const [content, setContent] = useState<CMLandingContent>(initialContent)
+  const [contentEn, setContentEn] = useState<CMLandingContent>(initialContentEn)
+  const [contentId, setContentId] = useState<CMLandingContent>(initialContentId)
   const [seo, setSeo] = useState<CMLandingSeo>(initialSeo)
+  const [editLocale, setEditLocale] = useState<'en' | 'id'>('en')
   const [pending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
-  // Immutable editing via structuredClone of the relevant slice.
+  // The form always edits the active-locale document in place; EN and ID are
+  // saved together so the public page can fall back EN→ID per field.
+  const content = editLocale === 'en' ? contentEn : contentId
+  const setContent = editLocale === 'en' ? setContentEn : setContentId
+
+  // Immutable editing via structuredClone of the active-locale document.
   function edit(fn: (d: CMLandingContent) => void) {
     setStatus('idle')
     setContent(prev => { const d = structuredClone(prev); fn(d); return d })
@@ -127,7 +171,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
     setError(null)
     startTransition(async () => {
       try {
-        await updateLandingContent(content, seo)
+        await updateLandingContent(contentEn, seo, contentId)
         setStatus('saved')
       } catch (e) {
         setStatus('error')
@@ -137,11 +181,30 @@ export default function LandingEditor({ initialContent, initialSeo }: {
   }
 
   function resetDefaults() {
-    if (!confirm('Reset all fields to the built-in defaults? This only changes the editor — you still need to Save.')) return
-    setContent(structuredClone(LANDING_DEFAULTS))
-    setSeo(structuredClone(SEO_DEFAULTS))
+    const isEn = editLocale === 'en'
+    if (!confirm(`Reset the ${isEn ? 'English' : 'Indonesian'} fields to the built-in defaults? This only changes the editor — you still need to Save.`)) return
+    if (isEn) {
+      setContentEn(structuredClone(LANDING_DEFAULTS))
+      setSeo(structuredClone(SEO_DEFAULTS))
+    } else {
+      setContentId(structuredClone(LANDING_DEFAULTS_ID))
+    }
     setStatus('idle')
   }
+
+  // Per-section "needs ID" badge — only meaningful while editing Indonesian.
+  function secBadge(key: keyof CMLandingContent) {
+    if (editLocale !== 'id') return undefined
+    const n = countUntranslated(contentEn[key], contentId[key], key as string)
+    if (n === 0) return undefined
+    return (
+      <span className="inline-flex items-center rounded-full bg-amber-400/15 text-amber-300 text-[10px] font-semibold px-2 py-0.5 uppercase tracking-wide whitespace-nowrap">
+        {n} need ID
+      </span>
+    )
+  }
+
+  const totalUntranslated = countUntranslated(contentEn, contentId)
 
   const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = content
 
@@ -153,10 +216,33 @@ export default function LandingEditor({ initialContent, initialSeo }: {
           <h1 className="text-2xl font-semibold text-cm-white">Landing Page</h1>
           <p className="text-sm text-cm-subtle mt-1">Edit every section of the public /croissantsmoon page.</p>
         </div>
-        <a href="/croissantsmoon" target="_blank" rel="noopener noreferrer"
+        <a href={`/croissantsmoon/${editLocale}`} target="_blank" rel="noopener noreferrer"
           className="hidden sm:inline-flex items-center gap-2 text-sm text-cm-subtle hover:text-cm-text transition-colors">
-          <ExternalLink size={14} /> View live
+          <ExternalLink size={14} /> View live ({editLocale.toUpperCase()})
         </a>
+      </div>
+
+      {/* Language being edited. EN + ID are stored separately and saved together;
+          on the public page any untranslated ID field falls back to English. */}
+      <div className="flex flex-wrap items-center gap-3 mb-6 max-w-3xl">
+        <div className="inline-flex rounded-lg border border-cm-border bg-cm-surface p-1">
+          {(['en', 'id'] as const).map(l => (
+            <button key={l} type="button" onClick={() => { setEditLocale(l); setStatus('idle') }}
+              aria-pressed={editLocale === l}
+              className={`px-3.5 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                editLocale === l ? 'bg-cm-gold text-cm-black' : 'text-cm-subtle hover:text-cm-text'
+              }`}>
+              {l === 'en' ? 'English' : 'Bahasa Indonesia'}
+            </button>
+          ))}
+        </div>
+        {editLocale === 'id' && (
+          <span className="text-xs text-cm-subtle">
+            {totalUntranslated > 0
+              ? `${totalUntranslated} field${totalUntranslated === 1 ? '' : 's'} still match English — translate to clear the badges.`
+              : 'All fields translated ✓'}
+          </span>
+        )}
       </div>
 
       <div className="space-y-4 max-w-3xl pb-28">
@@ -178,7 +264,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* HERO */}
-        <Section title="Hero" subtitle="The first thing visitors see.">
+        <Section title="Hero" subtitle="The first thing visitors see." badge={secBadge('hero')}>
           <Input label="Eyebrow" value={hero.eyebrow} onChange={e => edit(d => { d.hero.eyebrow = e.target.value })} />
           <Row>
             <Input label="Title line 1" value={hero.titleLine1} onChange={e => edit(d => { d.hero.titleLine1 = e.target.value })} />
@@ -194,7 +280,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* SERVICES */}
-        <Section title="Services" subtitle="The “What We Build” cards.">
+        <Section title="Services" subtitle="The “What We Build” cards." badge={secBadge('services')}>
           <Row>
             <Input label="Section label" value={services.label} onChange={e => edit(d => { d.services.label = e.target.value })} />
             <Input label="Heading" value={services.heading} onChange={e => edit(d => { d.services.heading = e.target.value })} />
@@ -218,7 +304,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* PROJECTS */}
-        <Section title="Featured Projects" subtitle="The “Selected Work” grid.">
+        <Section title="Featured Projects" subtitle="The “Selected Work” grid." badge={secBadge('projects')}>
           <Row>
             <Input label="Section label" value={projects.label} onChange={e => edit(d => { d.projects.label = e.target.value })} />
             <Input label="Heading" value={projects.heading} onChange={e => edit(d => { d.projects.heading = e.target.value })} />
@@ -246,7 +332,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* SOCIAL PROOF */}
-        <Section title="Testimonials & Stats" subtitle="Quotes plus the stat bar.">
+        <Section title="Testimonials & Stats" subtitle="Quotes plus the stat bar." badge={secBadge('proof')}>
           <Row>
             <Input label="Section label" value={proof.label} onChange={e => edit(d => { d.proof.label = e.target.value })} />
             <Input label="Heading" value={proof.heading} onChange={e => edit(d => { d.proof.heading = e.target.value })} />
@@ -279,7 +365,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* PROCESS */}
-        <Section title="How It Works" subtitle="The numbered process steps.">
+        <Section title="How It Works" subtitle="The numbered process steps." badge={secBadge('process')}>
           <Row>
             <Input label="Section label" value={process.label} onChange={e => edit(d => { d.process.label = e.target.value })} />
             <Input label="Heading" value={process.heading} onChange={e => edit(d => { d.process.heading = e.target.value })} />
@@ -300,7 +386,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* PRICING */}
-        <Section title="Pricing" subtitle="Founding banner and pricing tiers.">
+        <Section title="Pricing" subtitle="Founding banner and pricing tiers." badge={secBadge('pricing')}>
           <Row>
             <Input label="Section label" value={pricing.label} onChange={e => edit(d => { d.pricing.label = e.target.value })} />
             <Input label="Heading" value={pricing.heading} onChange={e => edit(d => { d.pricing.heading = e.target.value })} />
@@ -336,7 +422,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* DEMOS */}
-        <Section title="Demo Experiences" subtitle="The large demo cards.">
+        <Section title="Demo Experiences" subtitle="The large demo cards." badge={secBadge('demos')}>
           <Row>
             <Input label="Section label" value={demos.label} onChange={e => edit(d => { d.demos.label = e.target.value })} />
             <Input label="Heading" value={demos.heading} onChange={e => edit(d => { d.demos.heading = e.target.value })} />
@@ -374,7 +460,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* DESIGNS */}
-        <Section title="Visual Identity" subtitle="Design work cards. Images load from {base}/{folder}/1.png.">
+        <Section title="Visual Identity" subtitle="Design work cards. Images load from {base}/{folder}/1.png." badge={secBadge('designs')}>
           <Row>
             <Input label="Section label" value={designs.label} onChange={e => edit(d => { d.designs.label = e.target.value })} />
             <Input label="Heading" value={designs.heading} onChange={e => edit(d => { d.designs.heading = e.target.value })} />
@@ -402,7 +488,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* FINAL CTA */}
-        <Section title="Final CTA" subtitle="The closing call-to-action band.">
+        <Section title="Final CTA" subtitle="The closing call-to-action band." badge={secBadge('finalCta')}>
           <Row>
             <Input label="Label" value={finalCta.label} onChange={e => edit(d => { d.finalCta.label = e.target.value })} />
             <Input label="Heading" value={finalCta.heading} onChange={e => edit(d => { d.finalCta.heading = e.target.value })} />
@@ -413,7 +499,7 @@ export default function LandingEditor({ initialContent, initialSeo }: {
         </Section>
 
         {/* FOOTER */}
-        <Section title="Footer" subtitle="Brand line, links and fine print.">
+        <Section title="Footer" subtitle="Brand line, links and fine print." badge={secBadge('footer')}>
           <Input label="Brand name" value={footer.brand} onChange={e => edit(d => { d.footer.brand = e.target.value })} />
           <Row>
             <Input label="Copyright" value={footer.copyright} onChange={e => edit(d => { d.footer.copyright = e.target.value })} />

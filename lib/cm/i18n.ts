@@ -47,9 +47,158 @@ export const LANDING_UI: Record<CMLocale, {
   explore: string
   mostCommon: string
   livePreview: string
+  filterAll: string
+  typeLanding: string
+  typeWebapp: string
+  typeSaas: string
+  seeTheBuild: string
+  featured: string
+  featuredWork: string
+  previousSlide: string
+  nextSlide: string
+  goToSlide: string
 }> = {
-  en: { explore: 'Explore', mostCommon: 'Most common', livePreview: 'Live Preview' },
-  id: { explore: 'Jelajahi', mostCommon: 'Paling Umum', livePreview: 'Pratinjau Langsung' },
+  en: {
+    explore: 'Explore', mostCommon: 'Most common', livePreview: 'Live Preview',
+    filterAll: 'All', typeLanding: 'Landing', typeWebapp: 'Web App', typeSaas: 'SaaS',
+    seeTheBuild: 'See the build', featured: 'Featured', featuredWork: 'Featured work',
+    previousSlide: 'Previous project', nextSlide: 'Next project', goToSlide: 'Go to project',
+  },
+  id: {
+    explore: 'Jelajahi', mostCommon: 'Paling Umum', livePreview: 'Pratinjau Langsung',
+    filterAll: 'Semua', typeLanding: 'Landing Page', typeWebapp: 'Aplikasi Web', typeSaas: 'SaaS',
+    seeTheBuild: 'Lihat hasilnya', featured: 'Unggulan', featuredWork: 'Karya unggulan',
+    previousSlide: 'Proyek sebelumnya', nextSlide: 'Proyek berikutnya', goToSlide: 'Ke proyek',
+  },
+}
+
+// ── Quote form (§6) — fully localized. Option `value`s are canonical English
+// strings (stored in cm_quote_requests); only `label` is translated. ──
+export interface QuoteOption { value: string; label: string }
+export interface QuoteDict {
+  label: string
+  heading: string
+  sub: string
+  name: string
+  email: string
+  company: string
+  optional: string
+  buildingLabel: string
+  building: QuoteOption[]
+  stageLabel: string
+  stage: QuoteOption[]
+  budgetLabel: string
+  budget: QuoteOption[]
+  timelineLabel: string
+  timeline: QuoteOption[]
+  messageLabel: string
+  messagePlaceholder: string
+  submit: string
+  submitting: string
+  successTitle: string
+  successBody: string
+  errName: string
+  errEmail: string
+  errGeneric: string
+  nextTitle: string
+  nextSteps: string[]
+}
+
+export const QUOTE_UI: Record<CMLocale, QuoteDict> = {
+  en: {
+    label: 'Request a Quote',
+    heading: 'Tell us what you’re building.',
+    sub: 'A few quick questions so we can come back with something specific — not a generic reply.',
+    name: 'Name', email: 'Email', company: 'Company', optional: 'optional',
+    buildingLabel: 'What are you building?',
+    building: [
+      { value: 'Landing Page', label: 'Landing Page' },
+      { value: 'Web App', label: 'Web App' },
+      { value: 'SaaS', label: 'SaaS' },
+      { value: 'Not sure yet', label: 'Not sure yet' },
+    ],
+    stageLabel: 'Project stage',
+    stage: [
+      { value: 'Just an idea', label: 'Just an idea' },
+      { value: 'Have a brief', label: 'Have a brief' },
+      { value: 'Redesign of existing', label: 'Redesign of existing' },
+    ],
+    budgetLabel: 'Budget band',
+    budget: [
+      { value: '< Rp 15jt', label: '< Rp 15jt' },
+      { value: 'Rp 15–50jt', label: 'Rp 15–50jt' },
+      { value: 'Rp 50jt+', label: 'Rp 50jt+' },
+      { value: 'Not sure yet', label: 'Not sure yet, let’s talk' },
+    ],
+    timelineLabel: 'Timeline',
+    timeline: [
+      { value: 'ASAP', label: 'ASAP' },
+      { value: '1–3 months', label: '1–3 months' },
+      { value: 'Flexible', label: 'Flexible' },
+    ],
+    messageLabel: 'Tell us about it',
+    messagePlaceholder: 'What are you trying to achieve? Anything we should know?',
+    submit: 'Request a Quote',
+    submitting: 'Sending…',
+    successTitle: 'Thank you — we’ve got it.',
+    successBody: 'We review every request within 24 hours and will reply to your email to set up a short discovery call.',
+    errName: 'Please enter your name.',
+    errEmail: 'Please enter a valid email address.',
+    errGeneric: 'Something went wrong. Please try again, or email us directly.',
+    nextTitle: 'What happens next',
+    nextSteps: [
+      'We review your request within 24 hours.',
+      'A short discovery call to understand the goal.',
+      'A fixed-scope proposal — no surprises.',
+    ],
+  },
+  id: {
+    label: 'Minta Penawaran',
+    heading: 'Ceritakan apa yang sedang Anda bangun.',
+    sub: 'Beberapa pertanyaan singkat agar kami bisa membalas dengan sesuatu yang spesifik — bukan jawaban umum.',
+    name: 'Nama', email: 'Email', company: 'Perusahaan', optional: 'opsional',
+    buildingLabel: 'Apa yang Anda bangun?',
+    building: [
+      { value: 'Landing Page', label: 'Landing Page' },
+      { value: 'Web App', label: 'Aplikasi Web' },
+      { value: 'SaaS', label: 'SaaS' },
+      { value: 'Not sure yet', label: 'Belum yakin' },
+    ],
+    stageLabel: 'Tahap proyek',
+    stage: [
+      { value: 'Just an idea', label: 'Baru sebatas ide' },
+      { value: 'Have a brief', label: 'Sudah ada brief' },
+      { value: 'Redesign of existing', label: 'Desain ulang yang sudah ada' },
+    ],
+    budgetLabel: 'Kisaran anggaran',
+    budget: [
+      { value: '< Rp 15jt', label: '< Rp 15jt' },
+      { value: 'Rp 15–50jt', label: 'Rp 15–50jt' },
+      { value: 'Rp 50jt+', label: 'Rp 50jt+' },
+      { value: 'Not sure yet', label: 'Belum yakin, mari bicara' },
+    ],
+    timelineLabel: 'Lini masa',
+    timeline: [
+      { value: 'ASAP', label: 'Secepatnya' },
+      { value: '1–3 months', label: '1–3 bulan' },
+      { value: 'Flexible', label: 'Fleksibel' },
+    ],
+    messageLabel: 'Ceritakan lebih lanjut',
+    messagePlaceholder: 'Apa yang ingin Anda capai? Ada hal yang perlu kami ketahui?',
+    submit: 'Minta Penawaran',
+    submitting: 'Mengirim…',
+    successTitle: 'Terima kasih — sudah kami terima.',
+    successBody: 'Kami meninjau setiap permintaan dalam 24 jam dan akan membalas ke email Anda untuk menjadwalkan sesi diskusi singkat.',
+    errName: 'Silakan masukkan nama Anda.',
+    errEmail: 'Silakan masukkan alamat email yang valid.',
+    errGeneric: 'Terjadi kesalahan. Silakan coba lagi, atau email kami langsung.',
+    nextTitle: 'Langkah selanjutnya',
+    nextSteps: [
+      'Kami meninjau permintaan Anda dalam 24 jam.',
+      'Sesi diskusi singkat untuk memahami tujuan Anda.',
+      'Proposal dengan ruang lingkup tetap — tanpa kejutan.',
+    ],
+  },
 }
 
 // ── Proposal portal — section headers (accent colour stays in component) ──
