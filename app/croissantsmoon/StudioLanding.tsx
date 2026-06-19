@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -39,9 +39,8 @@ function Deco({ stars = 40, seed = 1, constellation = true }: { stars?: number; 
 }
 
 // ── Component ──────────────────────────────────────────────────
-export default function StudioLanding({ content, contentId }: { content: CMLandingContent; contentId: CMLandingContent }) {
-  const [locale, setLocale] = useState<CMLocale>('en')
-  const active = locale === 'id' ? contentId : content
+export default function StudioLanding({ content, locale }: { content: CMLandingContent; locale: CMLocale }) {
+  const active = content
   const ui = LANDING_UI[locale]
   const { meta, hero, services, projects, proof, process, pricing, demos, designs, finalCta, footer } = active
   const PROPOSAL = meta.proposalHref
@@ -87,7 +86,7 @@ export default function StudioLanding({ content, contentId }: { content: CMLandi
             <span className="cm-mono-link">{footer.brand}</span>
           </a>
           <div className="cm-nav-actions">
-            <LangToggle locale={locale} onChange={setLocale} compact />
+            <LangToggle locale={locale} compact />
             <Link href={hero.primaryCta.href} className="cm-btn cm-btn-ghost cm-nav-cta">
               {hero.primaryCta.label}
             </Link>
