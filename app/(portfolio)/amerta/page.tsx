@@ -108,7 +108,7 @@ export default function Amerta() {
         </div>
       </div>
 
-      <section className="section !pb-10">
+      <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           <Stat value={stats.amertaParticipants} label="Students, XXI–XXIV" />
           <Stat value="14" label="Countries" />
@@ -117,14 +117,14 @@ export default function Amerta() {
         </div>
       </section>
 
-      <section className="section !pt-6">
+      <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Reach" title="Where students came from" />
           <Reveal><WorldMap map={map} unit="students" label="AMERTA students by country" /></Reveal>
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap flex flex-col gap-12">
           <div className="grid gap-8 lg:grid-cols-2 items-start">
             <div className="pcu-card">
@@ -156,7 +156,7 @@ export default function Amerta() {
         </div>
       </section>
 
-      <section className="section relative overflow-hidden">
+      <section className="section relative overflow-hidden decor-glow-br">
         <Shape kind="quarter-bl" color="amber" className="w-[120px] right-0 top-0 hidden md:block" />
         <div className="wrap">
           <SectionHead eyebrow="Process" title="Eight steps, one journey" />
@@ -164,7 +164,8 @@ export default function Amerta() {
         </div>
       </section>
 
-      <section className="section !pt-0">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section !pt-0 decor-ring-tr">
         <div className="wrap">
           <SectionHead eyebrow="Gallery" title="Moments" />
           <PhotoWall images={GALLERY_IMAGES} alt="AMERTA exchange activity" />

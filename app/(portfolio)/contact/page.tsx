@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 export default function Contact() {
   return (
-    <section className="relative overflow-hidden py-[clamp(56px,8vw,112px)]">
+    <section className="relative overflow-hidden py-[clamp(56px,8vw,112px)] decor-grid">
+      <div aria-hidden className="hero-glow hero-glow--light" />
       <Shape kind="quarter-bl" color="amber" className="right-0 top-0 w-[180px]" />
       <Shape kind="circle" color="cerise" className="right-[200px] top-10 w-12 hidden sm:block" />
       <div className="wrap relative !max-w-[920px] flex flex-col gap-5">

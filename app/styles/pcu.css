@@ -191,3 +191,60 @@
 
 /* Self-hosted Inter is loaded by next/font as --font-inter. */
 :root { --pcu-font-inter: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+/* ---------- Loader, splash and route progress (site layer) ---------- */
+.pcu-loader-mark { display: flex; flex-direction: column; align-items: center; gap: 18px; color: var(--pcu-white); position: relative; }
+.pcu-loader__ring { fill: none; stroke-width: 12; stroke-linecap: butt; stroke-dasharray: 300; stroke-dashoffset: 300; animation: pcu-draw 1.8s cubic-bezier(.65,0,.35,1) infinite alternate; }
+.pcu-loader__ring--1 { stroke: var(--pcu-amber); }
+.pcu-loader__ring--2 { stroke: var(--pcu-teal); animation-delay: .25s; }
+.pcu-loader__ring--3 { stroke: var(--pcu-blue); stroke-width: 9; animation-delay: .5s; }
+.pcu-loader__name { font-weight: 600; letter-spacing: .02em; font-size: .9375rem; color: var(--pcu-smoke); }
+.pcu-loader__bar { position: relative; width: 160px; height: 4px; border-radius: 9999px; background: rgba(255,255,255,.16); overflow: hidden; }
+.pcu-loader__bar::after { content: ""; position: absolute; inset: 0; width: 40%; border-radius: inherit; background: var(--pcu-amber); animation: pcu-bar 1.1s ease-in-out infinite; }
+.pcu-loader-mark--compact { gap: 14px; }
+@keyframes pcu-draw { to { stroke-dashoffset: 0; } }
+@keyframes pcu-bar { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+.pcu-splash { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden;
+  background: var(--pcu-gradient-midnight); transition: opacity .45s ease, visibility .45s;
+  animation: pcu-splash-out .45s ease 3s forwards; }
+.pcu-splash[data-done] { opacity: 0; visibility: hidden; pointer-events: none; }
+html[data-splash="seen"] .pcu-splash { display: none; }
+.pcu-splash__deco { position: absolute; pointer-events: none; }
+.pcu-splash__deco--a { color: var(--pcu-amber); width: min(46vw, 420px); right: -4%; top: 0; }
+.pcu-splash__deco--b { color: var(--pcu-teal); width: min(56vw, 520px); left: -6%; bottom: 0; }
+.pcu-splash__deco--c { color: var(--pcu-blue); width: min(22vw, 180px); left: 12%; top: 10%; opacity: .55; }
+@keyframes pcu-splash-out { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+.pcu-route-progress { position: fixed; top: 0; left: 0; z-index: 90; height: 3px; width: 0; background: linear-gradient(90deg, var(--pcu-amber), var(--pcu-cerise)); opacity: 0; transition: opacity .3s ease; }
+.pcu-route-progress[data-busy] { opacity: 1; animation: pcu-progress 8s cubic-bezier(.1,.8,.2,1) forwards; }
+@keyframes pcu-progress { from { width: 0; } 20% { width: 45%; } to { width: 92%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pcu-loader__ring { animation: none; stroke-dashoffset: 0; }
+  .pcu-loader__bar::after { animation: none; width: 100%; }
+  .pcu-route-progress[data-busy] { animation: none; width: 60%; }
+}
+
+/* ---------- Flags (flag-icons) ---------- */
+.pcu-flag { flex: none; width: 1.375em; height: 1em; border-radius: 3px; background-size: cover; box-shadow: 0 0 0 1px rgba(25,48,75,.18); }
+
+/* ---------- Decoration primitives (site layer) ----------
+   Brand-token gradients, dotted grid, linework rings and the pattern tile.
+   Each sits behind content (z-index -1 inside an isolated section). */
+.decor-grid { background-image: radial-gradient(rgba(25,48,75,.11) 1px, transparent 1.3px); background-size: 22px 22px; }
+.decor-glow-tr, .decor-glow-bl, .decor-glow-br, .decor-ring-bl, .decor-ring-tr { position: relative; isolation: isolate; overflow-x: clip; }
+.decor-glow-tr::before, .decor-glow-bl::before, .decor-glow-br::before { content: ""; position: absolute; z-index: -1; pointer-events: none; width: min(560px, 80vw); aspect-ratio: 1; border-radius: 50%; }
+.decor-glow-tr::before { top: -200px; right: -180px; background: radial-gradient(circle, rgba(69,184,188,.22), rgba(84,254,235,.06) 45%, transparent 68%); }
+.decor-glow-bl::before { bottom: -220px; left: -200px; background: radial-gradient(circle, rgba(255,188,0,.20), rgba(236,0,140,.05) 50%, transparent 68%); }
+.decor-glow-br::before { bottom: -220px; right: -180px; background: radial-gradient(circle, rgba(56,128,208,.20), rgba(236,0,140,.06) 50%, transparent 68%); }
+.decor-ring-bl::after, .decor-ring-tr::after { content: ""; position: absolute; z-index: -1; pointer-events: none; width: 340px; aspect-ratio: 2/1; border: 1.5px solid rgba(56,128,208,.35); border-bottom: 0; border-radius: 340px 340px 0 0; }
+.decor-ring-bl::after { left: -90px; bottom: 0; }
+.decor-ring-tr::after { right: -90px; top: 0; transform: rotate(180deg); }
+.pattern-band { height: 12px; background-size: 48px 48px; background-repeat: repeat-x; }
+.hero-glow { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.hero-glow::before, .hero-glow::after { content: ""; position: absolute; border-radius: 50%; width: min(620px, 90vw); aspect-ratio: 1; }
+.hero-glow::before { top: -260px; left: -200px; background: radial-gradient(circle, rgba(84,254,235,.20), transparent 65%); }
+.hero-glow::after { bottom: -300px; right: 20%; background: radial-gradient(circle, rgba(236,0,140,.16), transparent 65%); }
+.hero-glow--light::before { background: radial-gradient(circle, rgba(69,184,188,.18), transparent 65%); }
+.hero-glow--light::after { background: radial-gradient(circle, rgba(255,188,0,.18), transparent 65%); }

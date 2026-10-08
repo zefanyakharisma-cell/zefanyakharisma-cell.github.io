@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { CountryCode } from '@/components/pcu/CountryCode'
+import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
 import { CORNERS, INSTITUTIONS, STUDENT_DELEGATIONS } from '@/lib/data/aero'
 
 type Booth = { n: number; name: string; group: Group; country?: string }
@@ -71,8 +73,11 @@ export function BoothMap() {
       </div>
       <div className="pcu-card" aria-live="polite">
         <span className="pcu-eyebrow text-accent-strong">Booth {active}</span>
-        <p className="m-0 mt-2 text-2xl font-bold leading-snug">{current?.name ?? 'Booth to be confirmed'}</p>
-        {current && <p className="m-0 mt-2 muted">{GROUPS[current.group].label}{current.country ? ` · ${current.country}` : ''}</p>}
+        <p className="m-0 mt-2 flex items-center gap-3 text-2xl font-bold leading-snug">
+          {current?.group === 'university' && <InstitutionLogo name={current.name} size={44} />}
+          {current?.name ?? 'Booth to be confirmed'}
+        </p>
+        {current && <p className="m-0 mt-2 muted flex flex-wrap items-center gap-2">{GROUPS[current.group].label}{current.country && <>{' · '}<CountryCode country={current.country} /></>}</p>}
       </div>
     </div>
   )

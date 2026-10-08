@@ -39,7 +39,7 @@ export default function MouPage() {
       />
       <SubNav />
 
-      <section className="section !pb-10">
+      <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           <Stat value={stats.agreementsPerMonth} label="Agreements reviewed a month" />
           <Stat value={stats.partners} label="Partners managed" />
@@ -48,21 +48,22 @@ export default function MouPage() {
         </div>
       </section>
 
-      <section className="section !pt-6">
+      <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Lifecycle" title="Eight stages, draft to archive" />
           <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle" />
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Framework" title="Four jobs per agreement" lead="Tap a card." />
           <div className="grid-4">{framework.map(f => <FlipCard key={f.title} {...f} />)}</div>
         </div>
       </section>
 
-      <section className="section">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-glow-br">
         <div className="wrap">
           <Card
             tone="midnight"

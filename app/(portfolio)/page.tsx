@@ -38,8 +38,9 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden pt-[clamp(40px,6vw,88px)] pb-[clamp(48px,7vw,96px)]">
-        <div className="wrap flex flex-wrap gap-14 items-center">
+      <section className="relative overflow-hidden pt-[clamp(40px,6vw,88px)] pb-[clamp(48px,7vw,96px)] decor-grid">
+        <div aria-hidden className="hero-glow hero-glow--light" />
+        <div className="wrap relative flex flex-wrap gap-14 items-center">
           <div className="flex flex-col gap-6 min-w-0 flex-[1_1_440px]">
             <span className="pcu-eyebrow text-accent-strong">International Education · Surabaya</span>
             <h1 className="h-page">Partnerships, students, systems.</h1>
@@ -63,6 +64,7 @@ export default function Home() {
         </div>
       </section>
 
+      <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="section--smoke pt-2 pb-10">
         <div className="wrap grid-4 !gap-8">
           <Stat value={stats.amertaParticipants} label="AMERTA students" />
@@ -72,7 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section decor-glow-tr">
         <div className="wrap">
           <SectionHead eyebrow="Reach" title="Where the work connects" />
           <Reveal>
@@ -87,11 +89,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pb-[clamp(56px,8vw,96px)]">
+      <section className="pb-[clamp(56px,8vw,96px)] decor-glow-bl">
         <PhotoStrip images={strip} alt="Program moments" />
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Selected work" title="Programs and systems" />
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
@@ -111,7 +113,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="What I do" title="Four strengths" />
           <div className="grid-4">

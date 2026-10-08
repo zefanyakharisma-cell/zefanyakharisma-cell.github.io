@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { MapPin, Search, X } from 'lucide-react'
-import { CountryCode, SectionHead, Tag } from '@/components/pcu'
+import { CountryCode, Flag, SectionHead, Tag } from '@/components/pcu'
+import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
 import { Segmented } from '@/components/pcu/Segmented'
 
 import { CONT_BTNS, CONTINENT, DOM_DATA, INTL_DATA, PAGE_SIZE, TYPE_BTNS } from '@/lib/data/partners'
@@ -108,17 +109,23 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
           <ul className="m-0 p-0 list-none grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-6">
             {isIntl
               ? filteredIntl.slice(0, intlShowing).map(p => (
-                  <li key={`${p.name}-${p.country}`} className="bg-white border border-line rounded-md p-4 flex flex-col gap-2">
-                    <span className="font-medium leading-snug">{p.name}</span>
-                    <span className="text-sm text-ink-secondary"><CountryCode country={p.country} /></span>
+                  <li key={`${p.name}-${p.country}`} className="bg-white border border-line rounded-md p-4 flex gap-3 items-start">
+                    <InstitutionLogo name={p.name} size={40} />
+                    <span className="flex flex-col gap-2 min-w-0">
+                      <span className="font-medium leading-snug">{p.name}</span>
+                      <span className="text-sm text-ink-secondary"><CountryCode country={p.country} /></span>
+                    </span>
                   </li>
                 ))
               : filteredDom.slice(0, domShowing).map(p => (
-                  <li key={`${p.name}-${p.city}`} className="bg-white border border-line rounded-md p-4 flex flex-col gap-2">
-                    <span className="font-medium leading-snug">{p.name}</span>
-                    <span className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
-                      <MapPin aria-hidden size={14} /> {p.city}
-                      <Tag outline className="text-midnight">{p.type}</Tag>
+                  <li key={`${p.name}-${p.city}`} className="bg-white border border-line rounded-md p-4 flex gap-3 items-start">
+                    <InstitutionLogo name={p.name} size={40} />
+                    <span className="flex flex-col gap-2 min-w-0">
+                      <span className="font-medium leading-snug">{p.name}</span>
+                      <span className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
+                        <Flag code="ID" /> <MapPin aria-hidden size={14} /> {p.city}
+                        <Tag outline className="text-midnight">{p.type}</Tag>
+                      </span>
                     </span>
                   </li>
                 ))}

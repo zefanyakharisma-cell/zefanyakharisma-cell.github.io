@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Building2, CalendarCheck, Globe, Megaphone, Mic, Receipt, Users } from 'lucide-react'
 import { CountryCode, Details, FlipCard, PageHero, PhotoCard, PhotoWall, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
+import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
 import Rundown from '@/components/projects/Rundown'
 import { BoothMap } from '@/components/viz/BoothMap'
 import { Lifecycle } from '@/components/viz/Lifecycle'
@@ -37,7 +38,7 @@ export default function AeroPage() {
         </div>
       </div>
 
-      <section className="section !pb-10">
+      <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           <Stat value="19" label="Exhibition booths" />
           <Stat value="12" label="Partner institutions" />
@@ -46,7 +47,7 @@ export default function AeroPage() {
         </div>
       </section>
 
-      <section className="section !pt-6">
+      <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Floor plan" title="19 booths, one boulevard" lead="Tap a booth to see who was there." />
           <Reveal><BoothMap /></Reveal>
@@ -55,7 +56,7 @@ export default function AeroPage() {
               {INSTITUTIONS.map(g => (
                 <div key={g.country}>
                   <p className="m-0 mb-2 font-semibold"><CountryCode country={g.country} /></p>
-                  <ul className="m-0 pl-5 text-[.9375rem]">{g.orgs.map(o => <li key={o.name}>{o.name}</li>)}</ul>
+                  <ul className="m-0 p-0 list-none flex flex-col gap-2 text-[.9375rem]">{g.orgs.map(o => <li key={o.name} className="flex items-center gap-2.5"><InstitutionLogo name={o.name} size={28} />{o.name}</li>)}</ul>
                 </div>
               ))}
             </div>
@@ -63,7 +64,7 @@ export default function AeroPage() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="What to expect" title="Four highlights" />
           <div className="grid-4">
@@ -75,7 +76,7 @@ export default function AeroPage() {
         </div>
       </section>
 
-      <section className="section relative overflow-hidden">
+      <section className="section relative overflow-hidden decor-glow-br">
         <Shape kind="quarter-bl" color="amber" className="w-[120px] right-0 top-0 hidden md:block" />
         <div className="wrap">
           <SectionHead eyebrow="My role" title="What I ran" />
@@ -89,14 +90,14 @@ export default function AeroPage() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Schedule" title="Event rundown" lead="9–10 May 2025 · Surabaya" />
           <Rundown />
         </div>
       </section>
 
-      <section className="section">
+      <section className="section decor-ring-tr">
         <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-start">
           <div className="flex flex-col gap-4">
             <SectionHead eyebrow="Financials" title="Budget" size="sub" />
@@ -111,14 +112,15 @@ export default function AeroPage() {
         </div>
       </section>
 
-      <section className="section !pt-0">
+      <section className="section !pt-0 decor-glow-bl">
         <div className="wrap">
           <SectionHead eyebrow="Gallery" title="Moments" />
           <PhotoWall images={GALLERY_IMAGES} alt="AERO 2025 exhibition" />
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Related programs" title="Part of the same story" />
           <div className="grid-2">

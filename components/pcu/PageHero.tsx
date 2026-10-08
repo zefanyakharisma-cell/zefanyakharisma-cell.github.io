@@ -29,7 +29,9 @@ export function PageHero({ eyebrow, kicker, title, lead, tags, back, brand, shap
         className,
       )}
     >
+      <div aria-hidden className={cn('hero-glow', !brand && 'hero-glow--light')} />
       {shapes}
+      {brand && <div aria-hidden className="pcu-pattern pattern-band absolute inset-x-0 bottom-0" />}
       <div className="wrap relative flex flex-wrap items-end gap-12">
         <div className="flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
           {back && (

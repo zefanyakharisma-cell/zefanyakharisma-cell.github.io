@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { DATA, TABS } from '@/lib/data/amerta'
 import { BarList, CountryCode, SectionHead, Stat } from '@/components/pcu'
+import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
 import { Insights } from '@/components/pcu/Insights'
 import { Segmented } from '@/components/pcu/Segmented'
 
@@ -96,8 +97,9 @@ export default function AmertaStats() {
                 <p className="mb-3 mt-0 font-semibold"><CountryCode country={g.region} /></p>
                 <ul className="m-0 p-0 list-none flex flex-col gap-2">
                   {g.items.map(item => (
-                    <li key={item.name} className="flex justify-between gap-3 text-sm">
-                      <span>{item.name}</span>
+                    <li key={item.name} className="flex items-center gap-3 text-sm">
+                      <InstitutionLogo name={item.name} size={28} />
+                      <span className="flex-1">{item.name}</span>
                       {item.count != null && <b className="tabular-nums">{item.count}</b>}
                     </li>
                   ))}

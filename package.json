@@ -14,6 +14,7 @@
     "d3-geo": "^3.1.1",
     "d3-hierarchy": "^3.1.2",
     "d3-sankey": "^0.12.3",
+    "flag-icons": "^7.2.3",
     "lucide-react": "^0.475.0",
     "next": "^15.1.4",
     "react": "^19.0.0",
