@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { Bell, ChartColumn, Database, FilePlus2, RefreshCw, Search, Settings, Timer } from 'lucide-react'
+import { Card, PageHero, SectionHead, Shape, Tag } from '@/components/pcu'
+import { MenuRail } from '@/components/pcu/MenuRail'
 import { simKerjasama as sim } from '@/lib/data/sim'
 
 export const metadata: Metadata = {
@@ -9,69 +10,112 @@ export const metadata: Metadata = {
   description: sim.tagline,
 }
 
+const menuIcons = [ChartColumn, Search, FilePlus2, Timer, RefreshCw, Bell, Database, Settings]
+const stakeholderShapes = [
+  <Shape key="a" kind="quarter-tl" color="amber" className="w-12 right-0 bottom-0" />,
+  <Shape key="b" kind="circle" color="cerise" className="w-8 right-4 bottom-4" />,
+  <span key="c" aria-hidden className="absolute w-10 h-10 right-0 bottom-0 bg-teal" />,
+  <Shape key="d" kind="quarter-tl" color="blue" className="w-12 right-0 bottom-0" />,
+  <Shape key="e" kind="circle" color="amber" className="w-8 right-4 bottom-4" />,
+  <span key="f" aria-hidden className="absolute w-10 h-10 right-0 bottom-0 bg-cerise" />,
+]
+const stakeholderTags = ['Office', 'Units', 'Approvers', 'Mobility', 'Leadership', 'Partners']
+
 export default function SimKerjasamaPage() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      <p className="label-small mb-3">Information System · Petra Christian University</p>
-      <h1 className="font-heading font-bold mb-4" style={{ fontSize: 'clamp(2rem,5vw,3.25rem)', letterSpacing: '-.02em', color: '#19304b' }}>SIM Kerjasama</h1>
-      <p className="mb-2 font-semibold" style={{ color: '#19304b' }}>{sim.tagline}</p>
-      <p className="mb-14" style={{ color: '#46505c', lineHeight: 1.6, maxWidth: '68ch' }}>{sim.summary}</p>
+    <>
+      <PageHero
+        brand
+        back={{ href: '/projects-overview', label: 'All projects' }}
+        tags={['Information system', 'Petra Christian University']}
+        title="SIM Kerjasama"
+        lead={sim.summary}
+        shapes={<>
+          <Shape kind="ring-n" color="blue" className="right-[6%] bottom-0 w-[320px]" />
+          <Shape kind="ring-u-line" color="amber" className="right-[2%] top-0 w-[220px]" />
+        </>}
+      >
+        <p className="m-0 text-xl font-semibold text-white max-w-[40ch]">{sim.tagline}.</p>
+      </PageHero>
 
-      <h2 className="font-heading font-bold text-2xl mb-6" style={{ color: '#19304b' }}>Nine goals</h2>
-      <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
-        {sim.goals.map((goal, i) => (
-          <li key={goal} className="card p-5">
-            <span className="block text-sm font-bold mb-1" style={{ color: '#2a64a8' }}>G{i + 1}</span>
-            <span className="font-semibold" style={{ color: '#19304b' }}>{goal}</span>
-          </li>
-        ))}
-      </ol>
-
-      <h2 className="font-heading font-bold text-2xl mb-6" style={{ color: '#19304b' }}>Eight menus, one document lifecycle</h2>
-      <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-5 mb-14">
-        {sim.menus.map(menu => (
-          <div key={menu.name} style={{ borderBottom: '1px solid #e2e5e9', paddingBottom: 12 }}>
-            <dt className="font-semibold" style={{ color: '#19304b' }}>{menu.name}</dt>
-            <dd className="text-sm" style={{ color: '#46505c' }}>{menu.desc}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <h2 className="font-heading font-bold text-2xl mb-6" style={{ color: '#19304b' }}>Lighter work for every user</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
-        {sim.stakeholders.map(s => (
-          <div key={s.group} className="card p-5">
-            <h3 className="font-semibold mb-2" style={{ color: '#19304b' }}>{s.group}</h3>
-            <p className="text-sm" style={{ color: '#46505c', lineHeight: 1.5 }}>{s.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="font-heading font-bold text-2xl mb-6" style={{ color: '#19304b' }}>What was unmeasured is now measured</h2>
-      <div className="overflow-x-auto mb-14">
-        <table className="w-full text-sm" style={{ borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#19304b', color: '#fff' }}>
-              <th className="text-left p-3">Measure</th>
-              <th className="text-left p-3">Before</th>
-              <th className="text-left p-3">With the system</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sim.metrics.map((m, i) => (
-              <tr key={m.measure} style={{ background: i % 2 ? '#f1f1f1' : '#fff' }}>
-                <td className="p-3" style={{ color: '#000' }}>{m.measure}</td>
-                <td className="p-3" style={{ color: '#46505c' }}>{m.before}</td>
-                <td className="p-3 font-semibold" style={{ color: '#19304b' }}>{m.after}</td>
-              </tr>
+      <section className="section">
+        <div className="wrap">
+          <SectionHead eyebrow="Goals G1–G9" title="Nine goals for the system" />
+          <ol className="m-0 p-0 list-none grid-3 !gap-4">
+            {sim.goals.map((g, i) => (
+              <li key={g} className="flex gap-4 items-center p-5 bg-smoke rounded-md">
+                <span aria-hidden className="pcu-icon-badge flex-none font-bold text-[.9375rem]" style={{ '--size': '52px' } as React.CSSProperties}>
+                  G{i + 1}
+                </span>
+                <span className="font-semibold leading-snug"><span className="sr-only">G{i + 1}: </span>{g}</span>
+              </li>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </ol>
+        </div>
+      </section>
 
-      <Link href="/sim-realisasi" className="inline-flex items-center gap-2 font-semibold" style={{ color: '#19304b' }}>
-        Next: SIM Realisasi <ArrowRight aria-hidden style={{ width: 16, height: 16 }} />
-      </Link>
-    </div>
+      <section className="section section--smoke">
+        <div className="wrap">
+          <SectionHead eyebrow="The app" title="Eight menus, one document lifecycle" />
+          <MenuRail app="SIM Kerja Sama" items={sim.menus.map((m, i) => ({ ...m, icon: menuIcons[i] }))} />
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
+          <SectionHead eyebrow="Benefits" title="Lighter work for every user" />
+          <div className="grid-3">
+            {sim.stakeholders.map((s, i) => (
+              <Card key={s.group} shape={stakeholderShapes[i]} className="!pb-12">
+                <Tag>{stakeholderTags[i]}</Tag>
+                <h3 className="!text-xl">{s.group}</h3>
+                <p className="muted m-0">{s.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--smoke">
+        <div className="wrap">
+          <SectionHead eyebrow="Before and after" title="What wasn't measured now is" />
+          <div className="overflow-x-auto bg-white rounded-md">
+            <table className="data-table">
+              <thead>
+                <tr><th scope="col" className="w-[44%]">Measure</th><th scope="col">Before</th><th scope="col">With the system</th></tr>
+              </thead>
+              <tbody>
+                {sim.metrics.map(m => (
+                  <tr key={m.measure}>
+                    <td>{m.measure}</td>
+                    <td className="muted">{m.before}</td>
+                    <td className="font-semibold">{m.after}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
+          <Card
+            tone="midnight"
+            href="/sim-realisasi"
+            className="!p-[clamp(28px,4vw,48px)]"
+            bodyClassName="!flex-row flex-wrap justify-between items-center !gap-6"
+            shape={<Shape kind="ring-n" color="teal" className="w-[220px] right-[24%] bottom-0" />}
+          >
+            <div className="flex flex-col gap-2 max-w-[60ch]">
+              <span className="pcu-eyebrow text-amber">Companion system</span>
+              <h2 className="h-sub text-white">SIM Realisasi</h2>
+              <p className="m-0 text-smoke">From agreements on paper to real activities: RENSTRA indicators, semester reports and dormant partnerships made visible.</p>
+            </div>
+            <span className="pcu-btn pcu-btn--accent">View SIM Realisasi →</span>
+          </Card>
+        </div>
+      </section>
+    </>
   )
 }

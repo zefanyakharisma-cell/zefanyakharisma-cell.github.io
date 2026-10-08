@@ -1,197 +1,59 @@
-# Portfolio Website — Zefanya Kharisma Nugroho
+# zefanyakharisma.com
 
-Personal portfolio website for Zefanya Kharisma Nugroho, International Education Professional & Creative Technologist based in Surabaya. Live at [zefanyakharisma.com](https://zefanyakharisma.com).
+Portfolio of Zefanya Kharisma Nugroho, International Partnership Specialist at Petra Christian University, Surabaya.
 
-## Overview
+A fully static Next.js 15 site (App Router, React 19, TypeScript, Tailwind CSS 3), deployed on Vercel. There is no database, no server code and no environment variable is required.
 
-The repository contains two coexisting portfolio implementations with distinct layouts, designs, and feature sets (not a migration):
-
-- **Next.js app** (`app/`) — the current deployed version on Vercel; React 19, TypeScript, Server Components, Supabase SSR.
-- **Vanilla JS portfolio** (`index.html`, `js/`, `css/`) — the original static build; HTML5, Tailwind CDN, hash-based SPA routing, Supabase JS client.
-
-It also hosts **CroissantsMoon** (`/croissantsmoon`) — a full-stack agency OS built on a separate Next.js app, served at the same domain via Vercel rewrites.
-
-### Portfolio sections
-
-- **About** — overview, education, international exposure, professional values, expertise, experience, skillset
-- **Projects** — AMERTA (Exchange Program), ACI (Cultural Immersion), AERO (Exhibition), PCU Global (Web Project)
-- **Intl. Ed** — student onboarding & support, student engagement, partnership development, MoU/MoA coordination, international grants
-- **Creative** — CroissantsMoon studio, writing, web development, graphic design
-- **Contact** — contact information
-
-The home page hosts a Skill Discovery entry point (filter work by skill) and a calendar widget showing published articles and upcoming events.
-
-## CroissantsMoon
-
-A boutique agency OS at `/croissantsmoon` with:
-
-- **Dashboard** — activity feed and analytics
-- **Leads / CRM** — track potential clients
-- **Proposals** — create, manage, and publish client proposals
-- **Token-gated portals** — shareable proposal links (`/croissantsmoon/proposal/[slug]`) secured by one-time access tokens, with `noindex` headers
-- **Templates** — reusable proposal building blocks
-- **Archive** — closed/won/lost proposals
-
-CroissantsMoon lives in `croissantsmoon/` as a standalone Next.js app and is deployed to Vercel separately. See [croissantsmoon/DEPLOYMENT.md](croissantsmoon/DEPLOYMENT.md) for setup instructions.
-
-## Tech Stack
-
-### Next.js portfolio (current)
-
-- [Next.js](https://nextjs.org/) 15 with App Router
-- React 19, TypeScript
-- [Tailwind CSS](https://tailwindcss.com/) v3.4
-- [Framer Motion](https://www.framer.com/motion/) — page transitions and animations
-- [Lucide React](https://lucide.dev/) — icons
-- [Recharts](https://recharts.org/) — analytics charts (CroissantsMoon)
-- [TanStack Query](https://tanstack.com/query) v5 — server state
-- [Supabase](https://supabase.com/) (`@supabase/ssr`) — auth, Postgres, storage, RLS
-- Google Fonts: Plus Jakarta Sans, DM Sans, Cormorant Garamond, Outfit
-- Deployed on [Vercel](https://vercel.com/)
-
-### Vanilla JS portfolio (legacy)
-
-- HTML5, CSS3
-- [Tailwind CSS](https://tailwindcss.com/) v3.4 (CDN)
-- [Lucide Icons](https://lucide.dev/) v0.263 (CDN)
-- [Quill](https://quilljs.com/) v2.0.2 (CDN) — WYSIWYG article editor
-- [Supabase JS](https://supabase.com/docs/reference/javascript) — auth, Postgres, storage
-- Vanilla JavaScript (no framework, no build step)
-
-## Project Structure
-
-```
-├── app/                        # Next.js App Router (deployed)
-│   ├── layout.tsx              # Root layout (fonts, metadata, JSON-LD)
-│   ├── globals.css
-│   ├── (portfolio)/            # Portfolio route group
-│   │   ├── layout.tsx
-│   │   ├── page.tsx            # Home
-│   │   ├── about-overview/
-│   │   ├── education/ … skillset/
-│   │   ├── contact/
-│   │   ├── writing/
-│   │   └── … (all portfolio sections)
-│   └── croissantsmoon/         # CroissantsMoon routes (proxied)
-│       ├── (admin)/
-│       │   ├── dashboard/
-│       │   ├── leads/
-│       │   ├── proposals/
-│       │   ├── templates/
-│       │   └── archive/
-│       ├── proposal/           # Token-gated public portals
-│       ├── login/
-│       └── api/
-├── components/                 # Shared React components
-│   ├── about/                  # ExperienceTimeline, SkillEcosystem
-│   ├── admin/
-│   ├── cm/                     # CroissantsMoon UI
-│   ├── home/
-│   ├── layout/
-│   ├── projects/
-│   ├── proposal/
-│   └── ui/                     # Badge, Button, Card, Input, Modal, EmptyState
-├── lib/                        # Server utilities
-│   ├── supabase/               # Supabase clients (browser, server, middleware)
-│   ├── actions/                # Server Actions
-│   ├── analytics/
-│   ├── tokens/
-│   └── utils.ts
-├── types/                      # Shared TypeScript types
-├── public/
-│   └── assets/                 # Images, graphics, data files
-│
-│   ── Vanilla JS (legacy) ─────────────────────────────────────────────────
-├── index.html                  # Entry point and nav
-├── css/styles.css
-├── js/
-│   ├── main.js                 # Hash-based SPA routing
-│   ├── auth.js
-│   ├── supabase-client.js
-│   ├── inline-edit.js
-│   ├── components/
-│   └── pages/                  # One module per section
-│   ── Shared ────────────────────────────────────────────────────────────
-├── supabase/
-│   └── migrations/
-│       └── 001_initial_schema.sql   # Tables, RLS policies, storage bucket
-├── croissantsmoon/             # Standalone CroissantsMoon Next.js app
-│   ├── app/
-│   ├── components/
-│   ├── supabase/
-│   └── DEPLOYMENT.md
-├── next.config.ts
-├── tailwind.config.ts
-└── vercel.json
-```
-
-## Running Locally
-
-### Next.js app
+## Run locally
 
 ```bash
-cp .env.example .env.local     # fill in Supabase credentials
 npm install
-npm run dev                    # http://localhost:3000
+npm run dev        # http://localhost:3000
+npm run lint       # ESLint (flat config, next/core-web-vitals + next/typescript)
+npx tsc --noEmit   # type-check
+npm run build      # every route is prerendered as static HTML
 ```
 
-```bash
-npm run build        # production build
-npm run type-check   # TypeScript check
-npm run lint
-```
+`NEXT_PUBLIC_SITE_URL` is optional; it defaults to `https://zefanyakharisma.com` and is used for canonical URLs, the sitemap and structured data.
 
-### Vanilla JS portfolio
+## Where things live
 
-No build step. Open `index.html` directly or serve with:
+| Path | What |
+|---|---|
+| `app/(portfolio)/*/page.tsx` | One folder per page. Copy is written directly in the page. |
+| `lib/data/profile.ts` | Contact details and the headline numbers (students per semester, partners…) used across pages. |
+| `lib/data/experience.ts` | Career history for the About page and `/experience`. |
+| `lib/data/amerta.ts`, `aci.ts`, `aero.ts` | Program statistics, budgets, rundown. Text uses `**bold**` markers. |
+| `lib/data/sim.ts` | Content for the SIM Kerjasama and SIM Realisasi pages. |
+| `lib/data/discovery.ts` | Items and skill tags for the skill explorer. |
+| `lib/data/countries.ts` | Country → ISO code, shown as chips (the site uses no emoji flags). |
+| `lib/nav.ts` | Main navigation, the Intl. Ed sub-navigation, and the sitemap route list. Add new pages here. |
+| `components/pcu/` | Design-system components: Button, Tag, Card, Shape, IconBadge, Stat, PageHero, charts (BarList, StackedBar, Donut), Timeline, SkillExplorer… |
+| `components/projects/` | Page-specific interactive pieces: batch statistics, gallery, partner directory, student activities, AERO rundown. |
+| `public/assets/images/` | Photos. `public/assets/data/` holds only `profile.pdf` (the CV); everything else there is gitignored. |
 
-```bash
-npx serve .
-# or
-python3 -m http.server 8080
-```
+## Design system
 
-To use admin features locally, configure Supabase — see [SETUP.md](SETUP.md).
+The look comes from the **PCU Design System** (Brand Guideline Petra 2026, DRAFT 3), published as a Claude artifact, and the approved "Portfolio Redesign — PCU" mockup. The PETRA logo is intentionally never used.
 
-## Admin Backend
+- `app/styles/pcu.css` is the system's brand layer (`.pcu-*` classes and tokens), copied from its `components/bundle.css`.
+- `app/fonts/` holds the self-hosted Inter variable font from the system.
+- `app/globals.css` holds the page chrome from the mockup (header, sections, stats, photo cards, footer).
+- `tailwind.config.ts` maps the tokens: `midnight`, `smoke`, `amber`, `teal`, `blue`, `cerise`, `emerald`, `ink-secondary`, `ink-muted`, `line`, radii `sm/md/panel/lg/pill`, `shadow-card`.
 
-Both implementations share the same Supabase project. The admin role is fully optional — the site renders read-only without it.
+Rules worth keeping:
 
-To enable writing:
+- Text on light backgrounds is midnight or black (secondary `#46505c`, muted `#5f6b78`); accents (amber, teal, blue, cerise) are for shapes and charts only.
+- Charts use the validated series order in `lib/chart.ts` and always print their values as text.
+- Focus is a 3px amber ring. No emoji.
 
-1. Create a free Supabase project.
-2. Run `supabase/migrations/001_initial_schema.sql` in the SQL Editor.
-3. For the vanilla JS app: copy `js/config.example.js` → `js/config.js` and fill in your project URL, anon key, and admin email.
-4. For the Next.js app: set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`.
+## Images
 
-Admin capabilities:
-
-- Write, edit, and publish articles via WYSIWYG editor (stored as Delta JSON + rendered HTML).
-- Add, edit, and delete calendar events shown on the home and MoU/MoA pages.
-- Inline-edit headings, paragraphs, and CTAs across the site.
-
-Sign-in: footer **Admin** link or `Ctrl/Cmd + Shift + A`.
-
-Full step-by-step instructions, RLS verification, and troubleshooting are in [SETUP.md](SETUP.md).
-
-> `js/config.js` and `.env.local` are gitignored. The Supabase anon key is safe to ship in frontend code; the `service_role` key is not — never put it in client-side code.
-
-## Architecture
-
-### Routing (Next.js)
-
-App Router with route groups. The `(portfolio)` group wraps all portfolio pages under a shared layout with nav and footer. The `croissantsmoon/(admin)` group wraps the agency OS behind auth middleware. Public proposal portals at `/croissantsmoon/proposal/[slug]` are token-gated and served with `noindex` headers.
-
-### Routing (Vanilla JS)
-
-Hash-based SPA. Every route is `#/<pageId>` (e.g. `#/about-overview`). `goToPage()` in `js/main.js` pushes to history and renders the matching `#page-<pageId>` element. Inactive pages use `display: none`.
-
-### Inline editing (Vanilla JS)
-
-`js/inline-edit.js` fetches `page_content` rows on load and applies stored content to every `[data-edit-key]` element. In admin mode, clicking any such element makes it `contenteditable`; blur upserts the change back to Supabase.
+- File names: lowercase, kebab-case, no spaces.
+- Resize to at most 2000px on the long edge and keep files under ~500 KB.
+- Render with `next/image` and a meaningful `alt`.
+- Never put spreadsheets or other personal data in `public/`: everything there is downloadable by anyone.
 
 ## Deployment
 
-The site deploys to Vercel from the repo root (framework: Next.js). Push to `main` → Vercel builds and deploys automatically.
-
-CroissantsMoon is deployed as a separate Vercel project from the `croissantsmoon/` subdirectory. See [croissantsmoon/DEPLOYMENT.md](croissantsmoon/DEPLOYMENT.md).
+Push to the default branch and Vercel builds and deploys it. No environment variables are needed.

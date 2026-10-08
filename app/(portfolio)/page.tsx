@@ -1,211 +1,142 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
-import HeroSection from '@/components/home/HeroSection'
-import SkillDiscovery from '@/components/home/SkillDiscovery'
-import { ArrowRight, ArrowUpRight, Download, Mail } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { Button, Card, PhotoCard, SectionHead, Shape, Stat, Tag } from '@/components/pcu'
+import { SkillExplorer } from '@/components/pcu/SkillExplorer'
+import { stats } from '@/lib/data/profile'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Zefanya Kharisma Nugroho — International Education & Creative Technologist' },
   alternates: { canonical: '/' },
-  description: 'International Education Professional & Creative Technologist based in Surabaya.',
-  openGraph: { url: '/' },
 }
+
+const competencies = [
+  { href: '/partnerships', title: 'International partnership management', text: `${stats.partners} institutional partners and ${stats.agreementsPerMonth} MoU/MoA reviews a month at PCU.` },
+  { href: '/onboarding', title: 'International student support', text: `Welfare, mobility and onboarding for ${stats.studentsPerSemester} international students every semester.` },
+  { href: '/projects-overview', title: 'Exchange program management', text: `AMERTA, ACI and AERO, with budgets of ${stats.programBudget} per program.` },
+  { href: '/sim-kerjasama', title: 'Process and systems design', text: 'Turning approval rules and reporting needs into working software.' },
+]
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
+      <section className="relative overflow-hidden pt-[clamp(48px,7vw,96px)] pb-[clamp(56px,8vw,112px)]">
+        <div className="wrap flex flex-wrap gap-14 items-center">
+          <div className="flex flex-col gap-6 min-w-0 flex-[1_1_480px]">
+            <span className="pcu-eyebrow text-accent-strong">International Education · Surabaya</span>
+            <h1 className="h-page">Bridging global engagement and digital systems.</h1>
+            <p className="lead max-w-[56ch]">
+              I&apos;m an International Partnership Specialist at Petra Christian University. I build partnerships with {stats.partners} institutions,
+              look after international students, and design the systems that keep it all running.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button href="/projects-overview">See my projects</Button>
+              <Button href="/about-overview" variant="outline" className="text-midnight">About me</Button>
+            </div>
+          </div>
 
-      {/* ═══ STATS BAND ═══ */}
-      <div id="home-stats-band" style={{ background: 'linear-gradient(135deg,#1C1C1E 0%,#2C2C2E 100%)', padding: '36px 20px', margin: 0 }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <p className="font-heading font-bold" style={{ fontSize: '2.6rem', color: '#fff', letterSpacing: '-.02em', lineHeight: 1 }}>480+</p>
-              <p className="label-small mt-2" style={{ color: 'rgba(255,255,255,0.55)' }}>Students Supported</p>
-            </div>
-            <div className="text-center">
-              <p className="font-heading font-bold" style={{ fontSize: '2.6rem', color: '#0A84FF', letterSpacing: '-.02em', lineHeight: 1 }}>505+</p>
-              <p className="label-small mt-2" style={{ color: 'rgba(255,255,255,0.55)' }}>Global Partners</p>
-            </div>
-            <div className="text-center">
-              <p className="font-heading font-bold" style={{ fontSize: '2.6rem', color: '#fff', letterSpacing: '-.02em', lineHeight: 1 }}>3+</p>
-              <p className="label-small mt-2" style={{ color: 'rgba(255,255,255,0.55)' }}>Years Experience</p>
-            </div>
-            <div className="text-center">
-              <p className="font-heading font-bold" style={{ fontSize: '2.6rem', color: '#fff', letterSpacing: '-.02em', lineHeight: 1 }}>5</p>
-              <p className="label-small mt-2" style={{ color: 'rgba(255,255,255,0.55)' }}>Programs Led</p>
+          <div className="relative min-w-0 flex-[1_1_420px] h-[clamp(380px,48vw,520px)]" aria-hidden="false">
+            <div aria-hidden className="absolute left-[12%] top-0 w-[46%] h-[78%] bg-midnight" />
+            <div aria-hidden className="absolute right-0 top-0 w-[34%] h-[38%] bg-blue" />
+            <Shape kind="quarter-br" color="amber" className="right-[8%] top-[38%] w-[26%]" />
+            <Shape kind="circle" color="cerise" className="left-0 top-[6%] w-16" />
+            <div aria-hidden className="absolute right-0 bottom-0 w-[22%] h-[30%] bg-teal" />
+            <Shape kind="ring-u" color="amber" className="right-[4%] top-0 w-[22%]" />
+            <div className="arch-photo absolute left-[22%] top-[14%] w-[46%] h-[82%] shadow-card">
+              <Image
+                src="/assets/images/self-portrait/profile-pic-1.png"
+                alt="Portrait of Zefanya Kharisma Nugroho"
+                fill
+                priority
+                sizes="(min-width: 1024px) 280px, 45vw"
+              />
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ═══ MARQUEE STRIP ═══ */}
-      <div aria-hidden="true" style={{ background: '#F2ECE4', borderBottom: '1px solid rgba(28,28,30,0.07)', padding: '13px 0', overflow: 'hidden' }}>
-        <div className="cm-marquee-track" style={{ animation: 'cmMarquee 32s linear infinite', width: 'max-content' }}>
-          <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-            {['International Partnership', 'Student Mobility', 'Creative Direction', 'Digital Strategy', 'Web Development', 'MoU / MoA', 'Surabaya, Indonesia'].map((label, i) => (
-              <span key={i} style={{ display: 'contents' }}>
-                <span style={{ padding: '0 28px', color: label === 'CroissantsMoon' ? '#0A84FF' : '#767676', fontSize: '.67rem', fontWeight: 600, letterSpacing: label === 'CroissantsMoon' ? '.06em' : '.11em', textTransform: 'uppercase', fontStyle: label === 'CroissantsMoon' ? 'italic' : 'normal', fontFamily: label === 'CroissantsMoon' ? "'Plus Jakarta Sans',sans-serif" : undefined }}>{label}</span>
-                <span style={{ color: 'rgba(28,28,30,0.18)', fontSize: '.8rem' }}>·</span>
-              </span>
-            ))}
-            <span style={{ padding: '0 28px', color: '#0A84FF', fontSize: '.67rem', fontWeight: 600, letterSpacing: '.06em', fontStyle: 'italic', fontFamily: "'Plus Jakarta Sans',sans-serif" }}>CroissantsMoon</span>
-            <span style={{ color: 'rgba(28,28,30,0.18)', fontSize: '.8rem' }}>·</span>
-          </div>
-          <div aria-hidden="true" style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-            {['International Partnership', 'Student Mobility', 'Creative Direction', 'Digital Strategy', 'Web Development', 'MoU / MoA', 'Surabaya, Indonesia'].map((label, i) => (
-              <span key={i} style={{ display: 'contents' }}>
-                <span style={{ padding: '0 28px', color: '#767676', fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase' }}>{label}</span>
-                <span style={{ color: 'rgba(28,28,30,0.18)', fontSize: '.8rem' }}>·</span>
-              </span>
-            ))}
-            <span style={{ padding: '0 28px', color: '#0A84FF', fontSize: '.67rem', fontWeight: 600, letterSpacing: '.06em', fontStyle: 'italic', fontFamily: "'Plus Jakarta Sans',sans-serif" }}>CroissantsMoon</span>
-            <span style={{ color: 'rgba(28,28,30,0.18)', fontSize: '.8rem' }}>·</span>
-          </div>
+      <section className="section--smoke pt-2 pb-10">
+        <div className="wrap grid-4 !gap-8">
+          <Stat value={stats.amertaParticipants} label="AMERTA exchange students across four batches" />
+          <Stat value={stats.studentsPerSemester} label="International students supported every semester" />
+          <Stat value={stats.partners} label="Institutional partners I manage at PCU" />
+          <Stat value={stats.agreementsPerMonth} label="MoU and MoA documents reviewed every month" />
         </div>
-      </div>
+      </section>
 
-      {/* ═══ SELECTED WORK ═══ */}
-      <div style={{ background: 'var(--color-bg,#F2F2F7)', padding: '72px 20px' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between gap-4 flex-wrap mb-10">
-            <div>
-              <div className="flex items-center gap-3 mb-3"><span className="accent-line" /><span className="label-small">Selected Work</span></div>
-              <h2 className="font-heading font-bold" style={{ fontSize: 'clamp(1.7rem,5vw,2.4rem)', color: '#1C1C1E', letterSpacing: '-.02em', lineHeight: 1.1 }}>Where I Make an Impact</h2>
-            </div>
-            <Link href="/projects-overview" className="text-sm font-medium inline-flex items-center gap-2 transition-all hover:gap-3" style={{ color: '#0A84FF', textDecoration: 'none' }}>
-              All Projects <ArrowRight style={{ width: 14, height: 14 }} />
-            </Link>
-          </div>
-
-          {/* Top row: large + small */}
-          <div className="grid lg:grid-cols-3 gap-4 mb-4">
-            {/* AMERTA — large card */}
-            <Link href="/amerta" className="home-work-card lg:col-span-2 group relative overflow-hidden rounded-2xl block" style={{ padding: 44, minHeight: 260, textDecoration: 'none', color: 'inherit' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="AMERTA exchange students at Griffith University" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(30,58,95,0.88),rgba(74,107,138,0.72))' }} />
-              <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 90% 10%,rgba(139,115,85,0.18),transparent 50%)' }} />
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Exchange Program</span>
-                  <span className="home-work-arrow" style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background .2s' }}>
-                    <ArrowUpRight style={{ width: 16, height: 16, color: '#fff' }} />
-                  </span>
-                </div>
-                <div>
-                  <h3 className="font-heading font-bold text-2xl mb-2" style={{ color: '#fff', letterSpacing: '-.01em', lineHeight: 1.2 }}>AMERTA Exchange<br />Program</h3>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>120+ students · IDR 50–100M per cohort · Universitas Airlangga</p>
-                </div>
+      <section className="section">
+        <div className="wrap">
+          <SectionHead eyebrow="Selected work" title="Programs and systems" />
+          <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))]">
+            <PhotoCard
+              href="/amerta"
+              src="/assets/images/amerta/amerta-1.jpg"
+              alt="AMERTA exchange students in a seminar room"
+              tag="Exchange program"
+              title="AMERTA"
+              text={`${stats.amertaParticipants} students from 14 countries, managed end to end.`}
+              className="min-h-[420px]"
+            />
+            <PhotoCard
+              href="/aci"
+              src="/assets/images/aci/aci-4.jpg"
+              alt="ACI cultural immersion participants"
+              tag="Cultural immersion"
+              title="ACI"
+              text="International and local students learning together through culture."
+              className="min-h-[420px]"
+            />
+            <Card
+              tone="midnight"
+              href="/sim-kerjasama"
+              className="min-h-[420px] justify-end"
+              shape={<>
+                <Shape kind="ring-n" color="blue" className="w-[220px] -right-10 top-8" />
+                <Shape kind="circle" color="amber" className="w-12 right-10 top-[150px]" />
+              </>}
+            >
+              <div className="mt-auto flex flex-col gap-3">
+                <Tag outline className="text-white">Information systems</Tag>
+                <h3 className="text-white !text-2xl">SIM Kerjasama &amp; SIM Realisasi</h3>
+                <p className="m-0 text-smoke text-[.9375rem]">
+                  The system of record for PCU&apos;s MoUs and MoAs, and the activities carried out under them.
+                </p>
               </div>
-            </Link>
-
-            {/* SIM Kerjasama */}
-            <Link href="/sim-kerjasama" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ background: 'linear-gradient(135deg,#245484 0%,#133256 100%)', padding: 28, minHeight: 260, textDecoration: 'none', color: 'inherit' }}>
-              <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: '#ffbc00' }}>Information System</span>
-              <h3 className="font-heading font-bold text-xl mt-4 mb-2" style={{ color: '#fff', letterSpacing: '-.01em', lineHeight: 1.2 }}>SIM Kerjasama &amp;<br />SIM Realisasi</h3>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>MoU/MoA system of record and partnership activity tracking</p>
-            </Link>
+            </Card>
           </div>
-
-          {/* Bottom row: three equal */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {/* ACI */}
-            <Link href="/aci" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ minHeight: 160, textDecoration: 'none', color: 'inherit' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/aci/aci-4.jpg" alt="ACI cultural immersion program" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(74,82,53,0.92) 0%,rgba(74,82,53,0.45) 100%)' }} />
-              <div className="relative z-10 h-full flex flex-col justify-between p-7">
-                <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Cultural Program</span>
-                <div>
-                  <h3 className="font-heading font-semibold text-base leading-snug mb-2" style={{ color: '#fff' }}>ACI — Airlangga<br />Cultural Immersion</h3>
-                  <div className="flex items-center gap-2 text-xs font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>View <ArrowRight style={{ width: 12, height: 12 }} /></div>
-                </div>
-              </div>
-            </Link>
-
-            {/* AERO */}
-            <Link href="/aero" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ minHeight: 160, textDecoration: 'none', color: 'inherit' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/aero/aero-header-1.jpg" alt="AERO exhibition at Universitas Airlangga" loading="lazy" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(28,28,30,0.92) 0%,rgba(28,28,30,0.45) 100%)' }} />
-              <div className="relative z-10 h-full flex flex-col justify-between p-7">
-                <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Exhibition</span>
-                <div>
-                  <h3 className="font-heading font-semibold text-base leading-snug mb-2" style={{ color: '#fff' }}>AERO Exhibition</h3>
-                  <div className="flex items-center gap-2 text-xs font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>View <ArrowRight style={{ width: 12, height: 12 }} /></div>
-                </div>
-              </div>
-            </Link>
-
-          </div>
+          <PhotoCard
+            href="/aero"
+            src="/assets/images/aero/aero-1.jpg"
+            alt="AERO exhibition booths"
+            tag="Exhibition"
+            title="AERO"
+            text="An annual exhibition of global partnerships at Universitas Airlangga."
+            className="!min-h-[240px] mt-6"
+            imagePosition="center 35%"
+            sizes="100vw"
+          />
         </div>
-      </div>
+      </section>
 
-      {/* ═══ INTERACTIVE SKILL DISCOVERY ═══ */}
-      <SkillDiscovery />
-
-      {/* ═══ CORE COMPETENCY LIST ═══ */}
-      <div style={{ background: '#FAFAF8', padding: '80px 24px' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-3 mb-12"><span className="accent-line" /><span className="label-small">Core Competencies</span></div>
+      <section className="section">
+        <div className="wrap">
+          <SectionHead eyebrow="What I do" title="Core competencies" />
           <div>
-            <Link href="/partnerships" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
-              <span className="font-heading font-bold flex-shrink-0" style={{ fontSize: '.9rem', color: '#0A84FF', minWidth: 32, marginTop: 3 }}>01</span>
-              <div className="flex-1 min-w-0">
-                <span className="label-small block mb-1.5" style={{ color: '#767676' }}>Global Partnerships</span>
-                <h3 className="font-heading font-semibold text-lg leading-snug" style={{ color: '#1C1C1E' }}>International Partnership Management</h3>
-              </div>
-              <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>Managing 30+ institutional partners and reviewing 25+ MoU/MoA agreements monthly</p>
-              <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#0A84FF', marginTop: 22 }}>View <ArrowRight style={{ width: 14, height: 14 }} /></span>
-            </Link>
-            <Link href="/onboarding" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
-              <span className="font-heading font-bold flex-shrink-0" style={{ fontSize: '.9rem', color: '#4A6B8A', minWidth: 32, marginTop: 3 }}>02</span>
-              <div className="flex-1 min-w-0">
-                <span className="label-small block mb-1.5" style={{ color: '#767676' }}>Student Services</span>
-                <h3 className="font-heading font-semibold text-lg leading-snug" style={{ color: '#1C1C1E' }}>International Student Support</h3>
-              </div>
-              <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>End-to-end welfare, mobility, and onboarding for 200+ international students across Surabaya</p>
-              <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#4A6B8A', marginTop: 22 }}>View <ArrowRight style={{ width: 14, height: 14 }} /></span>
-            </Link>
-            <Link href="/projects-overview" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', borderBottom: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
-              <span className="font-heading font-bold flex-shrink-0" style={{ fontSize: '.9rem', color: '#6B4F32', minWidth: 32, marginTop: 3 }}>03</span>
-              <div className="flex-1 min-w-0">
-                <span className="label-small block mb-1.5" style={{ color: '#767676' }}>Program Management</span>
-                <h3 className="font-heading font-semibold text-lg leading-snug" style={{ color: '#1C1C1E' }}>Exchange Program Management</h3>
-              </div>
-              <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>5 end-to-end exchange programs — AMERTA, ACI, AERO — with IDR 50–90M per-program budgets</p>
-              <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#6B4F32', marginTop: 22 }}>View <ArrowRight style={{ width: 14, height: 14 }} /></span>
-            </Link>
+            {competencies.map((c, i) => (
+              <Link key={c.href} href={c.href} className="row-link">
+                <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{c.title}</h3>
+                  <p>{c.text}</p>
+                </div>
+                <ArrowRight aria-hidden size={20} />
+              </Link>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ═══ CTA SECTION ═══ */}
-      <div style={{ background: '#1C1C1E', padding: '100px 24px', position: 'relative', overflow: 'hidden' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 85% 50%,rgba(139,115,85,0.11),transparent 50%),radial-gradient(ellipse at 15% 50%,rgba(74,107,138,0.06),transparent 45%)' }} />
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden" style={{ opacity: .025 }}>
-          <span style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 'clamp(10rem,18vw,22rem)', fontWeight: 800, fontStyle: 'italic', color: '#fff', userSelect: 'none', whiteSpace: 'nowrap', lineHeight: 1 }}>Let&apos;s talk</span>
-        </div>
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <p className="font-editorial text-base mb-5" style={{ color: '#0A84FF' }}>Let&apos;s build something meaningful</p>
-          <h2 className="font-heading font-bold mb-4" style={{ fontSize: 'clamp(2.4rem,5vw,3.8rem)', color: '#fff', letterSpacing: '-.02em', lineHeight: 1.05 }}>
-            Open to<br /><em style={{ fontStyle: 'italic', color: '#0A84FF' }}>Conversations</em>
-          </h2>
-          <p className="text-sm mb-11" style={{ color: 'rgba(255,255,255,0.38)', maxWidth: 380, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.7 }}>
-            Partnerships, collaborations, education projects, or creative work — I&apos;m always open to a good conversation.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/assets/data/profile.pdf" download className="btn-cv-download font-medium text-sm px-8 py-4 rounded-full justify-center gap-2">
-              <Download style={{ width: 15, height: 15 }} /> Download CV
-            </a>
-            <Link href="/contact" className="btn-contact-outline font-medium text-sm px-8 py-4 rounded-full justify-center gap-2">
-              <Mail style={{ width: 15, height: 15 }} /> Contact Me
-            </Link>
-          </div>
-        </div>
-      </div>
+      <SkillExplorer />
     </>
   )
 }

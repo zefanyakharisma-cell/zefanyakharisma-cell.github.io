@@ -1,44 +1,45 @@
 import type { Metadata } from 'next'
-import { Mail, Linkedin, MapPin } from 'lucide-react'
+import { Linkedin, Mail, MapPin } from 'lucide-react'
+import { Card, IconBadge, Shape } from '@/components/pcu'
+import { contact } from '@/lib/data/profile'
 
 export const metadata: Metadata = {
   title: 'Contact',
   alternates: { canonical: '/contact' },
-  description: 'Open to international partnerships, collaborations, and meaningful conversations about global education.',
+  description: 'Open to international partnerships, collaborations and conversations about global education.',
 }
-
-const EMAIL = 'zefanya.kharisma@gmail.com'
-const LINKEDIN = 'https://www.linkedin.com/in/zefanyakharisma'
 
 export default function Contact() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
-      <p className="label-small mb-4">Contact</p>
-      <h1 className="font-heading font-bold mb-4" style={{ fontSize: 'clamp(2rem,5vw,3rem)', letterSpacing: '-.02em', color: '#19304b' }}>
-        Let&apos;s talk about global education
-      </h1>
-      <p className="mb-10" style={{ color: '#46505c', lineHeight: 1.6, maxWidth: '60ch' }}>
-        Open to international partnerships, collaborations, and conversations. Email is the fastest way to reach me.
-      </p>
-      <div className="grid sm:grid-cols-2 gap-4">
-        <a href={`mailto:${EMAIL}`} className="card p-6 flex items-center gap-4" style={{ textDecoration: 'none' }}>
-          <Mail aria-hidden style={{ width: 22, height: 22, color: '#19304b' }} />
-          <span>
-            <span className="block font-semibold" style={{ color: '#19304b' }}>Email</span>
-            <span className="block text-sm" style={{ color: '#46505c' }}>{EMAIL}</span>
-          </span>
-        </a>
-        <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="card p-6 flex items-center gap-4" style={{ textDecoration: 'none' }}>
-          <Linkedin aria-hidden style={{ width: 22, height: 22, color: '#19304b' }} />
-          <span>
-            <span className="block font-semibold" style={{ color: '#19304b' }}>LinkedIn</span>
-            <span className="block text-sm" style={{ color: '#46505c' }}>in/zefanyakharisma</span>
-          </span>
-        </a>
+    <section className="relative overflow-hidden py-[clamp(56px,8vw,112px)]">
+      <Shape kind="quarter-bl" color="amber" className="right-0 top-0 w-[180px]" />
+      <Shape kind="circle" color="cerise" className="right-[200px] top-10 w-12 hidden sm:block" />
+      <div className="wrap relative !max-w-[920px] flex flex-col gap-5">
+        <span className="pcu-eyebrow text-accent-strong">Contact</span>
+        <h1 className="h-page">Let&apos;s talk about global education.</h1>
+        <p className="lead max-w-[52ch]">
+          I&apos;m open to international partnerships, collaborations and good conversations. Email is the fastest way to reach me.
+        </p>
+        <div className="grid-2 !gap-4 mt-4">
+          <Card href={`mailto:${contact.email}`} bodyClassName="!flex-row items-center !gap-5">
+            <IconBadge icon={Mail} />
+            <span className="flex flex-col min-w-0">
+              <b className="text-lg">Email</b>
+              <span className="muted break-all">{contact.email}</span>
+            </span>
+          </Card>
+          <Card href={contact.linkedin} bodyClassName="!flex-row items-center !gap-5">
+            <IconBadge icon={Linkedin} />
+            <span className="flex flex-col min-w-0">
+              <b className="text-lg">LinkedIn</b>
+              <span className="muted">{contact.linkedinHandle}</span>
+            </span>
+          </Card>
+        </div>
+        <p className="muted m-0 mt-2 flex items-center gap-2">
+          <MapPin aria-hidden size={18} /> {contact.location}
+        </p>
       </div>
-      <p className="mt-8 flex items-center gap-2 text-sm" style={{ color: '#46505c' }}>
-        <MapPin aria-hidden style={{ width: 16, height: 16 }} /> Surabaya, East Java, Indonesia
-      </p>
-    </div>
+    </section>
   )
 }
