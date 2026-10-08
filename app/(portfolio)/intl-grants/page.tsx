@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import {
-  Bookmark, Calendar, CheckCircle, ClipboardList, GitMerge, Layers, Megaphone, PieChart, Search, UploadCloud, Users, Zap,
+  Award, Bookmark, Calendar, CheckCircle, ClipboardList, Flag, GitMerge, Layers, Megaphone, PieChart, Plane, Search, Send, UploadCloud, Users, Zap,
 } from 'lucide-react'
-import { Card, IconBadge, PageHero, SectionHead, Shape, Tag } from '@/components/pcu'
-import { ProcessSteps } from '@/components/pcu/ProcessSteps'
+import { Details, FlipCard, PageHero, SectionHead, Shape, Tag } from '@/components/pcu'
+import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 
 export const metadata: Metadata = {
@@ -12,25 +12,33 @@ export const metadata: Metadata = {
   description: 'A system to inform, maintain and execute international grants at Petra Christian University: a digital dashboard and a physical operational workflow.',
 }
 
+const pipeline = [
+  { icon: <Megaphone size={20} aria-hidden />, title: 'Awareness', text: 'Students hear about grants before deadlines pass.' },
+  { icon: <Send size={20} aria-hidden />, title: 'Application', text: 'Checklists and reviews for complete applications.' },
+  { icon: <Award size={20} aria-hidden />, title: 'Selection', text: 'Each applicant tracked by stage, per cycle.' },
+  { icon: <Plane size={20} aria-hidden />, title: 'Placement', text: 'Coordinated with partners and funders.' },
+  { icon: <Flag size={20} aria-hidden />, title: 'Completion', text: 'Outcomes recorded and reported.' },
+]
+
 const principles = [
-  { icon: Layers, title: 'Digital + physical', text: 'The dashboard is the backbone; briefings, printed guides and in-person advising make sure students can actually apply and succeed.' },
-  { icon: Zap, title: 'Live grant status', text: 'Every grant, applicant and stage updates live, so staff see changes the moment they happen.' },
-  { icon: Calendar, title: 'Deadline-first calendar', text: 'Every deadline across active programmes, sorted by urgency, so no submission window is missed.' },
-  { icon: GitMerge, title: 'Stage-based pipeline', text: "Each applicant's stage across concurrent grant cycles, so bottlenecks and follow-ups are obvious." },
+  { icon: <Layers aria-hidden />, title: 'Digital + physical', back: 'Dashboard as backbone; briefings and advising make it work.' },
+  { icon: <Zap aria-hidden />, title: 'Live status', back: 'Every grant, applicant and stage, updated live.' },
+  { icon: <Calendar aria-hidden />, title: 'Deadline-first', back: 'All deadlines sorted by urgency.' },
+  { icon: <GitMerge aria-hidden />, title: 'Stage pipeline', back: 'Bottlenecks and follow-ups are obvious.' },
 ]
 
 const dashboard = [
-  { icon: Search, title: 'Discovery & matching', text: "Matches a student's faculty and programme against eligibility criteria and surfaces the most relevant grants." },
-  { icon: Bookmark, title: 'Bookmarks', text: 'Students can save grants they are considering, and signed-in users keep them across devices.' },
-  { icon: UploadCloud, title: 'Document attachments', text: 'Staff attach supporting PDFs and forms to each grant, with a full audit trail.' },
-  { icon: PieChart, title: 'Outcome analytics', text: 'Acceptance rates, funding secured and placements, calculated from live data and ready for leadership reporting.' },
+  { icon: <Search aria-hidden />, title: 'Matching', back: 'Faculty and programme matched to eligibility.' },
+  { icon: <Bookmark aria-hidden />, title: 'Bookmarks', back: 'Saved grants, synced across devices.' },
+  { icon: <UploadCloud aria-hidden />, title: 'Attachments', back: 'PDFs and forms per grant, with an audit trail.' },
+  { icon: <PieChart aria-hidden />, title: 'Analytics', back: 'Acceptance, funding and placements, live.' },
 ]
 
 const physical = [
-  { icon: Megaphone, title: 'Informing students', text: 'Grant briefing sessions, printed opportunity guides and targeted outreach to eligible faculties, before deadlines pass.' },
-  { icon: ClipboardList, title: 'Maintaining records', text: 'A physical archive of grant documents, applicant records and outcome reports, kept in step with the dashboard.' },
-  { icon: Users, title: 'Guiding applications', text: 'In-person advising, document checklists and application reviews, so students submit complete, competitive applications.' },
-  { icon: CheckCircle, title: 'Executing placements', text: 'Post-selection coordination with partner institutions and funders, so accepted students are placed and supported.' },
+  { icon: <Megaphone size={20} aria-hidden />, title: 'Inform', text: 'Briefings, printed guides and faculty outreach.' },
+  { icon: <ClipboardList size={20} aria-hidden />, title: 'Maintain', text: 'A physical archive kept in step with the dashboard.' },
+  { icon: <Users size={20} aria-hidden />, title: 'Guide', text: 'In-person advising and application reviews.' },
+  { icon: <CheckCircle size={20} aria-hidden />, title: 'Execute', text: 'Placement and support after selection.' },
 ]
 
 export default function IntlGrantsPage() {
@@ -40,56 +48,34 @@ export default function IntlGrantsPage() {
         eyebrow="International Education · PCU"
         tags={['In development']}
         title="International grants management"
-        lead="A system to inform, maintain and execute international grants at Petra Christian University, with a digital dashboard and a physical operational workflow."
+        lead="One dashboard and one physical workflow for every grant."
       />
       <SubNav />
 
       <section className="section">
-        <div className="wrap grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
-          <div>
-            <SectionHead eyebrow="What's being built" title="A system for every stage of every grant" />
-            <div className="flex flex-col gap-4 muted text-[1.0625rem]">
-              <p className="m-0">
-                International grant programmes, from government scholarships to university-funded exchanges, need coordination across awareness,
-                application, selection, placement and completion. At PCU this information was spread across emails, shared drives and spreadsheets.
-              </p>
-              <p className="m-0">
-                The system has two layers: a <strong className="text-midnight">digital dashboard</strong> that tracks every grant, applicant and deadline, and a{' '}
-                <strong className="text-midnight">physical workflow</strong> that keeps students informed and supported through each cycle.
-              </p>
-              <p className="m-0">The goal is one source of truth that faculty, staff and students can consult without chasing updates by email.</p>
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {principles.map(p => (
-              <Card key={p.title} tone="smoke">
-                <IconBadge icon={p.icon} size={44} />
-                <h3 className="!text-lg">{p.title}</h3>
-                <p className="muted m-0 text-[.9375rem]">{p.text}</p>
-              </Card>
-            ))}
-          </div>
+        <div className="wrap">
+          <SectionHead eyebrow="Pipeline" title="Five stages per grant" />
+          <Lifecycle steps={pipeline} label="International grant pipeline" />
+          <Details summary="Why it's being built" className="mt-6">
+            Grant information at PCU was spread across emails, shared drives and spreadsheets. The system gives faculty, staff and students one
+            source of truth: a digital dashboard that tracks every grant, applicant and deadline, and a physical workflow that keeps students
+            informed and supported through each cycle.
+          </Details>
+        </div>
+      </section>
+
+      <section className="section section--smoke">
+        <div className="wrap">
+          <SectionHead eyebrow="Principles" title="Four design rules" lead="Tap a card." />
+          <div className="grid-4">{principles.map(p => <FlipCard key={p.title} {...p} />)}</div>
         </div>
       </section>
 
       <section className="pcu-surface-brand section relative overflow-hidden">
         <Shape kind="ring-u" color="teal" className="w-[280px] right-[4%] top-0" />
         <div className="wrap relative">
-          <SectionHead
-            light
-            eyebrow="The dashboard"
-            title="International grants dashboard"
-            lead="A self-built web application that tracks international grants from opportunity discovery to placement outcome."
-          />
-          <div className="grid-4">
-            {dashboard.map(d => (
-              <div key={d.title} className="border-t-2 border-amber pt-5 flex flex-col gap-2">
-                <d.icon aria-hidden size={24} className="text-amber" />
-                <h3 className="text-white !text-lg">{d.title}</h3>
-                <p className="text-smoke m-0 text-[.9375rem]">{d.text}</p>
-              </div>
-            ))}
-          </div>
+          <SectionHead light eyebrow="Digital" title="The dashboard" />
+          <div className="grid-4">{dashboard.map(d => <FlipCard key={d.title} {...d} tone="midnight" />)}</div>
           <div className="flex flex-wrap gap-2 mt-10">
             {['Live updates', 'Role-based access', 'Analytics', 'Audit trail'].map(t => <Tag key={t} outline className="text-white">{t}</Tag>)}
           </div>
@@ -98,12 +84,8 @@ export default function IntlGrantsPage() {
 
       <section className="section">
         <div className="wrap">
-          <SectionHead
-            eyebrow="Physical system"
-            title="Beyond the dashboard: the physical workflow"
-            lead="A dashboard alone doesn't move a student from interest to application. The physical layer makes sure students at PCU are informed, supported and guided through each grant cycle."
-          />
-          <ProcessSteps steps={physical} />
+          <SectionHead eyebrow="Physical" title="Beyond the dashboard" />
+          <Lifecycle steps={physical} label="Physical grant workflow" />
         </div>
       </section>
     </>

@@ -9,11 +9,6 @@ export const mainNav: { href: string; label: string; section: Section }[] = [
 
 const sectionByRoute: Record<string, Section> = {
   '/about-overview': 'about',
-  '/education': 'about',
-  '/experience': 'about',
-  '/expertise': 'about',
-  '/skillset': 'about',
-  '/values': 'about',
   '/projects-overview': 'projects',
   '/amerta': 'projects',
   '/aci': 'projects',

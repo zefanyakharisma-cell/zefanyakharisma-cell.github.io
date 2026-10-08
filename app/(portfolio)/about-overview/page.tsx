@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import {
-  BarChart2, Code2, FileCheck, Globe2, Handshake, Heart, Languages, LayoutDashboard, Network, Plane,
+  Award, BarChart2, BookOpen, Code2, FileCheck, Globe, Globe2, GraduationCap, Handshake, Heart, Languages,
+  LayoutDashboard, Lightbulb, Network, Plane, School, Target, Users, Zap,
 } from 'lucide-react'
-import { Button, Card, IconBadge, PhotoCard, SectionHead, Shape, Tag } from '@/components/pcu'
-import { SkillExplorer } from '@/components/pcu/SkillExplorer'
-import { Timeline } from '@/components/pcu/Timeline'
+import { Button, Card, Details, FlipCard, IconBadge, PhotoCard, SectionHead, Shape, Stat, Tag } from '@/components/pcu'
+import { Tabs } from '@/components/pcu/Tabs'
+import { Gantt } from '@/components/viz/Gantt'
 import { roles } from '@/lib/data/experience'
 import { contact, stats } from '@/lib/data/profile'
 
@@ -16,74 +17,151 @@ export const metadata: Metadata = {
 }
 
 const expertise = [
-  { icon: Handshake, title: 'Strategic partnerships', text: `${stats.partners} institutional partners and ${stats.meetingsPerMonth} strategic meetings a month.` },
-  { icon: FileCheck, title: 'MoU / MoA coordination', text: `${stats.agreementsPerMonth} partnership agreements reviewed monthly for compliance and fit.` },
-  { icon: Plane, title: 'Student mobility', text: 'End-to-end management of 5 exchange programs, 120+ students per semester.' },
-  { icon: Heart, title: 'Student welfare & support', text: `Non-academic support for ${stats.studentsPerSemester} international students per semester.` },
-  { icon: BarChart2, title: 'Program & budget management', text: `${stats.programBudget} budgets per program, 50+ stakeholders, end-to-end delivery.` },
-  { icon: Languages, title: 'Cross-cultural communication', text: 'English–Indonesian interpretation at international conferences and company visits.' },
-  { icon: LayoutDashboard, title: 'Systems & process design', text: 'Turning approval rules and reporting needs into SIM Kerjasama and SIM Realisasi.' },
-  { icon: Code2, title: 'Digital platforms', text: 'Building purpose-driven websites and dashboards for institutional work.' },
-  { icon: Network, title: 'Systems thinking', text: 'Connecting education, digital design and strategy into one working whole.' },
+  { icon: <Handshake aria-hidden />, title: 'Partnerships', back: `${stats.partners} partners and ${stats.meetingsPerMonth} strategic meetings a month.` },
+  { icon: <FileCheck aria-hidden />, title: 'MoU / MoA', back: `${stats.agreementsPerMonth} agreements reviewed monthly for compliance and fit.` },
+  { icon: <Plane aria-hidden />, title: 'Student mobility', back: '5 exchange programs, 120+ students per semester.' },
+  { icon: <Heart aria-hidden />, title: 'Student welfare', back: `Support for ${stats.studentsPerSemester} international students per semester.` },
+  { icon: <BarChart2 aria-hidden />, title: 'Budgets', back: `${stats.programBudget} per program, 50+ stakeholders.` },
+  { icon: <Languages aria-hidden />, title: 'Interpretation', back: 'English–Indonesian at conferences and company visits.' },
+  { icon: <LayoutDashboard aria-hidden />, title: 'Systems design', back: 'SIM Kerjasama and SIM Realisasi for PCU.' },
+  { icon: <Code2 aria-hidden />, title: 'Digital platforms', back: 'Websites and dashboards for institutional work.' },
+  { icon: <Network aria-hidden />, title: 'Systems thinking', back: 'Education, design and strategy as one whole.' },
+]
+
+const values = [
+  { icon: <Target aria-hidden />, title: 'Excellence', back: 'High standards in programs, partnerships and support.' },
+  { icon: <Users aria-hidden />, title: 'Inclusivity', back: 'International education open to every student.' },
+  { icon: <Lightbulb aria-hidden />, title: 'Innovation', back: 'Always looking for a better approach.' },
+  { icon: <Handshake aria-hidden />, title: 'Integrity', back: 'Partnerships built on trust and mutual benefit.' },
+  { icon: <Globe aria-hidden />, title: 'Global citizenship', back: 'Cross-cultural understanding, engaged graduates.' },
+  { icon: <Zap aria-hidden />, title: 'Student-centred', back: "Decisions start from students' success and well-being." },
+]
+
+const skillGroups = [
+  { title: 'Partnerships', tags: ['Strategic Partnerships', 'MoU/MoA Coordination', 'Stakeholder Management', 'Partnership Development'] },
+  { title: 'Mobility & programs', tags: ['Exchange Program Management', 'KNB & TIAS Scholarships', 'Budget Management', 'Vendor Coordination'] },
+  { title: 'Student support', tags: ['International Student Services', 'Immigration Coordination', 'Onboarding', 'Case Management'] },
+  { title: 'Systems & data', tags: ['Process Design', 'Information Systems', 'Data Management', 'RENSTRA Reporting'] },
+  { title: 'Communication', tags: ['Strategic Communications', 'English–Indonesian Interpretation', 'Academic Research', 'Cross-Cultural Communication'] },
+]
+
+const publications = [
+  'Kebijakan Luar Negeri Pro-Israel Amerika Serikat di Pemerintahan Obama',
+  'Menelaah Interdependensi Korea Selatan-Tiongkok Akibat THAAD dalam Analisis Neoliberalisme',
+  'Israel dan Perjanjian Abraham: Upaya Peningkatan Status Israel dalam Sistem Internasional',
 ]
 
 const focus = [
-  { icon: Globe2, title: 'International education leadership', text: 'Deepening partnership strategy and internationalisation frameworks at Petra Christian University.', status: 'Active' },
-  { icon: LayoutDashboard, title: 'Digital systems for partnerships', text: 'Designing SIM Kerjasama and SIM Realisasi, from approval rules to RENSTRA reporting.', status: 'In progress' },
-  { icon: Network, title: 'Interdisciplinary problem solving', text: 'Connecting international education, systems thinking and digital design into practical solutions.', status: 'Always' },
-]
-
-const milestones = [
-  { when: '2022', title: 'Gold Medal, World Youth Invention & Innovation Award', text: 'International recognition for innovation and creative problem solving.' },
-  { when: '2022', title: 'Bronze Medal, Your-K Your-ASEAN Short Video Contest', text: 'Visual storytelling and creative communication in an ASEAN context.' },
-  { when: '2023', title: 'Research presenter, 9th ICoCSPA', text: 'Presented research on U.S.–ASEAN economic cooperation.' },
-  { when: '2023–2024', title: 'Academic publications in IR', text: 'Peer-reviewed papers on U.S. foreign policy, Korea–China THAAD dynamics and the Abraham Accords.' },
-  { when: '2024–2025', title: '5 exchange programs led', text: 'AMERTA, ACI, AERO and the KNB and TIAS government scholarship programs.' },
-  { when: '2026', title: 'SIM Kerjasama & SIM Realisasi', text: 'Designed the systems of record for PCU partnership agreements and their activities.' },
+  { icon: <Globe2 aria-hidden />, title: 'Intl. education leadership', back: 'Partnership strategy and internationalisation at PCU.' },
+  { icon: <LayoutDashboard aria-hidden />, title: 'Partnership systems', back: 'SIM Kerjasama and SIM Realisasi, from approvals to RENSTRA.' },
+  { icon: <Network aria-hidden />, title: 'Problem solving', back: 'Education, systems thinking and design, together.' },
 ]
 
 const principles = [
-  { title: 'Systems over silos', text: 'Complex problems in international education need connected systems, not one-off fixes.' },
-  { title: 'Global orientation, local action', text: 'Every agreement and support case plays out at a human, local level. I keep both in view.' },
-  { title: 'Creativity as strategy', text: "Design and systems thinking aren't separate from international education. They multiply its impact." },
-]
-
-const interests = [
-  { title: 'Visual storytelling', text: 'Award-winning short video work and graphic design for institutional and personal projects.' },
-  { title: 'International culture', text: 'Curiosity for cross-cultural dynamics, language, and how global contexts shape education.' },
-  { title: 'Design systems', text: 'How good systems create coherence, from brand guidelines to component libraries.' },
-  { title: 'Interdisciplinary thinking', text: 'The most interesting problems sit between education, technology and creative practice.' },
+  { title: 'Systems over silos', text: 'Connected systems, not one-off fixes.' },
+  { title: 'Global view, local action', text: 'Every agreement ends with a real person.' },
+  { title: 'Creativity as strategy', text: 'Design multiplies institutional impact.' },
 ]
 
 export default function AboutOverview() {
+  const overview = (
+    <div className="flex flex-col gap-16">
+      <div>
+        <SectionHead eyebrow="Now" title="Current focus" size="sub" />
+        <div className="grid-3">{focus.map(f => <FlipCard key={f.title} {...f} />)}</div>
+      </div>
+      <div>
+        <SectionHead eyebrow="Selected" title="Programs and systems" size="sub" />
+        <div className="grid-4">
+          <PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="207 students" title="AMERTA" sizes="(min-width: 1024px) 25vw, 100vw" />
+          <PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI participants" tag="191 participants" title="ACI" sizes="(min-width: 1024px) 25vw, 100vw" />
+          <PhotoCard href="/aero" src="/assets/images/aero/aero-1.jpg" alt="AERO exhibition" tag="19 booths" title="AERO" sizes="(min-width: 1024px) 25vw, 100vw" />
+          <Card tone="midnight" href="/sim-kerjasama" className="min-h-[340px]" shape={<Shape kind="ring-u" color="blue" className="w-[160px] right-4 top-0" />}>
+            <div className="mt-auto flex flex-col gap-2">
+              <Tag outline className="text-white">2 systems</Tag>
+              <h3 className="text-white !text-2xl">SIM</h3>
+            </div>
+          </Card>
+        </div>
+      </div>
+      <div className="pcu-surface-brand rounded-panel p-[clamp(24px,4vw,48px)] relative overflow-hidden">
+        <Shape kind="ring-n" color="blue" className="w-[240px] right-6 bottom-0" />
+        <p className="pcu-eyebrow text-amber m-0">How I work</p>
+        <div className="grid-3 mt-6 relative">
+          {principles.map((p, i) => (
+            <div key={p.title} className="border-t-2 border-amber pt-4">
+              <span className="text-amber font-bold">0{i + 1}</span>
+              <p className="m-0 mt-1 text-xl font-bold text-white">{p.title}</p>
+              <p className="m-0 mt-1 text-smoke">{p.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  const education = (
+    <div className="grid-2 !gap-12 items-start">
+      <div className="flex flex-col gap-6">
+        <Card shape={<Shape kind="quarter-bl" color="amber" className="w-[88px] right-0 top-0" />}>
+          <IconBadge icon={GraduationCap} />
+          <Tag>2020 – 2024</Tag>
+          <h3 className="!text-2xl">B.A. International Relations</h3>
+          <p className="m-0 font-semibold">Universitas Airlangga</p>
+          <Details>
+            International relations theory, foreign policy analysis and cross-cultural dynamics. Published on U.S.–ASEAN cooperation and Abraham
+            Accords diplomacy; Assistant Lecturer in Foreign Policy Analysis; presenter at the 9th ICoCSPA (2023).
+          </Details>
+        </Card>
+        <Card tone="smoke">
+          <IconBadge icon={School} tone="aqua" />
+          <Tag>2017 – 2020</Tag>
+          <h3 className="!text-xl">SMAN 15 Surabaya</h3>
+          <p className="m-0 muted">Mathematics & Natural Sciences</p>
+        </Card>
+      </div>
+      <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-2 gap-4">
+          <Card tone="smoke" className="items-center text-center">
+            <IconBadge icon={Award} tone="amber" />
+            <b className="text-lg">Gold Medal</b>
+            <span className="text-sm muted">World Youth Invention & Innovation Award 2022</span>
+          </Card>
+          <Card tone="smoke" className="items-center text-center">
+            <IconBadge icon={Award} />
+            <b className="text-lg">Bronze Medal</b>
+            <span className="text-sm muted">Your-K, Your-ASEAN Short Video 2022</span>
+          </Card>
+        </div>
+        <div className="pcu-card">
+          <div className="flex items-center gap-3">
+            <IconBadge icon={BookOpen} size={44} />
+            <div><b className="text-3xl">3</b> <span className="muted">peer-reviewed papers</span></div>
+          </div>
+          <Details summary="Show titles" className="mt-3">
+            <ul className="m-0 pl-5 flex flex-col gap-2" lang="id">{publications.map(p => <li key={p}>{p}</li>)}</ul>
+          </Details>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <>
-      <section className="section">
-        <div className="wrap flex flex-wrap gap-14 items-start">
-          <div className="arch-photo flex-[0_1_360px] min-w-[240px] aspect-[3/4]">
-            <Image src="/assets/images/self-portrait/profile-pic-1.png" alt="Portrait of Zefanya Kharisma Nugroho" fill priority sizes="360px" />
+      <section className="pt-[clamp(40px,6vw,80px)] pb-12">
+        <div className="wrap flex flex-wrap gap-12 items-center">
+          <div className="arch-photo flex-[0_1_300px] min-w-[220px] aspect-[3/4]">
+            <Image src="/assets/images/self-portrait/profile-pic-1.png" alt="Portrait of Zefanya Kharisma Nugroho" fill priority sizes="300px" />
           </div>
-          <div className="flex-[1_1_520px] min-w-0 flex flex-col gap-5">
+          <div className="flex-[1_1_480px] min-w-0 flex flex-col gap-5">
             <span className="pcu-eyebrow text-accent-strong">About</span>
-            <h1 className="h-page">
-              <span className="pcu-kicker">International Education Professional</span>
-              Zefanya Kharisma Nugroho
-            </h1>
-            <p className="lead">
-              At Petra Christian University I manage relationships with {stats.partners} global partners and facilitate {stats.meetingsPerMonth} strategic
-              meetings each month. Before that, at Airlangga Global Engagement, I ran exchange programs and supported {stats.studentsPerSemester} international
-              students every semester.
-            </p>
-            <div className="grid-2 !gap-4 mt-2">
-              <Card className="!p-6">
-                <Tag>Currently</Tag>
-                <h3 className="!text-lg">International Partnership</h3>
-                <p className="muted m-0 text-sm">Petra Christian University · Surabaya</p>
-              </Card>
-              <Card tone="smoke" className="!p-6">
-                <Tag>Open to</Tag>
-                <p className="m-0 text-[.9375rem]">International partnerships, education consulting, digital projects and speaking.</p>
-              </Card>
+            <h1 className="h-page"><span className="pcu-kicker">International Partnership</span>Zefanya Kharisma Nugroho</h1>
+            <p className="lead">Petra Christian University · formerly Airlangga Global Engagement.</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <Stat value={stats.years} label="Years" />
+              <Stat value="6" label="Roles" />
+              <Stat value="5" label="Programs led" />
+              <Stat value="2" label="Medals" />
             </div>
             <div className="flex flex-wrap gap-3">
               <Button href={contact.cv} download>Download CV</Button>
@@ -93,144 +171,34 @@ export default function AboutOverview() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="pb-24">
         <div className="wrap">
-          <SectionHead eyebrow="Now" title="What I'm building and exploring" />
-          <div className="grid-3">
-            {focus.map(f => (
-              <Card key={f.title}>
-                <div className="flex items-center justify-between gap-3">
-                  <IconBadge icon={f.icon} size={52} />
-                  <Tag outline className="text-midnight">{f.status}</Tag>
-                </div>
-                <h3 className="!text-xl">{f.title}</h3>
-                <p className="muted m-0 text-[.9375rem]">{f.text}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="wrap grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] items-start">
-          <div className="lg:sticky lg:top-24">
-            <SectionHead
-              eyebrow="Experience"
-              title="Where I've worked"
-              lead={`${stats.years} years in international higher education: partnerships, mobility programs and student support in Surabaya.`}
-            />
-            <Button href="/experience" variant="ghost" className="text-midnight">Full experience →</Button>
-          </div>
-          <Timeline roles={roles} initiallyOpen="pcu" />
-        </div>
-      </section>
-
-      <section className="section section--smoke">
-        <div className="wrap">
-          <SectionHead eyebrow="Expertise" title="What I bring" />
-          <div className="grid-3">
-            {expertise.map(e => (
-              <Card key={e.title}>
-                <IconBadge icon={e.icon} size={52} />
-                <h3 className="!text-xl">{e.title}</h3>
-                <p className="muted m-0 text-[.9375rem]">{e.text}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="wrap grid-2 !gap-14 items-start">
-          <div>
-            <SectionHead eyebrow="Education" title="Background" />
-            <Card shape={<Shape kind="quarter-bl" color="amber" className="w-[72px] right-0 top-0" />}>
-              <Tag>Jul 2020 – Mar 2024</Tag>
-              <h3 className="!text-[1.375rem]">Bachelor&apos;s in International Relations</h3>
-              <p className="muted m-0">
-                Universitas Airlangga. International relations theory, foreign policy analysis and cross-cultural dynamics. Published research on
-                U.S.–ASEAN cooperation and Middle East diplomacy, and presented at the 9th ICoCSPA in 2023.
-              </p>
-              <Button href="/education" variant="ghost" className="text-midnight self-start">Education details →</Button>
-            </Card>
-          </div>
-          <div>
-            <SectionHead eyebrow="Milestones" title="Recognition" />
-            <ol className="m-0 p-0 list-none border-t border-line">
-              {milestones.map(m => (
-                <li key={m.title} className="py-5 border-b border-line grid grid-cols-[96px_1fr] gap-4">
-                  <span className="pcu-eyebrow text-ink-muted pt-1">{m.when}</span>
-                  <div>
-                    <h3 className="!text-lg">{m.title}</h3>
-                    <p className="muted m-0 mt-1 text-[.9375rem]">{m.text}</p>
+          <Tabs
+            label="About sections"
+            tabs={[
+              { key: 'overview', label: 'Overview', panel: overview },
+              { key: 'experience', label: 'Experience', panel: <Gantt roles={roles} /> },
+              { key: 'education', label: 'Education', panel: education },
+              { key: 'expertise', label: 'Expertise', panel: <div className="grid-3">{expertise.map(e => <FlipCard key={e.title} {...e} />)}</div> },
+              {
+                key: 'skills',
+                label: 'Skills',
+                panel: (
+                  <div className="grid-2">
+                    {skillGroups.map(g => (
+                      <Card key={g.title}>
+                        <h3 className="!text-xl">{g.title}</h3>
+                        <div className="flex flex-wrap gap-2">{g.tags.map(t => <Tag key={t} outline className="text-midnight !text-sm">{t}</Tag>)}</div>
+                      </Card>
+                    ))}
                   </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--smoke">
-        <div className="wrap">
-          <SectionHead eyebrow="Selected projects" title="Programs and systems" />
-          <div className="grid-4">
-            <PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students in a seminar room" tag="Exchange" title="AMERTA" text="Semester exchange, 207 students." sizes="(min-width: 1024px) 25vw, 100vw" />
-            <PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI cultural immersion participants" tag="Cultural immersion" title="ACI" text="Learning through culture." sizes="(min-width: 1024px) 25vw, 100vw" />
-            <Card tone="midnight" href="/sim-kerjasama" className="min-h-[340px]" shape={<Shape kind="ring-u" color="blue" className="w-[160px] right-4 top-0" />}>
-              <div className="mt-auto flex flex-col gap-2">
-                <Tag outline className="text-white">MoU · MoA</Tag>
-                <h3 className="text-white !text-2xl">SIM Kerjasama</h3>
-                <p className="m-0 text-smoke text-[.9375rem]">The system of record for every agreement.</p>
-              </div>
-            </Card>
-            <Card href="/sim-realisasi" className="min-h-[340px]" shape={<Shape kind="quarter-bl" color="teal" className="w-[110px] right-0 top-0" />}>
-              <div className="mt-auto flex flex-col gap-2">
-                <Tag>RENSTRA</Tag>
-                <h3 className="!text-2xl">SIM Realisasi</h3>
-                <p className="muted m-0 text-[.9375rem]">Activities and indicators under each agreement.</p>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <section className="pcu-surface-brand section relative overflow-hidden">
-        <Shape kind="ring-n" color="blue" className="w-[300px] right-[4%] bottom-0" />
-        <div className="wrap relative">
-          <SectionHead
-            light
-            eyebrow="Leadership & philosophy"
-            title="How I work"
-            lead="Whether managing partnerships, designing programs or building digital tools, good work comes from understanding the whole, not just the parts."
+                ),
+              },
+              { key: 'values', label: 'Values', panel: <div className="grid-3">{values.map(v => <FlipCard key={v.title} {...v} />)}</div> },
+            ]}
           />
-          <div className="grid-3">
-            {principles.map((p, i) => (
-              <div key={p.title} className="border-t-2 border-amber pt-5">
-                <span className="pcu-eyebrow text-amber">0{i + 1}</span>
-                <h3 className="text-white !text-xl mt-2">{p.title}</h3>
-                <p className="text-smoke m-0 mt-2">{p.text}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead eyebrow="Beyond work" title="Interests" />
-          <div className="grid-4">
-            {interests.map(it => (
-              <div key={it.title} className="border-t-2 border-midnight pt-5">
-                <h3 className="!text-lg">{it.title}</h3>
-                <p className="muted m-0 mt-2 text-[.9375rem]">{it.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <SkillExplorer eyebrow="Skill map" title="Explore by skill" />
     </>
   )
 }

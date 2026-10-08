@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { Building2, CalendarCheck, Globe, Megaphone, Mic, Package, Receipt, Users, Utensils } from 'lucide-react'
-import { Card, CountryCode, IconBadge, PageHero, PhotoCard, SectionHead, Shape, StackedBar, Stat, Tag } from '@/components/pcu'
-import { ProcessSteps } from '@/components/pcu/ProcessSteps'
-import RotatingGallery from '@/components/projects/RotatingGallery'
+import { Building2, CalendarCheck, Globe, Megaphone, Mic, Receipt, Users } from 'lucide-react'
+import { CountryCode, Details, FlipCard, PageHero, PhotoCard, PhotoWall, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
 import Rundown from '@/components/projects/Rundown'
-import { AERO_BUDGET, contributions, CORNERS, GALLERY_IMAGES, highlights, INSTITUTIONS, STUDENT_DELEGATIONS } from '@/lib/data/aero'
+import { BoothMap } from '@/components/viz/BoothMap'
+import { Lifecycle } from '@/components/viz/Lifecycle'
+import { Treemap } from '@/components/viz/Treemap'
+import { AERO_BUDGET, contributions, GALLERY_IMAGES, highlights, INSTITUTIONS } from '@/lib/data/aero'
 
 export const metadata: Metadata = {
   title: 'AERO 2025',
@@ -15,9 +16,9 @@ export const metadata: Metadata = {
 
 const highlightIcons = [Building2, Mic, Globe, Users]
 const contributionIcons = [CalendarCheck, Receipt, Building2, Megaphone]
-const budgetIcons = [Package, Building2, Utensils, Users]
+const contributionLabels = ['Logistics', 'Vendors & budget', 'Partners & guests', 'Promotion & report']
 
-const rp = (n: number) => 'Rp ' + n.toLocaleString('id-ID')
+const rp = (n: number) => `Rp ${(n / 1_000_000).toFixed(1)}M`
 
 export default function AeroPage() {
   return (
@@ -27,7 +28,7 @@ export default function AeroPage() {
         tags={['Exhibition', 'Universitas Airlangga']}
         kicker="Airlangga Expanding Reach & Opportunities"
         title="AERO 2025"
-        lead="The annual internationalisation exhibition connecting UNAIR students with global partners, alumni and opportunities. 9–10 May 2025, Surabaya."
+        lead="UNAIR's internationalisation exhibition · 9–10 May 2025, Surabaya."
       />
 
       <div className="wrap">
@@ -39,111 +40,81 @@ export default function AeroPage() {
       <section className="section !pb-10">
         <div className="wrap grid-4 !gap-8">
           <Stat value="19" label="Exhibition booths" />
-          <Stat value="12" label="Partner universities & institutions" />
+          <Stat value="12" label="Partner institutions" />
           <Stat value="50+" label="Stakeholders" />
-          <Stat value="Rp 149.7M" label="Total budget" />
+          <Stat value="9" label="Student delegations" />
         </div>
       </section>
 
       <section className="section !pt-6">
         <div className="wrap">
-          <SectionHead eyebrow="What to expect" title="Program highlights" />
-          <div className="grid-4">
-            {highlights.map((h, i) => (
-              <Card key={h.title}>
-                <IconBadge icon={highlightIcons[i]} size={52} tone={i % 2 ? 'aqua' : 'brand'} />
-                <h3 className="!text-lg">{h.title}</h3>
-                <p className="muted m-0 text-[.9375rem]">{h.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--smoke relative overflow-hidden">
-        <Shape kind="quarter-bl" color="amber" className="w-[120px] right-0 top-0 hidden md:block" />
-        <div className="wrap">
-          <SectionHead eyebrow="My role" title="Contributions" />
-          <ProcessSteps steps={contributions.map((c, i) => ({ icon: contributionIcons[i], title: c.title, text: c.desc }))} />
-        </div>
-      </section>
-
-      <RotatingGallery images={GALLERY_IMAGES} alt="AERO 2025 exhibition" title="Moments from AERO 2025" subtitle="19 booths · 12 partner institutions · 9 student delegations" />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead
-            eyebrow="Institutions"
-            title="Participating institutions"
-            lead="19 booths: 12 partner universities and institutions, plus 9 international student delegations."
-          />
-          <div className="grid-3">
-            <Card tone="smoke">
-              <h3 className="!text-lg">UNAIR internal corners</h3>
-              <ul className="m-0 p-0 list-none flex flex-col gap-2.5">
-                {CORNERS.map(c => (
-                  <li key={c.name} className="flex justify-between gap-3">
-                    <span>{c.name}</span>
-                    <Tag outline className="text-midnight">Booth {c.booth}</Tag>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-            {INSTITUTIONS.map(g => (
-              <Card key={g.country}>
-                <h3 className="!text-lg"><CountryCode country={g.country} /></h3>
-                <ul className="m-0 p-0 list-none flex flex-col gap-2.5">
-                  {g.orgs.map(o => (
-                    <li key={o.name} className="flex justify-between gap-3 text-[.9375rem]">
-                      <span>{o.name}</span>
-                      {o.booth && <Tag outline className="text-midnight flex-none">Booth {o.booth}</Tag>}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
-          </div>
-          <h3 className="!text-xl mt-12 mb-4">International student delegations</h3>
-          <ul className="m-0 p-0 list-none flex flex-wrap gap-3">
-            {STUDENT_DELEGATIONS.map(s => (
-              <li key={s.country} className="flex items-center gap-2 bg-smoke rounded-pill pl-3 pr-4 py-2">
-                <CountryCode country={s.country} />
-                {s.booth && <span className="text-sm text-ink-muted">· Booth {s.booth}</span>}
-              </li>
-            ))}
-          </ul>
+          <SectionHead eyebrow="Floor plan" title="19 booths, one boulevard" lead="Tap a booth to see who was there." />
+          <Reveal><BoothMap /></Reveal>
+          <Details summary="All institutions" className="mt-6">
+            <div className="grid-3 mt-3">
+              {INSTITUTIONS.map(g => (
+                <div key={g.country}>
+                  <p className="m-0 mb-2 font-semibold"><CountryCode country={g.country} /></p>
+                  <ul className="m-0 pl-5 text-[.9375rem]">{g.orgs.map(o => <li key={o.name}>{o.name}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          </Details>
         </div>
       </section>
 
       <section className="section section--smoke">
         <div className="wrap">
-          <SectionHead eyebrow="Schedule" title="Event rundown" lead="9–10 May 2025 · Universitas Airlangga, Surabaya" />
+          <SectionHead eyebrow="What to expect" title="Four highlights" />
+          <div className="grid-4">
+            {highlights.map((h, i) => {
+              const Icon = highlightIcons[i]
+              return <FlipCard key={h.title} icon={<Icon aria-hidden />} title={h.title} back={h.desc} />
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section relative overflow-hidden">
+        <Shape kind="quarter-bl" color="amber" className="w-[120px] right-0 top-0 hidden md:block" />
+        <div className="wrap">
+          <SectionHead eyebrow="My role" title="What I ran" />
+          <Lifecycle
+            label="My contributions to AERO 2025"
+            steps={contributions.map((c, i) => {
+              const Icon = contributionIcons[i]
+              return { icon: <Icon size={20} aria-hidden />, title: contributionLabels[i], text: c.desc }
+            })}
+          />
+        </div>
+      </section>
+
+      <section className="section section--smoke">
+        <div className="wrap">
+          <SectionHead eyebrow="Schedule" title="Event rundown" lead="9–10 May 2025 · Surabaya" />
           <Rundown />
         </div>
       </section>
 
       <section className="section">
-        <div className="wrap grid-2 !gap-12 items-start">
-          <div>
-            <SectionHead eyebrow="Financials" title="Budget overview" lead="AERO 2025 spending across four categories." />
-            <div className="grid grid-cols-2 gap-4">
-              {AERO_BUDGET.categories.map((c, i) => (
-                <Card key={c.name} tone="smoke" className="!p-5">
-                  <IconBadge icon={budgetIcons[i]} size={40} />
-                  <p className="m-0 text-sm muted">{c.name}</p>
-                  <p className="m-0 font-bold text-lg tabular-nums">{rp(c.total)}</p>
-                </Card>
-              ))}
-            </div>
+        <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-start">
+          <div className="flex flex-col gap-4">
+            <SectionHead eyebrow="Financials" title="Budget" size="sub" />
+            <Stat value={rp(AERO_BUDGET.grandTotal)} label="Grand total" />
           </div>
-          <Card className="lg:mt-[120px]">
-            <p className="pcu-eyebrow text-accent-strong m-0">Grand total</p>
-            <p className="m-0 text-[2rem] font-bold tracking-[-0.02em] tabular-nums">{rp(AERO_BUDGET.grandTotal)}</p>
-            <StackedBar
-              caption="AERO 2025 budget by category"
-              segments={AERO_BUDGET.categories.map(c => ({ label: c.name, value: c.total, display: rp(c.total) }))}
+          <div className="pcu-card">
+            <Treemap
+              label="AERO 2025 budget by category"
+              items={AERO_BUDGET.categories.map(c => ({ label: c.name, value: c.total, display: rp(c.total) }))}
             />
-          </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="section !pt-0">
+        <div className="wrap">
+          <SectionHead eyebrow="Gallery" title="Moments" />
+          <PhotoWall images={GALLERY_IMAGES} alt="AERO 2025 exhibition" />
         </div>
       </section>
 
@@ -151,8 +122,8 @@ export default function AeroPage() {
         <div className="wrap">
           <SectionHead eyebrow="Related programs" title="Part of the same story" />
           <div className="grid-2">
-            <PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="Semester exchange" title="AMERTA" text="The flagship inbound exchange that AERO celebrates and promotes every year." sizes="(min-width: 1024px) 50vw, 100vw" />
-            <PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI participants" tag="Cultural immersion" title="ACI" text="Cultural activities that feed into AERO's student performance program." sizes="(min-width: 1024px) 50vw, 100vw" />
+            <PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="Semester exchange" title="AMERTA" text="The inbound exchange AERO promotes." sizes="(min-width: 1024px) 50vw, 100vw" />
+            <PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI participants" tag="Cultural immersion" title="ACI" text="Culture behind the student performances." sizes="(min-width: 1024px) 50vw, 100vw" />
           </div>
         </div>
       </section>

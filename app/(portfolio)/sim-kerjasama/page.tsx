@@ -1,7 +1,12 @@
 import type { Metadata } from 'next'
-import { Bell, ChartColumn, Database, FilePlus2, RefreshCw, Search, Settings, Timer } from 'lucide-react'
-import { Card, PageHero, SectionHead, Shape, Tag } from '@/components/pcu'
+import {
+  Bell, Building, ChartColumn, ClipboardCheck, Crown, Database, FilePlus2, Globe2, PenLine, Plane, RefreshCw, Search, Settings,
+  ShieldCheck, Stamp, Timer, Users,
+} from 'lucide-react'
+import { Card, Details, FlipCard, PageHero, SectionHead, Shape, Stat } from '@/components/pcu'
 import { MenuRail } from '@/components/pcu/MenuRail'
+import BeforeAfter from '@/components/projects/BeforeAfter'
+import { Lifecycle } from '@/components/viz/Lifecycle'
 import { simKerjasama as sim } from '@/lib/data/sim'
 
 export const metadata: Metadata = {
@@ -11,15 +16,16 @@ export const metadata: Metadata = {
 }
 
 const menuIcons = [ChartColumn, Search, FilePlus2, Timer, RefreshCw, Bell, Database, Settings]
-const stakeholderShapes = [
-  <Shape key="a" kind="quarter-tl" color="amber" className="w-12 right-0 bottom-0" />,
-  <Shape key="b" kind="circle" color="cerise" className="w-8 right-4 bottom-4" />,
-  <span key="c" aria-hidden className="absolute w-10 h-10 right-0 bottom-0 bg-teal" />,
-  <Shape key="d" kind="quarter-tl" color="blue" className="w-12 right-0 bottom-0" />,
-  <Shape key="e" kind="circle" color="amber" className="w-8 right-4 bottom-4" />,
-  <span key="f" aria-hidden className="absolute w-10 h-10 right-0 bottom-0 bg-cerise" />,
+const stakeholderIcons = [Building, Users, Stamp, Plane, Crown, Globe2]
+
+const lifecycle = [
+  { icon: <PenLine size={20} aria-hidden />, title: 'Propose', text: 'A unit proposes an agreement, or records one already signed.' },
+  { icon: <ShieldCheck size={20} aria-hidden />, title: 'Approve', text: 'Dean to Rector, in order. Approvers can ask for revisions.' },
+  { icon: <Timer size={20} aria-hidden />, title: 'Track', text: 'Each queue has an SLA; slow approvals show up.' },
+  { icon: <Globe2 size={20} aria-hidden />, title: 'Active', text: 'Valid agreements are visible to everyone, on the map and dashboard.' },
+  { icon: <ClipboardCheck size={20} aria-hidden />, title: 'Evaluate', text: 'Faculties and partners rate the partnership; partners need no account.' },
+  { icon: <RefreshCw size={20} aria-hidden />, title: 'Renew', text: 'Renewal is decided on evidence and joins the agreement chain.' },
 ]
-const stakeholderTags = ['Office', 'Units', 'Approvers', 'Mobility', 'Leadership', 'Partners']
 
 export default function SimKerjasamaPage() {
   return (
@@ -29,22 +35,38 @@ export default function SimKerjasamaPage() {
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Kerjasama"
-        lead={sim.summary}
+        lead={`${sim.tagline}.`}
         shapes={<>
           <Shape kind="ring-n" color="blue" className="right-[6%] bottom-0 w-[320px]" />
           <Shape kind="ring-u-line" color="amber" className="right-[2%] top-0 w-[220px]" />
         </>}
       >
-        <p className="m-0 text-xl font-semibold text-white max-w-[40ch]">{sim.tagline}.</p>
+        <Details light summary="About the system">{sim.summary}</Details>
       </PageHero>
 
-      <section className="section">
+      <section className="section !pb-10">
+        <div className="wrap grid-4 !gap-8">
+          <Stat value={String(sim.goals.length)} label="Goals, G1–G9" />
+          <Stat value={String(sim.menus.length)} label="Menus" />
+          <Stat value={String(sim.stakeholders.length)} label="User groups" />
+          <Stat value={String(sim.metrics.length)} label="New measures" />
+        </div>
+      </section>
+
+      <section className="section !pt-6">
         <div className="wrap">
-          <SectionHead eyebrow="Goals G1–G9" title="Nine goals for the system" />
-          <ol className="m-0 p-0 list-none grid-3 !gap-4">
+          <SectionHead eyebrow="Lifecycle" title="One agreement, six stages" />
+          <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle in SIM Kerjasama" />
+        </div>
+      </section>
+
+      <section className="section !pt-0">
+        <div className="wrap">
+          <SectionHead eyebrow="Goals" title="G1–G9" />
+          <ol className="m-0 p-0 list-none grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
             {sim.goals.map((g, i) => (
-              <li key={g} className="flex gap-4 items-center p-5 bg-smoke rounded-md">
-                <span aria-hidden className="pcu-icon-badge flex-none font-bold text-[.9375rem]" style={{ '--size': '52px' } as React.CSSProperties}>
+              <li key={g} className="flex gap-4 items-center p-4 bg-smoke rounded-md">
+                <span aria-hidden className="pcu-icon-badge flex-none font-bold text-[.9375rem]" style={{ '--size': '48px' } as React.CSSProperties}>
                   G{i + 1}
                 </span>
                 <span className="font-semibold leading-snug"><span className="sr-only">G{i + 1}: </span>{g}</span>
@@ -63,38 +85,20 @@ export default function SimKerjasamaPage() {
 
       <section className="section">
         <div className="wrap">
-          <SectionHead eyebrow="Benefits" title="Lighter work for every user" />
+          <SectionHead eyebrow="Benefits" title="Six user groups" lead="Tap a card." />
           <div className="grid-3">
-            {sim.stakeholders.map((s, i) => (
-              <Card key={s.group} shape={stakeholderShapes[i]} className="!pb-12">
-                <Tag>{stakeholderTags[i]}</Tag>
-                <h3 className="!text-xl">{s.group}</h3>
-                <p className="muted m-0">{s.desc}</p>
-              </Card>
-            ))}
+            {sim.stakeholders.map((s, i) => {
+              const Icon = stakeholderIcons[i]
+              return <FlipCard key={s.group} icon={<Icon aria-hidden />} title={s.group} back={s.desc} tone={i % 2 ? 'midnight' : 'white'} />
+            })}
           </div>
         </div>
       </section>
 
       <section className="section section--smoke">
         <div className="wrap">
-          <SectionHead eyebrow="Before and after" title="What wasn't measured now is" />
-          <div className="overflow-x-auto bg-white rounded-md">
-            <table className="data-table">
-              <thead>
-                <tr><th scope="col" className="w-[44%]">Measure</th><th scope="col">Before</th><th scope="col">With the system</th></tr>
-              </thead>
-              <tbody>
-                {sim.metrics.map(m => (
-                  <tr key={m.measure}>
-                    <td>{m.measure}</td>
-                    <td className="muted">{m.before}</td>
-                    <td className="font-semibold">{m.after}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <SectionHead eyebrow="Before and after" title="Unmeasured, now measured" />
+          <BeforeAfter metrics={sim.metrics} />
         </div>
       </section>
 
@@ -110,7 +114,7 @@ export default function SimKerjasamaPage() {
             <div className="flex flex-col gap-2 max-w-[60ch]">
               <span className="pcu-eyebrow text-amber">Companion system</span>
               <h2 className="h-sub text-white">SIM Realisasi</h2>
-              <p className="m-0 text-smoke">From agreements on paper to real activities: RENSTRA indicators, semester reports and dormant partnerships made visible.</p>
+              <p className="m-0 text-smoke">Agreements on paper, turned into counted activities.</p>
             </div>
             <span className="pcu-btn pcu-btn--accent">View SIM Realisasi →</span>
           </Card>

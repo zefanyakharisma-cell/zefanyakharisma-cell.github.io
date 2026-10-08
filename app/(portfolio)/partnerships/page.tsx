@@ -1,121 +1,95 @@
 import type { Metadata } from 'next'
-import { BookOpen, Building2, FileCheck, Globe, Handshake, Layers, Microscope, Search, TrendingUp, Users } from 'lucide-react'
-import { Card, IconBadge, PageHero, SectionHead, Shape, Stat } from '@/components/pcu'
-import { ProcessSteps } from '@/components/pcu/ProcessSteps'
+import { BookOpen, Handshake, Layers, Microscope, Search, TrendingUp, Users, FileCheck } from 'lucide-react'
+import { BarList, Details, FlipCard, PageHero, SectionHead, Stat } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
-import PartnerDirectory from '@/components/projects/PartnerDirectory'
+import { Lifecycle } from '@/components/viz/Lifecycle'
+import PartnerExplorer from '@/components/projects/PartnerExplorer'
+import { CITY_COORDS } from '@/lib/data/cities'
+import { CONTINENT, countBy, DOM_DATA, INTL_DATA } from '@/lib/data/partners'
 import { stats } from '@/lib/data/profile'
+import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 
 export const metadata: Metadata = {
   title: 'Partnership Development',
   alternates: { canonical: '/partnerships' },
-  description: 'Coordinating 505+ institutional partnerships across 32 countries and 52 Indonesian cities at Petra Christian University.',
+  description: 'PCU partnerships mapped: 505+ partners across 32 countries and 52 Indonesian cities.',
 }
 
 const enables = [
-  { icon: BookOpen, title: 'Student exchange', text: 'Semester abroad, dual-degree and degree-level mobility.' },
-  { icon: Microscope, title: 'Research collaboration', text: 'Joint projects and interdisciplinary initiatives.' },
-  { icon: Users, title: 'Faculty development', text: 'Teaching capacity, research mentoring and professional growth.' },
-  { icon: Layers, title: 'Curriculum design', text: 'Joint program design and curriculum internationalisation.' },
+  { icon: <BookOpen aria-hidden />, title: 'Student exchange', back: 'Semester abroad, dual-degree and degree-level mobility.' },
+  { icon: <Microscope aria-hidden />, title: 'Research', back: 'Joint projects and interdisciplinary initiatives.' },
+  { icon: <Users aria-hidden />, title: 'Faculty development', back: 'Teaching capacity, research mentoring and professional growth.' },
+  { icon: <Layers aria-hidden />, title: 'Curriculum', back: 'Joint program design and curriculum internationalisation.' },
 ]
 
 const approach = [
-  { icon: Search, title: 'Strategic identification', text: "Finding partner institutions aligned with PCU's mission and academic strengths, through evaluation and due diligence." },
-  { icon: Handshake, title: 'Engagement & negotiation', text: 'Building relationships and negotiating terms that benefit both institutions and advance shared goals.' },
-  { icon: FileCheck, title: 'Program development', text: 'Co-designing exchange programs, research collaborations and joint curriculum initiatives.' },
-  { icon: TrendingUp, title: 'Activation & growth', text: 'Implementing programs, monitoring progress and growing the partnership through continuous engagement.' },
+  { icon: <Search size={20} aria-hidden />, title: 'Identify', text: "Find institutions aligned with PCU's mission and strengths, with due diligence." },
+  { icon: <Handshake size={20} aria-hidden />, title: 'Negotiate', text: 'Build the relationship and agree terms that benefit both sides.' },
+  { icon: <FileCheck size={20} aria-hidden />, title: 'Develop', text: 'Co-design exchange, research and joint curriculum programs.' },
+  { icon: <TrendingUp size={20} aria-hidden />, title: 'Grow', text: 'Implement, monitor and keep the partnership active.' },
 ]
 
 export default function PartnershipsPage() {
+  const world = buildWorldMap(countBy(INTL_DATA, p => p.country))
+  const indonesia = buildIndonesiaMap(countBy(DOM_DATA, p => p.city), CITY_COORDS)
+  const continents = Object.entries(countBy(INTL_DATA, p => CONTINENT[p.country] ?? 'Other')).sort((a, b) => b[1] - a[1])
+  const types = Object.entries(countBy(DOM_DATA, p => p.type)).sort((a, b) => b[1] - a[1])
+
   return (
     <>
       <PageHero
         eyebrow="Global partnerships"
         title="Partnership development"
-        lead={`I manage ${stats.partners} institutional partners and facilitate ${stats.meetingsPerMonth} strategic meetings a month at Petra Christian University, building collaborations that create academic and global opportunity.`}
+        lead={`${stats.partners} partners managed, ${stats.meetingsPerMonth} meetings a month.`}
       />
       <SubNav />
 
       <section className="section !pb-10">
         <div className="wrap grid-4 !gap-8">
-          <Stat value="505+" label="Partners in PCU's portfolio" />
-          <Stat value={stats.meetingsPerMonth} label="Strategic meetings a month" />
+          <Stat value="505+" label="Partners at PCU" />
           <Stat value="32" label="Countries" />
           <Stat value="52" label="Indonesian cities" />
+          <Stat value={stats.meetingsPerMonth} label="Meetings a month" />
         </div>
       </section>
 
       <section className="section !pt-6">
         <div className="wrap">
-          <SectionHead
-            eyebrow="Partnership network"
-            title="Institutional reach at PCU"
-            lead="PCU's portfolio has two tracks: global academic institutions and domestic organisations across Indonesia. I help coordinate, manage and grow both."
-          />
-          <div className="grid-2">
-            <Card tone="midnight" shape={<Shape kind="ring-u" color="blue" className="w-[200px] right-6 top-0" />}>
-              <IconBadge icon={Globe} tone="aqua" />
-              <span className="pcu-eyebrow text-amber">International</span>
-              <h3 className="text-white !text-2xl">International partnerships</h3>
-              <p className="text-smoke m-0">Academic institutions across Asia, Europe, North America and Australia.</p>
-              <div className="grid grid-cols-3 gap-4 pt-4 mt-2 border-t border-white/20">
-                {[['184', 'Institutions'], ['32', 'Countries'], ['4', 'Continents']].map(([n, l]) => (
-                  <div key={l}><p className="m-0 text-3xl font-bold text-white">{n}</p><p className="m-0 text-sm text-smoke">{l}</p></div>
-                ))}
-              </div>
-            </Card>
-            <Card shape={<Shape kind="quarter-bl" color="teal" className="w-[110px] right-0 top-0" />}>
-              <IconBadge icon={Building2} />
-              <span className="pcu-eyebrow text-accent-strong">Domestic</span>
-              <h3 className="!text-2xl">Domestic partnerships</h3>
-              <p className="muted m-0">Industry, education, government and regional organisations, under MoU, MoA, IA/IR and strategic frameworks.</p>
-              <div className="grid grid-cols-3 gap-4 pt-4 mt-2 border-t border-line">
-                {[['321', 'Partners'], ['52', 'Cities'], ['5', 'Partner types']].map(([n, l]) => (
-                  <div key={l}><p className="m-0 text-3xl font-bold">{n}</p><p className="m-0 text-sm muted">{l}</p></div>
-                ))}
-              </div>
-            </Card>
+          <SectionHead eyebrow="Explore" title="The network, mapped" />
+          <PartnerExplorer world={world} indonesia={indonesia} />
+        </div>
+      </section>
+
+      <section className="section section--smoke">
+        <div className="wrap grid-2 !gap-12 items-start">
+          <div className="pcu-card">
+            <h3 className="!text-xl mb-5">International, by region</h3>
+            <BarList caption="International partners by region" bars={continents.map(([k, v]) => ({ key: k, label: k, value: v }))} />
+          </div>
+          <div className="pcu-card">
+            <h3 className="!text-xl mb-5">Domestic, by type</h3>
+            <BarList caption="Domestic partners by type" bars={types.map(([k, v]) => ({ key: k, label: k, value: v, color: '#3880d0' }))} />
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
+          <SectionHead eyebrow="What they enable" title="Four kinds of value" />
+          <div className="grid-4">
+            {enables.map(e => <FlipCard key={e.title} icon={e.icon} title={e.title} back={e.back} />)}
           </div>
         </div>
       </section>
 
       <section className="section section--smoke">
         <div className="wrap">
-          <SectionHead eyebrow="Collaboration areas" title="What the partnerships enable" />
-          <div className="grid-4">
-            {enables.map(e => (
-              <Card key={e.title}>
-                <IconBadge icon={e.icon} size={52} />
-                <h3 className="!text-lg">{e.title}</h3>
-                <p className="muted m-0 text-[.9375rem]">{e.text}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead
-            eyebrow="My approach"
-            title="How I build partnerships"
-            lead="Four phases to identify, formalise and sustain collaborations, so every partnership creates lasting value for both sides."
-          />
-          <ProcessSteps steps={approach} />
-        </div>
-      </section>
-
-      <PartnerDirectory />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead eyebrow="Deeper breakdown" title="The network in numbers" size="sub" />
-          <div className="grid-4 !gap-8">
-            <Stat value="8" label="ASEAN nations with active agreements" />
-            <Stat value="4" label="Continents: Asia, Europe, Americas, Oceania" />
-            <Stat value="40+" label="Active MoU/MoA agreements, managed from draft to renewal" />
-            <Stat value={stats.years} label="Years building the network" />
-          </div>
+          <SectionHead eyebrow="My approach" title="Four phases" />
+          <Lifecycle steps={approach} label="How I build partnerships" />
+          <Details className="mt-6">
+            Every partnership moves from identification to growth. I evaluate fit with PCU&apos;s academic strengths, negotiate terms that serve
+            both institutions, co-design the programs that make the agreement real, and keep it active through monitoring and regular engagement.
+          </Details>
         </div>
       </section>
     </>
