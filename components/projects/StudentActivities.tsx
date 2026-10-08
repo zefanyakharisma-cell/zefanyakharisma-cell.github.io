@@ -225,8 +225,7 @@ export default function StudentActivities() {
                   <IconBadge icon={act.icon} size={40} />
                   <span className="text-lg font-bold leading-snug">{act.title}</span>
                 </span>
-                <span className="muted text-[.9375rem]">{act.preview}</span>
-                <span className="font-semibold mt-1">Read more →</span>
+                <span className="font-semibold mt-1">Open →</span>
               </span>
             </button>
           </li>
@@ -258,7 +257,8 @@ export default function StudentActivities() {
                 <IconBadge icon={active.icon} size={52} />
                 <h2 id="activity-title" className="h-sub">{active.title}</h2>
               </div>
-              <p className="lead m-0">{active.role}</p>
+              <p className="lead m-0">{active.preview}</p>
+              <p className="m-0">{active.role}</p>
               <div className="grid-2 !gap-8">
                 <div>
                   <h3 className="!text-lg mb-3">Responsibilities</h3>

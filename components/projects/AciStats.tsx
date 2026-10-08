@@ -1,5 +1,6 @@
 'use client'
 
+import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import { ALL_VENDORS, DATA, TABS, type AllSat, type Sat } from '@/lib/data/aci'
 import { BarList, CountryCode, Donut, SectionHead, StackedBar, Stat, Tag } from '@/components/pcu'
@@ -72,13 +73,16 @@ export default function AciStats() {
             <h3 className="!text-xl mb-4">{isAll ? 'Vendors across all batches' : 'Vendors'}</h3>
             <ul className="m-0 p-0 list-none flex flex-col">
               {(isAll ? ALL_VENDORS : d.vendors ?? []).map(v => (
-                <li key={`${v.name}-${v.batch ?? ''}`} className="py-3 border-t border-line first:border-t-0 first:pt-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Tag outline className="text-midnight">{v.category}</Tag>
-                    <b>{v.name}</b>
-                    {isAll && v.batch && <span className="text-sm text-ink-muted">· {v.batch}</span>}
-                  </div>
-                  <p className="muted text-sm m-0 mt-1.5">{v.desc}</p>
+                <li key={`${v.name}-${v.batch ?? ''}`} className="py-2.5 border-t border-line first:border-t-0 first:pt-0">
+                  <details className="group">
+                    <summary className="flex flex-wrap items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                      <Tag outline className="text-midnight">{v.category}</Tag>
+                      <b>{v.name}</b>
+                      {isAll && v.batch && <span className="text-sm text-ink-muted">· {v.batch}</span>}
+                      <ChevronDown aria-hidden size={16} className="ml-auto text-accent-strong transition-transform group-open:rotate-180 motion-reduce:transition-none" />
+                    </summary>
+                    <p className="muted text-sm m-0 mt-1.5">{v.desc}</p>
+                  </details>
                 </li>
               ))}
             </ul>
