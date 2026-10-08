@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+import type { Theme } from '@/lib/nav'
 
 /** Fades children up when they enter the viewport. Visible by default without JS. */
-export function Reveal({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+export function Reveal({ children, className, delay = 0, theme }: { children: React.ReactNode; className?: string; delay?: number; theme?: Theme }) {
   const ref = useRef<HTMLDivElement>(null)
   const [state, setState] = useState<'static' | 'hidden' | 'shown'>('static')
 
@@ -23,6 +24,7 @@ export function Reveal({ children, className, delay = 0 }: { children: React.Rea
   return (
     <div
       ref={ref}
+      data-theme={theme}
       className={cn('transition-[opacity,transform] duration-700 ease-out', state === 'hidden' && 'opacity-0 translate-y-6', className)}
       style={{ transitionDelay: state === 'shown' ? `${delay}ms` : undefined }}
     >

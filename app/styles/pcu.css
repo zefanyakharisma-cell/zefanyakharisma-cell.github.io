@@ -129,7 +129,7 @@
 
 /* ---------- Graphic elements (p.09–11, 33–34) ----------
    All shapes inherit `color`, so set color: var(--pcu-cerise) etc. */
-.pcu-shape { display: block; color: var(--pcu-blue); }
+:where(.pcu-shape) { display: block; color: var(--pcu-blue); } /* zero specificity so Tailwind's hidden/sm:block apply */
 .pcu-shape--circle      { aspect-ratio: 1; border-radius: 50%; background: currentColor; }
 .pcu-shape--semicircle  { aspect-ratio: 2/1; border-radius: 9999px 9999px 0 0; background: currentColor; }
 .pcu-shape--quarter     { aspect-ratio: 1; border-top-right-radius: 100%; background: currentColor; }
@@ -153,7 +153,8 @@
 .pcu-glow--amber  { background: radial-gradient(circle at 50% 50%, #FFBC00 0%, rgba(255,188,0,.2) 70%, transparent 72%); }
 
 /* ---------- Icon badge (p.11 "Color Background") ---------- */
-.pcu-icon-badge { --size: 64px; width: var(--size); height: var(--size); display: grid; place-items: center; border-radius: 50%; color: var(--pcu-white); background: var(--pcu-gradient-midnight); }
+.pcu-icon-badge { --size: 64px; width: var(--size); height: var(--size); display: grid; place-items: center; border-radius: 50%; color: var(--pcu-white); background: var(--theme-gradient, var(--pcu-gradient-midnight)); }
+.pcu-icon-badge--brand   { background: var(--pcu-gradient-midnight); }
 .pcu-icon-badge svg { width: 55%; height: 55%; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .pcu-icon-badge--sunrise { background: var(--pcu-gradient-sunrise); }
 .pcu-icon-badge--dusk    { background: var(--pcu-gradient-dusk); }
@@ -235,16 +236,119 @@ html[data-splash="seen"] .pcu-splash { display: none; }
 .decor-grid { background-image: radial-gradient(rgba(25,48,75,.11) 1px, transparent 1.3px); background-size: 22px 22px; }
 .decor-glow-tr, .decor-glow-bl, .decor-glow-br, .decor-ring-bl, .decor-ring-tr { position: relative; isolation: isolate; overflow-x: clip; }
 .decor-glow-tr::before, .decor-glow-bl::before, .decor-glow-br::before { content: ""; position: absolute; z-index: -1; pointer-events: none; width: min(560px, 80vw); aspect-ratio: 1; border-radius: 50%; }
-.decor-glow-tr::before { top: -200px; right: -180px; background: radial-gradient(circle, rgba(69,184,188,.22), rgba(84,254,235,.06) 45%, transparent 68%); }
-.decor-glow-bl::before { bottom: -220px; left: -200px; background: radial-gradient(circle, rgba(255,188,0,.20), rgba(236,0,140,.05) 50%, transparent 68%); }
-.decor-glow-br::before { bottom: -220px; right: -180px; background: radial-gradient(circle, rgba(56,128,208,.20), rgba(236,0,140,.06) 50%, transparent 68%); }
+.decor-glow-tr::before { top: -200px; right: -180px; background: radial-gradient(circle, var(--glow-1), var(--glow-1-soft) 45%, transparent 68%); }
+.decor-glow-bl::before { bottom: -220px; left: -200px; background: radial-gradient(circle, var(--glow-2), var(--glow-2-soft) 50%, transparent 68%); }
+.decor-glow-br::before { bottom: -220px; right: -180px; background: radial-gradient(circle, var(--glow-3), var(--glow-3-soft) 50%, transparent 68%); }
 .decor-ring-bl::after, .decor-ring-tr::after { content: ""; position: absolute; z-index: -1; pointer-events: none; width: 340px; aspect-ratio: 2/1; border: 1.5px solid rgba(56,128,208,.35); border-bottom: 0; border-radius: 340px 340px 0 0; }
 .decor-ring-bl::after { left: -90px; bottom: 0; }
 .decor-ring-tr::after { right: -90px; top: 0; transform: rotate(180deg); }
 .pattern-band { height: 12px; background-size: 48px 48px; background-repeat: repeat-x; }
 .hero-glow { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .hero-glow::before, .hero-glow::after { content: ""; position: absolute; border-radius: 50%; width: min(620px, 90vw); aspect-ratio: 1; }
-.hero-glow::before { top: -260px; left: -200px; background: radial-gradient(circle, rgba(84,254,235,.20), transparent 65%); }
-.hero-glow::after { bottom: -300px; right: 20%; background: radial-gradient(circle, rgba(236,0,140,.16), transparent 65%); }
+.hero-glow::before { top: -260px; left: -200px; background: radial-gradient(circle, var(--glow-hero-1), transparent 65%); }
+.hero-glow::after { bottom: -300px; right: 20%; background: radial-gradient(circle, var(--glow-hero-2), transparent 65%); }
 .hero-glow--light::before { background: radial-gradient(circle, rgba(69,184,188,.18), transparent 65%); }
 .hero-glow--light::after { background: radial-gradient(circle, rgba(255,188,0,.18), transparent 65%); }
+
+/* ---------- Section themes (site layer) ----------
+   One brand gradient per part of the site, set by data-theme on the route
+   (lib/nav.ts themeFor): midnight for Home/About/Contact, sunrise for the event
+   programs, aqua for the SIM systems, dusk for International Education.
+   Midnight still frames every page; the theme is the accent.
+   Contrast: white fails on the light ends of sunrise (amber, ~1.6:1), aqua
+   (~1.2:1) and on cerise/blue for small text (~4:1), so every themed surface
+   that carries text lays a midnight scrim over the gradient (--theme-scrim)
+   and places the light end away from the text. */
+:root, [data-theme] {
+  --theme-gradient: var(--pcu-gradient-midnight);
+  --theme-surface: var(--pcu-gradient-midnight);
+  --theme-scrim: linear-gradient(transparent, transparent);
+  --theme-scrim-narrow: linear-gradient(transparent, transparent);
+  --theme-accent: var(--pcu-amber);
+  --glow-1: rgba(69,184,188,.22); --glow-1-soft: rgba(84,254,235,.06);
+  --glow-2: rgba(255,188,0,.20);  --glow-2-soft: rgba(236,0,140,.05);
+  --glow-3: rgba(56,128,208,.20); --glow-3-soft: rgba(236,0,140,.06);
+  --glow-hero-1: rgba(84,254,235,.20); --glow-hero-2: rgba(236,0,140,.16);
+  --theme-tint: rgba(56,128,208,.16);
+  --theme-ring: var(--pcu-amber);
+}
+[data-theme="aqua"], [data-theme="dusk"] {
+  --theme-scrim: linear-gradient(90deg, rgba(19,50,86,.92) 0%, rgba(19,50,86,.72) 55%, rgba(19,50,86,.3) 100%);
+  --theme-scrim-narrow: linear-gradient(rgba(19,50,86,.82), rgba(19,50,86,.82));
+}
+[data-theme="sunrise"] {
+  --theme-gradient: var(--pcu-gradient-sunrise);
+  /* Midnight blended into amber turns brown, so sunrise surfaces stay midnight
+     and carry the gradient on the half ring and glows instead. */
+  --theme-surface: var(--pcu-gradient-midnight);
+  --theme-ring: var(--pcu-gradient-sunrise);
+  --theme-accent: var(--pcu-amber);
+  --glow-1: rgba(255,188,0,.24);  --glow-1-soft: rgba(236,0,140,.06);
+  --glow-2: rgba(236,0,140,.16);  --glow-2-soft: rgba(255,188,0,.06);
+  --glow-3: rgba(243,113,33,.18); --glow-3-soft: rgba(236,0,140,.05);
+  --glow-hero-1: rgba(255,188,0,.22); --glow-hero-2: rgba(236,0,140,.20);
+  --theme-tint: rgba(236,0,140,.22);
+}
+[data-theme="aqua"] {
+  --theme-gradient: var(--pcu-gradient-aqua);
+  /* Same stops as gradient-aqua, turned so the light end sits bottom-right, away from the text. */
+  --theme-surface: linear-gradient(315deg, #54FEEB, #133256 70%);
+  --theme-accent: #54FEEB;
+  --glow-1: rgba(84,254,235,.26); --glow-1-soft: rgba(69,184,188,.08);
+  --glow-2: rgba(69,184,188,.20); --glow-2-soft: rgba(84,254,235,.06);
+  --glow-3: rgba(56,128,208,.18); --glow-3-soft: rgba(84,254,235,.06);
+  --glow-hero-1: rgba(84,254,235,.24); --glow-hero-2: rgba(69,184,188,.20);
+  --theme-tint: rgba(84,254,235,.20);
+}
+[data-theme="dusk"] {
+  --theme-gradient: var(--pcu-gradient-dusk);
+  --theme-surface: var(--pcu-gradient-dusk);
+  --theme-accent: var(--pcu-amber);
+  --glow-1: rgba(56,128,208,.22); --glow-1-soft: rgba(236,0,140,.06);
+  --glow-2: rgba(236,0,140,.16);  --glow-2-soft: rgba(56,128,208,.06);
+  --glow-3: rgba(56,128,208,.20); --glow-3-soft: rgba(236,0,140,.08);
+  --glow-hero-1: rgba(56,128,208,.24); --glow-hero-2: rgba(236,0,140,.20);
+  --theme-tint: rgba(236,0,140,.18);
+}
+
+/* A themed surface that carries white text: scrim over the section gradient. */
+.theme-surface { color: var(--pcu-white); background: var(--theme-scrim-narrow), var(--theme-surface); }
+@media (min-width: 768px) { .theme-surface { background: var(--theme-scrim), var(--theme-surface); } }
+
+/* The page opening's and closing band's half ring. */
+.pcu-shape.theme-ring { background: var(--theme-ring); }
+
+/* 4px gradient bookmark under the sticky header. */
+.site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--theme-gradient); pointer-events: none; }
+
+/* Gradient top edge for cards (home colour key, project cards). */
+.theme-edge { position: relative; }
+.theme-edge::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--theme-gradient); z-index: 2; pointer-events: none; }
+
+/* Big numbers: gradient rule on top instead of a flat midnight line. */
+.stat { border-top: 0; position: relative; }
+.stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; border-radius: 2px; background: var(--theme-gradient); }
+.stat--amber::before { background: var(--pcu-amber); }
+.theme-surface .stat b, .pcu-surface-brand .stat b { color: var(--pcu-white); }
+.theme-surface .stat > span, .pcu-surface-brand .stat > span { color: var(--pcu-smoke); }
+
+/* Current tab in sub-navigation takes the section gradient. */
+.pcu .tabs a { position: relative; }
+.pcu .tabs a[aria-current="page"] { border-bottom-color: transparent; }
+.pcu .tabs a[aria-current="page"]::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 3px; border-radius: 2px; background: var(--theme-gradient); }
+
+/* Hover: photo cards and link rows pick up a light gradient tint. */
+.photo-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--theme-gradient); opacity: 0; mix-blend-mode: multiply; transition: opacity .25s ease; pointer-events: none; }
+.photo-card:hover::before, .photo-card:focus-visible::before { opacity: .45; }
+.photo-card .body { z-index: 2; }
+.row-link { transition: background-color .2s ease; }
+.row-link:hover { background: linear-gradient(90deg, var(--theme-tint), transparent 70%); }
+@media (prefers-reduced-motion: reduce) { .photo-card::before, .row-link { transition: none; } }
+.pcu-shape.pcu-shape--theme { background: var(--theme-gradient); }
+.theme-band__value { font-size: var(--pcu-text-5xl); line-height: var(--pcu-leading-5xl); font-weight: var(--pcu-weight-bold); letter-spacing: -0.03em; color: var(--pcu-white); }
+/* A dark section that closes the page: the footer's arches rise out of it
+   instead of out of white. */
+.theme-band { padding-top: clamp(64px, 9vw, 112px); }
+.footer-overlap { --_arch: clamp(48px, 10vw, 140px); padding-bottom: calc(clamp(64px, 9vw, 112px) + var(--_arch)); margin-bottom: calc(-1 * var(--_arch)); }
+.footer-overlap > .theme-ring { bottom: var(--_arch); }
+.site-footer { z-index: 1; }

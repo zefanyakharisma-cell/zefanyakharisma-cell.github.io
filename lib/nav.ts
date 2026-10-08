@@ -27,6 +27,18 @@ export function sectionFor(pathname: string): Section | null {
   return sectionByRoute[pathname] ?? null
 }
 
+/** Brand gradient per part of the site (PCU Design System: midnight for brand
+ *  surfaces, sunrise for campaigns and events, aqua for tech, dusk for Intl. Ed). */
+export type Theme = 'midnight' | 'sunrise' | 'aqua' | 'dusk'
+
+const themeBySection: Record<Section, Theme> = { about: 'midnight', projects: 'sunrise', intl: 'dusk', contact: 'midnight' }
+
+export function themeFor(pathname: string): Theme {
+  if (pathname.startsWith('/sim-')) return 'aqua'
+  const section = sectionFor(pathname)
+  return section ? themeBySection[section] : 'midnight'
+}
+
 export function sectionLabel(pathname: string): string {
   if (pathname === '/') return 'Home'
   const section = sectionFor(pathname)

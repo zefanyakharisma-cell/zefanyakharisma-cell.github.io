@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Award, Globe, GraduationCap, Heart, ShieldCheck, Users } from 'lucide-react'
-import { Card, FlipCard, PageHero, Reveal, SectionHead, Stat } from '@/components/pcu'
+import { Card, FlipCard, PageHero, Reveal, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SubNav } from '@/components/pcu/SubNav'
 import StudentActivities from '@/components/projects/StudentActivities'
@@ -107,6 +107,7 @@ export default function OnboardingPage() {
           <StudentActivities />
         </div>
       </section>
+      <ThemeBand eyebrow="Partnerships" value={stats.partners} label="Partner institutions managed at PCU" cta={{ href: '/partnerships', label: 'Partnership development' }} />
     </>
   )
 }

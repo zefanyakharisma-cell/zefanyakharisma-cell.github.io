@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { BookOpenCheck, ClipboardCheck, Mail, Mountain, PartyPopper, PlaneLanding, Presentation, Users } from 'lucide-react'
-import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
+import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
 import AmertaStats from '@/components/projects/AmertaStats'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { Sankey } from '@/components/viz/Sankey'
@@ -173,6 +173,7 @@ export default function Amerta() {
       </section>
 
       <AmertaStats />
+      <ThemeBand eyebrow="Four batches" value="207" label="Exchange students from 14 countries" cta={{ href: '/aci', label: 'Next: ACI' }} />
     </>
   )
 }

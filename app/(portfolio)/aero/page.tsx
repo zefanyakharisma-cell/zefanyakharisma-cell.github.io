@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Building2, CalendarCheck, Globe, Megaphone, Mic, Receipt, Users } from 'lucide-react'
-import { CountryCode, Details, FlipCard, PageHero, PhotoCard, PhotoWall, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
+import { CountryCode, Details, FlipCard, PageHero, PhotoCard, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
 import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
 import Rundown from '@/components/projects/Rundown'
 import { BoothMap } from '@/components/viz/BoothMap'
@@ -129,6 +129,7 @@ export default function AeroPage() {
           </div>
         </div>
       </section>
+      <ThemeBand eyebrow="Two days" value="19" label="Booths on one boulevard at UNAIR" cta={{ href: '/sim-kerjasama', label: 'Next: SIM Kerjasama' }} />
     </>
   )
 }

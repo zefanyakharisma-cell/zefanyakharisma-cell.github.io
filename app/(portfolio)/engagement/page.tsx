@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Button, Card, PageHero, PhotoCard, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
+import { Button, Card, PageHero, PhotoCard, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
@@ -61,6 +61,7 @@ export default function EngagementPage() {
       <section className="pb-[clamp(56px,8vw,96px)]">
         <PhotoStrip images={strip} alt="International student programs" />
       </section>
+      <ThemeBand eyebrow="Partnerships" value={stats.meetingsPerMonth} label="Partner meetings a month" cta={{ href: '/partnerships', label: 'Partnership development' }} />
     </>
   )
 }

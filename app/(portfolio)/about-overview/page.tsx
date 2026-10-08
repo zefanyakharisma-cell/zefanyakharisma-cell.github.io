@@ -4,7 +4,7 @@ import {
   Award, BarChart2, BookOpen, Code2, FileCheck, Globe, Globe2, GraduationCap, Handshake, Heart, Languages,
   LayoutDashboard, Lightbulb, Network, Plane, School, Target, Users, Zap,
 } from 'lucide-react'
-import { Button, Card, Details, FlipCard, IconBadge, PhotoCard, SectionHead, Shape, Stat, Tag } from '@/components/pcu'
+import { Button, Card, Details, FlipCard, IconBadge, PhotoCard, SectionHead, Shape, Stat, Tag, ThemeBand } from '@/components/pcu'
 import { Tabs } from '@/components/pcu/Tabs'
 import { Gantt } from '@/components/viz/Gantt'
 import { roles } from '@/lib/data/experience'
@@ -200,6 +200,7 @@ export default function AboutOverview() {
           />
         </div>
       </section>
+      <ThemeBand eyebrow="In numbers" value={stats.years} label="Years in international higher education" cta={{ href: '/projects-overview', label: 'See projects' }} />
     </>
   )
 }
