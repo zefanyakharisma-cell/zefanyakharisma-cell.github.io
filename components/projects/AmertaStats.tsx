@@ -16,13 +16,9 @@ export default function AmertaStats() {
     <section className="section section--smoke">
       <div className="wrap">
         <SectionHead
-          eyebrow="Data & analytics"
-          title="Participant statistics"
-          lead={
-            active === 'all'
-              ? 'Compiled from AMERTA XXI–XXIV: 207 participants, 14 nationalities and 24 partner universities.'
-              : `${d.label} · ${d.period} · ${d.students} participants from ${d.countries} countries`
-          }
+          eyebrow="Data"
+          title="By batch"
+          lead={`${d.label} · ${d.period}`}
         />
 
         <div className="mb-8">

@@ -1,4 +1,4 @@
-// Career history, newest first. Used by the About page timeline and /experience.
+// Career history, newest first. Used by the About page Experience tab.
 export type Role = {
   id: string
   title: string

@@ -29,8 +29,8 @@ export default function AciStats() {
           title="Program statistics"
           lead={
             isAll
-              ? 'Four batches across Malang, Solo and Mojokerto: 191 participants from 25+ countries.'
-              : `${d.label} · ${d.sublabel} · ${d.period} · ${d.participants} participants`
+              ? '4 batches · Malang, Solo, Mojokerto'
+              : `${d.label} · ${d.sublabel} · ${d.period}`
           }
         />
 

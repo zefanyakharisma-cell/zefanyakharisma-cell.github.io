@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Role } from '@/lib/data/experience'
 import { Tag } from '@/components/pcu/Tag'
+import { Details } from '@/components/pcu/Details'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -62,6 +63,13 @@ export function Gantt({ roles }: { roles: Role[] }) {
           <ul className="mt-4 mb-0 pl-5 flex flex-col gap-1.5 text-[.9375rem] text-ink-secondary marker:text-accent-strong">
             {current.bullets.slice(0, 3).map(b => <li key={b}>{b}</li>)}
           </ul>
+          {current.bullets.length > 3 && (
+            <Details key={current.id} className="mt-2">
+              <ul className="m-0 pl-5 flex flex-col gap-1.5 marker:text-accent-strong">
+                {current.bullets.slice(3).map(b => <li key={b}>{b}</li>)}
+              </ul>
+            </Details>
+          )}
           <div className="flex flex-wrap gap-1.5 mt-4">{current.tags.map(t => <Tag key={t} outline className="text-midnight">{t}</Tag>)}</div>
         </div>
       )}

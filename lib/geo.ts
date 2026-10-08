@@ -4,6 +4,7 @@ import { feature } from 'topojson-client'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import type { GeometryCollection, Topology } from 'topojson-specification'
 import world from 'world-atlas/countries-110m.json'
+import world50 from 'world-atlas/countries-50m.json'
 
 /** Site country names that differ from the atlas's names. */
 const ALIASES: Record<string, string> = {
@@ -43,9 +44,13 @@ export type WorldMapData = {
 
 type Props = { name: string }
 
-const topo = world as unknown as Topology<{ countries: GeometryCollection<Props> }>
-const all = (feature(topo, topo.objects.countries) as FeatureCollection<Geometry, Props>).features
-  .filter(f => f.properties.name !== 'Antarctica')
+function featuresOf(t: Topology) {
+  const topo = t as Topology<{ countries: GeometryCollection<Props> }>
+  return (feature(topo, topo.objects.countries) as FeatureCollection<Geometry, Props>).features
+    .filter(f => f.properties.name !== 'Antarctica')
+}
+
+const all = featuresOf(world as unknown as Topology)
 
 // Full longitude range; latitudes cropped to roughly 78°N–60°S so land fills the frame.
 const projection = geoEquirectangular()
@@ -68,6 +73,8 @@ export function buildWorldMap(counts: Record<string, number>): WorldMapData {
     } else if (POINTS[raw]) {
       const [cx, cy] = projection(POINTS[raw]) ?? [0, 0]
       countries.push({ name: raw, value, d: null, cx, cy })
+    } else {
+      console.warn(`[geo] No map shape for "${raw}"; add it to ALIASES or POINTS.`)
     }
   }
   countries.sort((a, b) => b.value - a.value)
@@ -88,18 +95,27 @@ export type BubbleMapData = {
   bubbles: { name: string; value: number; cx: number; cy: number }[]
 }
 
-/** Indonesia (with neighbours as context) and one bubble per city. Runs on the server only. */
-export function buildIndonesiaMap(counts: Record<string, number>, coords: Record<string, [number, number]>): BubbleMapData {
+/**
+ * Indonesia (with neighbours as context) and one bubble per city. Runs on the server only.
+ * Pass `bounds` ([[west, north], [east, south]]) to zoom in; zoomed maps use the finer 50m atlas, clipped to the frame.
+ */
+export function buildIndonesiaMap(
+  counts: Record<string, number>,
+  coords: Record<string, [number, number]>,
+  { bounds, height = 400 }: { bounds?: [[number, number], [number, number]]; height?: number } = {},
+): BubbleMapData {
   const W = 960
-  const H = 400
+  const H = height
   const frame: GeoJSON.Feature = {
     type: 'Feature',
     properties: {},
-    geometry: { type: 'MultiPoint', coordinates: [[94.5, 6.5], [141.5, -11.5]] },
+    geometry: { type: 'MultiPoint', coordinates: bounds ?? [[94.5, 6.5], [141.5, -11.5]] },
   }
   const proj = geoEquirectangular().fitExtent([[10, 10], [W - 10, H - 10]], frame)
+  if (bounds) proj.clipExtent([[0, 0], [W, H]])
   const p = geoPath(proj)
-  const base = all
+  const source = bounds ? featuresOf(world50 as unknown as Topology) : all
+  const base = source
     .filter(f => ['Indonesia', 'Malaysia', 'Timor-Leste', 'Papua New Guinea', 'Brunei', 'Philippines'].includes(f.properties.name))
     .map(f => p(f) ?? '')
     .join('')

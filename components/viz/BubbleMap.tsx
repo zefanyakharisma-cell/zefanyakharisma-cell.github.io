@@ -4,17 +4,22 @@ import type { BubbleMapData } from '@/lib/geo'
 import { Tooltip, useTooltip } from './useTooltip'
 
 /** City bubbles on a map, sized by count (area ∝ value). Top cities are labelled. */
-export function BubbleMap({ map, unit, label, selected, onSelect, labelTop = 4 }: {
+export function BubbleMap({ map, unit, label, selected, onSelect, labelTop = 4, maxRadius = 30, fontSize = 14, labelBeside = false }: {
   map: BubbleMapData
   unit: string
   label: string
   selected?: string | null
   onSelect?: (city: string | null) => void
   labelTop?: number
+  /** Largest bubble radius and label size, in map units (the map is 960 wide). */
+  maxRadius?: number
+  fontSize?: number
+  /** Put each label level with its bubble, on the side facing the map centre (for a few spread-out cities). */
+  labelBeside?: boolean
 }) {
   const { ref, tip, show, hide } = useTooltip()
   const max = map.bubbles[0]?.value ?? 1
-  const r = (v: number) => 4 + Math.sqrt(v / max) * 26
+  const r = (v: number) => 4 + Math.sqrt(v / max) * (maxRadius - 4)
   // Draw small bubbles last so they stay hoverable on top of big ones.
   const ordered = [...map.bubbles].sort((a, b) => b.value - a.value)
 
@@ -49,11 +54,24 @@ export function BubbleMap({ map, unit, label, selected, onSelect, labelTop = 4 }
               />
             )
           })}
-          {map.bubbles.slice(0, labelTop).map((b, i) => (
-            <text key={b.name} x={b.cx + (i % 2 ? -r(b.value) - 6 : r(b.value) + 6)} y={b.cy + (i > 1 ? 18 : -4)} textAnchor={i % 2 ? 'end' : 'start'} fontSize={14} fontWeight={700} fill="#19304b" aria-hidden>
-              {b.name} {b.value}
-            </text>
-          ))}
+          {map.bubbles.slice(0, labelTop).map((b, i) => {
+            const right = labelBeside ? b.cx < map.width * 0.6 : i % 2 === 0
+            return (
+              <text
+                key={b.name}
+                x={b.cx + (right ? r(b.value) + 6 : -r(b.value) - 6)}
+                y={labelBeside ? b.cy : b.cy + (i > 1 ? fontSize * 1.3 : -fontSize * 0.3)}
+                dy={labelBeside ? '0.35em' : undefined}
+                textAnchor={right ? 'start' : 'end'}
+                fontSize={fontSize}
+                fontWeight={700}
+                fill="#19304b"
+                aria-hidden
+              >
+                {b.name} {b.value}
+              </text>
+            )
+          })}
         </svg>
         <Tooltip tip={tip} />
       </div>

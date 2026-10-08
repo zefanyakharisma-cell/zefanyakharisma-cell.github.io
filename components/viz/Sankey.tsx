@@ -8,14 +8,16 @@ import { Tooltip, useTooltip } from './useTooltip'
 type N = { name: string; column: number }
 type L = { source: number; target: number; value: number }
 
+const W = 900
+const gutter = { l: 140, r: 310 }
+
 /** Flow diagram (e.g. country → university). Hover a node or band to highlight its flows. */
 export function Sankey({ nodes, links, label, height = 520, unit = 'students' }: { nodes: N[]; links: L[]; label: string; height?: number; unit?: string }) {
   const { ref, tip, show, hide } = useTooltip()
   const [focus, setFocus] = useState<number | null>(null)
-  const W = 900
 
   const graph = useMemo(() => sankey<N, L>()
-    .nodeWidth(12).nodePadding(10).extent([[1, 8], [W - 1, height - 8]])
+    .nodeWidth(12).nodePadding(10).extent([[gutter.l, 8], [W - gutter.r, height - 8]])
     .nodeSort(null)({ nodes: nodes.map(n => ({ ...n })), links: links.map(l => ({ ...l })) }), [nodes, links, height])
 
   const sourceIndex = (l: SankeyLink<N, L>) => ((l.source as SankeyNode<N, L>).index ?? 0)
@@ -30,7 +32,7 @@ export function Sankey({ nodes, links, label, height = 520, unit = 'students' }:
   return (
     <figure className="m-0">
       <div ref={ref} className="relative overflow-x-auto" role="region" tabIndex={0} aria-label={label}>
-        <svg viewBox={`0 0 ${W} ${height}`} className="block w-full min-w-[640px] h-auto" role="img" aria-label={label}>
+        <svg viewBox={`0 0 ${W} ${height}`} className="block w-full min-w-[720px] h-auto" role="img" aria-label={label}>
           <g fill="none">
             {graph.links.map((l, i) => (
               <path
@@ -50,11 +52,11 @@ export function Sankey({ nodes, links, label, height = 520, unit = 'students' }:
               <g key={n.index} onPointerEnter={() => setFocus(n.index ?? null)} onPointerLeave={() => setFocus(null)}>
                 <rect x={n.x0} y={n.y0} width={(n.x1 ?? 0) - (n.x0 ?? 0)} height={Math.max(1, (n.y1 ?? 0) - (n.y0 ?? 0))} fill="#19304b" rx={2} />
                 <text
-                  x={left ? (n.x1 ?? 0) + 8 : (n.x0 ?? 0) - 8}
+                  x={left ? (n.x0 ?? 0) - 8 : (n.x1 ?? 0) + 8}
                   y={((n.y0 ?? 0) + (n.y1 ?? 0)) / 2}
                   dy="0.35em"
-                  textAnchor={left ? 'start' : 'end'}
-                  fontSize={12}
+                  textAnchor={left ? 'end' : 'start'}
+                  fontSize={15}
                   fill="#19304b"
                 >
                   {n.name} <tspan fill="#5f6b78">{n.value}</tspan>
