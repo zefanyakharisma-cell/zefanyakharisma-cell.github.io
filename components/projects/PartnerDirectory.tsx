@@ -1,6 +1,9 @@
 'use client'
+
 import { useState } from 'react'
-import { Search, MapPin } from 'lucide-react'
+import { MapPin, Search } from 'lucide-react'
+import { CountryCode, SectionHead, Tag } from '@/components/pcu'
+import { Segmented } from '@/components/pcu/Segmented'
 
 type IntlPartner = { name: string; country: string }
 type DomPartner  = { name: string; city: string; type: string }
@@ -410,25 +413,7 @@ const CONTINENT: Record<string, string> = {
   Australia:'oceania','New Zealand':'oceania',
 }
 
-const FLAG: Record<string, string> = {
-  Japan:'🇯🇵','South Korea':'🇰🇷',China:'🇨🇳',Taiwan:'🇹🇼',
-  Malaysia:'🇲🇾',Thailand:'🇹🇭',Philippines:'🇵🇭',Singapore:'🇸🇬',
-  Bangladesh:'🇧🇩','Hong Kong':'🇭🇰',India:'🇮🇳',Macau:'🇲🇴',
-  Mongolia:'🇲🇳',Cambodia:'🇰🇭','Timor Leste':'🇹🇱','United Arab Emirates':'🇦🇪',
-  Netherlands:'🇳🇱','United Kingdom':'🇬🇧',Germany:'🇩🇪',France:'🇫🇷',
-  Hungary:'🇭🇺',Ireland:'🇮🇪',Lithuania:'🇱🇹',Poland:'🇵🇱',
-  Portugal:'🇵🇹',Romania:'🇷🇴',Switzerland:'🇨🇭',
-  'United States':'🇺🇸',Canada:'🇨🇦',
-  Australia:'🇦🇺','New Zealand':'🇳🇿',
-}
 
-const TYPE_COLOR: Record<string, { bg: string; text: string; border: string }> = {
-  International:     { bg:'rgba(30,58,95,0.06)',  text:'#1E3A5F', border:'rgba(30,58,95,0.15)' },
-  National:          { bg:'rgba(139,115,85,0.07)', text:'#8B7355', border:'rgba(139,115,85,0.2)' },
-  Education:         { bg:'rgba(74,107,138,0.07)', text:'#4A6B8A', border:'rgba(74,107,138,0.2)' },
-  Government:        { bg:'rgba(5,150,105,0.07)',  text:'#059669', border:'rgba(5,150,105,0.2)' },
-  'Regional / local':{ bg:'rgba(92,92,92,0.05)',   text:'#5C5C5C', border:'rgba(92,92,92,0.15)' },
-}
 
 const PAGE_SIZE = 24
 
@@ -449,150 +434,122 @@ const TYPE_BTNS = [
   { key:'Regional / local', label:'Regional / Local' },
 ]
 
+type Tab = 'intl' | 'dom'
+
 export default function PartnerDirectory() {
-  const [tab, setTab]                   = useState<'intl'|'dom'>('intl')
-  const [intlContinent, setIntlCont]    = useState('all')
-  const [domType, setDomType]           = useState('all')
-  const [intlSearch, setIntlSearch]     = useState('')
-  const [domSearch, setDomSearch]       = useState('')
-  const [intlShowing, setIntlShowing]   = useState(PAGE_SIZE)
-  const [domShowing, setDomShowing]     = useState(PAGE_SIZE)
+  const [tab, setTab] = useState<Tab>('intl')
+  const [intlContinent, setIntlCont] = useState('all')
+  const [domType, setDomType] = useState('all')
+  const [intlSearch, setIntlSearch] = useState('')
+  const [domSearch, setDomSearch] = useState('')
+  const [intlShowing, setIntlShowing] = useState(PAGE_SIZE)
+  const [domShowing, setDomShowing] = useState(PAGE_SIZE)
 
-  const filteredIntl = (() => {
-    const q = intlSearch.toLowerCase().trim()
-    if (q) return INTL_DATA.filter(p => p.name.toLowerCase().includes(q) || p.country.toLowerCase().includes(q))
-    if (intlContinent !== 'all') return INTL_DATA.filter(p => CONTINENT[p.country] === intlContinent)
-    return INTL_DATA
-  })()
+  const intlQ = intlSearch.trim().toLowerCase()
+  const domQ = domSearch.trim().toLowerCase()
 
-  const filteredDom = (() => {
-    const q = domSearch.toLowerCase().trim()
-    if (q) return DOM_DATA.filter(p => p.name.toLowerCase().includes(q) || p.city.toLowerCase().includes(q) || p.type.toLowerCase().includes(q))
-    if (domType !== 'all') return DOM_DATA.filter(p => p.type === domType)
-    return DOM_DATA
-  })()
+  const filteredIntl = intlQ
+    ? INTL_DATA.filter(p => p.name.toLowerCase().includes(intlQ) || p.country.toLowerCase().includes(intlQ))
+    : intlContinent !== 'all' ? INTL_DATA.filter(p => CONTINENT[p.country] === intlContinent) : INTL_DATA
 
-  const intlQ = intlSearch.trim()
-  const domQ  = domSearch.trim()
+  const filteredDom = domQ
+    ? DOM_DATA.filter(p => [p.name, p.city, p.type].some(t => t.toLowerCase().includes(domQ)))
+    : domType !== 'all' ? DOM_DATA.filter(p => p.type === domType) : DOM_DATA
+
+  const isIntl = tab === 'intl'
+  const search = isIntl ? intlSearch : domSearch
+  const query = isIntl ? intlQ : domQ
+  const total = isIntl ? filteredIntl.length : filteredDom.length
+  const showing = isIntl ? intlShowing : domShowing
 
   return (
-    <div style={{ padding: '48px 24px 64px', background: '#FAFAF8' }}>
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-6"><span className="accent-line" /><span className="label-small">Partner Directory</span></div>
-        <h2 className="font-heading font-bold text-3xl mb-3" style={{ color: '#1C1C1E' }}>Browse the Full Network</h2>
-        <p className="text-base max-w-3xl mb-8" style={{ color: '#5C5C5C' }}>All 505+ institutional partners I help manage through PCU — searchable and filterable by region or type.</p>
+    <section className="section section--smoke">
+      <div className="wrap">
+        <SectionHead
+          eyebrow="Partner directory"
+          title="Browse the full network"
+          lead="All 505+ institutional partners I help manage at PCU, searchable and filterable by region or type."
+        />
 
-        {/* Tab switcher */}
-        <div className="flex gap-0 mb-8 border-b" style={{ borderColor: 'rgba(28,28,30,0.1)' }}>
-          <button onClick={() => setTab('intl')} style={{ padding: '12px 24px', fontSize: '.875rem', fontWeight: 600, background: 'transparent', cursor: 'pointer', borderBottom: tab === 'intl' ? '2px solid #1E3A5F' : '2px solid transparent', color: tab === 'intl' ? '#1C1C1E' : '#5C5C5C', marginBottom: -1, transition: 'all .2s' }}>
-            International <span style={{ marginLeft: 6, padding: '2px 8px', fontSize: '.72rem', borderRadius: 999, background: tab === 'intl' ? 'rgba(30,58,95,0.08)' : 'rgba(28,28,30,0.06)', color: tab === 'intl' ? '#1E3A5F' : '#5C5C5C' }}>{INTL_DATA.length}</span>
-          </button>
-          <button onClick={() => setTab('dom')} style={{ padding: '12px 24px', fontSize: '.875rem', fontWeight: 600, background: 'transparent', cursor: 'pointer', borderBottom: tab === 'dom' ? '2px solid #166534' : '2px solid transparent', color: tab === 'dom' ? '#1C1C1E' : '#5C5C5C', marginBottom: -1, transition: 'all .2s' }}>
-            Domestic <span style={{ marginLeft: 6, padding: '2px 8px', fontSize: '.72rem', borderRadius: 999, background: tab === 'dom' ? 'rgba(22,101,52,0.08)' : 'rgba(28,28,30,0.06)', color: tab === 'dom' ? '#166534' : '#5C5C5C' }}>{DOM_DATA.length}</span>
-          </button>
+        <div className="tabs mb-8" role="tablist" aria-label="Partner type">
+          {([['intl', 'International', INTL_DATA.length], ['dom', 'Domestic', DOM_DATA.length]] as const).map(([key, label, count]) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={tab === key}
+              onClick={() => setTab(key)}
+              className={`px-4 min-h-[44px] -mb-px border-0 border-b-2 bg-transparent cursor-pointer text-[.9375rem] ${tab === key ? 'border-midnight text-midnight font-semibold' : 'border-transparent text-ink-secondary font-medium'}`}
+            >
+              {label} <span className="ml-1 text-sm tabular-nums">{count}</span>
+            </button>
+          ))}
         </div>
 
-        {/* ── International Panel ── */}
-        {tab === 'intl' && (
-          <div>
-            <div className="relative mb-5">
-              <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: '#9CA3AF', pointerEvents: 'none' }} />
-              <input
-                value={intlSearch}
-                onChange={e => { setIntlSearch(e.target.value); setIntlShowing(PAGE_SIZE) }}
-                type="text"
-                placeholder="Search institutions or countries…"
-                style={{ width: '100%', padding: '10px 12px 10px 36px', borderRadius: 12, border: '1px solid rgba(28,28,30,0.12)', outline: 'none', background: '#fff', color: '#1C1C1E', fontSize: '.875rem' }}
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 mb-5">
-              {CONT_BTNS.map(b => (
-                <button key={b.key} onClick={() => { setIntlCont(b.key); setIntlShowing(PAGE_SIZE) }} style={{ padding: '6px 16px', borderRadius: 999, fontSize: '.72rem', fontWeight: 600, cursor: 'pointer', opacity: intlQ ? .4 : 1, pointerEvents: intlQ ? 'none' : 'auto', background: intlContinent === b.key && !intlQ ? '#1E3A5F' : '#fff', color: intlContinent === b.key && !intlQ ? '#fff' : '#5C5C5C', border: intlContinent === b.key && !intlQ ? '1px solid #1E3A5F' : '1px solid rgba(28,28,30,0.12)', transition: 'all .2s' }}>
-                  {b.label}
-                </button>
-              ))}
-            </div>
-            <p style={{ fontSize: '.72rem', color: '#9CA3AF', marginBottom: 16 }}>
-              {intlQ
-                ? `${filteredIntl.length} result${filteredIntl.length !== 1 ? 's' : ''} for "${intlSearch}" — searching all regions`
-                : `Showing ${Math.min(intlShowing, filteredIntl.length)} of ${filteredIntl.length} institutions`}
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-              {filteredIntl.slice(0, intlShowing).map((p, i) => (
-                <div key={i} style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 12, padding: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <span style={{ fontSize: '1.5rem', lineHeight: 1, flexShrink: 0, marginTop: 2 }}>{FLAG[p.country] || '🌐'}</span>
-                    <div style={{ minWidth: 0 }}>
-                      <p style={{ fontWeight: 500, fontSize: '.875rem', lineHeight: 1.3, color: '#1C1C1E' }}>{p.name}</p>
-                      <p style={{ fontSize: '.72rem', marginTop: 4, color: '#9CA3AF' }}>{p.country}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {filteredIntl.length === 0 && <p style={{ gridColumn: '1/-1', textAlign: 'center', padding: '32px 0', fontSize: '.875rem', color: '#9CA3AF' }}>No institutions found.</p>}
-            </div>
-            {!intlQ && filteredIntl.length > intlShowing && (
-              <div style={{ textAlign: 'center' }}>
-                <button onClick={() => setIntlShowing(s => s + PAGE_SIZE)} style={{ padding: '10px 32px', borderRadius: 999, fontSize: '.875rem', fontWeight: 600, border: '1px solid rgba(28,28,30,0.12)', color: '#1C1C1E', background: '#fff', cursor: 'pointer' }}>
-                  Load more ({filteredIntl.length - intlShowing} remaining)
-                </button>
-              </div>
-            )}
+        <div role="tabpanel">
+          <label className="sr-only" htmlFor="partner-search">{isIntl ? 'Search institutions or countries' : 'Search partners, cities or types'}</label>
+          <div className="flex items-center gap-2 bg-white border border-line rounded-pill px-5 min-h-[48px] mb-5 focus-within:outline focus-within:outline-[3px] focus-within:outline-amber focus-within:outline-offset-2">
+            <Search aria-hidden size={18} className="text-ink-muted flex-none" />
+            <input
+              id="partner-search"
+              type="search"
+              value={search}
+              onChange={e => {
+                if (isIntl) { setIntlSearch(e.target.value); setIntlShowing(PAGE_SIZE) }
+                else { setDomSearch(e.target.value); setDomShowing(PAGE_SIZE) }
+              }}
+              placeholder={isIntl ? 'Search institutions or countries…' : 'Search partners, cities or types…'}
+              className="flex-1 min-w-0 bg-transparent border-0 outline-none text-[.9375rem] text-midnight placeholder:text-ink-muted py-2"
+            />
           </div>
-        )}
 
-        {/* ── Domestic Panel ── */}
-        {tab === 'dom' && (
-          <div>
-            <div className="relative mb-5">
-              <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: '#9CA3AF', pointerEvents: 'none' }} />
-              <input
-                value={domSearch}
-                onChange={e => { setDomSearch(e.target.value); setDomShowing(PAGE_SIZE) }}
-                type="text"
-                placeholder="Search partners, cities, or types…"
-                style={{ width: '100%', padding: '10px 12px 10px 36px', borderRadius: 12, border: '1px solid rgba(28,28,30,0.12)', outline: 'none', background: '#fff', color: '#1C1C1E', fontSize: '.875rem' }}
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 mb-5">
-              {TYPE_BTNS.map(b => (
-                <button key={b.key} onClick={() => { setDomType(b.key); setDomShowing(PAGE_SIZE) }} style={{ padding: '6px 16px', borderRadius: 999, fontSize: '.72rem', fontWeight: 600, cursor: 'pointer', opacity: domQ ? .4 : 1, pointerEvents: domQ ? 'none' : 'auto', background: domType === b.key && !domQ ? '#166534' : '#fff', color: domType === b.key && !domQ ? '#fff' : '#5C5C5C', border: domType === b.key && !domQ ? '1px solid #166534' : '1px solid rgba(28,28,30,0.12)', transition: 'all .2s' }}>
-                  {b.label}
-                </button>
-              ))}
-            </div>
-            <p style={{ fontSize: '.72rem', color: '#9CA3AF', marginBottom: 16 }}>
-              {domQ
-                ? `${filteredDom.length} result${filteredDom.length !== 1 ? 's' : ''} for "${domSearch}" — searching all types`
-                : `Showing ${Math.min(domShowing, filteredDom.length)} of ${filteredDom.length} partners`}
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-              {filteredDom.slice(0, domShowing).map((p, i) => {
-                const tc = TYPE_COLOR[p.type] || TYPE_COLOR['Regional / local']
-                return (
-                  <div key={i} style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 12, padding: 16 }}>
-                    <p style={{ fontWeight: 500, fontSize: '.875rem', lineHeight: 1.3, color: '#1C1C1E', marginBottom: 8 }}>{p.name}</p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '.72rem', color: '#9CA3AF' }}>
-                        <MapPin style={{ width: 11, height: 11 }} /> {p.city}
-                      </span>
-                      <span style={{ padding: '2px 8px', borderRadius: 999, fontSize: '.72rem', fontWeight: 500, background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>{p.type}</span>
-                    </div>
-                  </div>
-                )
-              })}
-              {filteredDom.length === 0 && <p style={{ gridColumn: '1/-1', textAlign: 'center', padding: '32px 0', fontSize: '.875rem', color: '#9CA3AF' }}>No partners found.</p>}
-            </div>
-            {!domQ && filteredDom.length > domShowing && (
-              <div style={{ textAlign: 'center' }}>
-                <button onClick={() => setDomShowing(s => s + PAGE_SIZE)} style={{ padding: '10px 32px', borderRadius: 999, fontSize: '.875rem', fontWeight: 600, border: '1px solid rgba(28,28,30,0.12)', color: '#1C1C1E', background: '#fff', cursor: 'pointer' }}>
-                  Load more ({filteredDom.length - domShowing} remaining)
-                </button>
-              </div>
+          <div className={query ? 'opacity-50' : ''}>
+            {isIntl ? (
+              <Segmented label="Filter by region" options={CONT_BTNS} value={intlContinent} onChange={k => { setIntlCont(k); setIntlShowing(PAGE_SIZE) }} />
+            ) : (
+              <Segmented label="Filter by partner type" options={TYPE_BTNS} value={domType} onChange={k => { setDomType(k); setDomShowing(PAGE_SIZE) }} />
             )}
           </div>
-        )}
+
+          <p className="text-sm muted mt-5 mb-4" aria-live="polite">
+            {query
+              ? `${total} result${total !== 1 ? 's' : ''} for "${search.trim()}" across all ${isIntl ? 'regions' : 'types'}`
+              : `Showing ${Math.min(showing, total)} of ${total} ${isIntl ? 'institutions' : 'partners'}`}
+          </p>
+
+          <ul className="m-0 p-0 list-none grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+            {isIntl
+              ? filteredIntl.slice(0, intlShowing).map(p => (
+                  <li key={`${p.name}-${p.country}`} className="bg-white border border-line rounded-md p-4 flex flex-col gap-2">
+                    <span className="font-medium leading-snug">{p.name}</span>
+                    <span className="text-sm text-ink-secondary"><CountryCode country={p.country} /></span>
+                  </li>
+                ))
+              : filteredDom.slice(0, domShowing).map(p => (
+                  <li key={`${p.name}-${p.city}`} className="bg-white border border-line rounded-md p-4 flex flex-col gap-2">
+                    <span className="font-medium leading-snug">{p.name}</span>
+                    <span className="flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
+                      <MapPin aria-hidden size={14} /> {p.city}
+                      <Tag outline className="text-midnight">{p.type}</Tag>
+                    </span>
+                  </li>
+                ))}
+          </ul>
+          {total === 0 && <p className="text-center muted py-8">No {isIntl ? 'institutions' : 'partners'} found.</p>}
+
+          {!query && total > showing && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => (isIntl ? setIntlShowing(s => s + PAGE_SIZE) : setDomShowing(s => s + PAGE_SIZE))}
+                className="pcu-btn pcu-btn--outline text-midnight"
+              >
+                Load more ({total - showing} remaining)
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

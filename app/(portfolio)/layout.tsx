@@ -1,19 +1,15 @@
-import TopBar from '@/components/layout/TopBar'
-import TabBar from '@/components/layout/TabBar'
-import Footer from '@/components/layout/Footer'
+import { Header } from '@/components/pcu/Header'
+import { Footer } from '@/components/pcu/Footer'
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <a href="#main-content" className="skip-to-content">Skip to main content</a>
-      <TopBar />
-      <div id="app" className="w-full">
-        <main id="main-content" tabIndex={-1}>
-          {children}
-        </main>
-        <Footer />
-      </div>
-      <TabBar />
+      <Header />
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        {children}
+      </main>
+      <Footer />
     </>
   )
 }

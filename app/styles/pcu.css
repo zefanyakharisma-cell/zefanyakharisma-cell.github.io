@@ -1,0 +1,193 @@
+/* PCU Design System — brand layer.
+   Source: "PCU Design System" artifact (components/bundle.css, tokens.json),
+   built from Brand Guideline Petra 2026 (DRAFT 3). The app-only .sim-* classes
+   and the logo/lockup rules are left out: this site never shows the logo. */
+
+/* ---------- Tokens (tokens.json) ---------- */
+:root {
+  --midnight: #19304b; --black: #000000; --white: #ffffff; --smoke: #f1f1f1;
+  --cerise: #ec008c; --amber: #ffbc00; --teal: #45b8bc; --blue: #3880d0;
+  --red: #e31f26; --yellow: #f7ec00; --green: #6aaa43; --orange: #f37121;
+  --emerald: #135d50; --purple: #be93e4;
+  --surface: #ffffff; --surface-sunk: #f1f1f1; --border: #e2e5e9;
+  --text-primary: #000000; --text-secondary: #46505c; --text-muted: #5f6b78;
+  --status-progress-strong: #2a64a8; --status-pending-text: #b34700;
+  --focus-ring-brand: #ffbc00;
+  --shadow-card: 0 1px 0 rgba(25,48,75,.06), 0 12px 32px -16px rgba(25,48,75,.25);
+}
+
+:root {
+  --pcu-midnight: var(--midnight); --pcu-black: var(--black); --pcu-white: var(--white); --pcu-smoke: var(--smoke);
+  --pcu-cerise: var(--cerise); --pcu-amber: var(--amber); --pcu-teal: var(--teal); --pcu-blue: var(--blue);
+  --pcu-red: var(--red); --pcu-yellow: var(--yellow); --pcu-green: var(--green); --pcu-orange: var(--orange);
+  --pcu-emerald: var(--emerald); --pcu-purple: var(--purple);
+  --pcu-gradient-midnight: linear-gradient(135deg, #245484, #133256);
+  --pcu-gradient-aqua: linear-gradient(135deg, #54FEEB, #133256);
+  --pcu-gradient-sunrise: linear-gradient(100deg, #EC008C, #FFBC00);
+  --pcu-gradient-dusk: linear-gradient(115deg, #EC008C, #3880D0);
+  --pcu-font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --pcu-font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pcu-font-din: "DIN Condensed", "DIN Alternate", "Barlow Condensed", "Arial Narrow", sans-serif;
+  --pcu-font-baskerville: "Baskerville", "Libre Baskerville", "Baskerville Old Face", Georgia, serif;
+  --pcu-font-bebas: "Bebas Neue", "Oswald", Impact, sans-serif;
+  --pcu-font-script: "Prestige Signature Script", "Mrs Saint Delafield", cursive;
+  --pcu-font-body: var(--pcu-font-inter);
+  --pcu-font-headline: var(--pcu-font-inter);
+  --pcu-weight-thin: 100; --pcu-weight-extralight: 200; --pcu-weight-light: 300; --pcu-weight-regular: 400;
+  --pcu-weight-medium: 500; --pcu-weight-semibold: 600; --pcu-weight-bold: 700; --pcu-weight-extrabold: 800; --pcu-weight-black: 900;
+  --pcu-text-xs: 0.75rem; --pcu-leading-xs: 1.5;
+  --pcu-text-sm: 0.875rem; --pcu-leading-sm: 1.5;
+  --pcu-text-base: 1rem; --pcu-leading-base: 1.6;
+  --pcu-text-lg: 1.125rem; --pcu-leading-lg: 1.55;
+  --pcu-text-xl: 1.375rem; --pcu-leading-xl: 1.4;
+  --pcu-text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); --pcu-leading-2xl: 1.25;
+  --pcu-text-3xl: clamp(2rem, 1.5rem + 2vw, 3rem); --pcu-leading-3xl: 1.15;
+  --pcu-text-4xl: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem); --pcu-leading-4xl: 1.05;
+  --pcu-text-5xl: clamp(3rem, 1.8rem + 5vw, 6rem); --pcu-leading-5xl: 0.95;
+  --pcu-space-0: 0; --pcu-space-1: 0.25rem; --pcu-space-2: 0.5rem; --pcu-space-3: 0.75rem; --pcu-space-4: 1rem;
+  --pcu-space-5: 1.5rem; --pcu-space-6: 2rem; --pcu-space-7: 3rem; --pcu-space-8: 4rem; --pcu-space-9: 6rem; --pcu-space-10: 8rem;
+  --pcu-radius-none: 0; --pcu-radius-sm: 4px; --pcu-radius-md: 8px; --pcu-radius-lg: 16px;
+  --pcu-radius-arch: 9999px 9999px 0 0; --pcu-radius-pill: 9999px;
+  --pcu-logo-min-width: 96px;
+}
+
+/* ---------- Base ----------
+   Base element rules wrap .pcu in :where() so utility classes can
+   adjust spacing and size; the values are unchanged from the system. */
+.pcu, .pcu-root {
+  font-family: var(--pcu-font-body);
+  font-size: var(--pcu-text-base);
+  line-height: var(--pcu-leading-base);
+  color: var(--pcu-midnight);
+  background: var(--pcu-white);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01"; /* Inter: straight-leg l, open digits */
+}
+:where(.pcu) h1, :where(.pcu) h2, :where(.pcu) h3, :where(.pcu) h4 { font-family: var(--pcu-font-headline); font-weight: var(--pcu-weight-bold); letter-spacing: -0.02em; margin: 0; }
+:where(.pcu) h1 { font-size: var(--pcu-text-4xl); line-height: var(--pcu-leading-4xl); }
+:where(.pcu) h2 { font-size: var(--pcu-text-3xl); line-height: var(--pcu-leading-3xl); }
+:where(.pcu) h3 { font-size: var(--pcu-text-2xl); line-height: var(--pcu-leading-2xl); }
+:where(.pcu) h4 { font-size: var(--pcu-text-xl);  line-height: var(--pcu-leading-xl); }
+:where(.pcu) p { max-width: 68ch; }  /* Writing tip 03: white space */
+
+/* Section title pattern from the guideline: light kicker over a heavier title */
+.pcu-kicker  { display: block; font-weight: var(--pcu-weight-regular); font-size: var(--pcu-text-xl); line-height: 1.2; opacity: .8; }
+.pcu-eyebrow { font-size: var(--pcu-text-xs); font-weight: var(--pcu-weight-semibold); letter-spacing: .18em; text-transform: uppercase; }
+.pcu-tagline { font-size: var(--pcu-text-xs); letter-spacing: .32em; text-transform: uppercase; font-weight: var(--pcu-weight-semibold); } /* EXPLORE | DISCOVER | TRANSFORM */
+
+/* ---------- Headline type pairings (p.23–24) ---------- */
+.pcu-display               { font-size: var(--pcu-text-5xl); line-height: var(--pcu-leading-5xl); margin: 0; text-transform: uppercase; }
+.pcu-display--inter        { font-family: var(--pcu-font-inter); font-weight: var(--pcu-weight-bold); letter-spacing: -0.02em; }
+.pcu-display--bebas        { font-family: var(--pcu-font-bebas); font-weight: 400; letter-spacing: 0; line-height: .9; }
+.pcu-display--din          { font-family: var(--pcu-font-din); font-weight: 700; line-height: .95; }
+.pcu-display--baskerville  { font-family: var(--pcu-font-baskerville); font-weight: 700; letter-spacing: .01em; }
+.pcu-display--helvetica    { font-family: var(--pcu-font-helvetica); font-weight: 300; letter-spacing: -0.01em; }
+.pcu-display--helvetica b, .pcu-display--helvetica strong { font-weight: 700; }
+.pcu-display--script       { font-family: var(--pcu-font-script); text-transform: none; font-weight: 400; line-height: 1.1; }
+.pcu-body-serif-kicker     { font-family: var(--pcu-font-baskerville); font-style: italic; text-transform: uppercase; }
+
+/* ---------- Surfaces ---------- */
+.pcu-surface-midnight { background: var(--pcu-midnight); color: var(--pcu-white); }
+.pcu-surface-black    { background: var(--pcu-black);    color: var(--pcu-white); }
+.pcu-surface-white    { background: var(--pcu-white);    color: var(--pcu-midnight); }
+.pcu-surface-smoke    { background: var(--pcu-smoke);    color: var(--pcu-midnight); }
+.pcu-surface-brand    { background: var(--pcu-gradient-midnight); color: var(--pcu-white); }
+.pcu-surface-aqua     { background: var(--pcu-gradient-aqua);     color: var(--pcu-white); }
+.pcu-surface-sunrise  { background: var(--pcu-gradient-sunrise);  color: var(--pcu-white); }
+.pcu-surface-dusk     { background: var(--pcu-gradient-dusk);     color: var(--pcu-white); }
+
+/* ---------- Buttons ----------
+   Opinionated: secondary colors fail AA for white text (see dist/reports/contrast.md),
+   so the accent button is Selective Yellow with Midnight text. */
+.pcu-btn {
+  --_bg: var(--pcu-midnight); --_fg: var(--pcu-white); --_bd: var(--pcu-midnight);
+  display: inline-flex; align-items: center; gap: .5em;
+  padding: .8em 1.4em; border: 1.5px solid var(--_bd); border-radius: var(--pcu-radius-pill);
+  background: var(--_bg); color: var(--_fg);
+  font: var(--pcu-weight-semibold) var(--pcu-text-sm)/1 var(--pcu-font-body);
+  text-decoration: none; cursor: pointer;
+  transition: transform .15s ease, background-color .15s ease, color .15s ease;
+}
+.pcu-btn:hover { transform: translateY(-1px); }
+.pcu-btn:focus-visible { outline: 3px solid var(--pcu-amber); outline-offset: 3px; }
+.pcu-btn--accent  { --_bg: var(--pcu-amber); --_fg: var(--pcu-midnight); --_bd: var(--pcu-amber); }
+.pcu-btn--outline { --_bg: transparent; --_fg: currentColor; --_bd: currentColor; }
+.pcu-btn--inverse { --_bg: var(--pcu-white); --_fg: var(--pcu-midnight); --_bd: var(--pcu-white); }
+.pcu-btn--ghost   { --_bg: transparent; --_fg: currentColor; --_bd: transparent; padding-inline: .2em; text-decoration: underline; text-underline-offset: .25em; }
+
+/* Links: Secondary Blue fails AA on white (4.06:1) — use Midnight with an underline. */
+.pcu a:not([class]) { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: .2em; text-decoration-color: var(--pcu-blue); }
+
+/* ---------- Tags & badges ---------- */
+.pcu-tag { display: inline-block; padding: .3em .7em; border-radius: var(--pcu-radius-sm); font-size: var(--pcu-text-xs); font-weight: var(--pcu-weight-semibold); background: var(--pcu-gradient-midnight); color: var(--pcu-white); }
+.pcu-tag--outline { background: none; color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+
+/* ---------- Card ---------- */
+.pcu-card { position: relative; overflow: hidden; background: var(--pcu-white); color: var(--pcu-midnight); border-radius: var(--pcu-radius-md); padding: var(--pcu-space-6); box-shadow: 0 1px 0 rgba(25,48,75,.06), 0 12px 32px -16px rgba(25,48,75,.25); }
+.pcu-card--midnight { background: var(--pcu-midnight); color: var(--pcu-white); }
+.pcu-card__shape { position: absolute; pointer-events: none; }
+
+/* ---------- Graphic elements (p.09–11, 33–34) ----------
+   All shapes inherit `color`, so set color: var(--pcu-cerise) etc. */
+.pcu-shape { display: block; color: var(--pcu-blue); }
+.pcu-shape--circle      { aspect-ratio: 1; border-radius: 50%; background: currentColor; }
+.pcu-shape--semicircle  { aspect-ratio: 2/1; border-radius: 9999px 9999px 0 0; background: currentColor; }
+.pcu-shape--quarter     { aspect-ratio: 1; border-top-right-radius: 100%; background: currentColor; }
+.pcu-shape--quarter-tl  { aspect-ratio: 1; border-top-left-radius: 100%; background: currentColor; }
+.pcu-shape--quarter-br  { aspect-ratio: 1; border-bottom-right-radius: 100%; background: currentColor; }
+.pcu-shape--quarter-bl  { aspect-ratio: 1; border-bottom-left-radius: 100%; background: currentColor; }
+.pcu-shape--bar         { background: currentColor; }
+/* Half ring "U" / "∩" — the signature element. Masked from assets/shapes so proportions stay exact. */
+.pcu-shape--ring-u, .pcu-shape--ring-n, .pcu-shape--ring-u-line, .pcu-shape--ring-n-line { aspect-ratio: 2/1; background: currentColor; -webkit-mask: var(--_m) center / 100% 100% no-repeat; mask: var(--_m) center / 100% 100% no-repeat; }
+.pcu-shape--ring-u      { --_m: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMTAwIiA+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMCAwIEgzNSBBNjUgNjUgMCAwIDAgMTY1IDAgSDIwMCBBMTAwIDEwMCAwIDAgMSAwIDAgWiIvPjwvc3ZnPgo="); }
+.pcu-shape--ring-n      { --_m: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMTAwIiA+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMCAxMDAgQTEwMCAxMDAgMCAwIDEgMjAwIDEwMCBIMTY1IEE2NSA2NSAwIDAgMCAzNSAxMDAgWiIvPjwvc3ZnPgo="); }
+.pcu-shape--ring-u-line { --_m: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xIC0xIDIwMiAxMDIiID48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHZlY3Rvci1lZmZlY3Q9Im5vbi1zY2FsaW5nLXN0cm9rZSIgZD0iTTAgMCBIMzUgQTY1IDY1IDAgMCAwIDE2NSAwIEgyMDAgQTEwMCAxMDAgMCAwIDEgMCAwIFoiLz48L3N2Zz4K"); }
+.pcu-shape--ring-n-line { --_m: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xIC0xIDIwMiAxMDIiID48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHZlY3Rvci1lZmZlY3Q9Im5vbi1zY2FsaW5nLXN0cm9rZSIgZD0iTTAgMTAwIEExMDAgMTAwIDAgMCAxIDIwMCAxMDAgSDE2NSBBNjUgNjUgMCAwIDAgMzUgMTAwIFoiLz48L3N2Zz4K"); }
+.pcu-shape--double-arch { aspect-ratio: 2/1; background: currentColor; -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTIwIiA+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMCAxMjAgVjYwIEE2MCA2MCAwIDAgMSAxMjAgNjAgQTYwIDYwIDAgMCAxIDI0MCA2MCBWMTIwIFoiLz48L3N2Zz4K") center / 100% 100% no-repeat; mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTIwIiA+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMCAxMjAgVjYwIEE2MCA2MCAwIDAgMSAxMjAgNjAgQTYwIDYwIDAgMCAxIDI0MCA2MCBWMTIwIFoiLz48L3N2Zz4K") center / 100% 100% no-repeat; }
+.pcu-shape--tab         { aspect-ratio: 1; border-top-left-radius: 50%; background: currentColor; }
+
+/* Gradient "overlay geometry" (p.10): soft, multiply-blended translucent shapes */
+.pcu-glow { position: absolute; border-radius: 50%; mix-blend-mode: multiply; opacity: .55; filter: saturate(1.1); }
+.pcu-glow--cerise { background: radial-gradient(circle at 30% 30%, #EC008C 0%, rgba(236,0,140,.15) 70%, transparent 72%); }
+.pcu-glow--aqua   { background: radial-gradient(circle at 70% 40%, #54FEEB 0%, rgba(84,254,235,.25) 70%, transparent 72%); }
+.pcu-glow--amber  { background: radial-gradient(circle at 50% 50%, #FFBC00 0%, rgba(255,188,0,.2) 70%, transparent 72%); }
+
+/* ---------- Icon badge (p.11 "Color Background") ---------- */
+.pcu-icon-badge { --size: 64px; width: var(--size); height: var(--size); display: grid; place-items: center; border-radius: 50%; color: var(--pcu-white); background: var(--pcu-gradient-midnight); }
+.pcu-icon-badge svg { width: 55%; height: 55%; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pcu-icon-badge--sunrise { background: var(--pcu-gradient-sunrise); }
+.pcu-icon-badge--dusk    { background: var(--pcu-gradient-dusk); }
+.pcu-icon-badge--aqua    { background: var(--pcu-gradient-aqua); }
+.pcu-icon-badge--amber   { background: linear-gradient(135deg, #F37121, #FFBC00); }
+.pcu-icon-badge--cerise  { background: linear-gradient(160deg, #3880D0 0%, #EC008C 55%); }
+
+/* ---------- Double-arch band (cover bottoms, p.23–24) ---------- */
+.pcu-arch-band { position: relative; color: var(--pcu-white); background: var(--pcu-gradient-midnight); padding-top: clamp(48px, 10vw, 140px);
+  -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDE0MCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PHBhdGggZD0iTTAgMTQwIFYxMjAgQzAgNTAgNjAgMCAxMzAgMCBDMTkwIDAgMjMwIDQwIDI1MCAxMDAgQzI4NSA0MCAzNDAgMCA0MjAgMCBIMTAwMCBWMTQwIFoiIGZpbGw9IiMwMDAiLz48L3N2Zz4K") top center / 100% auto no-repeat, linear-gradient(#000, #000) 0 clamp(48px, 10vw, 140px) / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDE0MCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PHBhdGggZD0iTTAgMTQwIFYxMjAgQzAgNTAgNjAgMCAxMzAgMCBDMTkwIDAgMjMwIDQwIDI1MCAxMDAgQzI4NSA0MCAzNDAgMCA0MjAgMCBIMTAwMCBWMTQwIFoiIGZpbGw9IiMwMDAiLz48L3N2Zz4K") top center / 100% auto no-repeat, linear-gradient(#000, #000) 0 clamp(48px, 10vw, 140px) / 100% 100% no-repeat; }
+
+/* ---------- Signage notch panel (p.27, 29, 32) ---------- */
+.pcu-notch-panel { position: relative; background: var(--pcu-gradient-midnight); color: var(--pcu-white); border-radius: 2px; overflow: hidden; }
+.pcu-notch-panel::after { content: ""; position: absolute; inset: 0 0 0 auto; width: 18%; background: var(--pcu-midnight); opacity: .55;
+  -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAyMDAiID48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0wIDAgSDYwIFYyMCBBODAgODAgMCAwIDAgMjAgMTAwIEE4MCA4MCAwIDAgMCA2MCAxODAgVjIwMCBIMCBaIi8+PC9zdmc+Cg==") right center / auto 100% no-repeat; mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAyMDAiID48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0wIDAgSDYwIFYyMCBBODAgODAgMCAwIDAgMjAgMTAwIEE4MCA4MCAwIDAgMCA2MCAxODAgVjIwMCBIMCBaIi8+PC9zdmc+Cg==") right center / auto 100% no-repeat; }
+.pcu-sign { display: flex; align-items: center; gap: var(--pcu-space-5); padding: var(--pcu-space-6); background: var(--pcu-midnight); color: var(--pcu-white); border-radius: 0 9999px 9999px 0; box-shadow: 14px -14px 0 0 var(--pcu-amber); font-weight: var(--pcu-weight-bold); font-size: var(--pcu-text-2xl); }
+
+/* ---------- Pattern (p.34) ---------- */
+.pcu-pattern { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiA+PHBhdGggZmlsbD0iI0ZGQkMwMCIgZD0iTTQwIDQwIFYwIEE0MCA0MCAwIDAgMCAwIDQwIFoiLz48cGF0aCBmaWxsPSIjNDVCOEJDIiBkPSJNODAgNDAgVjAgQTQwIDQwIDAgMCAwIDQwIDQwIFoiLz48cGF0aCBmaWxsPSIjRkZCQzAwIiBkPSJNMTIwIDQwIFYwIEE0MCA0MCAwIDAgMCA4MCA0MCBaIi8+PHBhdGggZmlsbD0iIzQ1QjhCQyIgZD0iTTE2MCA0MCBWMCBBNDAgNDAgMCAwIDAgMTIwIDQwIFoiLz48cmVjdCB4PSIwIiB5PSI0MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMzg4MEQwIi8+PHBhdGggZmlsbD0iI0VDMDA4QyIgZD0iTTQwIDgwIFY0MCBBNDAgNDAgMCAwIDEgODAgODAgWiIvPjxyZWN0IHg9IjgwIiB5PSI0MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMzg4MEQwIi8+PHBhdGggZmlsbD0iI0VDMDA4QyIgZD0iTTEyMCA4MCBWNDAgQTQwIDQwIDAgMCAxIDE2MCA4MCBaIi8+PHBhdGggZmlsbD0iIzQ1QjhCQyIgZD0iTTQwIDEyMCBWODAgQTQwIDQwIDAgMCAwIDAgMTIwIFoiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjEwMCIgcj0iMjAiIGZpbGw9IiNGRkJDMDAiLz48cGF0aCBmaWxsPSIjNDVCOEJDIiBkPSJNMTIwIDEyMCBWODAgQTQwIDQwIDAgMCAwIDgwIDEyMCBaIi8+PGNpcmNsZSBjeD0iMTQwIiBjeT0iMTAwIiByPSIyMCIgZmlsbD0iI0ZGQkMwMCIvPjxwYXRoIGZpbGw9IiNFQzAwOEMiIGQ9Ik0wIDE2MCBWMTIwIEE0MCA0MCAwIDAgMSA0MCAxNjAgWiIvPjxyZWN0IHg9IjQwIiB5PSIxMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iIzM4ODBEMCIvPjxwYXRoIGZpbGw9IiNFQzAwOEMiIGQ9Ik04MCAxNjAgVjEyMCBBNDAgNDAgMCAwIDEgMTIwIDE2MCBaIi8+PHJlY3QgeD0iMTIwIiB5PSIxMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iIzM4ODBEMCIvPjwvc3ZnPgo="); background-size: 160px 160px; }
+
+/* ---------- Accessibility ---------- */
+@media (prefers-reduced-motion: reduce) { .pcu-btn { transition: none; } .pcu-btn:hover { transform: none; } }
+
+/* ---------- Fix: in pcu.css `.pcu h1..h4` (0,1,1) outranks `.pcu-display--*` (0,1,0),
+   so a display heading inside .pcu fell back to Inter. Raised here; values unchanged. ---------- */
+.pcu .pcu-display              { font-size: var(--pcu-text-5xl); line-height: var(--pcu-leading-5xl); }
+.pcu .pcu-display--inter       { font-family: var(--pcu-font-inter); font-weight: var(--pcu-weight-bold); letter-spacing: -0.02em; }
+.pcu .pcu-display--bebas       { font-family: var(--pcu-font-bebas); font-weight: 400; letter-spacing: 0; line-height: .9; }
+.pcu .pcu-display--din         { font-family: var(--pcu-font-din); font-weight: 700; line-height: .95; }
+.pcu .pcu-display--baskerville { font-family: var(--pcu-font-baskerville); font-weight: 700; letter-spacing: .01em; }
+.pcu .pcu-display--helvetica   { font-family: var(--pcu-font-helvetica); font-weight: 300; letter-spacing: -0.01em; }
+.pcu .pcu-display--script      { font-family: var(--pcu-font-script); text-transform: none; font-weight: 400; line-height: 1.1; }
+
+
+/* Self-hosted Inter is loaded by next/font as --font-inter. */
+:root { --pcu-font-inter: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }

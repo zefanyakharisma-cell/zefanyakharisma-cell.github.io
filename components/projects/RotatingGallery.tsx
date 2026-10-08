@@ -1,86 +1,82 @@
 'use client'
-import { useEffect, useRef } from 'react'
+
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { Pause, Play } from 'lucide-react'
+import { SectionHead } from '@/components/pcu'
 
 type Props = {
   images: string[]
   title: string
   subtitle: string
+  /** Describes the photos for screen readers, e.g. "AMERTA exchange activity". */
+  alt: string
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
-  }
-  return a
-}
+const SLOTS = 3
 
-export default function RotatingGallery({ images, title, subtitle }: Props) {
-  const img0 = useRef<HTMLImageElement>(null)
-  const img1 = useRef<HTMLImageElement>(null)
-  const img2 = useRef<HTMLImageElement>(null)
+/**
+ * Photo diary: three frames that swap to the next photo in turn every few seconds.
+ * The first frames render on the server; rotation pauses on request and under
+ * prefers-reduced-motion.
+ */
+export default function RotatingGallery({ images, title, subtitle, alt }: Props) {
+  const [shown, setShown] = useState(() => images.slice(0, SLOTS))
+  const [playing, setPlaying] = useState(true)
 
   useEffect(() => {
-    const imgRefs = [img0, img1, img2]
-    let queue = shuffle(images)
-    let qi = 3
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false)
+  }, [])
+
+  useEffect(() => {
+    if (!playing || images.length <= SLOTS) return
+    let next = SLOTS
     let slot = 0
-
-    if (img0.current) img0.current.src = queue[0] || ''
-    if (img1.current) img1.current.src = queue[1] || ''
-    if (img2.current) img2.current.src = queue[2] || ''
-
     const timer = setInterval(() => {
-      const currentSlot = slot % 3
+      const src = images[next % images.length]
+      const target = slot % SLOTS
+      setShown(prev => prev.map((s, i) => (i === target ? src : s)))
+      next++
       slot++
-      const imgEl = imgRefs[currentSlot]?.current
-      if (!imgEl) return
-
-      const nextSrc = queue[qi % queue.length]
-      qi++
-      if (qi >= queue.length) {
-        queue = shuffle(images)
-        qi = 0
-      }
-
-      imgEl.style.opacity = '0'
-      setTimeout(() => {
-        if (!imgEl.isConnected) return
-        imgEl.src = nextSrc
-        const show = () => { imgEl.style.opacity = '1' }
-        if (imgEl.complete && imgEl.naturalWidth) show()
-        else { imgEl.onload = show; imgEl.onerror = show }
-      }, 500)
-    }, 3000)
-
+    }, 3500)
     return () => clearInterval(timer)
-  }, [images])
+  }, [playing, images])
 
   return (
-    <div style={{ background: '#0D0D0B', paddingTop: 80 }}>
-      <div className="max-w-6xl mx-auto px-6" style={{ paddingBottom: 48 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-          <span style={{ display: 'block', width: 28, height: 1.5, background: 'rgba(255,255,255,0.2)' }} />
-          <span style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' as const }}>Photo Diary</span>
+    <section className="section bg-midnight">
+      <div className="wrap">
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
+          <SectionHead light eyebrow="Photo diary" title={title} lead={subtitle} className="!mb-0" />
+          {images.length > SLOTS && (
+            <button
+              type="button"
+              onClick={() => setPlaying(p => !p)}
+              className="pcu-btn pcu-btn--outline text-white"
+              aria-pressed={!playing}
+            >
+              {playing ? <Pause aria-hidden size={16} /> : <Play aria-hidden size={16} />}
+              {playing ? 'Pause slideshow' : 'Play slideshow'}
+            </button>
+          )}
         </div>
-        <h2 className="font-heading" style={{ fontWeight: 700, fontSize: 'clamp(2rem,5vw,3rem)', color: '#fff', letterSpacing: '-0.02em', margin: '0 0 10px' }}>{title}</h2>
-        <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: '0.875rem', margin: 0 }}>{subtitle}</p>
+        <div className="grid gap-1 md:grid-cols-[3fr_2fr] md:grid-rows-2 md:h-[min(75vh,640px)]" aria-live="off">
+          {shown.map((src, i) => (
+            <div
+              key={i}
+              className={`relative overflow-hidden rounded-md bg-[#133256] aspect-[4/3] md:aspect-auto ${i === 0 ? 'md:row-span-2' : ''}`}
+            >
+              <Image
+                key={src}
+                src={src}
+                alt={`${alt}, photo ${images.indexOf(src) + 1} of ${images.length}`}
+                fill
+                sizes={i === 0 ? '(min-width: 768px) 60vw, 100vw' : '(min-width: 768px) 40vw, 100vw'}
+                className="object-cover animate-[fadeIn_.6s_ease] motion-reduce:animate-none"
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gridTemplateRows: '1fr 1fr', height: '75vh', gap: 3 }}>
-        <div style={{ gridRow: 'span 2', overflow: 'hidden', background: '#111' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img ref={img0} loading="lazy" src="" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity .5s ease', display: 'block' }} />
-        </div>
-        <div style={{ overflow: 'hidden', background: '#111' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img ref={img1} loading="lazy" src="" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity .5s ease', display: 'block' }} />
-        </div>
-        <div style={{ overflow: 'hidden', background: '#111' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img ref={img2} loading="lazy" src="" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity .5s ease', display: 'block' }} />
-        </div>
-      </div>
-    </div>
+    </section>
   )
 }
