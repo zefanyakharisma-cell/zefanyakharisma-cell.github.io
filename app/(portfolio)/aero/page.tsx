@@ -15,9 +15,9 @@ const GALLERY_IMAGES = [
   '/assets/images/aero/aero-7.jpg', '/assets/images/aero/aero-8.jpg', '/assets/images/aero/aero-9.jpg',
   '/assets/images/aero/aero-10.jpg', '/assets/images/aero/aero-11.jpg', '/assets/images/aero/aero-12.jpg',
   '/assets/images/aero/aero-14.jpg', '/assets/images/aero/aero-15.jpg', '/assets/images/aero/aero-16.jpg',
-  '/assets/images/aero/aero-20.JPEG', '/assets/images/aero/aero-21.JPEG', '/assets/images/aero/aero-22.JPEG',
-  '/assets/images/aero/aero-23.JPEG', '/assets/images/aero/aero-24.JPEG', '/assets/images/aero/aero-25.JPEG',
-  '/assets/images/aero/aero-promotional-1.png', '/assets/images/aero/aero-promotional-2.PNG', '/assets/images/aero/aero-promotional-3.JPG',
+  '/assets/images/aero/aero-20.jpg', '/assets/images/aero/aero-21.jpg', '/assets/images/aero/aero-22.jpg',
+  '/assets/images/aero/aero-23.jpg', '/assets/images/aero/aero-24.jpg', '/assets/images/aero/aero-25.jpg',
+  '/assets/images/aero/aero-promotional-1.png', '/assets/images/aero/aero-promotional-2.png', '/assets/images/aero/aero-promotional-3.jpg',
 ]
 
 const highlights = [
@@ -142,7 +142,7 @@ export default function AeroPage() {
       {/* ── Hero ── */}
       <div className="relative overflow-hidden" style={{ padding: '64px 0 48px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img loading="lazy" src="/assets/images/aero/aero-header-1.JPEG" alt="AERO" className="absolute inset-0 w-full h-full object-cover" />
+        <img loading="lazy" src="/assets/images/aero/aero-header-1.jpg" alt="AERO" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(28,28,30,0.88) 0%,rgba(44,44,46,0.82) 60%,rgba(60,60,62,0.77) 100%)' }} />
         <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full" style={{ background: 'rgba(255,255,255,0.03)' }} />
         <div className="absolute right-24 bottom-8 w-48 h-48 rounded-full" style={{ border: '2px solid rgba(255,255,255,0.05)' }} />

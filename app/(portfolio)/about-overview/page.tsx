@@ -233,7 +233,7 @@ export default function AboutOverview() {
             <Link href="/amerta" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
               <div className="h-40 relative overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.JPEG" alt="AMERTA" className="w-full h-full object-cover" />
+                <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="AMERTA" className="w-full h-full object-cover" />
               </div>
               <div className="p-6">
                 <div className="label-small mb-2" style={{ color: '#4A6B8A' }}>Exchange Program · Airlangga</div>
@@ -248,7 +248,7 @@ export default function AboutOverview() {
             <Link href="/aci" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
               <div className="h-40 relative overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img loading="lazy" src="/assets/images/aci/aci-4.JPEG" alt="ACI Cultural Immersion" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+                <img loading="lazy" src="/assets/images/aci/aci-4.jpg" alt="ACI Cultural Immersion" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
               </div>
               <div className="p-6">
                 <div className="label-small mb-2" style={{ color: '#6B4F32' }}>Cultural Immersion · Airlangga</div>

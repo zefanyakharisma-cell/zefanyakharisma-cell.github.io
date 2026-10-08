@@ -11,21 +11,21 @@ export const metadata: Metadata = {
 }
 
 const GALLERY_IMAGES = [
-  '/assets/images/aci/aci-1.JPEG',
-  '/assets/images/aci/aci-2.JPEG',
-  '/assets/images/aci/aci-3.jpeg',
-  '/assets/images/aci/aci-4.JPEG',
-  '/assets/images/aci/aci-5.JPEG',
-  '/assets/images/aci/aci-6.JPEG',
-  '/assets/images/aci/aci-7.jpeg',
-  '/assets/images/aci/aci-8.jpeg',
-  '/assets/images/aci/aci-9.jpeg',
-  '/assets/images/aci/aci-10.jpeg',
-  '/assets/images/aci/aci-11.jpeg',
-  '/assets/images/aci/aci-12.JPEG',
-  '/assets/images/aci/aci-13.JPEG',
-  '/assets/images/aci/aci-14.JPG',
-  '/assets/images/aci/aci-15.jpeg',
+  '/assets/images/aci/aci-1.jpg',
+  '/assets/images/aci/aci-2.jpg',
+  '/assets/images/aci/aci-3.jpg',
+  '/assets/images/aci/aci-4.jpg',
+  '/assets/images/aci/aci-5.jpg',
+  '/assets/images/aci/aci-6.jpg',
+  '/assets/images/aci/aci-7.jpg',
+  '/assets/images/aci/aci-8.jpg',
+  '/assets/images/aci/aci-9.jpg',
+  '/assets/images/aci/aci-10.jpg',
+  '/assets/images/aci/aci-11.jpg',
+  '/assets/images/aci/aci-12.jpg',
+  '/assets/images/aci/aci-13.jpg',
+  '/assets/images/aci/aci-14.jpg',
+  '/assets/images/aci/aci-15.jpg',
 ]
 
 const steps = [
@@ -44,7 +44,7 @@ export default function AciPage() {
       {/* ── Hero ── */}
       <div className="relative overflow-hidden" style={{ padding: '64px 0 48px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img loading="lazy" src="/assets/images/aci/aci-4.JPEG" alt="ACI" className="absolute inset-0 w-full h-full object-cover" />
+        <img loading="lazy" src="/assets/images/aci/aci-4.jpg" alt="ACI" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(74,82,53,0.88) 0%,rgba(92,102,66,0.82) 60%,rgba(107,116,85,0.77) 100%)' }} />
         <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }} />
         <div className="absolute right-24 bottom-8 w-48 h-48 rounded-full" style={{ border: '2px solid rgba(255,255,255,0.06)' }} />

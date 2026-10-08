@@ -84,7 +84,7 @@ export default function Home() {
             {/* AMERTA — large card */}
             <Link href="/amerta" className="home-work-card lg:col-span-2 group relative overflow-hidden rounded-2xl block" style={{ padding: 44, minHeight: 260, textDecoration: 'none', color: 'inherit' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/student-services/tailor-made/griffith-unair-2.JPEG" alt="AMERTA exchange students at Griffith University" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="AMERTA exchange students at Griffith University" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(30,58,95,0.88),rgba(74,107,138,0.72))' }} />
               <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 90% 10%,rgba(139,115,85,0.18),transparent 50%)' }} />
               <div className="relative z-10 h-full flex flex-col justify-between">
@@ -114,7 +114,7 @@ export default function Home() {
             {/* ACI */}
             <Link href="/aci" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ minHeight: 160, textDecoration: 'none', color: 'inherit' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/aci/aci-4.JPEG" alt="ACI cultural immersion program" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="/assets/images/aci/aci-4.jpg" alt="ACI cultural immersion program" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(74,82,53,0.92) 0%,rgba(74,82,53,0.45) 100%)' }} />
               <div className="relative z-10 h-full flex flex-col justify-between p-7">
                 <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Cultural Program</span>
@@ -128,7 +128,7 @@ export default function Home() {
             {/* AERO */}
             <Link href="/aero" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ minHeight: 160, textDecoration: 'none', color: 'inherit' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/images/aero/aero-header-1.JPEG" alt="AERO exhibition at Universitas Airlangga" loading="lazy" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+              <img src="/assets/images/aero/aero-header-1.jpg" alt="AERO exhibition at Universitas Airlangga" loading="lazy" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(28,28,30,0.92) 0%,rgba(28,28,30,0.45) 100%)' }} />
               <div className="relative z-10 h-full flex flex-col justify-between p-7">
                 <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Exhibition</span>

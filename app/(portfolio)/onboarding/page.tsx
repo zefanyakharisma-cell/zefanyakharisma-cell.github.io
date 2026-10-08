@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 }
 
 const KNB_GALLERY = [
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8467.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8471.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8478.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8484.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8504.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8510.jpeg',
-  '/assets/images/student-services/09012025_KNB-Orientation/IMG_8513.jpeg',
+  '/assets/images/student-services/knb-orientation-2025/img-8467.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8471.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8478.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8484.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8504.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8510.jpg',
+  '/assets/images/student-services/knb-orientation-2025/img-8513.jpg',
 ]
 
 const SUPPORT_CARDS = [
@@ -57,7 +57,7 @@ export default function OnboardingPage() {
       {/* ── Hero ── */}
       <div style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(48px,8vh,72px) 24px 0' }}>
         <img
-          src="/assets/images/amerta/amerta/IMG_0578.JPG"
+          src="/assets/images/amerta/img-0578.jpg"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           style={{ zIndex: 0, objectPosition: 'center top' }}

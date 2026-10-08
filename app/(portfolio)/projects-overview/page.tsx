@@ -27,7 +27,7 @@ export default function ProjectsOverview() {
           <div className="grid md:grid-cols-5" style={{ minHeight: 300 }}>
             <div className="md:col-span-2 relative overflow-hidden" style={{ minHeight: 220 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.JPEG" alt="AMERTA" className="absolute inset-0 w-full h-full object-cover" />
+              <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="AMERTA" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg,rgba(10,30,65,0.78) 0%,rgba(30,80,140,0.52) 100%)' }} />
               <div className="absolute top-5 left-5" style={{ fontFamily: 'serif', fontSize: '4.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.08)', lineHeight: 1, userSelect: 'none' }}>01</div>
               <div className="relative z-10 flex flex-col justify-end h-full px-8 pb-8" style={{ minHeight: 220 }}>
@@ -58,8 +58,8 @@ export default function ProjectsOverview() {
         {/* ACI + AERO */}
         <div className="grid md:grid-cols-2 gap-5 mb-20">
           {[
-            { href: '/aci', img: '/assets/images/aci/aci-4.JPEG', num: '02', cat: 'Cultural Immersion', title: 'ACI', badge: 'Student Support', desc: 'Bringing together international and local students through collaborative activities, site visits, and structured engagement throughout the semester.', tags: ['Cross-Cultural', 'Project Management'], stat: '100+', statLabel: 'students / program' },
-            { href: '/aero', img: '/assets/images/aero/aero-header-1.JPEG', num: '03', cat: 'Annual Exhibition', title: 'AERO', badge: "Int'l Partnership", desc: 'Annual exhibition at Universitas Airlangga showcasing global partnerships — coordinated logistics, vendor management, and event planning across 50+ stakeholders.', tags: ['Branding', 'Creative Direction'], stat: '50+', statLabel: 'stakeholders coordinated' },
+            { href: '/aci', img: '/assets/images/aci/aci-4.jpg', num: '02', cat: 'Cultural Immersion', title: 'ACI', badge: 'Student Support', desc: 'Bringing together international and local students through collaborative activities, site visits, and structured engagement throughout the semester.', tags: ['Cross-Cultural', 'Project Management'], stat: '100+', statLabel: 'students / program' },
+            { href: '/aero', img: '/assets/images/aero/aero-header-1.jpg', num: '03', cat: 'Annual Exhibition', title: 'AERO', badge: "Int'l Partnership", desc: 'Annual exhibition at Universitas Airlangga showcasing global partnerships — coordinated logistics, vendor management, and event planning across 50+ stakeholders.', tags: ['Branding', 'Creative Direction'], stat: '50+', statLabel: 'stakeholders coordinated' },
           ].map(card => (
             <Link key={card.href} href={card.href} className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 18, overflow: 'hidden', textDecoration: 'none', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)' }}>
               <div className="relative overflow-hidden" style={{ height: 170 }}>

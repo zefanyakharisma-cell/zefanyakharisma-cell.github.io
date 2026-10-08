@@ -11,20 +11,20 @@ export const metadata: Metadata = {
 }
 
 const GALLERY_IMAGES = [
-  '/assets/images/amerta/amerta/IMG_0570.JPG', '/assets/images/amerta/amerta/IMG_0576.JPG',
-  '/assets/images/amerta/amerta/IMG_0578.JPG', '/assets/images/amerta/amerta/IMG_0589.JPG',
-  '/assets/images/amerta/amerta/IMG_0590.JPG', '/assets/images/amerta/amerta/IMG_0594.JPG',
-  '/assets/images/amerta/amerta/IMG_0629.JPG', '/assets/images/amerta/amerta/IMG_0637.JPG',
-  '/assets/images/amerta/amerta/IMG_0641.JPG', '/assets/images/amerta/amerta/IMG_0642.JPG',
-  '/assets/images/amerta/amerta/IMG_0980.JPG', '/assets/images/amerta/amerta/IMG_0993.JPG',
-  '/assets/images/amerta/amerta/IMG_1003.JPG', '/assets/images/amerta/amerta/IMG_1006.JPG',
-  '/assets/images/amerta/amerta/IMG_1007.JPG', '/assets/images/amerta/amerta/IMG_1008.JPG',
-  '/assets/images/amerta/amerta/IMG_1807.JPG', '/assets/images/amerta/amerta/IMG_1813.JPG',
-  '/assets/images/amerta/amerta/IMG_3529.JPG', '/assets/images/amerta/amerta/IMG_3534.JPG',
-  '/assets/images/amerta/amerta/IMG_3535.JPG', '/assets/images/amerta/amerta/IMG_3720.JPG',
-  '/assets/images/amerta/amerta/IMG_3723.JPG', '/assets/images/amerta/amerta/IMG_3867.JPG',
-  '/assets/images/amerta/amerta/IMG_3868.JPG', '/assets/images/amerta/amerta/IMG_3869.JPG',
-  '/assets/images/amerta/amerta/FullSizeRender.JPG', '/assets/images/amerta/amerta/FullSizeRender 2.JPG',
+  '/assets/images/amerta/img-0570.jpg', '/assets/images/amerta/img-0576.jpg',
+  '/assets/images/amerta/img-0578.jpg', '/assets/images/amerta/img-0589.jpg',
+  '/assets/images/amerta/img-0590.jpg', '/assets/images/amerta/img-0594.jpg',
+  '/assets/images/amerta/img-0629.jpg', '/assets/images/amerta/img-0637.jpg',
+  '/assets/images/amerta/img-0641.jpg', '/assets/images/amerta/img-0642.jpg',
+  '/assets/images/amerta/img-0980.jpg', '/assets/images/amerta/img-0993.jpg',
+  '/assets/images/amerta/img-1003.jpg', '/assets/images/amerta/img-1006.jpg',
+  '/assets/images/amerta/img-1007.jpg', '/assets/images/amerta/img-1008.jpg',
+  '/assets/images/amerta/img-1807.jpg', '/assets/images/amerta/img-1813.jpg',
+  '/assets/images/amerta/img-3529.jpg', '/assets/images/amerta/img-3534.jpg',
+  '/assets/images/amerta/img-3535.jpg', '/assets/images/amerta/img-3720.jpg',
+  '/assets/images/amerta/img-3723.jpg', '/assets/images/amerta/img-3867.jpg',
+  '/assets/images/amerta/img-3868.jpg', '/assets/images/amerta/img-3869.jpg',
+  '/assets/images/amerta/fullsizerender.jpg', '/assets/images/amerta/amerta-1.jpg',
 ]
 
 const steps = [
@@ -45,7 +45,7 @@ export default function AmertaPage() {
       {/* ── Hero ── */}
       <div className="relative overflow-hidden" style={{ padding: '64px 0 48px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.JPEG" alt="AMERTA" className="absolute inset-0 w-full h-full object-cover" />
+        <img loading="lazy" src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="AMERTA" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(30,58,95,0.88) 0%,rgba(45,90,138,0.82) 60%,rgba(74,107,138,0.77) 100%)' }} />
         <div className="absolute -right-16 -top-16 w-80 h-80 rounded-full" style={{ background: 'rgba(255,255,255,0.04)' }} />
         <div className="absolute right-24 bottom-8 w-48 h-48 rounded-full" style={{ border: '2px solid rgba(255,255,255,0.06)' }} />

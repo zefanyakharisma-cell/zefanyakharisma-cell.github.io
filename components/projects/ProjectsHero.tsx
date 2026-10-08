@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react'
 
 const slides = [
-  '/assets/images/aci/aci-12.JPEG',
+  '/assets/images/aci/aci-12.jpg',
   '/assets/images/aero/aero-5.jpg',
-  '/assets/images/aci/aci-3.jpeg',
+  '/assets/images/aci/aci-3.jpg',
   '/assets/images/aero/aero-10.jpg',
-  '/assets/images/student-services/tailor-made/ljmu-unair-2.JPEG',
-  '/assets/images/student-services/tailor-made/staffordshire-unair-2.JPEG',
+  '/assets/images/student-services/tailor-made/ljmu-unair-2.jpg',
+  '/assets/images/student-services/tailor-made/staffordshire-unair-2.jpg',
 ]
 
 const stats = [

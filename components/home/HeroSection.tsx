@@ -5,11 +5,11 @@ import Link from 'next/link'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 
 const slides = [
-  '/assets/images/aci/aci-4.JPEG',
+  '/assets/images/aci/aci-4.jpg',
   '/assets/images/aero/aero-1.jpg',
-  '/assets/images/student-services/tailor-made/griffith-unair-3.JPEG',
-  '/assets/images/student-services/tailor-made/ljmu-unair-2.JPEG',
-  '/assets/images/self-portrait/profile-15.JPG',
+  '/assets/images/student-services/tailor-made/griffith-unair-3.jpg',
+  '/assets/images/student-services/tailor-made/ljmu-unair-2.jpg',
+  '/assets/images/self-portrait/profile-15.jpg',
 ]
 
 export default function HeroSection() {
