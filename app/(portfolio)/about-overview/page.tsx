@@ -25,9 +25,6 @@ const expertiseItems = [
 const currentFocusCards = [
   { icon: Globe2, title: 'International Education Leadership', desc: 'Deepening institutional partnership strategies and driving internationalization frameworks at Petra Christian University.', status: 'Active', color: '#1E3A5F' },
   { icon: LayoutDashboard, title: 'Digital Systems & Experience Design', desc: 'Designing and building digital platforms that support international programs, from UI architecture to user journeys.', status: 'In Progress', color: '#8B7355' },
-  { icon: Code2, title: 'Web Development', desc: 'Building purpose-driven websites for institutional communications, including the PCU Global International Office platform.', status: 'Active', color: '#4A6B8A' },
-  { icon: Moon, title: 'CroissantsMoon', desc: 'Developing a creative boutique studio identity — editorial design, brand systems, and curated digital experiences.', status: 'Developing', color: '#6B4F32' },
-  { icon: PenLine, title: 'Writing & Reflection', desc: 'Exploring ideas at the intersection of international education, leadership, and creative practice through essays and notes.', status: 'Ongoing', color: '#4A5235' },
   { icon: Network, title: 'Interdisciplinary Problem Solving', desc: 'Connecting international education, systems thinking, digital design, and creative strategy into integrated solutions.', status: 'Always', color: '#1C1C1E' },
 ]
 
@@ -37,12 +34,10 @@ const certifications = [
   { label: '2023 · Conference', title: '9th ICoCSPA 2023 — Research Presenter', desc: 'Presented research on U.S.–ASEAN economic cooperation at international conference.', color: '#1E3A5F' },
   { label: '2023–2024 · Publications', title: 'Academic Publications in IR', desc: 'Peer-reviewed papers on U.S. foreign policy, Korea–China THAAD, and Abraham Accords.', color: '#4A6B8A' },
   { label: '2024–2025 · Program Leadership', title: '5 Exchange Programs Led', desc: 'End-to-end delivery of AMERTA, ACI, AERO, and government scholarship programs (KNB & TIAS).', color: '#4A6B8A' },
-  { label: '2026 · Platform Launch', title: 'PCU Global Digital Platform', desc: "Designed and built PCU International Office's flagship digital presence from ground up.", color: '#1E3A5F' },
+  { label: '2026 · Information Systems', title: 'SIM Kerjasama & SIM Realisasi', desc: 'Designed the systems of record for PCU partnership agreements and the activities carried out under them.', color: '#1E3A5F' },
 ]
 
 const interests = [
-  { title: 'CroissantsMoon', desc: 'A creative identity in development — where editorial aesthetics, brand philosophy, and digital craft converge into something singular.', editorial: true },
-  { title: 'Writing & Reflection', desc: 'Essays and notes on education, systems, and creative practice — approaching complex ideas through careful language.' },
   { title: 'Visual Storytelling', desc: 'Award-winning short video work and graphic design for institutional communications and personal creative projects.' },
   { title: 'International Culture', desc: 'Deep curiosity for cross-cultural dynamics, language, and the nuanced ways global contexts shape educational experience.' },
   { title: 'Design Systems', desc: 'Fascinated by how great design systems create coherence — from institutional brand guidelines to digital component libraries.' },
@@ -127,11 +122,6 @@ export default function AboutOverview() {
                 </div>
                 <p className="font-semibold text-sm" style={{ color: '#1C1C1E' }}>International Partnership Specialist</p>
                 <p className="text-xs mt-1" style={{ color: '#767676' }}>Petra Christian University · Surabaya</p>
-              </div>
-              <div className="card p-6" style={{ borderLeft: '3px solid #8B7355' }}>
-                <p className="label-small mb-2" style={{ color: '#8B7355' }}>Also Building</p>
-                <p className="font-semibold text-sm font-editorial" style={{ color: '#1C1C1E' }}>CroissantsMoon</p>
-                <p className="text-xs mt-1" style={{ color: '#767676' }}>Creative digital studio identity in development</p>
               </div>
               <div className="card p-6" style={{ borderLeft: '3px solid #4A6B8A' }}>
                 <p className="label-small mb-2" style={{ color: '#4A6B8A' }}>Open To</p>
@@ -269,64 +259,26 @@ export default function AboutOverview() {
               </div>
             </Link>
 
-            {/* International Office Website */}
-            <Link href="/pcu-global" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
-              <div className="h-40 relative overflow-hidden" style={{ background: '#f0f4f8' }}>
-                <iframe src="https://international-office-website.vercel.app/" style={{ position: 'absolute', top: 0, left: 0, width: '300%', height: 420, transform: 'scale(0.333)', transformOrigin: 'top left', border: 'none', pointerEvents: 'none' }} loading="lazy" sandbox="allow-scripts allow-same-origin" aria-hidden="true" title="PCU International Office Website preview" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom,transparent 55%,rgba(255,255,255,0.92))' }} />
-              </div>
+            <Link href="/sim-kerjasama" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
               <div className="p-6">
-                <div className="label-small mb-2" style={{ color: '#003087' }}>Web Platform · PCU</div>
-                <h3 className="font-heading font-bold text-lg mb-2" style={{ color: '#1C1C1E' }}>International Office Website</h3>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: '#5C5C5C' }}>Rebuilding PCU&apos;s International Office digital presence — for inbound students, outbound programs, and partners.</p>
-                <div className="flex flex-wrap gap-1.5 mb-4">{['Web Development', 'UI/UX Design', 'Digital Strategy'].map(t => <span key={t} className="tag">{t}</span>)}</div>
-                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#003087' }}>View case study <ArrowRight style={{ width: 14, height: 14 }} /></div>
+                <div className="label-small mb-2" style={{ color: '#19304b' }}>Information System · PCU</div>
+                <h3 className="font-heading font-bold text-lg mb-2" style={{ color: '#19304b' }}>SIM Kerjasama</h3>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: '#46505c' }}>The system of record for every MoU and MoA, with an enforced approval hierarchy and proactive renewals.</p>
+                <div className="flex flex-wrap gap-1.5 mb-4">{['Process Design', 'Partnership Management', 'Data'].map(t => <span key={t} className="tag">{t}</span>)}</div>
+                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#19304b' }}>View project <ArrowRight style={{ width: 14, height: 14 }} /></div>
               </div>
             </Link>
-
-            {/* Partnership Dashboard */}
-            <Link href="/croissantsmoon/web-dashboard-partnership" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
-              <div className="h-40 relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#1E3A5F 0%,#2C4A72 100%)' }}>
-                <div className="absolute inset-0 flex flex-col justify-center px-6 gap-2.5">
-                  {[78, 55, 88, 43, 66].map((w, i) => (
-                    <div key={i} style={{ height: 5, background: i === 3 ? 'rgba(139,115,85,0.65)' : `rgba(255,255,255,${[0.45, 0.25, 0.35, 0, 0.2][i]})`, borderRadius: 3, width: `${w}%` }} />
-                  ))}
-                </div>
-                <BarChart2 style={{ position: 'absolute', right: 20, bottom: 16, width: 40, height: 40, color: 'rgba(255,255,255,0.18)' }} />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom,transparent 60%,rgba(30,58,95,0.5))' }} />
-              </div>
+            <Link href="/sim-realisasi" className="card text-left group overflow-hidden about-card-lift" style={{ background: '#fff', display: 'block', textDecoration: 'none' }}>
               <div className="p-6">
-                <div className="label-small mb-2" style={{ color: '#1E3A5F' }}>Dashboard · PCU</div>
-                <h3 className="font-heading font-bold text-lg mb-2" style={{ color: '#1C1C1E' }}>Partnership Dashboard</h3>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: '#5C5C5C' }}>A data dashboard for visualising and managing PCU&apos;s international partnership network and grants pipeline.</p>
-                <div className="flex flex-wrap gap-1.5 mb-4">{['Data Visualization', 'UI/UX Design', 'Digital Strategy'].map(t => <span key={t} className="tag">{t}</span>)}</div>
-                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#1E3A5F' }}>View case study <ArrowRight style={{ width: 14, height: 14 }} /></div>
+                <div className="label-small mb-2" style={{ color: '#19304b' }}>Information System · PCU</div>
+                <h3 className="font-heading font-bold text-lg mb-2" style={{ color: '#19304b' }}>SIM Realisasi</h3>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: '#46505c' }}>Tracks the activities carried out under each agreement and turns them into RENSTRA indicators.</p>
+                <div className="flex flex-wrap gap-1.5 mb-4">{['Reporting', 'Partnership Management', 'Data'].map(t => <span key={t} className="tag">{t}</span>)}</div>
+                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#19304b' }}>View project <ArrowRight style={{ width: 14, height: 14 }} /></div>
               </div>
             </Link>
           </div>
 
-          {/* CroissantsMoon card */}
-          <Link href="/croissantsmoon" className="card w-full text-left group overflow-hidden about-card-lift block" style={{ background: '#071126', borderColor: 'rgba(111,168,255,0.14)', textDecoration: 'none' }}>
-            <div className="flex flex-col md:flex-row">
-              <div className="h-56 md:h-auto md:w-72 lg:w-80 relative overflow-hidden flex-shrink-0" style={{ background: 'linear-gradient(145deg,#071126 0%,#0B1E3A 55%,#183B6B 100%)' }}>
-                {[{ w:3,h:3,t:'18%',l:'22%',d:0 },{ w:2,h:2,t:'35%',l:'68%',d:.6 },{ w:2,h:2,t:'62%',l:'38%',d:1.1 },{ w:1,h:1,t:'72%',l:'78%',d:.4 },{ w:2,h:2,t:'22%',l:'58%',d:.9 },{ w:1,h:1,t:'50%',l:'15%',d:1.5 },{ w:2,h:2,t:'82%',l:'52%',d:.2 }].map((s, i) => (
-                  <div key={i} style={{ position: 'absolute', width: s.w, height: s.h, borderRadius: '50%', background: i % 3 === 1 ? '#8FA8D6' : i % 3 === 2 ? '#D4B15A' : '#D9E6FF', top: s.t, left: s.l, animation: `about-twinkle ${2.2 + i * 0.3}s ease-in-out infinite ${s.d}s` }} />
-                ))}
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 76, height: 76, borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%,#D9E6FF 0%,#8FA8D6 50%,#4A6B8A 100%)', boxShadow: '0 0 40px rgba(217,230,255,0.2)', animation: 'about-float 4.5s ease-in-out infinite' }} />
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-32%,-50%)', width: 76, height: 76, borderRadius: '50%', background: '#071126' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 50%,rgba(212,177,90,0.06),transparent 65%)' }} />
-              </div>
-              <div className="p-8 flex flex-col justify-center">
-                <div className="label-small mb-3" style={{ color: 'rgba(212,177,90,0.65)', letterSpacing: '.12em' }}>Creative Identity · In Development</div>
-                <h3 className="font-heading font-bold mb-3 font-editorial" style={{ color: '#D9E6FF', fontStyle: 'italic', fontSize: 'clamp(1.5rem,3vw,2.2rem)', letterSpacing: '-.01em', lineHeight: 1.1 }}>CroissantsMoon</h3>
-                <p className="text-sm leading-relaxed mb-6" style={{ color: '#8FA8D6', maxWidth: 420 }}>A boutique creative studio — editorial design, brand systems, and curated digital experiences. Where craft meets the cosmos.</p>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {['Branding', 'Creative Direction', 'UI/UX', 'Web Development'].map(t => <span key={t} className="tag" style={{ color: 'rgba(217,230,255,0.45)', borderColor: 'rgba(111,168,255,0.15)' }}>{t}</span>)}
-                </div>
-                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#D4B15A' }}>Explore the studio <ArrowRight style={{ width: 14, height: 14 }} /></div>
-              </div>
-            </div>
-          </Link>
 
           <div className="mt-8 text-center">
             <Link href="/projects-overview" className="btn-outline text-sm px-6 py-2.5 rounded-full inline-flex items-center gap-2">
@@ -401,7 +353,7 @@ export default function AboutOverview() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {interests.map(item => (
               <div key={item.title} style={{ padding: 28, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, background: 'rgba(255,255,255,0.04)' }}>
-                <p className={`text-base mb-3 ${item.editorial ? 'font-editorial' : 'font-heading font-semibold'}`} style={{ color: item.editorial ? '#8B7355' : '#fff' }}>{item.title}</p>
+                <p className="text-base mb-3 font-heading font-semibold" style={{ color: '#fff' }}>{item.title}</p>
                 <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{item.desc}</p>
               </div>
             ))}

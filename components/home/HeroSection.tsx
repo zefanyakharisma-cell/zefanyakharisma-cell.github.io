@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Moon, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown } from 'lucide-react'
 
 const slides = [
   '/assets/images/aci/aci-4.JPEG',
@@ -116,12 +116,6 @@ export default function HeroSection() {
               </Link>
               <Link href="/about-overview" className="btn-outline font-medium text-sm px-7 py-3.5 rounded-full inline-flex items-center gap-2" style={{ textDecoration: 'none' }}>
                 About Me
-              </Link>
-            </div>
-            <div className="mt-4 flex items-center gap-2">
-              <span className="label-small">Also:</span>
-              <Link href="/croissantsmoon" className="inline-flex items-center gap-1.5 text-xs font-medium" style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontStyle: 'italic', color: '#0A84FF', textDecoration: 'none' }}>
-                CroissantsMoon <Moon style={{ width: 12, height: 12 }} />
               </Link>
             </div>
           </div>

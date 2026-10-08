@@ -116,9 +116,6 @@ export default function IntlGrantsPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-4">
-            <Link href="/croissantsmoon/web-dashboard-grants" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm" style={{ background: '#064E3B', color: '#fff', textDecoration: 'none' }}>
-              <LayoutDashboard style={{ width: 15, height: 15 }} /> View Dashboard Details
-            </Link>
             <Link href="/engagement" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm" style={{ background: 'transparent', color: '#064E3B', border: '1.5px solid rgba(6,78,59,0.3)', textDecoration: 'none' }}>
               <ArrowLeft style={{ width: 15, height: 15 }} /> Back to Intl. Education
             </Link>

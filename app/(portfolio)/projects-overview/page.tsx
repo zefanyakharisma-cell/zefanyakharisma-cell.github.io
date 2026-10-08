@@ -6,34 +6,7 @@ import ProjectsHero from '@/components/projects/ProjectsHero'
 export const metadata: Metadata = {
   title: 'Projects',
   alternates: { canonical: '/projects-overview' },
-  description: 'Portfolio of flagship programs: AMERTA, ACI, AERO, PCU Global.',
-}
-
-function LivePreview({ url, displayUrl, height }: { url: string; displayUrl: string; height: number }) {
-  const iframeH = Math.round(height / 0.333)
-  return (
-    <div style={{ position: 'relative', overflow: 'hidden', height, background: '#0a0a14', flexShrink: 0 }}>
-      <iframe
-        src={url}
-        style={{ position: 'absolute', top: 0, left: 0, width: '300%', height: iframeH, transform: 'scale(0.333)', transformOrigin: 'top left', border: 'none', pointerEvents: 'none' }}
-        loading="lazy"
-        sandbox="allow-scripts allow-same-origin"
-        aria-hidden="true"
-        title={`${displayUrl} homepage preview`}
-      />
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, background: 'rgba(0,0,0,0.58)', padding: '9px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div style={{ display: 'flex', gap: 5, flexShrink: 0 }}>
-          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F57', display: 'inline-block' }} />
-          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FFBD2E', display: 'inline-block' }} />
-          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#28CA41', display: 'inline-block' }} />
-        </div>
-        <div style={{ flex: 1, background: 'rgba(255,255,255,0.07)', borderRadius: 6, padding: '3px 10px', fontSize: '.6rem', color: 'rgba(255,255,255,0.42)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {displayUrl}
-        </div>
-      </div>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,transparent 72%,rgba(255,255,255,0.04) 100%)', pointerEvents: 'none', zIndex: 1 }} />
-    </div>
-  )
+  description: 'Portfolio of flagship programs: AMERTA, ACI, AERO, SIM Kerjasama and SIM Realisasi.',
 }
 
 export default function ProjectsOverview() {
@@ -114,127 +87,30 @@ export default function ProjectsOverview() {
           ))}
         </div>
 
-        {/* ── Graphic Design compact horizontal card ── */}
-        <Link href="/croissantsmoon/designs" className="block mb-5" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 18, overflow: 'hidden', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)', textDecoration: 'none' }}>
-          <div className="grid md:grid-cols-5" style={{ minHeight: 160 }}>
-            <div className="md:col-span-3 p-7 flex flex-col justify-center">
-              <div className="flex items-center gap-3 mb-3">
-                <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(139,115,85,0.08)', color: '#8B7355' }}>Editorial Design</span>
-                <span style={{ fontSize: '.68rem', color: '#C0B8AE', letterSpacing: '.04em' }}>2024–2025</span>
-              </div>
-              <h3 className="font-heading font-bold" style={{ fontSize: '1.2rem', color: '#1C1C1E', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 8 }}>Guidebooks, Booklets &amp; Event Collateral</h3>
-              <p style={{ fontSize: '.84rem', color: '#5C5C5C', lineHeight: 1.6, marginBottom: 14, maxWidth: 480 }}>Print and digital design for institutional programs — student guidebooks, orientation booklets, exhibition collateral, and partnership materials.</p>
-              <div className="flex flex-wrap gap-1.5">
-                <span className="tag">Print Design</span>
-                <span className="tag">Branding</span>
-                <span className="tag">Editorial Layout</span>
-              </div>
-            </div>
-            <div className="md:col-span-2 relative overflow-hidden" style={{ minHeight: 160, background: '#1C1C1E' }}>
-              <div className="absolute inset-0 grid grid-cols-3" aria-hidden="true" style={{ gap: 2, opacity: 0.84 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/images/graphic-designs/aero-2025-unair/1.png" alt="" loading="lazy" className="w-full h-full object-cover" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/images/graphic-designs/booklet-aci-2025-b2-unair/1.png" alt="" loading="lazy" className="w-full h-full object-cover" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/images/graphic-designs/partnership-booklet-pcu/1.png" alt="" loading="lazy" className="w-full h-full object-cover" />
-              </div>
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to right,rgba(255,255,255,0.03) 0%,transparent 40%)' }} />
-              <div className="absolute bottom-4 right-5 flex items-center gap-2 font-medium text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>Browse Design Work <ArrowRight style={{ width: 14, height: 14 }} /></div>
-            </div>
-          </div>
-        </Link>
 
-        {/* ── Web Development ── */}
+        {/* ── Information Systems ── */}
         <div style={{ height: 1, background: 'rgba(28,28,30,0.07)', margin: '28px 0 48px' }} />
 
-        <div className="flex items-center gap-4 mb-10">
-          <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.13em', textTransform: 'uppercase' as const, color: '#8B7355' }}>Web Development</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(28,28,30,0.08)' }} />
-          <span style={{ fontSize: '.68rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase' as const, color: '#C0B8AE' }}>CroissantsMoon Studio</span>
-        </div>
-
         <div className="mb-10">
-          <h2 className="font-heading font-bold" style={{ fontSize: 'clamp(1.6rem,3.5vw,2.4rem)', letterSpacing: '-.02em', color: '#1C1C1E', marginBottom: 10 }}>Web Projects</h2>
-          <p style={{ fontSize: '.9375rem', color: '#5C5C5C', lineHeight: 1.65, maxWidth: 560 }}>Responsive web applications and dashboards — from personal portfolio SPAs to institutional data tools.</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-5 mb-5">
-          {/* PCU Global International Office */}
-          <Link href="/croissantsmoon/websites" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)', textDecoration: 'none' }}>
-            <LivePreview url="https://international-office-website.vercel.app/" displayUrl="international-office-website.vercel.app" height={200} />
-            <div className="p-7 flex flex-col justify-between" style={{ minHeight: 180 }}>
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(0,48,135,0.08)', color: '#003087' }}>Full-Stack</span>
-                  <span style={{ fontSize: '.68rem', color: '#C0B8AE', letterSpacing: '.04em' }}>In Progress</span>
-                </div>
-                <h3 className="font-heading font-bold" style={{ fontSize: '1.2rem', color: '#1C1C1E', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>PCU Global — International Office Website</h3>
-                <p style={{ fontSize: '.84rem', color: '#5C5C5C', lineHeight: 1.65, marginBottom: 16 }}>Rebuilding PCU&apos;s International Office website — news CMS, partnership directory, audience-first information architecture, and mobile-first design.</p>
-                <div className="flex flex-wrap gap-1.5"><span className="tag">HTML / CSS</span><span className="tag">JavaScript</span><span className="tag">Flask</span><span className="tag">SQLite</span></div>
-              </div>
-              <div className="flex items-center justify-end pt-5 mt-5" style={{ borderTop: '1px solid rgba(28,28,30,0.07)' }}>
-                <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#003087' }}>View Web Case Study <ArrowRight style={{ width: 15, height: 15 }} /></span>
-              </div>
-            </div>
-          </Link>
-
-          {/* Portfolio Site */}
-          <Link href="/croissantsmoon/web-portfolio" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)', textDecoration: 'none' }}>
-            <LivePreview url="https://website-portfolio-liard-alpha.vercel.app/" displayUrl="website-portfolio-liard-alpha.vercel.app" height={200} />
-            <div className="p-7 flex flex-col justify-between" style={{ minHeight: 180 }}>
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(201,168,76,0.08)', color: '#8B7355' }}>Full-Stack</span>
-                  <span style={{ fontSize: '.68rem', color: '#C0B8AE', letterSpacing: '.04em' }}>Live</span>
-                </div>
-                <h3 className="font-heading font-bold" style={{ fontSize: '1.2rem', color: '#1C1C1E', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>This Portfolio Site</h3>
-                <p style={{ fontSize: '.84rem', color: '#5C5C5C', lineHeight: 1.65, marginBottom: 16 }}>Dual-identity SPA with hash-based routing, iOS-style navigation shell, Supabase inline editing, and 20+ pages — no framework.</p>
-                <div className="flex flex-wrap gap-1.5"><span className="tag">HTML / CSS</span><span className="tag">JavaScript</span><span className="tag">Tailwind CSS</span><span className="tag">Supabase</span></div>
-              </div>
-              <div className="flex items-center justify-end pt-5 mt-5" style={{ borderTop: '1px solid rgba(28,28,30,0.07)' }}>
-                <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#8B7355' }}>View Details <ArrowRight style={{ width: 15, height: 15 }} /></span>
-              </div>
-            </div>
-          </Link>
+          <h2 className="font-heading font-bold" style={{ fontSize: 'clamp(1.6rem,3.5vw,2.4rem)', letterSpacing: '-.02em', color: '#19304b', marginBottom: 10 }}>Information Systems</h2>
+          <p style={{ fontSize: '.9375rem', color: '#46505c', lineHeight: 1.65, maxWidth: 560 }}>Two connected systems for Petra Christian University&apos;s Office of Partnerships and International Affairs.</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5 mb-16">
-          {/* Dashboard Partnership */}
-          <Link href="/croissantsmoon/web-dashboard-partnership" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)', textDecoration: 'none' }}>
-            <LivePreview url="https://dashboard-partnership.vercel.app/" displayUrl="dashboard-partnership.vercel.app" height={160} />
-            <div className="p-7 flex flex-col justify-between" style={{ minHeight: 160 }}>
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(45,107,80,0.08)', color: '#2D6B50' }}>Data Viz</span>
-                  <span style={{ fontSize: '.68rem', color: '#C0B8AE', letterSpacing: '.04em' }}>Live · 2025</span>
-                </div>
-                <h3 className="font-heading font-bold" style={{ fontSize: '1.2rem', color: '#1C1C1E', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>Dashboard Partnership</h3>
-                <p style={{ fontSize: '.84rem', color: '#5C5C5C', lineHeight: 1.65, marginBottom: 16 }}>Interactive dashboard for international partnership networks — geographic breakdown, agreement status tracking, and compound filters across 30+ partners.</p>
-                <div className="flex flex-wrap gap-1.5"><span className="tag">JavaScript</span><span className="tag">Chart.js</span><span className="tag">Tailwind CSS</span></div>
-              </div>
-              <div className="flex items-center justify-end pt-5 mt-5" style={{ borderTop: '1px solid rgba(28,28,30,0.07)' }}>
-                <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#2D6B50' }}>View Details <ArrowRight style={{ width: 15, height: 15 }} /></span>
-              </div>
+          <Link href="/sim-kerjasama" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', textDecoration: 'none', color: 'inherit' }}>
+            <div className="p-7">
+              <span className="tag">MoU · MoA</span>
+              <h3 className="font-heading font-bold mt-4" style={{ fontSize: '1.2rem', color: '#19304b', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>SIM Kerjasama</h3>
+              <p style={{ fontSize: '.875rem', color: '#46505c', lineHeight: 1.65, marginBottom: 16 }}>The official system of record for every MoU and MoA: who proposed it, who approved it, when it is valid, and whether it has been renewed.</p>
+              <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#19304b' }}>View project <ArrowRight style={{ width: 15, height: 15 }} /></span>
             </div>
           </Link>
-
-          {/* Dashboard International Grants */}
-          <Link href="/croissantsmoon/web-dashboard-grants" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', transition: 'all .3s', boxShadow: '0 1px 3px rgba(28,28,30,0.04)', textDecoration: 'none' }}>
-            <LivePreview url="https://dashboard-international-grants.vercel.app/" displayUrl="dashboard-international-grants.vercel.app" height={160} />
-            <div className="p-7 flex flex-col justify-between" style={{ minHeight: 160 }}>
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', padding: '4px 12px', borderRadius: 999, background: 'rgba(92,58,138,0.08)', color: '#5C3A8A' }}>Data Viz</span>
-                  <span style={{ fontSize: '.68rem', color: '#C0B8AE', letterSpacing: '.04em' }}>Live · 2025</span>
-                </div>
-                <h3 className="font-heading font-bold" style={{ fontSize: '1.2rem', color: '#1C1C1E', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>Dashboard International Grants</h3>
-                <p style={{ fontSize: '.84rem', color: '#5C5C5C', lineHeight: 1.65, marginBottom: 16 }}>Centralised grant tracking from application through to outcome — deadline timeline, stage-based pipeline view, and outcome analytics for leadership reporting.</p>
-                <div className="flex flex-wrap gap-1.5"><span className="tag">JavaScript</span><span className="tag">Chart.js</span><span className="tag">Tailwind CSS</span></div>
-              </div>
-              <div className="flex items-center justify-end pt-5 mt-5" style={{ borderTop: '1px solid rgba(28,28,30,0.07)' }}>
-                <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#5C3A8A' }}>View Details <ArrowRight style={{ width: 15, height: 15 }} /></span>
-              </div>
+          <Link href="/sim-realisasi" className="block group" style={{ background: '#fff', border: '1px solid rgba(28,28,30,0.08)', borderRadius: 20, overflow: 'hidden', textDecoration: 'none', color: 'inherit' }}>
+            <div className="p-7">
+              <span className="tag">Realisasi</span>
+              <h3 className="font-heading font-bold mt-4" style={{ fontSize: '1.2rem', color: '#19304b', letterSpacing: '-.015em', lineHeight: 1.25, marginBottom: 10 }}>SIM Realisasi</h3>
+              <p style={{ fontSize: '.875rem', color: '#46505c', lineHeight: 1.65, marginBottom: 16 }}>Links every partnership activity to its agreement, calculates the RENSTRA indicators, and sends evidence back to SIM Kerjasama.</p>
+              <span className="flex items-center gap-2 text-sm font-medium" style={{ color: '#19304b' }}>View project <ArrowRight style={{ width: 15, height: 15 }} /></span>
             </div>
           </Link>
         </div>

@@ -101,44 +101,16 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* PCU Global — browser card */}
-            <Link href="/croissantsmoon/web-pcu-global-intl" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ background: 'var(--color-surface,rgba(255,255,255,0.72))', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.28)', minHeight: 260, textDecoration: 'none', color: 'inherit' }}>
-              <div style={{ position: 'relative', overflow: 'hidden', height: 160, background: '#0a0a14', flexShrink: 0 }}>
-                <iframe
-                  src="https://international-office-website.vercel.app/"
-                  style={{ position: 'absolute', top: 0, left: 0, width: '300%', height: 480, transform: 'scale(0.333)', transformOrigin: 'top left', border: 'none', pointerEvents: 'none' }}
-                  loading="lazy"
-                  sandbox="allow-scripts allow-same-origin"
-                  aria-hidden="true"
-                  title="PCU Global International Office Website preview"
-                />
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2, background: 'rgba(0,0,0,0.58)', padding: '9px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div style={{ display: 'flex', gap: 5, flexShrink: 0 }}>
-                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F57', display: 'inline-block' }} />
-                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FFBD2E', display: 'inline-block' }} />
-                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#28CA41', display: 'inline-block' }} />
-                  </div>
-                  <div style={{ flex: 1, background: 'rgba(255,255,255,0.07)', borderRadius: 6, padding: '3px 10px', fontSize: '.6rem', color: 'rgba(255,255,255,0.42)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>international-office-website.vercel.app</div>
-                </div>
-              </div>
-              <div style={{ padding: '24px 28px' }} className="flex flex-col justify-between">
-                <div className="flex items-center justify-between mb-4">
-                  <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: '#767676' }}>Web Project</span>
-                  <span className="home-work-arrow" style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(28,28,30,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background .2s' }}>
-                    <ArrowUpRight style={{ width: 16, height: 16, color: '#5C5C5C' }} />
-                  </span>
-                </div>
-                <div>
-                  <div style={{ width: 36, height: 3, background: '#003087', borderRadius: 2, marginBottom: 16 }} />
-                  <h3 className="font-heading font-bold text-xl mb-2" style={{ color: '#1C1C1E', letterSpacing: '-.01em', lineHeight: 1.2 }}>PCU Global<br />Website</h3>
-                  <p className="text-sm" style={{ color: '#767676' }}>Full-stack · CMS · Mobile-first</p>
-                </div>
-              </div>
+            {/* SIM Kerjasama */}
+            <Link href="/sim-kerjasama" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ background: 'linear-gradient(135deg,#245484 0%,#133256 100%)', padding: 28, minHeight: 260, textDecoration: 'none', color: 'inherit' }}>
+              <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: '#ffbc00' }}>Information System</span>
+              <h3 className="font-heading font-bold text-xl mt-4 mb-2" style={{ color: '#fff', letterSpacing: '-.01em', lineHeight: 1.2 }}>SIM Kerjasama &amp;<br />SIM Realisasi</h3>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>MoU/MoA system of record and partnership activity tracking</p>
             </Link>
           </div>
 
           {/* Bottom row: three equal */}
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 gap-4">
             {/* ACI */}
             <Link href="/aci" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ minHeight: 160, textDecoration: 'none', color: 'inherit' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -167,13 +139,6 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* CroissantsMoon */}
-            <Link href="/croissantsmoon" className="home-work-card group relative overflow-hidden rounded-2xl block" style={{ background: 'linear-gradient(135deg,#1C1C1E 0%,#2C2C2E 100%)', padding: 28, textDecoration: 'none', color: 'inherit', minHeight: 160 }}>
-              <div style={{ width: 28, height: 3, background: '#FF6B47', borderRadius: 2, marginBottom: 18 }} />
-              <span style={{ fontSize: '.67rem', fontWeight: 600, letterSpacing: '.11em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', display: 'block', marginBottom: 10 }}>Creative Studio</span>
-              <h3 className="font-heading font-semibold text-base leading-snug" style={{ color: '#fff', fontStyle: 'italic' }}>CroissantsMoon</h3>
-              <div className="mt-4 flex items-center gap-2 text-xs font-medium" style={{ color: '#FF6B47' }}>Explore <ArrowRight style={{ width: 12, height: 12 }} /></div>
-            </Link>
           </div>
         </div>
       </div>
@@ -204,7 +169,7 @@ export default function Home() {
               <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>End-to-end welfare, mobility, and onboarding for 200+ international students across Surabaya</p>
               <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#4A6B8A', marginTop: 22 }}>View <ArrowRight style={{ width: 14, height: 14 }} /></span>
             </Link>
-            <Link href="/projects-overview" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/projects-overview" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', borderBottom: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
               <span className="font-heading font-bold flex-shrink-0" style={{ fontSize: '.9rem', color: '#6B4F32', minWidth: 32, marginTop: 3 }}>03</span>
               <div className="flex-1 min-w-0">
                 <span className="label-small block mb-1.5" style={{ color: '#767676' }}>Program Management</span>
@@ -212,15 +177,6 @@ export default function Home() {
               </div>
               <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>5 end-to-end exchange programs — AMERTA, ACI, AERO — with IDR 50–90M per-program budgets</p>
               <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#6B4F32', marginTop: 22 }}>View <ArrowRight style={{ width: 14, height: 14 }} /></span>
-            </Link>
-            <Link href="/croissantsmoon" className="competency-row w-full items-start gap-6 py-7" style={{ borderTop: '1px solid rgba(28,28,30,0.1)', borderBottom: '1px solid rgba(28,28,30,0.1)', textDecoration: 'none', color: 'inherit' }}>
-              <span className="font-heading font-bold flex-shrink-0" style={{ fontSize: '.9rem', color: '#1C1C1E', minWidth: 32, marginTop: 3, fontStyle: 'italic' }}>CM</span>
-              <div className="flex-1 min-w-0">
-                <span className="label-small block mb-1.5" style={{ color: '#767676' }}>Creative Identity</span>
-                <h3 className="font-heading font-semibold text-lg leading-snug" style={{ color: '#1C1C1E', fontStyle: 'italic', fontFamily: "'Plus Jakarta Sans',sans-serif" }}>CroissantsMoon</h3>
-              </div>
-              <p className="hidden md:block text-sm leading-relaxed flex-1" style={{ color: '#5C5C5C', maxWidth: 340, marginTop: 20 }}>Creative digital experiences &amp; a future studio identity in development</p>
-              <span className="competency-cta flex items-center gap-2 text-sm font-medium flex-shrink-0" style={{ color: '#0A84FF', marginTop: 22 }}>Explore <ArrowRight style={{ width: 14, height: 14 }} /></span>
             </Link>
           </div>
         </div>

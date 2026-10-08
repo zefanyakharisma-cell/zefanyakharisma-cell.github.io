@@ -92,8 +92,8 @@ export default function MouPage() {
                   <span key={t} className="tag">{t}</span>
                 ))}
               </div>
-              <Link href="/croissantsmoon/web-dashboard-partnership" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm" style={{ background: '#1E3A5F', color: '#fff', textDecoration: 'none' }}>
-                <LayoutDashboard style={{ width: 15, height: 15 }} /> View Partnership Dashboard
+              <Link href="/sim-kerjasama" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm" style={{ background: '#1E3A5F', color: '#fff', textDecoration: 'none' }}>
+                <LayoutDashboard style={{ width: 15, height: 15 }} /> See SIM Kerjasama
               </Link>
             </div>
             <div className="flex flex-col gap-4">

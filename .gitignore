@@ -11,3 +11,4 @@ node_modules
 # Source data must never be public
 public/assets/data/*
 !public/assets/data/profile.pdf
+*.tsbuildinfo
