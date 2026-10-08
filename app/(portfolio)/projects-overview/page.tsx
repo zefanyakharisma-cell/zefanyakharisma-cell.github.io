@@ -42,7 +42,7 @@ export default function ProjectsOverview() {
               tag="Exchange · 2024–2027"
               title="AMERTA"
               text={`The flagship semester exchange: ${stats.amertaParticipants} students from 14 countries and 24 universities.`}
-              className="min-h-[440px]"
+              className="!min-h-[440px]"
             />
             <PhotoCard
               href="/aci"
@@ -51,7 +51,7 @@ export default function ProjectsOverview() {
               tag="Cultural immersion"
               title="ACI"
               text="International and local students together through site visits and structured engagement."
-              className="min-h-[440px]"
+              className="!min-h-[440px]"
             />
             <PhotoCard
               href="/aero"
@@ -60,7 +60,7 @@ export default function ProjectsOverview() {
               tag="Exhibition"
               title="AERO"
               text="An annual showcase of global partnerships, with 50+ stakeholders."
-              className="min-h-[440px]"
+              className="!min-h-[440px]"
               imagePosition="center 30%"
             />
           </div>

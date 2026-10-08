@@ -1,14 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import type { LucideIcon } from 'lucide-react'
 import { RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { IconBadge } from './IconBadge'
 
 /** Icon + short title on the front; one line on the back. Click, Enter or Space flips it. */
 export function FlipCard({ icon, title, back, badge, tone = 'white' }: {
-  icon?: LucideIcon
+  /** A rendered icon, e.g. <BookOpen />. Shown inside a brand badge. */
+  icon?: React.ReactNode
   title: string
   back: string
   badge?: string
@@ -26,7 +25,7 @@ export function FlipCard({ icon, title, back, badge, tone = 'white' }: {
         <span className={cn('pcu-card absolute inset-0 flex flex-col justify-between [backface-visibility:hidden]', tone === 'midnight' && 'pcu-card--midnight')} aria-hidden={flipped}>
           {badge ? (
             <span className="pcu-icon-badge font-bold text-[.9375rem]" style={{ '--size': '52px' } as React.CSSProperties}>{badge}</span>
-          ) : icon ? <IconBadge icon={icon} size={52} /> : null}
+          ) : icon ? <span className="pcu-icon-badge" style={{ '--size': '52px' } as React.CSSProperties}>{icon}</span> : null}
           <span className="flex items-end justify-between gap-3">
             <span className="text-lg font-bold leading-snug">{title}</span>
             <RotateCcw aria-hidden size={16} className="flex-none opacity-50" />

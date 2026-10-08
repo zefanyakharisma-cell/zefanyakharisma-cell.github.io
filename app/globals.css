@@ -47,7 +47,7 @@ img { max-width: 100%; }
 /* Stats */
 .stat { display: flex; flex-direction: column; gap: 4px; padding: 24px 0; border-top: 2px solid var(--midnight); }
 .stat b { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1; letter-spacing: -0.02em; color: var(--midnight); }
-.stat span { font-size: .875rem; color: var(--text-secondary); }
+.stat > span { font-size: .875rem; color: var(--text-secondary); }
 .stat--amber { border-top-color: var(--amber); }
 
 /* Photo card */
@@ -104,3 +104,5 @@ img { max-width: 100%; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .stat--long b { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem); line-height: 1.1; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .animate-\[marquee_60s_linear_infinite\] { animation: none; } }

@@ -1,9 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { LucideIcon } from 'lucide-react'
-
-type Step = { title: string; text: string; icon?: LucideIcon }
+/** icon: a rendered element such as <Search size={20} />. */
+type Step = { title: string; text: string; icon?: React.ReactNode }
 
 /** Horizontal step diagram; choosing a step shows its one-line description. */
 export function Lifecycle({ steps, label, dark }: { steps: Step[]; label: string; dark?: boolean }) {
@@ -24,7 +23,7 @@ export function Lifecycle({ steps, label, dark }: { steps: Step[]; label: string
                 className="flex flex-col items-center gap-2 border-0 bg-transparent cursor-pointer p-0 w-[96px] text-center"
               >
                 <span className={`grid place-items-center w-12 h-12 rounded-pill border-2 font-bold transition-colors ${on ? 'bg-amber border-amber text-midnight' : done ? (dark ? 'bg-white border-white text-midnight' : 'bg-midnight border-midnight text-white') : dark ? 'border-white/40 text-white' : 'border-[#c5ccd4] text-ink-secondary bg-white'}`}>
-                  {st.icon ? <st.icon size={20} aria-hidden /> : i + 1}
+                  {st.icon ?? i + 1}
                 </span>
                 <span className={`text-sm leading-tight ${on ? 'font-bold' : ''} ${dark ? 'text-white' : 'text-midnight'}`}>{st.title}</span>
               </button>
