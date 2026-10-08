@@ -8,7 +8,7 @@ type Tab = { key: string; label: string; panel: React.ReactNode }
  * Accessible tabs (roving arrow keys). The active tab is kept in ?tab= so links
  * like /about-overview?tab=experience open the right panel.
  */
-export function Tabs({ tabs, label }: { tabs: Tab[]; label: string }) {
+export function Tabs({ tabs, label, stickyTop = 72 }: { tabs: Tab[]; label: string; /** px from the top where the tab bar sticks */ stickyTop?: number }) {
   const [active, setActive] = useState(tabs[0].key)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Tabs({ tabs, label }: { tabs: Tab[]; label: string }) {
 
   return (
     <div>
-      <div role="tablist" aria-label={label} className="tabs sticky top-[72px] z-20 bg-white">
+      <div role="tablist" aria-label={label} className="tabs sticky z-20 bg-white" style={{ top: stickyTop }}>
         {tabs.map((t, i) => (
           <button
             key={t.key}

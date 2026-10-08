@@ -36,7 +36,7 @@ export default function EngagementPage() {
       />
       <SubNav />
 
-      <section className="section">
+      <section className="section decor-glow-tr">
         <div className="wrap">
           <SectionHead eyebrow="Five areas" title="Where I work" />
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
@@ -57,6 +57,7 @@ export default function EngagementPage() {
         </div>
       </section>
 
+      <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="pb-[clamp(56px,8vw,96px)]">
         <PhotoStrip images={strip} alt="International student programs" />
       </section>

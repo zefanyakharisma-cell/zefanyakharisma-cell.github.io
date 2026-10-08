@@ -52,13 +52,13 @@ export default function OnboardingPage() {
         <PhotoStrip images={KNB_GALLERY} alt="KNB scholarship orientation 2025" />
       </section>
 
-      <section className="section">
+      <section className="section decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           {studentPrograms.map(p => <Stat key={p.label} value={p.value} label={p.label} />)}
         </div>
       </section>
 
-      <section className="section !pt-0">
+      <section className="section !pt-0 decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Reach" title="Where students came from" lead="Top nationalities per group." />
           <Reveal>
@@ -73,7 +73,7 @@ export default function OnboardingPage() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Who" title="Students at a glance" />
           <div className="grid-3">
@@ -93,14 +93,15 @@ export default function OnboardingPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section decor-glow-br">
         <div className="wrap">
           <SectionHead eyebrow="Support" title="Six kinds of care" lead="Tap a card." />
           <div className="grid-3">{support.map(s => <FlipCard key={s.title} {...s} />)}</div>
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="In practice" title="Activities and services" lead="Open one for my role and the impact." />
           <StudentActivities />

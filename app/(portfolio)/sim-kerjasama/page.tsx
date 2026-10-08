@@ -5,11 +5,14 @@ import {
 } from 'lucide-react'
 import { Card, DemoFrame, Details, FlipCard, IconBadge, PageHero, SectionHead, Shape, Stat } from '@/components/pcu'
 import { Tabs } from '@/components/pcu/Tabs'
+import { PovSwitch } from '@/components/pcu/PovSwitch'
+import { SimDev } from '@/components/projects/SimDev'
 import { MenuRail } from '@/components/pcu/MenuRail'
 import BeforeAfter from '@/components/projects/BeforeAfter'
 import { ProcessPanel, SimBackground, StatusFlow } from '@/components/projects/SimParts'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { simKerjasama as sim, simKerjasamaDetail as detail } from '@/lib/data/sim'
+import { simKerjasamaDev } from '@/lib/data/simDev'
 
 export const metadata: Metadata = {
   title: 'SIM Kerjasama',
@@ -51,155 +54,172 @@ export default function SimKerjasamaPage() {
         <Details light summary="About the system">{sim.summary}</Details>
         <div className="flex flex-wrap gap-3">
           <a href="#demo" className="pcu-btn pcu-btn--accent"><MonitorPlay aria-hidden size={18} /> Try the live demo</a>
-          <a href="#process" className="pcu-btn pcu-btn--inverse">Business process</a>
+          <a href="?pov=dev" className="pcu-btn pcu-btn--inverse">Programmer view</a>
         </div>
       </PageHero>
 
-      <section className="section !pb-10">
-        <div className="wrap grid-4 !gap-8">
-          <Stat value={String(sim.goals.length)} label="Goals, G1–G9" />
-          <Stat value={String(sim.menus.length)} label="Menus" />
-          <Stat value={String(sim.stakeholders.length)} label="User groups" />
-          <Stat value={String(detail.tiers.length)} label="Approval tiers" amber />
-        </div>
-      </section>
-
-      <section className="section !pt-6">
-        <div className="wrap">
-          <SectionHead eyebrow="Background" title="Why a system of record" lead="Partnership documents used to live in inboxes and folders. SIM Kerjasama gives each one a single, traceable path." />
-          <SimBackground {...detail.background} />
-        </div>
-      </section>
-
-      <section id="demo" className="section section--smoke scroll-mt-20">
+      <section id="demo" className="section section--smoke decor-grid scroll-mt-20">
         <div className="wrap">
           <SectionHead eyebrow="Live demo" title="Try SIM Kerjasama" lead="The working app, on demo data. Sign in with a demo account to see the dashboard, queues and renewals." />
           <DemoFrame src={sim.demoUrl} app="SIM Kerjasama" note="Demo environment with sample agreements. Data there is not PCU's live partnership record." />
         </div>
       </section>
 
-      <section className="section">
-        <div className="wrap">
-          <SectionHead eyebrow="Objectives · Tujuan" title="Nine goals, three themes" />
-          <div className="grid-3">
-            {detail.objectives.map((o, i) => (
-              <div key={o.theme} className="rounded-panel border border-line p-6 flex flex-col gap-4">
-                <div className="flex items-center gap-4">
-                  <IconBadge icon={themeIcons[i]} tone={themeTones[i]} size={52} />
-                  <h3 className="m-0 h-sub !text-xl">{o.theme}</h3>
-                </div>
-                <p className="m-0 text-ink-secondary">{o.text}</p>
-                <ol className="m-0 p-0 list-none flex flex-col gap-2">
-                  {o.goals.map(g => (
-                    <li key={g} className="flex gap-3 items-baseline p-3 bg-smoke rounded-md">
-                      <span className="font-bold text-accent-strong text-sm flex-none w-7">G{g + 1}</span>
-                      <span className="font-semibold leading-snug text-midnight">{sim.goals[g]}</span>
-                    </li>
-                  ))}
-                </ol>
+      <PovSwitch
+        general={<>
+          <section className="section !pb-10 decor-glow-tr">
+            <div className="wrap grid-4 !gap-8">
+              <Stat value={String(sim.goals.length)} label="Goals, G1–G9" />
+              <Stat value={String(sim.menus.length)} label="Menus" />
+              <Stat value={String(sim.stakeholders.length)} label="User groups" />
+              <Stat value={String(detail.tiers.length)} label="Approval tiers" amber />
+            </div>
+          </section>
+
+          <section className="section !pt-6 decor-ring-bl">
+            <div className="wrap">
+              <SectionHead eyebrow="Background" title="Why a system of record" lead="Partnership documents used to live in inboxes and folders. SIM Kerjasama gives each one a single, traceable path." />
+              <SimBackground {...detail.background} />
+            </div>
+          </section>
+
+          <section className="section decor-glow-br">
+            <div className="wrap">
+              <SectionHead eyebrow="Objectives · Tujuan" title="Nine goals, three themes" />
+              <div className="grid-3">
+                {detail.objectives.map((o, i) => (
+                  <div key={o.theme} className="rounded-panel border border-line p-6 flex flex-col gap-4">
+                    <div className="flex items-center gap-4">
+                      <IconBadge icon={themeIcons[i]} tone={themeTones[i]} size={52} />
+                      <h3 className="m-0 h-sub !text-xl">{o.theme}</h3>
+                    </div>
+                    <p className="m-0 text-ink-secondary">{o.text}</p>
+                    <ol className="m-0 p-0 list-none flex flex-col gap-2">
+                      {o.goals.map(g => (
+                        <li key={g} className="flex gap-3 items-baseline p-3 bg-smoke rounded-md">
+                          <span className="font-bold text-accent-strong text-sm flex-none w-7">G{g + 1}</span>
+                          <span className="font-semibold leading-snug text-midnight">{sim.goals[g]}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="process" className="section section--smoke scroll-mt-20">
-        <div className="wrap">
-          <SectionHead eyebrow="Business process" title="Two processes, one document" lead="Modelled in BPMN from the rules the database enforces: who acts, in what order, and which status each step sets." />
-          <Tabs
-            label="SIM Kerjasama business processes"
-            tabs={[
-              {
-                key: approval.key,
-                label: approval.label,
-                panel: (
-                  <ProcessPanel
-                    process={approval}
-                    rules={detail.approvalRules}
-                    status={<StatusFlow label="Document status sequence" main={detail.statuses} side={detail.sideStatuses} />}
-                    extra={
-                      <div className="rounded-md bg-midnight text-white p-5 flex flex-col gap-3">
-                        <span className="pcu-eyebrow text-amber">Approval tiers</span>
-                        <dl className="m-0 flex flex-col gap-2">
-                          {detail.tiers.map(t => (
-                            <div key={t.tier} className="flex gap-3">
-                              <dt className="font-bold flex-none w-14">{t.tier}</dt>
-                              <dd className="m-0 text-sm text-smoke">{t.who}</dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </div>
-                    }
-                  />
-                ),
-              },
-              {
-                key: renewal.key,
-                label: renewal.label,
-                panel: (
-                  <ProcessPanel
-                    process={renewal}
-                    rules={detail.renewalRules}
-                    status={<StatusFlow label="Renewal status sequence" main={detail.renewalStatuses} side={detail.archiveReasons} sideLabel="Archive reasons" />}
-                  />
-                ),
-              },
-            ]}
-          />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead eyebrow="Lifecycle" title="One agreement, six stages" lead="The two processes above, in one line." />
-          <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle in SIM Kerjasama" />
-        </div>
-      </section>
-
-      <section className="section section--smoke">
-        <div className="wrap">
-          <SectionHead eyebrow="The app" title="Eight menus, one document lifecycle" />
-          <MenuRail app="SIM Kerja Sama" items={sim.menus.map((m, i) => ({ ...m, icon: menuIcons[i] }))} />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="wrap flex flex-col gap-12">
-          <div>
-            <SectionHead eyebrow="Benefits · Manfaat" title="Six user groups" lead="Tap a card." />
-            <div className="grid-3">
-              {sim.stakeholders.map((s, i) => {
-                const Icon = stakeholderIcons[i]
-                return <FlipCard key={s.group} icon={<Icon aria-hidden />} title={s.group} back={s.desc} tone={i % 2 ? 'midnight' : 'white'} />
-              })}
             </div>
-          </div>
-          <div>
-            <SectionHead eyebrow="For the university" title="Institutional benefits" size="sub" />
-            <div className="grid-4">
-              {detail.institutionalBenefits.map((b, i) => {
-                const Icon = institutionalIcons[i]
-                return (
-                  <Card key={b.title} tone="smoke">
-                    <IconBadge icon={Icon} size={44} tone={i % 2 ? 'amber' : 'brand'} />
-                    <h3 className="m-0 text-lg font-bold text-midnight">{b.title}</h3>
-                    <p className="m-0 text-sm text-ink-secondary">{b.text}</p>
-                  </Card>
-                )
-              })}
+          </section>
+
+          <section id="process" className="section section--smoke decor-grid scroll-mt-20">
+            <div className="wrap">
+              <SectionHead eyebrow="Business process" title="Two processes, one document" lead="Modelled in BPMN from the rules the database enforces: who acts, in what order, and which status each step sets." />
+              <Tabs
+                stickyTop={138}
+                label="SIM Kerjasama business processes"
+                tabs={[
+                  {
+                    key: approval.key,
+                    label: approval.label,
+                    panel: (
+                      <ProcessPanel
+                        process={approval}
+                        rules={detail.approvalRules}
+                        status={<StatusFlow label="Document status sequence" main={detail.statuses} side={detail.sideStatuses} />}
+                        extra={
+                          <div className="rounded-md bg-midnight text-white p-5 flex flex-col gap-3">
+                            <span className="pcu-eyebrow text-amber">Approval tiers</span>
+                            <dl className="m-0 flex flex-col gap-2">
+                              {detail.tiers.map(t => (
+                                <div key={t.tier} className="flex gap-3">
+                                  <dt className="font-bold flex-none w-14">{t.tier}</dt>
+                                  <dd className="m-0 text-sm text-smoke">{t.who}</dd>
+                                </div>
+                              ))}
+                            </dl>
+                          </div>
+                        }
+                      />
+                    ),
+                  },
+                  {
+                    key: renewal.key,
+                    label: renewal.label,
+                    panel: (
+                      <ProcessPanel
+                        process={renewal}
+                        rules={detail.renewalRules}
+                        status={<StatusFlow label="Renewal status sequence" main={detail.renewalStatuses} side={detail.archiveReasons} sideLabel="Archive reasons" />}
+                      />
+                    ),
+                  },
+                ]}
+              />
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <section className="section section--smoke">
-        <div className="wrap">
-          <SectionHead eyebrow="Before and after" title="Unmeasured, now measured" />
-          <BeforeAfter metrics={sim.metrics} />
-        </div>
-      </section>
+          <section className="section decor-ring-tr">
+            <div className="wrap">
+              <SectionHead eyebrow="Lifecycle" title="One agreement, six stages" lead="The two processes above, in one line." />
+              <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle in SIM Kerjasama" />
+            </div>
+          </section>
 
-      <section className="section">
+          <section className="section section--smoke decor-grid">
+            <div className="wrap">
+              <SectionHead eyebrow="The app" title="Eight menus, one document lifecycle" />
+              <MenuRail app="SIM Kerja Sama" items={sim.menus.map((m, i) => ({ ...m, icon: menuIcons[i] }))} />
+            </div>
+          </section>
+
+          <section className="section decor-glow-bl">
+            <div className="wrap flex flex-col gap-12">
+              <div>
+                <SectionHead eyebrow="Benefits · Manfaat" title="Six user groups" lead="Tap a card." />
+                <div className="grid-3">
+                  {sim.stakeholders.map((s, i) => {
+                    const Icon = stakeholderIcons[i]
+                    return <FlipCard key={s.group} icon={<Icon aria-hidden />} title={s.group} back={s.desc} tone={i % 2 ? 'midnight' : 'white'} />
+                  })}
+                </div>
+              </div>
+              <div>
+                <SectionHead eyebrow="For the university" title="Institutional benefits" size="sub" />
+                <div className="grid-4">
+                  {detail.institutionalBenefits.map((b, i) => {
+                    const Icon = institutionalIcons[i]
+                    return (
+                      <Card key={b.title} tone="smoke">
+                        <IconBadge icon={Icon} size={44} tone={i % 2 ? 'amber' : 'brand'} />
+                        <h3 className="m-0 text-lg font-bold text-midnight">{b.title}</h3>
+                        <p className="m-0 text-sm text-ink-secondary">{b.text}</p>
+                      </Card>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section section--smoke decor-grid">
+            <div className="wrap">
+              <SectionHead eyebrow="Before and after" title="Unmeasured, now measured" />
+              <BeforeAfter metrics={sim.metrics} />
+            </div>
+          </section>
+
+        </>}
+        dev={
+          <SimDev dev={simKerjasamaDev} processes={detail.processes} name="SIM Kerjasama" integration={{
+            title: 'What SIM Realisasi reads, and what it gets back',
+            items: [
+              { label: 'Read API /api/v1/kerja-sama', text: 'Active agreements (Akan Berakhir included), one agreement by number, and /penerus to follow a renewal chain to its current successor. API key in x-api-key, compared in constant time.' },
+              { label: 'Read-only views', text: 'In the shared Supabase project SIM Realisasi reads documents, partners, units, agendas and countries through views in schema kerjasama; it never writes SIM-KS tables.' },
+              { label: 'Implementation tab', text: 'Verified realisations appear on each agreement, with a flag on active agreements that have no activity yet.' },
+            ],
+          }} />
+        }
+      />
+
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-glow-tr">
         <div className="wrap">
           <Card
             tone="midnight"

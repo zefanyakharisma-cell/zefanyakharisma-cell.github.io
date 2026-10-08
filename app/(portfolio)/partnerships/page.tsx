@@ -44,7 +44,7 @@ export default function PartnershipsPage() {
       />
       <SubNav />
 
-      <section className="section !pb-10">
+      <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           <Stat value="505+" label="Partners at PCU" />
           <Stat value="32" label="Countries" />
@@ -53,14 +53,14 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      <section className="section !pt-6">
+      <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Explore" title="The network, mapped" />
           <PartnerExplorer world={world} indonesia={indonesia} />
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap grid-2 !gap-12 items-start">
           <div className="pcu-card">
             <h3 className="!text-xl mb-5">International, by region</h3>
@@ -73,7 +73,7 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section decor-glow-br">
         <div className="wrap">
           <SectionHead eyebrow="What they enable" title="Four kinds of value" />
           <div className="grid-4">
@@ -82,7 +82,8 @@ export default function PartnershipsPage() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="My approach" title="Four phases" />
           <Lifecycle steps={approach} label="How I build partnerships" />

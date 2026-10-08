@@ -47,7 +47,7 @@ export const simKerjasama = {
 }
 
 export const simRealisasi = {
-  demoUrl: 'https://sim-realisasi.vercel.app/realisasi',
+  demoUrl: 'https://sim-realisasi.vercel.app/',
   tagline: 'From agreements on paper to real activities',
   mission:
     'Collect, verify, store and report every activity carried out under PCU MoUs and MoAs.',
@@ -141,7 +141,7 @@ export const simKerjasamaDetail = {
     { title: 'Already signed?', text: 'The office can record a document signed outside the system directly, so the dataset is complete from day one.' },
   ],
   renewalRules: [
-    { title: 'Reminders', text: 'Monthly from six months before the end date, then weekly for the last two months. A daily sweep runs at 05:00 WIB.' },
+    { title: 'Reminders', text: 'Monthly from six months before the end date, then weekly for the last two months. The expiry sweep runs daily at 05:15 WIB.' },
     { title: 'Two evaluations', text: 'The owning unit evaluates in the app; the lead partner evaluates through a secure link, without an account.' },
     { title: 'Renewal gate', text: 'Renewal opens only when both evaluations agree, or when the office overrides with a recorded reason.' },
     { title: 'Hand-over', text: 'Activating the renewal links it to the old agreement and archives the old one in a single transaction.' },
@@ -172,7 +172,7 @@ export const simKerjasamaDetail = {
       summary: 'As an agreement nears its end date, the unit and the partner each evaluate it, and renewal opens only on evidence.',
       lanes: ['SIM Kerjasama', 'International Office', 'Owning unit', 'Partner institution'],
       steps: [
-        { lane: 0, col: 0, kind: 'start', title: 'Daily sweep, 05:00' },
+        { lane: 0, col: 0, kind: 'start', title: 'Daily expiry sweep, 05:15 WIB' },
         { lane: 0, col: 1, kind: 'system', title: 'Flag "ending soon" and send reminders', status: 'Akan Berakhir' },
         { lane: 1, col: 2, title: 'Send evaluation requests' },
         { lane: 2, col: 3, title: 'Faculty evaluation' },
@@ -243,7 +243,7 @@ export const simRealisasiDetail = {
   ],
   closeRules: [
     { title: 'Daily reminders', text: 'Drafts close to their deadline, and revisions open seven days or more, get an in-app and email reminder.' },
-    { title: 'Semester freeze', text: 'On the cutoff date the semester\'s indicators are frozen into a snapshot with every record ID behind them.' },
+    { title: 'Semester freeze', text: 'On the cutoff date the daily job freezes the semester\'s indicators into a snapshot with every record ID behind them. IO Admin can only re-freeze, with a reason.' },
     { title: 'Late changes', text: 'An activity verified or edited inside a frozen window is logged as a post-freeze change, not merged silently.' },
     { title: 'Reports', text: 'Leadership reads snapshots and live year-to-date figures side by side, and downloads them as Excel.' },
   ],
@@ -279,8 +279,8 @@ export const simRealisasiDetail = {
         { lane: 0, col: 3, title: 'Complete or resubmit the activity' },
         { lane: 1, col: 4, kind: 'start', title: 'Semester cutoff date' },
         { lane: 1, col: 5, kind: 'system', title: 'Compute indicators from verified data' },
-        { lane: 2, col: 6, title: 'Review and confirm the freeze' },
-        { lane: 1, col: 7, kind: 'system', title: 'Store the snapshot with record IDs' },
+        { lane: 1, col: 6, kind: 'system', title: 'Freeze the snapshot with record IDs' },
+        { lane: 2, col: 7, title: 'Re-freeze with a reason (only if needed)' },
         { lane: 3, col: 8, title: 'Read the dashboard and download reports' },
         { lane: 3, col: 9, kind: 'end', title: 'Semester reported' },
       ],

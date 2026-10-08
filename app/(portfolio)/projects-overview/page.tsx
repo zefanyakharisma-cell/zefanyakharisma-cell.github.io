@@ -32,7 +32,8 @@ export default function ProjectsOverview() {
         </div>
       </section>
 
-      <section className="section">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-glow-tr">
         <div className="wrap">
           <ProjectGrid />
         </div>

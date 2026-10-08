@@ -92,7 +92,7 @@ export default function Aci() {
         </div>
       </div>
 
-      <section className="section !pb-10">
+      <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
           <Stat value={String(all.participants ?? 191)} label="Participants" />
           <Stat value="4" label="Batches" />
@@ -101,7 +101,7 @@ export default function Aci() {
         </div>
       </section>
 
-      <section className="section !pt-6">
+      <section className="section !pt-6 decor-ring-bl">
         <div className="wrap grid gap-12 lg:grid-cols-2 items-start">
           <div>
             <SectionHead eyebrow="Route" title="Three cities in Java" size="sub" />
@@ -114,7 +114,7 @@ export default function Aci() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start">
           <div className="pcu-card">
             <h3 className="!text-xl mb-5">Where the budget went</h3>
@@ -132,7 +132,7 @@ export default function Aci() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section decor-glow-br">
         <div className="wrap">
           <SectionHead eyebrow="Feedback" title="Satisfaction, every batch" lead="Darker means closer to the top score." />
           <div className="pcu-card">
@@ -147,7 +147,7 @@ export default function Aci() {
         </div>
       </section>
 
-      <section className="section section--smoke relative overflow-hidden">
+      <section className="section section--smoke decor-grid relative overflow-hidden">
         <Shape kind="quarter-bl" color="teal" className="w-[120px] right-0 top-0 hidden md:block" />
         <div className="wrap">
           <SectionHead eyebrow="Process" title="Six steps per trip" />
@@ -155,7 +155,8 @@ export default function Aci() {
         </div>
       </section>
 
-      <section className="section">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-ring-tr">
         <div className="wrap">
           <SectionHead eyebrow="Gallery" title="Moments" />
           <PhotoWall images={GALLERY_IMAGES} alt="ACI cultural immersion activity" />

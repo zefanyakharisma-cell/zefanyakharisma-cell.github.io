@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import 'flag-icons/css/flag-icons.min.css'
 import './styles/pcu.css'
 
 const inter = localFont({
@@ -65,7 +66,7 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="pcu">
         <script
           type="application/ld+json"

@@ -148,7 +148,7 @@ export default function AboutOverview() {
 
   return (
     <>
-      <section className="pt-[clamp(40px,6vw,80px)] pb-12">
+      <section className="pt-[clamp(40px,6vw,80px)] pb-12 decor-glow-tr decor-grid">
         <div className="wrap flex flex-wrap gap-12 items-center">
           <div className="arch-photo flex-[0_1_300px] min-w-[220px] aspect-[3/4]">
             <Image src="/assets/images/self-portrait/profile-pic-1.png" alt="Portrait of Zefanya Kharisma Nugroho" fill priority sizes="300px" />
@@ -171,7 +171,8 @@ export default function AboutOverview() {
         </div>
       </section>
 
-      <section className="pb-24">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="pb-24 decor-ring-bl decor-glow-br">
         <div className="wrap">
           <Tabs
             label="About sections"

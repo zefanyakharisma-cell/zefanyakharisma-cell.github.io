@@ -52,7 +52,7 @@ export default function IntlGrantsPage() {
       />
       <SubNav />
 
-      <section className="section">
+      <section className="section decor-glow-tr">
         <div className="wrap">
           <SectionHead eyebrow="Pipeline" title="Five stages per grant" />
           <Lifecycle steps={pipeline} label="International grant pipeline" />
@@ -64,7 +64,7 @@ export default function IntlGrantsPage() {
         </div>
       </section>
 
-      <section className="section section--smoke">
+      <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="Principles" title="Four design rules" lead="Tap a card." />
           <div className="grid-4">{principles.map(p => <FlipCard key={p.title} {...p} />)}</div>
@@ -82,7 +82,8 @@ export default function IntlGrantsPage() {
         </div>
       </section>
 
-      <section className="section">
+      <div aria-hidden className="pcu-pattern pattern-band" />
+      <section className="section decor-ring-bl">
         <div className="wrap">
           <SectionHead eyebrow="Physical" title="Beyond the dashboard" />
           <Lifecycle steps={physical} label="Physical grant workflow" />
