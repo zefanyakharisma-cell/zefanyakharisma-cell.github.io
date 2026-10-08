@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -11,6 +12,8 @@ type Props = {
   lead?: React.ReactNode
   tags?: string[]
   back?: { href: string; label: string }
+  /** A real photo laid faintly behind the hero (decorative; text never depends on it). */
+  image?: { src: string; position?: string }
   /** Decorative <Shape>s, positioned absolutely inside the hero. */
   shapes?: React.ReactNode
   aside?: React.ReactNode
@@ -19,13 +22,15 @@ type Props = {
 }
 
 /** Page opening on the section's gradient (data-theme): back link, tags, eyebrow,
- *  kicker + h1 and lead. Without `shapes` it gets the section's half ring (--theme-ring). */
-export function PageHero({ eyebrow, kicker, title, lead, tags, back, shapes, aside, children, className }: Props) {
+ *  kicker + h1 and lead, over an optional faint photo. Without `shapes` it gets the section's half ring (--theme-ring). */
+export function PageHero({ eyebrow, kicker, title, lead, tags, back, image, shapes, aside, children, className }: Props) {
   return (
     <section className={cn('page-hero theme-surface relative overflow-hidden py-[clamp(48px,7vw,96px)]', className)}>
+      {image && (
+        <Image src={image.src} alt="" aria-hidden fill priority sizes="100vw" className="hero-photo" style={{ objectPosition: image.position }} />
+      )}
       <div aria-hidden className="hero-glow" />
       {shapes ?? <Shape kind="ring-u" className="theme-ring w-[clamp(88px,18vw,260px)] -right-3 sm:right-[4%] top-0" />}
-      <div aria-hidden className="pcu-pattern pattern-band absolute inset-x-0 bottom-0" />
       <div className="wrap relative flex flex-wrap items-end gap-12">
         <div className="flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
           {back && (

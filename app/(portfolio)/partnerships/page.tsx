@@ -38,6 +38,7 @@ export default function PartnershipsPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/tailor-made/ljmu-unair-2.jpg' }}
         eyebrow="Global partnerships"
         title="Partnership development"
         lead={`${stats.partners} partners managed, ${stats.meetingsPerMonth} meetings a month.`}

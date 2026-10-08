@@ -14,7 +14,6 @@ type Props = {
 export function ThemeBand({ eyebrow, value, label, cta }: Props) {
   return (
     <section className="theme-surface theme-band footer-overlap relative overflow-hidden">
-      <div aria-hidden className="pcu-pattern pattern-band absolute inset-x-0 top-0" />
       <Shape kind="ring-n" className="theme-ring w-[clamp(200px,26vw,360px)] right-[4%] bottom-0 hidden md:block" />
       <div className="wrap relative">
         <div className="flex flex-col items-start gap-3 min-w-0 max-w-[560px]">

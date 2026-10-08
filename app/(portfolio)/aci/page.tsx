@@ -79,6 +79,7 @@ export default function Aci() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/aci/aci-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Cultural immersion', 'Universitas Airlangga']}
         kicker="Airlangga Cultural Immersion"

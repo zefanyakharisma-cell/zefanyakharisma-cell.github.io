@@ -33,6 +33,7 @@ export default function MouPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/monev-tias/img-4590.jpg' }}
         eyebrow="Agreement management"
         title="MoU / MoA coordination"
         lead={`${stats.agreementsPerMonth} agreements reviewed a month at PCU.`}

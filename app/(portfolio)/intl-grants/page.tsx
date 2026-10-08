@@ -45,6 +45,7 @@ export default function IntlGrantsPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/tailor-made/griffith-unair-3.jpg' }}
         eyebrow="International Education · PCU"
         tags={['In development']}
         title="International grants management"

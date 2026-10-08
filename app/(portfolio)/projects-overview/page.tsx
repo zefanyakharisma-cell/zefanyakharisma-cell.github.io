@@ -13,6 +13,7 @@ export default function ProjectsOverview() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/amerta/amerta-1.jpg' }}
         eyebrow="Projects"
         title={<span className="block max-w-[14ch]">Programs run, systems built</span>}
         lead="Three programs at Universitas Airlangga, two systems at Petra Christian University."

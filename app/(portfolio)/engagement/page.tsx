@@ -29,6 +29,7 @@ export default function EngagementPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/monev-tias/img-7092.jpg' }}
         eyebrow="International Education"
         title="One student at a time"
         lead="Airport to agreement to grant."

@@ -41,6 +41,7 @@ export default function OnboardingPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/arrival-tias-2025/arrival-tias-2025-1.jpg' }}
         eyebrow="Student welfare & mobility"
         title="International student support"
         lead="Visas, welfare, scholarships and mentoring, arrival to departure."

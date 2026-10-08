@@ -352,3 +352,10 @@ html[data-splash="seen"] .pcu-splash { display: none; }
 .footer-overlap { --_arch: clamp(48px, 10vw, 140px); padding-bottom: calc(clamp(64px, 9vw, 112px) + var(--_arch)); margin-bottom: calc(-1 * var(--_arch)); }
 .footer-overlap > .theme-ring { bottom: var(--_arch); }
 .site-footer { z-index: 1; }
+
+/* Faint real photo behind a page opening: luminosity-blended so it takes the
+   section's colour, strongest on the right (away from the text), faint under it. */
+.hero-photo { object-fit: cover; mix-blend-mode: luminosity; opacity: .16; pointer-events: none; }
+@media (min-width: 768px) {
+  .hero-photo { opacity: .34; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.4) 40%, #000 80%); mask-image: linear-gradient(90deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.4) 40%, #000 80%); }
+}

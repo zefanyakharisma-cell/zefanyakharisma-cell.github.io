@@ -25,6 +25,7 @@ export default function AeroPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/aero/aero-10.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Exhibition', 'Universitas Airlangga']}
         kicker="Airlangga Expanding Reach & Opportunities"

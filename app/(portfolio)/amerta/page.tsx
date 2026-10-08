@@ -88,6 +88,7 @@ export default function Amerta() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/amerta/img-3867.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Exchange program', 'Universitas Airlangga']}
         kicker="Airlangga Mobility, Exchange, Research & Transfer Academic"
