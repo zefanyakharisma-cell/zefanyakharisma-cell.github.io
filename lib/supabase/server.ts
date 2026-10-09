@@ -3,7 +3,7 @@ import { createClient as createAnonClient } from '@supabase/supabase-js'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { supabaseAnonKey, supabaseUrl } from './config'
+import { supabaseAnonKey, supabaseConfigured, supabaseUrl } from './config'
 
 /** Cookie-free anon client for public pages, so they stay statically rendered (ISR). */
 export function publicClient() {
@@ -29,6 +29,7 @@ export async function sessionClient() {
 
 /** Signed-in admin or a redirect to the login page. Row-level security enforces the same rule in the database. */
 export async function requireAdmin() {
+  if (!supabaseConfigured) redirect('/admin/login')
   const supabase = await sessionClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/admin/login')
