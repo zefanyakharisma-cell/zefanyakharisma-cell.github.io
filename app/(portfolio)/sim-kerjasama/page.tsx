@@ -41,7 +41,7 @@ export default function SimKerjasamaPage() {
   return (
     <>
       <PageHero
-        image={{ src: '/assets/images/student-services/monev-tias/img-4586.jpg' }}
+        image={{ src: '/assets/images/partnerships/signings/talenta-karya-sentosa-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Kerjasama"

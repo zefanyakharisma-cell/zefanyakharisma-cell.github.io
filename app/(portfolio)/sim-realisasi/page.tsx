@@ -57,7 +57,7 @@ export default function SimRealisasiPage() {
   return (
     <>
       <PageHero
-        image={{ src: '/assets/images/student-services/monev-tias/img-7067.jpg' }}
+        image={{ src: '/assets/images/partnerships/meetings/de-la-salle-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Realisasi"
