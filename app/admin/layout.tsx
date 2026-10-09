@@ -27,7 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
       </header>
-      <main className="wrap py-10">{children}</main>
+      <main className="wrap"><div className="py-10">{children}</div></main>
     </>
   )
 }

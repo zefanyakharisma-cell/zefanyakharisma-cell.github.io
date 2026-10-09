@@ -49,8 +49,9 @@ export type SaveInput = {
 }
 export type SaveResult = { ok: true; savedAt: string; published_at: string | null } | { ok: false; error: string }
 
-export async function savePost(input: SaveInput): Promise<SaveResult> {
+export async function savePost(payload: string): Promise<SaveResult> {
   const { supabase } = await requireAdmin()
+  const input = JSON.parse(payload) as SaveInput
 
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(input.slug)) return { ok: false, error: 'The URL slug may only use lowercase letters, numbers and single dashes.' }
   if (!input.streams.every(s => streamKeys.includes(s)) || !typeKeys.includes(input.type)) return { ok: false, error: 'Unknown stream or type.' }

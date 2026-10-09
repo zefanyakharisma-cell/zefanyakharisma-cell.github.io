@@ -122,6 +122,8 @@ img { max-width: 100%; }
 .pcu .article-body h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.25; margin-top: 2em; scroll-margin-top: 96px; }
 .pcu .article-body h3 { font-size: 1.3125rem; line-height: 1.3; margin-top: 1.6em; scroll-margin-top: 96px; }
 .article-body ul, .article-body ol { padding-left: 1.4em; margin-bottom: 0; }
+.article-body ul { list-style: disc; }
+.article-body ol { list-style: decimal; }
 .article-body li + li { margin-top: .4em; }
 .article-body li p { margin: 0; }
 .article-body blockquote { margin-left: 0; margin-right: 0; padding: 4px 0 4px 24px; border-left: 4px solid var(--amber); font-size: 1.25rem; color: var(--midnight); }

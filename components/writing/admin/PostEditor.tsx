@@ -40,7 +40,8 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
   }
 
   const persist = useCallback(async (override?: Partial<SaveInput>, done?: string): Promise<boolean> => {
-    const res = await savePost({ ...latest.current, ...override })
+    // Sent as a JSON string: editor documents passed as objects reach the server as client references.
+    const res = await savePost(JSON.stringify({ ...latest.current, ...override }))
     if (!res.ok) { setMessage({ kind: 'error', text: res.error }); return false }
     setPost(p => ({ ...p, ...override, published_at: res.published_at }))
     setDirty(false)
@@ -93,7 +94,7 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
           ))}
         </div>
         {langs.map(l => (
-          <div key={l} hidden={tab !== l} className="flex flex-col gap-5" lang={l}>
+          <div key={l} role="tabpanel" className={tab === l ? 'flex flex-col gap-5' : 'hidden'} lang={l}>
             <label className="admin-field">
               <span className="sr-only">Title ({langName[l]})</span>
               <input className="admin-input admin-title" placeholder={l === 'en' ? 'Title' : 'Judul'} value={post.translations[l].title}
