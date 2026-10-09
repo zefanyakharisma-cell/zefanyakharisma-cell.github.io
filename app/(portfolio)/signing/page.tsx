@@ -6,6 +6,10 @@ import { EngagementCards } from '@/components/projects/EngagementCards'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { engagements, engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'MoU & MoA Signing Process',
@@ -108,6 +112,7 @@ export default function SigningPage() {
           </Card>
         </div>
       </section>
+      <WritingAboutThis page="/signing" />
       <ThemeBand eyebrow="For the university" value={stats.partners} label="Partners supported across PETRA's faculties and units" cta={{ href: '/university-support', label: 'University support' }} />
     </>
   )

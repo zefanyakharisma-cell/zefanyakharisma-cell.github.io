@@ -5,6 +5,10 @@ import {
 import { Details, FlipCard, PageHero, SectionHead, Shape, Tag } from '@/components/pcu'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'International Grants Management',
@@ -90,6 +94,7 @@ export default function IntlGrantsPage() {
           <Lifecycle steps={physical} label="Physical grant workflow" />
         </div>
       </section>
+      <WritingAboutThis page="/intl-grants" />
     </>
   )
 }

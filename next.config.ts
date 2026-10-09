@@ -10,6 +10,10 @@ const aboutTabs: [string, string][] = [
 ]
 
 const nextConfig: NextConfig = {
+  images: {
+    // Cover images uploaded from the Writing admin live in Supabase Storage.
+    remotePatterns: [{ protocol: 'https', hostname: '*.supabase.co', pathname: '/storage/v1/object/public/**' }],
+  },
   async redirects() {
     return aboutTabs.map(([source, tab]) => ({ source, destination: `/about-overview?tab=${tab}`, permanent: true }))
   },

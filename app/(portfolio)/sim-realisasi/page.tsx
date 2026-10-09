@@ -12,6 +12,10 @@ import { ProcessPanel, SimBackground, StatusFlow } from '@/components/projects/S
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { simRealisasi as sim, simRealisasiDetail as detail } from '@/lib/data/sim'
 import { simRealisasiDev } from '@/lib/data/simDev'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'SIM Realisasi',
@@ -343,6 +347,7 @@ export default function SimRealisasiPage() {
           </Card>
         </div>
       </section>
+      <WritingAboutThis page="/sim-realisasi" />
     </>
   )
 }

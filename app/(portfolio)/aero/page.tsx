@@ -8,6 +8,10 @@ import { BoothMap } from '@/components/viz/BoothMap'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { Treemap } from '@/components/viz/Treemap'
 import { AERO_BUDGET, contributions, GALLERY_IMAGES, highlights, INSTITUTIONS } from '@/lib/data/aero'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'AERO 2025',
@@ -130,6 +134,7 @@ export default function AeroPage() {
           </div>
         </div>
       </section>
+      <WritingAboutThis page="/aero" />
       <ThemeBand eyebrow="Two days" value="19" label="Booths on one boulevard at UNAIR" cta={{ href: '/sim-kerjasama', label: 'Next: SIM Kerjasama' }} />
     </>
   )

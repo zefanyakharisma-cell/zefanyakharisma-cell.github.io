@@ -6,6 +6,10 @@ import { EngagementCards } from '@/components/projects/EngagementCards'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Strategic Meeting Arrangements',
@@ -86,6 +90,7 @@ export default function StrategicMeetingsPage() {
           <PhotoWall images={meetings.flatMap(m => m.photos.map(p => p.src))} alt="Strategic partnership meetings at PETRA" />
         </div>
       </section>
+      <WritingAboutThis page="/strategic-meetings" />
       <ThemeBand eyebrow="From meeting to agreement" value={stats.agreementsPerMonth} label="MoU and MoA reviews a month" cta={{ href: '/signing', label: 'MoU & MoA signing' }} />
     </>
   )
