@@ -1,6 +1,8 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Shape } from './Shape'
 import { Tag } from './Tag'
 
 type Props = {
@@ -10,8 +12,8 @@ type Props = {
   lead?: React.ReactNode
   tags?: string[]
   back?: { href: string; label: string }
-  /** Midnight-gradient brand surface instead of white. */
-  brand?: boolean
+  /** A real photo laid faintly behind the hero (decorative; text never depends on it). */
+  image?: { src: string; position?: string }
   /** Decorative <Shape>s, positioned absolutely inside the hero. */
   shapes?: React.ReactNode
   aside?: React.ReactNode
@@ -19,37 +21,34 @@ type Props = {
   className?: string
 }
 
-/** Page opening: back link, tags, eyebrow, kicker + h1 and lead. */
-export function PageHero({ eyebrow, kicker, title, lead, tags, back, brand, shapes, aside, children, className }: Props) {
+/** Page opening on the section's gradient (data-theme): back link, tags, eyebrow,
+ *  kicker + h1 and lead, over an optional faint photo. Without `shapes` it gets the section's half ring (--theme-ring). */
+export function PageHero({ eyebrow, kicker, title, lead, tags, back, image, shapes, aside, children, className }: Props) {
   return (
-    <section
-      className={cn(
-        'relative overflow-hidden',
-        brand ? 'pcu-surface-brand py-[clamp(48px,7vw,96px)]' : 'pt-[clamp(40px,6vw,80px)] pb-[clamp(32px,4vw,56px)]',
-        className,
+    <section className={cn('page-hero theme-surface relative overflow-hidden py-[clamp(48px,7vw,96px)]', className)}>
+      {image && (
+        <Image src={image.src} alt="" aria-hidden fill priority sizes="100vw" className="hero-photo" style={{ objectPosition: image.position }} />
       )}
-    >
-      <div aria-hidden className={cn('hero-glow', !brand && 'hero-glow--light')} />
-      {shapes}
-      {brand && <div aria-hidden className="pcu-pattern pattern-band absolute inset-x-0 bottom-0" />}
+      <div aria-hidden className="hero-glow" />
+      {shapes ?? <Shape kind="ring-u" className="theme-ring w-[clamp(88px,18vw,260px)] -right-3 sm:right-[4%] top-0" />}
       <div className="wrap relative flex flex-wrap items-end gap-12">
         <div className="flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
           {back && (
-            <Link href={back.href} className={cn('pcu-btn pcu-btn--ghost self-start', brand ? 'text-white' : 'text-midnight')}>
+            <Link href={back.href} className="pcu-btn pcu-btn--ghost self-start text-white">
               <ArrowLeft aria-hidden size={16} /> {back.label}
             </Link>
           )}
           {tags && tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {tags.map((t, i) => <Tag key={t} outline={brand || i > 0}>{t}</Tag>)}
+              {tags.map(t => <Tag key={t} outline>{t}</Tag>)}
             </div>
           )}
-          {eyebrow && <span className={cn('pcu-eyebrow', brand ? 'text-amber' : 'text-accent-strong')}>{eyebrow}</span>}
-          <h1 className={cn('h-page', brand && 'text-white')}>
+          {eyebrow && <span className="pcu-eyebrow text-amber">{eyebrow}</span>}
+          <h1 className="h-page text-white">
             {kicker && <span className="pcu-kicker">{kicker}</span>}
             {title}
           </h1>
-          {lead && <p className={cn('lead max-w-[60ch]', brand && '!text-smoke')}>{lead}</p>}
+          {lead && <p className="lead max-w-[60ch] !text-smoke">{lead}</p>}
           {children}
         </div>
         {aside}

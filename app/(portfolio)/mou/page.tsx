@@ -33,6 +33,7 @@ export default function MouPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/monev-tias/img-4590.jpg' }}
         eyebrow="Agreement management"
         title="MoU / MoA coordination"
         lead={`${stats.agreementsPerMonth} agreements reviewed a month at PCU.`}
@@ -66,10 +67,10 @@ export default function MouPage() {
       <section className="section decor-glow-br">
         <div className="wrap">
           <Card
-            tone="midnight"
+            tone="theme"
             className="!p-[clamp(28px,4vw,48px)]"
             bodyClassName="!flex-row flex-wrap justify-between items-center !gap-6"
-            shape={<Shape kind="ring-n" color="blue" className="w-[220px] right-[24%] bottom-0" />}
+            shape={<Shape kind="ring-n-line" color="white" className="w-[220px] right-[24%] bottom-0 opacity-70" />}
           >
             <div className="flex flex-col gap-2 max-w-[60ch]">
               <span className="pcu-eyebrow text-amber">System of record</span>

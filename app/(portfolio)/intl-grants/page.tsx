@@ -45,6 +45,7 @@ export default function IntlGrantsPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/tailor-made/griffith-unair-3.jpg' }}
         eyebrow="International Education · PCU"
         tags={['In development']}
         title="International grants management"
@@ -71,8 +72,8 @@ export default function IntlGrantsPage() {
         </div>
       </section>
 
-      <section className="pcu-surface-brand section relative overflow-hidden">
-        <Shape kind="ring-u" color="teal" className="w-[280px] right-[4%] top-0" />
+      <section className="theme-surface section relative overflow-hidden">
+        <Shape kind="ring-u-line" color="white" className="w-[280px] right-[4%] top-0 opacity-70" />
         <div className="wrap relative">
           <SectionHead light eyebrow="Digital" title="The dashboard" />
           <div className="grid-4">{dashboard.map(d => <FlipCard key={d.title} {...d} tone="midnight" />)}</div>

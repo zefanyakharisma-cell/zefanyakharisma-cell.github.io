@@ -41,7 +41,7 @@ export default function SimKerjasamaPage() {
   return (
     <>
       <PageHero
-        brand
+        image={{ src: '/assets/images/student-services/monev-tias/img-4586.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Kerjasama"
@@ -222,7 +222,7 @@ export default function SimKerjasamaPage() {
       <section className="section decor-glow-tr">
         <div className="wrap">
           <Card
-            tone="midnight"
+            tone="theme"
             href="/sim-realisasi"
             className="!p-[clamp(28px,4vw,48px)]"
             bodyClassName="!flex-row flex-wrap justify-between items-center !gap-6"

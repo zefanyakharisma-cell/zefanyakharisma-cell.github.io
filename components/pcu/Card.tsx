@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
-type Tone = 'white' | 'midnight' | 'smoke'
+type Tone = 'white' | 'midnight' | 'smoke' | 'theme'
 
 type Props = {
   tone?: Tone
@@ -14,12 +14,13 @@ type Props = {
   children: React.ReactNode
 }
 
-/** Brand card (.pcu-card): 8px radius, space-6 padding, shadow-card. */
+/** Brand card (.pcu-card): 8px radius, space-6 padding, shadow-card. `theme` puts it on the section gradient. */
 export function Card({ tone = 'white', href, className, shape, bodyClassName, children }: Props) {
   const cls = cn(
     'pcu-card flex flex-col',
     tone === 'midnight' && 'pcu-card--midnight',
     tone === 'smoke' && 'bg-smoke shadow-none',
+    tone === 'theme' && 'theme-surface',
     href && 'no-underline transition-transform hover:-translate-y-px motion-reduce:transition-none',
     className,
   )

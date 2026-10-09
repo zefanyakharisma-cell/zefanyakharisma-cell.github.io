@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { ClipboardList, Handshake, MapPin, MountainSnow, Star, Users } from 'lucide-react'
-import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat } from '@/components/pcu'
+import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
 import AciStats from '@/components/projects/AciStats'
 import { BubbleMap } from '@/components/viz/BubbleMap'
 import { HeatGrid } from '@/components/viz/HeatGrid'
@@ -79,6 +79,7 @@ export default function Aci() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/aci/aci-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Cultural immersion', 'Universitas Airlangga']}
         kicker="Airlangga Cultural Immersion"
@@ -164,6 +165,7 @@ export default function Aci() {
       </section>
 
       <AciStats />
+      <ThemeBand eyebrow="Four batches" value="191" label="Participants on cultural trips across 3 cities" cta={{ href: '/aero', label: 'Next: AERO' }} />
     </>
   )
 }

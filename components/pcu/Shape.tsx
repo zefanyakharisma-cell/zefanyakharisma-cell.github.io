@@ -13,9 +13,12 @@ export const brand = {
   white: '#ffffff',
 } as const
 
+/** `theme` paints the shape with the section gradient (--theme-gradient) instead of a flat colour. */
+type ShapeColor = keyof typeof brand | 'theme'
+
 type Props = {
   kind: ShapeKind
-  color?: keyof typeof brand
+  color?: ShapeColor
   className?: string
   style?: React.CSSProperties
 }
@@ -25,8 +28,8 @@ export function Shape({ kind, color = 'blue', className, style }: Props) {
   return (
     <span
       aria-hidden="true"
-      className={cn('pcu-shape', `pcu-shape--${kind}`, 'pointer-events-none absolute', className)}
-      style={{ color: brand[color], ...style }}
+      className={cn('pcu-shape', `pcu-shape--${kind}`, color === 'theme' && 'pcu-shape--theme', 'pointer-events-none absolute', className)}
+      style={color === 'theme' ? style : { color: brand[color], ...style }}
     />
   )
 }

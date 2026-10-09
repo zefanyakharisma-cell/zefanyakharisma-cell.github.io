@@ -41,6 +41,8 @@ The look comes from the **PCU Design System** (Brand Guideline Petra 2026, DRAFT
 - `app/globals.css` holds the page chrome from the mockup (header, sections, stats, photo cards, footer).
 - `tailwind.config.ts` maps the tokens: `midnight`, `smoke`, `amber`, `teal`, `blue`, `cerise`, `emerald`, `ink-secondary`, `ink-muted`, `line`, radii `sm/md/panel/lg/pill`, `shadow-card`.
 
+Section gradients: each part of the site has one of the system's four gradients, set by `data-theme` on the route (`themeFor()` in `lib/nav.ts`, applied by `components/pcu/ThemeScope.tsx`). Home, About and Contact use midnight; AMERTA, ACI, AERO and the projects overview use sunrise; the SIM pages use aqua; the International Education pages use dusk. The `--theme-*` variables in `app/styles/pcu.css` drive the page opening (`PageHero`), the closing band (`ThemeBand`), `Card tone="theme"`, icon badges, the header strip, stat rules, the current tab, glows and hover tints. White text fails on the light ends of sunrise and aqua, so sunrise surfaces stay midnight (the gradient goes on the half ring) and aqua and dusk surfaces carry a midnight scrim.
+
 Rules worth keeping:
 
 - Text on light backgrounds is midnight or black (secondary `#46505c`, muted `#5f6b78`); accents (amber, teal, blue, cerise) are for shapes and charts only.

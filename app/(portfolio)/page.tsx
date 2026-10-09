@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { BarChart2, Handshake, HeartHandshake, Workflow } from 'lucide-react'
-import { Button, FlipCard, PhotoCard, Reveal, SectionHead, Shape, Stat, Card, Tag } from '@/components/pcu'
+import { Button, FlipCard, PhotoCard, Reveal, SectionHead, Shape, Stat, Card, Tag, ThemeBand } from '@/components/pcu'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SkillExplorer } from '@/components/pcu/SkillExplorer'
 import { MapSwitch } from '@/components/viz/MapSwitch'
@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <>
       <section className="relative overflow-hidden pt-[clamp(40px,6vw,88px)] pb-[clamp(48px,7vw,96px)] decor-grid">
+        <Image src="/assets/images/aero/aero-2.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo hero-photo--light" />
         <div aria-hidden className="hero-glow hero-glow--light" />
         <div className="wrap relative flex flex-wrap gap-14 items-center">
           <div className="flex flex-col gap-6 min-w-0 flex-[1_1_440px]">
@@ -95,13 +96,13 @@ export default function Home() {
 
       <section className="section section--smoke decor-grid">
         <div className="wrap">
-          <SectionHead eyebrow="Selected work" title="Programs and systems" />
+          <SectionHead eyebrow="Selected work" title="Programs and systems" lead="Each part of the site has its own brand gradient: sunrise for programs, aqua for systems, dusk for international education." />
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))]">
-            <Reveal><PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="207 students" title="AMERTA" text="Semester exchange · 14 countries" className="!min-h-[400px]" /></Reveal>
-            <Reveal delay={80}><PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI cultural immersion participants" tag="191 participants" title="ACI" text="Cultural immersion · 3 cities" className="!min-h-[400px]" /></Reveal>
-            <Reveal delay={160}><PhotoCard href="/aero" src="/assets/images/aero/aero-1.jpg" alt="AERO exhibition booths" tag="19 booths" title="AERO" text="Partnership exhibition" className="!min-h-[400px]" imagePosition="center 35%" /></Reveal>
-            <Reveal delay={240}>
-              <Card tone="midnight" href="/sim-kerjasama" className="!min-h-[400px]" shape={<><Shape kind="ring-n" color="blue" className="w-[200px] -right-10 top-8" /><Shape kind="circle" color="amber" className="w-12 right-10 top-[140px]" /></>}>
+            <Reveal theme="sunrise"><PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="207 students" title="AMERTA" text="Semester exchange · 14 countries" className="!min-h-[400px] theme-edge" /></Reveal>
+            <Reveal delay={80} theme="sunrise"><PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI cultural immersion participants" tag="191 participants" title="ACI" text="Cultural immersion · 3 cities" className="!min-h-[400px] theme-edge" /></Reveal>
+            <Reveal delay={160} theme="sunrise"><PhotoCard href="/aero" src="/assets/images/aero/aero-1.jpg" alt="AERO exhibition booths" tag="19 booths" title="AERO" text="Partnership exhibition" className="!min-h-[400px] theme-edge" imagePosition="center 35%" /></Reveal>
+            <Reveal delay={240} theme="aqua">
+              <Card tone="theme" href="/sim-kerjasama" className="!min-h-[400px] theme-edge" shape={<><Shape kind="ring-n-line" color="white" className="w-[200px] -right-10 top-8 opacity-70" /><Shape kind="circle" color="amber" className="w-12 right-10 top-[140px]" /></>}>
                 <div className="mt-auto flex flex-col gap-3">
                   <Tag outline className="text-white">2 systems</Tag>
                   <h3 className="text-white !text-2xl">SIM Kerjasama &amp; Realisasi</h3>
@@ -124,6 +125,10 @@ export default function Home() {
       </section>
 
       <SkillExplorer />
+
+      <div data-theme="dusk">
+        <ThemeBand eyebrow="International education" value={stats.studentsPerSemester} label="International students supported every semester at PCU" cta={{ href: '/engagement', label: 'Intl. Ed' }} />
+      </div>
     </>
   )
 }

@@ -4,7 +4,7 @@ import {
   Award, BarChart2, BookOpen, Code2, FileCheck, Globe, Globe2, GraduationCap, Handshake, Heart, Languages,
   LayoutDashboard, Lightbulb, Network, Plane, School, Target, Users, Zap,
 } from 'lucide-react'
-import { Button, Card, Details, FlipCard, IconBadge, PhotoCard, SectionHead, Shape, Stat, Tag } from '@/components/pcu'
+import { Button, Card, Details, FlipCard, IconBadge, PhotoCard, SectionHead, Shape, Stat, Tag, ThemeBand } from '@/components/pcu'
 import { Tabs } from '@/components/pcu/Tabs'
 import { Gantt } from '@/components/viz/Gantt'
 import { roles } from '@/lib/data/experience'
@@ -148,8 +148,9 @@ export default function AboutOverview() {
 
   return (
     <>
-      <section className="pt-[clamp(40px,6vw,80px)] pb-12 decor-glow-tr decor-grid">
-        <div className="wrap flex flex-wrap gap-12 items-center">
+      <section className="relative overflow-hidden pt-[clamp(40px,6vw,80px)] pb-12 decor-glow-tr decor-grid">
+        <Image src="/assets/images/student-services/monev-tias/img-7095.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo hero-photo--light hero-photo--left" />
+        <div className="wrap relative flex flex-wrap gap-12 items-center">
           <div className="arch-photo flex-[0_1_300px] min-w-[220px] aspect-[3/4]">
             <Image src="/assets/images/self-portrait/profile-pic-1.png" alt="Portrait of Zefanya Kharisma Nugroho" fill priority sizes="300px" />
           </div>
@@ -200,6 +201,7 @@ export default function AboutOverview() {
           />
         </div>
       </section>
+      <ThemeBand eyebrow="In numbers" value={stats.years} label="Years in international higher education" cta={{ href: '/projects-overview', label: 'See projects' }} />
     </>
   )
 }

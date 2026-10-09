@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { BookOpen, Handshake, Layers, Microscope, Search, TrendingUp, Users, FileCheck } from 'lucide-react'
-import { BarList, Details, FlipCard, PageHero, SectionHead, Stat } from '@/components/pcu'
+import { BarList, Details, FlipCard, PageHero, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import PartnerExplorer from '@/components/projects/PartnerExplorer'
@@ -38,6 +38,7 @@ export default function PartnershipsPage() {
   return (
     <>
       <PageHero
+        image={{ src: '/assets/images/student-services/tailor-made/ljmu-unair-2.jpg' }}
         eyebrow="Global partnerships"
         title="Partnership development"
         lead={`${stats.partners} partners managed, ${stats.meetingsPerMonth} meetings a month.`}
@@ -93,6 +94,7 @@ export default function PartnershipsPage() {
           </Details>
         </div>
       </section>
+      <ThemeBand eyebrow="Agreements" value={stats.agreementsPerMonth} label="MoU and MoA reviews a month" cta={{ href: '/mou', label: 'MoU / MoA coordination' }} />
     </>
   )
 }
