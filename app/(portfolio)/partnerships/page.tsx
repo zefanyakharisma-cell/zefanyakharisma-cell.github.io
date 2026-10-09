@@ -94,7 +94,7 @@ export default function PartnershipsPage() {
           </Details>
         </div>
       </section>
-      <ThemeBand eyebrow="Agreements" value={stats.agreementsPerMonth} label="MoU and MoA reviews a month" cta={{ href: '/mou', label: 'MoU / MoA coordination' }} />
+      <ThemeBand eyebrow="Where partnerships start" value={stats.meetingsPerMonth} label="Strategic meetings arranged a month" cta={{ href: '/strategic-meetings', label: 'Strategic meetings' }} />
     </>
   )
 }

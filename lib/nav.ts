@@ -18,7 +18,10 @@ const sectionByRoute: Record<string, Section> = {
   '/engagement': 'intl',
   '/onboarding': 'intl',
   '/partnerships': 'intl',
+  '/strategic-meetings': 'intl',
+  '/signing': 'intl',
   '/mou': 'intl',
+  '/university-support': 'intl',
   '/intl-grants': 'intl',
   '/contact': 'contact',
 }
@@ -49,7 +52,10 @@ export const intlNav = [
   { href: '/engagement', label: 'Overview' },
   { href: '/onboarding', label: 'Student Support' },
   { href: '/partnerships', label: 'Partnerships' },
+  { href: '/strategic-meetings', label: 'Meetings' },
+  { href: '/signing', label: 'Signing' },
   { href: '/mou', label: 'MoU / MoA' },
+  { href: '/university-support', label: 'Univ. Support' },
   { href: '/intl-grants', label: 'Grants' },
 ]
 
