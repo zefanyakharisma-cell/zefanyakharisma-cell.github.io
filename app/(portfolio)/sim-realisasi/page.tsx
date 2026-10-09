@@ -77,7 +77,7 @@ export default function SimRealisasiPage() {
       <section id="demo" className="section section--smoke decor-grid scroll-mt-20">
         <div className="wrap">
           <SectionHead eyebrow="Live demo" title="Try SIM Realisasi" lead="The working app, on demo data: the dashboard, the activity list and the single-page report form." />
-          <DemoFrame src={sim.demoUrl} app="SIM Realisasi" note="Demo environment with generated activities over real agreements. Figures there are not official PCU indicators." />
+          <DemoFrame src={sim.demoUrl} app="SIM Realisasi" note="Demo environment with generated activities over real agreements. Figures there are not official PETRA indicators." />
         </div>
       </section>
 

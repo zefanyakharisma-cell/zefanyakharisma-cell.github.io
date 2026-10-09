@@ -10,8 +10,8 @@ const PROJECTS: { kind: Kind; href: string; title: string; tag: string; number: 
   { kind: 'Programs', href: '/amerta', title: 'AMERTA', tag: 'Exchange · UNAIR', number: '207', unit: 'students', src: '/assets/images/amerta/amerta-1.jpg', alt: 'AMERTA exchange students' },
   { kind: 'Programs', href: '/aci', title: 'ACI', tag: 'Cultural immersion · UNAIR', number: '191', unit: 'participants', src: '/assets/images/aci/aci-4.jpg', alt: 'ACI participants' },
   { kind: 'Programs', href: '/aero', title: 'AERO', tag: 'Exhibition · UNAIR', number: '19', unit: 'booths', src: '/assets/images/aero/aero-header-1.jpg', alt: 'AERO exhibition', position: 'center 30%' },
-  { kind: 'Systems', href: '/sim-kerjasama', title: 'SIM Kerjasama', tag: 'MoU · MoA · PCU', number: '9', unit: 'goals, one agreement lifecycle' },
-  { kind: 'Systems', href: '/sim-realisasi', title: 'SIM Realisasi', tag: 'RENSTRA · PCU', number: '4', unit: 'steps to report an activity' },
+  { kind: 'Systems', href: '/sim-kerjasama', title: 'SIM Kerjasama', tag: 'MoU · MoA · PETRA', number: '9', unit: 'goals, one agreement lifecycle' },
+  { kind: 'Systems', href: '/sim-realisasi', title: 'SIM Realisasi', tag: 'RENSTRA · PETRA', number: '4', unit: 'steps to report an activity' },
 ]
 
 /** Project cards, each led by one number, filterable by kind. */

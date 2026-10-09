@@ -14,7 +14,10 @@ const areas = [
   { href: '/onboarding', src: '/assets/images/student-services/knb-orientation-2025/img-8471.jpg', alt: 'KNB scholarship students at orientation', tag: `${stats.studentsPerSemester} / semester`, title: 'Student support', text: 'Arrival to departure' },
   { href: '/onboarding', src: '/assets/images/student-services/best-buddies/img-6934.jpg', alt: 'Best Buddies peer mentoring event', tag: 'Best Buddies', title: 'Student engagement', text: 'Culture, community, mentoring' },
   { href: '/partnerships', src: '/assets/images/aero/aero-3.jpg', alt: 'Partner university booth at AERO', tag: `${stats.partners} partners`, title: 'Partnerships', text: `${stats.meetingsPerMonth} meetings a month` },
+  { href: '/strategic-meetings', src: '/assets/images/partnerships/meetings/hketo-1.jpg', alt: 'Hong Kong Economic and Trade Office meeting at PETRA', tag: `${stats.meetingsPerMonth} / month`, title: 'Strategic meetings', text: 'Request to follow-up' },
+  { href: '/signing', src: '/assets/images/partnerships/signings/pgpi-2.jpg', alt: 'MoU signing between PETRA and PGPI', tag: 'Ceremonies', title: 'MoU & MoA signing', text: 'Final text to activation' },
   { href: '/mou', src: '/assets/images/aero/aero-10.jpg', alt: 'Partnership signing and exhibition at AERO', tag: `${stats.agreementsPerMonth} / month`, title: 'MoU / MoA', text: 'Drafting to renewal' },
+  { href: '/university-support', src: '/assets/images/partnerships/support/drone-academy-1.jpg', alt: 'PETRA Drone Academy launch', tag: 'For PETRA', title: 'University support', text: 'Faculties, units, launches' },
   { href: '/intl-grants', src: '/assets/images/student-services/monev-tias/img-7061.jpg', alt: 'Scholarship monitoring session', tag: 'In development', title: 'International grants', text: 'Find, track, deliver' },
 ]
 
@@ -32,14 +35,14 @@ export default function EngagementPage() {
         image={{ src: '/assets/images/student-services/monev-tias/img-7092.jpg' }}
         eyebrow="International Education"
         title="One student at a time"
-        lead="Airport to agreement to grant."
+        lead="Airport to meeting to agreement to grant."
         aside={<Stat amber value={stats.studentsPerSemester} label="International students per semester" className="flex-[0_1_260px]" />}
       />
       <SubNav />
 
       <section className="section decor-glow-tr">
         <div className="wrap">
-          <SectionHead eyebrow="Five areas" title="Where I work" />
+          <SectionHead eyebrow="Eight areas" title="Where I work" />
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
             {areas.map((a, i) => (
               <Reveal key={a.title} delay={i * 60}>

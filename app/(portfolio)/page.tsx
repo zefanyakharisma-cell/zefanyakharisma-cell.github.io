@@ -23,10 +23,10 @@ const strip = [
 ]
 
 const skills = [
-  { icon: <Handshake aria-hidden />, title: 'Partnerships', back: `${stats.partners} partners, ${stats.agreementsPerMonth} MoU/MoA reviews a month at PCU.` },
+  { icon: <Handshake aria-hidden />, title: 'Partnerships', back: `${stats.partners} partners, ${stats.agreementsPerMonth} MoU/MoA reviews a month at PETRA.` },
   { icon: <HeartHandshake aria-hidden />, title: 'Student support', back: `${stats.studentsPerSemester} international students supported every semester.` },
   { icon: <BarChart2 aria-hidden />, title: 'Program management', back: `AMERTA, ACI and AERO, ${stats.programBudget} per program.` },
-  { icon: <Workflow aria-hidden />, title: 'Systems design', back: 'SIM Kerjasama and SIM Realisasi for PCU.' },
+  { icon: <Workflow aria-hidden />, title: 'Systems design', back: 'SIM Kerjasama and SIM Realisasi for PETRA.' },
 ]
 
 export default function Home() {
@@ -127,7 +127,7 @@ export default function Home() {
       <SkillExplorer />
 
       <div data-theme="dusk">
-        <ThemeBand eyebrow="International education" value={stats.studentsPerSemester} label="International students supported every semester at PCU" cta={{ href: '/engagement', label: 'Intl. Ed' }} />
+        <ThemeBand eyebrow="International education" value={stats.studentsPerSemester} label="International students supported every semester at PETRA" cta={{ href: '/engagement', label: 'Intl. Ed' }} />
       </div>
     </>
   )

@@ -26,7 +26,7 @@ export default function ProjectsOverview() {
       <section className="pt-2 pb-10 section--smoke">
         <div className="wrap grid-4 !gap-8">
           <Stat value="3" label="Programs at UNAIR" />
-          <Stat value="2" label="Systems at PCU" />
+          <Stat value="2" label="Systems at PETRA" />
           <Stat value={stats.amertaParticipants} label="AMERTA students" />
           <Stat value="50+" label="Stakeholders per program" />
         </div>
@@ -38,7 +38,7 @@ export default function ProjectsOverview() {
           <ProjectGrid />
         </div>
       </section>
-      <ThemeBand eyebrow="Behind the programs" value={stats.studentsPerSemester} label="International students supported every semester at PCU" cta={{ href: '/engagement', label: 'International education' }} />
+      <ThemeBand eyebrow="Behind the programs" value={stats.studentsPerSemester} label="International students supported every semester at PETRA" cta={{ href: '/engagement', label: 'International education' }} />
     </>
   )
 }

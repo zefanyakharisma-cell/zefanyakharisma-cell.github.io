@@ -46,7 +46,7 @@ export default function IntlGrantsPage() {
     <>
       <PageHero
         image={{ src: '/assets/images/student-services/tailor-made/griffith-unair-3.jpg' }}
-        eyebrow="International Education · PCU"
+        eyebrow="International Education · PETRA"
         tags={['In development']}
         title="International grants management"
         lead="One dashboard and one physical workflow for every grant."
@@ -58,7 +58,7 @@ export default function IntlGrantsPage() {
           <SectionHead eyebrow="Pipeline" title="Five stages per grant" />
           <Lifecycle steps={pipeline} label="International grant pipeline" />
           <Details summary="Why it's being built" className="mt-6">
-            Grant information at PCU was spread across emails, shared drives and spreadsheets. The system gives faculty, staff and students one
+            Grant information at PETRA was spread across emails, shared drives and spreadsheets. The system gives faculty, staff and students one
             source of truth: a digital dashboard that tracks every grant, applicant and deadline, and a physical workflow that keeps students
             informed and supported through each cycle.
           </Details>

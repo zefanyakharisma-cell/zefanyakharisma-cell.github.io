@@ -108,7 +108,7 @@ export default function OnboardingPage() {
           <StudentActivities />
         </div>
       </section>
-      <ThemeBand eyebrow="Partnerships" value={stats.partners} label="Partner institutions managed at PCU" cta={{ href: '/partnerships', label: 'Partnership development' }} />
+      <ThemeBand eyebrow="Partnerships" value={stats.partners} label="Partner institutions managed at PETRA" cta={{ href: '/partnerships', label: 'Partnership development' }} />
     </>
   )
 }

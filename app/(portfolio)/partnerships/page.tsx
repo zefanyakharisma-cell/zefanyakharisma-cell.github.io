@@ -12,7 +12,7 @@ import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 export const metadata: Metadata = {
   title: 'Partnership Development',
   alternates: { canonical: '/partnerships' },
-  description: 'PCU partnerships mapped: 505+ partners across 32 countries and 52 Indonesian cities.',
+  description: 'PETRA partnerships mapped: 505+ partners across 32 countries and 52 Indonesian cities.',
 }
 
 const enables = [
@@ -23,7 +23,7 @@ const enables = [
 ]
 
 const approach = [
-  { icon: <Search size={20} aria-hidden />, title: 'Identify', text: "Find institutions aligned with PCU's mission and strengths, with due diligence." },
+  { icon: <Search size={20} aria-hidden />, title: 'Identify', text: "Find institutions aligned with PETRA's mission and strengths, with due diligence." },
   { icon: <Handshake size={20} aria-hidden />, title: 'Negotiate', text: 'Build the relationship and agree terms that benefit both sides.' },
   { icon: <FileCheck size={20} aria-hidden />, title: 'Develop', text: 'Co-design exchange, research and joint curriculum programs.' },
   { icon: <TrendingUp size={20} aria-hidden />, title: 'Grow', text: 'Implement, monitor and keep the partnership active.' },
@@ -47,7 +47,7 @@ export default function PartnershipsPage() {
 
       <section className="section !pb-10 decor-glow-tr">
         <div className="wrap grid-4 !gap-8">
-          <Stat value="505+" label="Partners at PCU" />
+          <Stat value="505+" label="Partners at PETRA" />
           <Stat value="32" label="Countries" />
           <Stat value="52" label="Indonesian cities" />
           <Stat value={stats.meetingsPerMonth} label="Meetings a month" />
@@ -89,12 +89,12 @@ export default function PartnershipsPage() {
           <SectionHead eyebrow="My approach" title="Four phases" />
           <Lifecycle steps={approach} label="How I build partnerships" />
           <Details className="mt-6">
-            Every partnership moves from identification to growth. I evaluate fit with PCU&apos;s academic strengths, negotiate terms that serve
+            Every partnership moves from identification to growth. I evaluate fit with PETRA&apos;s academic strengths, negotiate terms that serve
             both institutions, co-design the programs that make the agreement real, and keep it active through monitoring and regular engagement.
           </Details>
         </div>
       </section>
-      <ThemeBand eyebrow="Agreements" value={stats.agreementsPerMonth} label="MoU and MoA reviews a month" cta={{ href: '/mou', label: 'MoU / MoA coordination' }} />
+      <ThemeBand eyebrow="Where partnerships start" value={stats.meetingsPerMonth} label="Strategic meetings arranged a month" cta={{ href: '/strategic-meetings', label: 'Strategic meetings' }} />
     </>
   )
 }

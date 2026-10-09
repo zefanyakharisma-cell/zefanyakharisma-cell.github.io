@@ -262,7 +262,7 @@ export const simRealisasiDev: DevSystem = {
   ],
   steps: {
     submit: [
-      { writes: 'An activity under a PCU MoU/MoA has ended.', rules: ['R-01', 'R-02'] },
+      { writes: 'An activity under a PETRA MoU/MoA has ended.', rules: ['R-01', 'R-02'] },
       { rpc: ['documents_valid_between', 'save_activity_draft'], tables: ['activities', 'activity_units', 'activity_documents', 'activity_partner_snapshot', 'documents'], writes: 'The activity, its units and one agreement link (the original document plus its chain_id). Partner name and country are snapshotted by trigger.', rules: ['R-03', 'R-04', 'R-05', 'R-06'] },
       { rpc: ['_trg_derive_period', '_trg_derive_deadline'], tables: ['activities', 'academic_years', 'semesters'], writes: 'Triggers derive academic_year_id and semester_id from start_date, and reporting_deadline = end_date + reporting_deadline_days.', status: "status = 'draft'", rules: ['R-09', 'R-10'] },
       { rpc: ['agenda_is_mobility', 'register_activity_file'], tables: ['agenda_rules', 'activity_files'], writes: 'The agenda rule decides the track. Non-mobility uploads IA and IR; mobility also needs one mobility_bundle PDF.', rules: ['R-07a', 'R-11', 'R-13'] },
