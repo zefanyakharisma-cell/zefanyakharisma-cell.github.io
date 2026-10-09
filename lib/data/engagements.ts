@@ -89,6 +89,54 @@ export const engagements: Engagement[] = [
       { src: img('meetings/de-la-salle-2.jpg'), alt: 'Group photo of the De La Salle University and PETRA delegations' },
     ],
   },
+  {
+    id: 'netherlands-embassy',
+    kind: 'meeting',
+    partner: 'Embassy of the Netherlands',
+    title: 'Education attaché visit',
+    country: 'Netherlands',
+    date: '2026-06-30',
+    photos: [
+      { src: img('meetings/netherlands-embassy-2.jpg'), alt: 'Education attaché of the Embassy of the Netherlands with PETRA leaders in the PETRA boardroom' },
+      { src: img('meetings/netherlands-embassy-1.jpg'), alt: 'Group photo with the Netherlands education attaché in front of the PETRA emblem' },
+    ],
+  },
+  {
+    id: 'ifi',
+    kind: 'signing',
+    partner: "Institut Français d'Indonésie (IFI)",
+    title: 'MoU signing',
+    country: 'France',
+    date: '2026-06-25',
+    photos: [
+      { src: img('signings/ifi-2.jpg'), alt: 'PETRA and IFI representatives holding the signed MoU in the PETRA boardroom' },
+      { src: img('signings/ifi-1.jpg'), alt: 'MoU copies and pens laid out on the signing table' },
+    ],
+  },
+  {
+    id: 'talenta-karya-sentosa',
+    kind: 'signing',
+    partner: 'Talenta Karya Sentosa',
+    title: 'MoU signing',
+    country: 'Indonesia',
+    date: '2026-06-25',
+    photos: [
+      { src: img('signings/talenta-karya-sentosa-1.jpg'), alt: 'PETRA and Talenta Karya Sentosa signatories signing the MoU' },
+      { src: img('signings/talenta-karya-sentosa-2.jpg'), alt: 'PETRA and Talenta Karya Sentosa delegations after the signing' },
+    ],
+  },
+  {
+    id: 'guandata',
+    kind: 'signing',
+    partner: 'Guandata',
+    title: 'Agreement signing with PETRA IBE',
+    country: 'China',
+    date: '2026-06-05',
+    photos: [
+      { src: img('signings/guandata-1.jpg'), alt: 'International Business Engineering and Guandata representatives holding the signed agreements' },
+      { src: img('signings/guandata-2.jpg'), alt: 'Second pair of signatories from PETRA IBE and Guandata with the signed agreements' },
+    ],
+  },
 ]
 
 export const engagementsOf = (kind: EngagementKind) => engagements.filter(e => e.kind === kind)
