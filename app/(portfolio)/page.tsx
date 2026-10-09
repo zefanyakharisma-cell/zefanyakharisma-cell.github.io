@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <>
       <section className="relative overflow-hidden pt-[clamp(40px,6vw,88px)] pb-[clamp(48px,7vw,96px)] decor-grid">
+        <Image src="/assets/images/aero/aero-2.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo hero-photo--light" />
         <div aria-hidden className="hero-glow hero-glow--light" />
         <div className="wrap relative flex flex-wrap gap-14 items-center">
           <div className="flex flex-col gap-6 min-w-0 flex-[1_1_440px]">

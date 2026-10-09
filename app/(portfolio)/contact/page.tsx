@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { Linkedin, Mail, MapPin } from 'lucide-react'
 import { Card, IconBadge, Shape } from '@/components/pcu'
 import { contact } from '@/lib/data/profile'
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function Contact() {
   return (
     <section className="pcu-surface-brand footer-overlap relative overflow-hidden pt-[clamp(56px,8vw,112px)]">
+      <Image src="/assets/images/student-services/tailor-made/griffith-unair-2.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo" />
       <div aria-hidden className="hero-glow" />
       <div data-theme="sunrise" className="contents">
         <Shape kind="ring-u" color="theme" className="w-[clamp(100px,24vw,320px)] right-[6%] !bottom-[clamp(48px,10vw,140px)]" />
