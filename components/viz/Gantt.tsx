@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import type { Role } from '@/lib/data/experience'
 import { Tag } from '@/components/pcu/Tag'
 import { Details } from '@/components/pcu/Details'
@@ -57,9 +58,16 @@ export function Gantt({ roles }: { roles: Role[] }) {
       </div>
       {current && (
         <div className="pcu-card" aria-live="polite">
-          <span className="pcu-eyebrow text-accent-strong">{current.period}</span>
-          <h3 className="!text-xl mt-1">{current.title}</h3>
-          <p className="muted m-0 mt-1">{current.org}</p>
+          <div className="flex items-start gap-4">
+            <span className="flex-none grid place-items-center w-16 h-16 rounded-md bg-white border border-line p-1.5">
+              <Image src={current.logo} alt={`${current.org} logo`} width={52} height={52} className="w-full h-full object-contain" />
+            </span>
+            <div className="min-w-0">
+              <span className="pcu-eyebrow text-accent-strong">{current.period}</span>
+              <h3 className="!text-xl mt-1">{current.title}</h3>
+              <p className="muted m-0 mt-1">{current.org}</p>
+            </div>
+          </div>
           <ul className="mt-4 mb-0 pl-5 flex flex-col gap-1.5 text-[.9375rem] text-ink-secondary marker:text-accent-strong">
             {current.bullets.slice(0, 3).map(b => <li key={b}>{b}</li>)}
           </ul>
