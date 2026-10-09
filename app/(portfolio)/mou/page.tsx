@@ -4,6 +4,10 @@ import { Button, Card, Details, FlipCard, PageHero, SectionHead, Shape, Stat } f
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'MoU / MoA Coordination',
@@ -83,6 +87,7 @@ export default function MouPage() {
           </Card>
         </div>
       </section>
+      <WritingAboutThis page="/mou" />
     </>
   )
 }

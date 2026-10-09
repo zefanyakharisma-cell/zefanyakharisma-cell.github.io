@@ -9,6 +9,10 @@ import { Waffle } from '@/components/viz/Waffle'
 import { stats } from '@/lib/data/profile'
 import { amertaNations, gender, inboundNations, studentPrograms, studyLevel } from '@/lib/data/students'
 import { buildWorldMap } from '@/lib/geo'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'International Student Support',
@@ -108,6 +112,7 @@ export default function OnboardingPage() {
           <StudentActivities />
         </div>
       </section>
+      <WritingAboutThis page="/onboarding" />
       <ThemeBand eyebrow="Partnerships" value={stats.partners} label="Partner institutions managed at PETRA" cta={{ href: '/partnerships', label: 'Partnership development' }} />
     </>
   )

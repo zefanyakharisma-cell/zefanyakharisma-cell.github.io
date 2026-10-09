@@ -11,6 +11,10 @@ import { WorldMap } from '@/components/viz/WorldMap'
 import { DATA } from '@/lib/data/amerta'
 import { stats } from '@/lib/data/profile'
 import { buildWorldMap } from '@/lib/geo'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'AMERTA',
@@ -174,6 +178,7 @@ export default function Amerta() {
       </section>
 
       <AmertaStats />
+      <WritingAboutThis page="/amerta" />
       <ThemeBand eyebrow="Four batches" value="207" label="Exchange students from 14 countries" cta={{ href: '/aci', label: 'Next: ACI' }} />
     </>
   )

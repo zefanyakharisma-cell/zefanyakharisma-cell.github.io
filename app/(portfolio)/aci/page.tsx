@@ -11,6 +11,10 @@ import { Waffle } from '@/components/viz/Waffle'
 import { WorldMap } from '@/components/viz/WorldMap'
 import { DATA, type Sat } from '@/lib/data/aci'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'ACI',
@@ -165,6 +169,7 @@ export default function Aci() {
       </section>
 
       <AciStats />
+      <WritingAboutThis page="/aci" />
       <ThemeBand eyebrow="Four batches" value="191" label="Participants on cultural trips across 3 cities" cta={{ href: '/aero', label: 'Next: AERO' }} />
     </>
   )

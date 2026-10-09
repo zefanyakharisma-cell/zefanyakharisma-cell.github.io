@@ -5,6 +5,10 @@ import { SubNav } from '@/components/pcu/SubNav'
 import { EngagementCards } from '@/components/projects/EngagementCards'
 import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'University Support on Partnership',
@@ -86,6 +90,7 @@ export default function UniversitySupportPage() {
           </div>
         </div>
       </section>
+      <WritingAboutThis page="/university-support" />
       <ThemeBand eyebrow="Partner with PETRA" value={stats.partners} label="Partners and counting" cta={{ href: '/contact', label: 'Get in touch' }} />
     </>
   )

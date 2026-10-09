@@ -1,9 +1,10 @@
-export type Section = 'about' | 'projects' | 'intl' | 'contact'
+export type Section = 'about' | 'projects' | 'intl' | 'writing' | 'contact'
 
 export const mainNav: { href: string; label: string; section: Section }[] = [
   { href: '/about-overview', label: 'About', section: 'about' },
   { href: '/projects-overview', label: 'Projects', section: 'projects' },
   { href: '/engagement', label: 'Intl. Ed', section: 'intl' },
+  { href: '/writing', label: 'Writing', section: 'writing' },
   { href: '/contact', label: 'Contact', section: 'contact' },
 ]
 
@@ -23,10 +24,12 @@ const sectionByRoute: Record<string, Section> = {
   '/mou': 'intl',
   '/university-support': 'intl',
   '/intl-grants': 'intl',
+  '/writing': 'writing',
   '/contact': 'contact',
 }
 
 export function sectionFor(pathname: string): Section | null {
+  if (pathname.startsWith('/writing/')) return 'writing'
   return sectionByRoute[pathname] ?? null
 }
 
@@ -34,7 +37,7 @@ export function sectionFor(pathname: string): Section | null {
  *  surfaces, sunrise for campaigns and events, aqua for tech, dusk for Intl. Ed). */
 export type Theme = 'midnight' | 'sunrise' | 'aqua' | 'dusk'
 
-const themeBySection: Record<Section, Theme> = { about: 'midnight', projects: 'sunrise', intl: 'dusk', contact: 'midnight' }
+const themeBySection: Record<Section, Theme> = { about: 'midnight', projects: 'sunrise', intl: 'dusk', writing: 'midnight', contact: 'midnight' }
 
 export function themeFor(pathname: string): Theme {
   if (pathname.startsWith('/sim-')) return 'aqua'

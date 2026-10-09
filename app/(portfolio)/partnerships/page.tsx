@@ -8,6 +8,10 @@ import { CITY_COORDS } from '@/lib/data/cities'
 import { CONTINENT, countBy, DOM_DATA, INTL_DATA } from '@/lib/data/partners'
 import { stats } from '@/lib/data/profile'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
+import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+
+// Refreshes "Writing about this" for newly published or scheduled posts.
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Partnership Development',
@@ -94,6 +98,7 @@ export default function PartnershipsPage() {
           </Details>
         </div>
       </section>
+      <WritingAboutThis page="/partnerships" />
       <ThemeBand eyebrow="Where partnerships start" value={stats.meetingsPerMonth} label="Strategic meetings arranged a month" cta={{ href: '/strategic-meetings', label: 'Strategic meetings' }} />
     </>
   )
