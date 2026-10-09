@@ -22,9 +22,24 @@ export const metadata: Metadata = {
 
 const menuIcons = [ChartColumn, Search, FilePlus2, Timer, RefreshCw, Bell, Database, Settings]
 const stakeholderIcons = [Building, Users, Stamp, Plane, Crown, Globe2]
+const photos = '/assets/images/partnerships'
+const stakeholderPhotos = [
+  `${photos}/meetings/hketo-2.jpg`,
+  `${photos}/meetings/formosa-2.jpg`,
+  `${photos}/signings/ifi-1.jpg`,
+  `${photos}/meetings/formosa-1.jpg`,
+  `${photos}/signings/talenta-karya-sentosa-2.jpg`,
+  `${photos}/signings/guandata-1.jpg`,
+]
 const themeIcons = [Scale, Database, Eye]
 const themeTones = ['brand', 'aqua', 'sunrise'] as const
 const institutionalIcons = [Award, TrendingUp, Globe2, Landmark]
+const institutionalPhotos = [
+  `${photos}/signings/ifi-2.jpg`,
+  `${photos}/signings/pgpi-1.jpg`,
+  `${photos}/meetings/netherlands-embassy-1.jpg`,
+  `${photos}/signings/pgpi-2.jpg`,
+]
 
 const lifecycle = [
   { icon: <PenLine size={20} aria-hidden />, title: 'Propose', text: 'A unit proposes an agreement, or records one already signed.' },
@@ -41,7 +56,7 @@ export default function SimKerjasamaPage() {
   return (
     <>
       <PageHero
-        image={{ src: '/assets/images/student-services/monev-tias/img-4586.jpg' }}
+        image={{ src: '/assets/images/partnerships/signings/talenta-karya-sentosa-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Kerjasama"
@@ -176,7 +191,7 @@ export default function SimKerjasamaPage() {
                 <div className="grid-3">
                   {sim.stakeholders.map((s, i) => {
                     const Icon = stakeholderIcons[i]
-                    return <FlipCard key={s.group} icon={<Icon aria-hidden />} title={s.group} back={s.desc} tone={i % 2 ? 'midnight' : 'white'} />
+                    return <FlipCard key={s.group} icon={<Icon aria-hidden />} title={s.group} back={s.desc} image={stakeholderPhotos[i]} />
                   })}
                 </div>
               </div>
@@ -186,7 +201,7 @@ export default function SimKerjasamaPage() {
                   {detail.institutionalBenefits.map((b, i) => {
                     const Icon = institutionalIcons[i]
                     return (
-                      <Card key={b.title} tone="smoke">
+                      <Card key={b.title} tone="smoke" image={institutionalPhotos[i]}>
                         <IconBadge icon={Icon} size={44} tone={i % 2 ? 'amber' : 'brand'} />
                         <h3 className="m-0 text-lg font-bold text-midnight">{b.title}</h3>
                         <p className="m-0 text-sm text-ink-secondary">{b.text}</p>
