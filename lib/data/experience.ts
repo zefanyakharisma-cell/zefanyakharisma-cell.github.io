@@ -20,7 +20,7 @@ export const roles: Role[] = [
       'Manage communication with 30+ institutional partners every month through formal correspondence',
       'Review 25+ partnership agreements (MoU/MoA) a month for compliance and institutional fit',
       'Facilitate 15+ strategic partnership meetings a month, with minutes delivered within 24 hours',
-      "Start collaborations that strengthen PCU's global presence and widen access to international grants",
+      "Start collaborations that strengthen PETRA's global presence and widen access to international grants",
       'Designed SIM Kerjasama and SIM Realisasi, the systems of record for agreements and their activities',
     ],
     tags: ['International Partnership', 'MoU/MoA', 'Stakeholder Management', 'Systems Design'],

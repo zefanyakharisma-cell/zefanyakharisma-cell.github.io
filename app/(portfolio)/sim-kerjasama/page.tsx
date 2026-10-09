@@ -61,7 +61,7 @@ export default function SimKerjasamaPage() {
       <section id="demo" className="section section--smoke decor-grid scroll-mt-20">
         <div className="wrap">
           <SectionHead eyebrow="Live demo" title="Try SIM Kerjasama" lead="The working app, on demo data. Sign in with a demo account to see the dashboard, queues and renewals." />
-          <DemoFrame src={sim.demoUrl} app="SIM Kerjasama" note="Demo environment with sample agreements. Data there is not PCU's live partnership record." />
+          <DemoFrame src={sim.demoUrl} app="SIM Kerjasama" note="Demo environment with sample agreements. Data there is not PETRA's live partnership record." />
         </div>
       </section>
 

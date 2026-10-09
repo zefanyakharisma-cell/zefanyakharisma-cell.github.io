@@ -8,7 +8,7 @@ import { stats } from '@/lib/data/profile'
 export const metadata: Metadata = {
   title: 'MoU / MoA Coordination',
   alternates: { canonical: '/mou' },
-  description: `Reviewing ${stats.agreementsPerMonth} partnership agreements a month at PCU for compliance, institutional fit and timely processing.`,
+  description: `Reviewing ${stats.agreementsPerMonth} partnership agreements a month at PETRA for compliance, institutional fit and timely processing.`,
 }
 
 const framework = [
@@ -36,7 +36,7 @@ export default function MouPage() {
         image={{ src: '/assets/images/student-services/monev-tias/img-4590.jpg' }}
         eyebrow="Agreement management"
         title="MoU / MoA coordination"
-        lead={`${stats.agreementsPerMonth} agreements reviewed a month at PCU.`}
+        lead={`${stats.agreementsPerMonth} agreements reviewed a month at PETRA.`}
       />
       <SubNav />
 

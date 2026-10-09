@@ -23,7 +23,7 @@ const expertise = [
   { icon: <Heart aria-hidden />, title: 'Student welfare', back: `Support for ${stats.studentsPerSemester} international students per semester.` },
   { icon: <BarChart2 aria-hidden />, title: 'Budgets', back: `${stats.programBudget} per program, 50+ stakeholders.` },
   { icon: <Languages aria-hidden />, title: 'Interpretation', back: 'English–Indonesian at conferences and company visits.' },
-  { icon: <LayoutDashboard aria-hidden />, title: 'Systems design', back: 'SIM Kerjasama and SIM Realisasi for PCU.' },
+  { icon: <LayoutDashboard aria-hidden />, title: 'Systems design', back: 'SIM Kerjasama and SIM Realisasi for PETRA.' },
   { icon: <Code2 aria-hidden />, title: 'Digital platforms', back: 'Websites and dashboards for institutional work.' },
   { icon: <Network aria-hidden />, title: 'Systems thinking', back: 'Education, design and strategy as one whole.' },
 ]
@@ -52,7 +52,7 @@ const publications = [
 ]
 
 const focus = [
-  { icon: <Globe2 aria-hidden />, title: 'Intl. education leadership', back: 'Partnership strategy and internationalisation at PCU.' },
+  { icon: <Globe2 aria-hidden />, title: 'Intl. education leadership', back: 'Partnership strategy and internationalisation at PETRA.' },
   { icon: <LayoutDashboard aria-hidden />, title: 'Partnership systems', back: 'SIM Kerjasama and SIM Realisasi, from approvals to RENSTRA.' },
   { icon: <Network aria-hidden />, title: 'Problem solving', back: 'Education, systems thinking and design, together.' },
 ]

@@ -3,7 +3,7 @@
 
 export const simKerjasama = {
   demoUrl: 'https://sim-kerja-sama-petra.vercel.app/login',
-  tagline: 'The official system of record for every PCU MoU and MoA',
+  tagline: 'The official system of record for every PETRA MoU and MoA',
   summary:
     'SIM Kerjasama records who proposed each agreement, who approved it, when it is valid, and whether it has been renewed. Two other systems, the internationalisation KPI dashboard and SIM Realisasi, depend on it as a stable source of partnership data.',
   goals: [
@@ -15,7 +15,7 @@ export const simKerjasama = {
     'A clean partnership dataset others can reference',
     'Active partnerships visible to everyone',
     'Structured partnership evaluation data',
-    'Present officially as a PCU property, including to partners',
+    'Present officially as a PETRA property, including to partners',
   ],
   menus: [
     { name: 'Dashboard', desc: 'KPIs, global partner map, chart studio, bottlenecks' },
@@ -33,7 +33,7 @@ export const simKerjasama = {
     { group: 'Approvers', desc: 'Deans up to the Rector open only the documents waiting for them, and can request revisions instead of rejecting.' },
     { group: 'Mobility team', desc: 'Verify participants with automatic student-number lookup and recorded duplicate decisions.' },
     { group: 'Leadership', desc: 'Partnership KPIs and RENSTRA indicators ready to use, with drill-down to each activity.' },
-    { group: 'Partner institutions', desc: 'Complete evaluations through an official PCU link, without creating an account.' },
+    { group: 'Partner institutions', desc: 'Complete evaluations through an official PETRA link, without creating an account.' },
   ],
   metrics: [
     { measure: 'Documents completed in under a month', before: 'Not measured', after: 'Measured and reported' },
@@ -50,13 +50,13 @@ export const simRealisasi = {
   demoUrl: 'https://sim-realisasi.vercel.app/',
   tagline: 'From agreements on paper to real activities',
   mission:
-    'Collect, verify, store and report every activity carried out under PCU MoUs and MoAs.',
+    'Collect, verify, store and report every activity carried out under PETRA MoUs and MoAs.',
   outcomes: [
     { title: 'RENSTRA indicators', desc: 'Calculated from verified data, with drill-down to every activity.' },
     { title: 'Semester reports', desc: 'Built from frozen, reproducible snapshots.' },
     { title: 'Dormant partnerships', desc: 'Made visible, with that information fed back to SIM Kerjasama.' },
   ],
-  included: 'Activities that implement a PCU MoU or MoA recorded in SIM Kerjasama.',
+  included: 'Activities that implement a PETRA MoU or MoA recorded in SIM Kerjasama.',
   excluded: 'IISMA, free movers, government scholarships, and imports of historical data.',
   menus: [
     { name: 'Dashboard', desc: 'RENSTRA indicators and activity overview' },
@@ -117,7 +117,7 @@ export const simKerjasamaDetail = {
   objectives: [
     { theme: 'Governance', text: 'Approvals follow the official hierarchy, and every delay is visible.', goals: [0, 1, 2, 3] },
     { theme: 'Data quality', text: 'One clean, evidence-based partnership dataset that other systems can rely on.', goals: [4, 5, 7] },
-    { theme: 'Visibility', text: 'Active partnerships open to the whole university, and to partners as PCU.', goals: [6, 8] },
+    { theme: 'Visibility', text: 'Active partnerships open to the whole university, and to partners as PETRA.', goals: [6, 8] },
   ],
   institutionalBenefits: [
     { title: 'Accreditation evidence', text: 'Valid agreements and their documents are ready for BAN-PT and LAM assessors.' },
@@ -204,7 +204,7 @@ export const simRealisasiDetail = {
     ],
   },
   objectives: [
-    { title: 'Every activity on record', text: 'Collect each activity carried out under a PCU MoU or MoA, linked to that exact agreement.' },
+    { title: 'Every activity on record', text: 'Collect each activity carried out under a PETRA MoU or MoA, linked to that exact agreement.' },
     { title: 'Verified before counted', text: 'Mobility activities are checked by the IO Mobility team; only verified data reaches the numbers.' },
     { title: 'Indicators without recaps', text: 'RENSTRA 1.1, 1.19.S1 and 1.19.S4 and the International Awards come straight from the data.' },
     { title: 'Reports that stay put', text: 'Frozen semester snapshots make every report reproducible.' },
