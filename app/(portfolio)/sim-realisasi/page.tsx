@@ -30,6 +30,20 @@ const formIcons = [FileText, Users, Paperclip, Send]
 const integrationIcons = { inKerjasama: [Layers, Flag, ListChecks], inRealisasi: [FileText, BookOpen, Link2] }
 const objectiveIcons = [ClipboardCheck, ShieldCheck, Target, Camera, Flag]
 const benefitIcons = [Building, Plane, Settings, Crown, Users, UserCheck]
+const photos = '/assets/images/partnerships'
+const benefitPhotos = [
+  `${photos}/support/drone-academy-1.jpg`,
+  `${photos}/meetings/formosa-1.jpg`,
+  `${photos}/meetings/hketo-1.jpg`,
+  `${photos}/meetings/netherlands-embassy-2.jpg`,
+  `${photos}/signings/guandata-2.jpg`,
+  `${photos}/meetings/de-la-salle-2.jpg`,
+]
+const outcomePhotos = [
+  `${photos}/support/drone-academy-2.jpg`,
+  `${photos}/meetings/formosa-2.jpg`,
+  `${photos}/signings/rs-eka-candrarini-bhayangkara-1.jpg`,
+]
 
 const flow = {
   inputs: [
@@ -130,7 +144,7 @@ export default function SimRealisasiPage() {
                 <SectionHead eyebrow="Outcomes" title="Three things it delivers" size="sub" />
                 <div className="grid-3 mb-6">
                   {sim.outcomes.map((o, i) => (
-                    <Card key={o.title} tone={i === 1 ? 'midnight' : undefined}>
+                    <Card key={o.title} tone={i === 1 ? 'midnight' : undefined} image={outcomePhotos[i]}>
                       <span className={`text-[3.5rem] font-bold leading-none ${i === 1 ? 'text-amber' : 'text-accent-strong'}`}>{i + 1}</span>
                       <h3 className={`!text-xl ${i === 1 ? 'text-white' : ''}`}>{o.title}</h3>
                       <p className={`m-0 ${i === 1 ? 'text-smoke' : 'muted'}`}>{o.desc}</p>
@@ -291,7 +305,7 @@ export default function SimRealisasiPage() {
               <div className="grid-3">
                 {detail.benefits.map((b, i) => {
                   const Icon = benefitIcons[i]
-                  return <FlipCard key={b.group} icon={<Icon aria-hidden />} title={b.group} back={b.desc} tone={i % 2 ? 'midnight' : 'white'} />
+                  return <FlipCard key={b.group} icon={<Icon aria-hidden />} title={b.group} back={b.desc} image={benefitPhotos[i]} />
                 })}
               </div>
             </div>

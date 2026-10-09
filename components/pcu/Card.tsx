@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -11,11 +12,13 @@ type Props = {
   shape?: React.ReactNode
   /** Classes for the inner content wrapper (default: a vertical stack). */
   bodyClassName?: string
+  /** A decorative photo across the top of the card, edge to edge. */
+  image?: string
   children: React.ReactNode
 }
 
 /** Brand card (.pcu-card): 8px radius, space-6 padding, shadow-card. `theme` puts it on the section gradient. */
-export function Card({ tone = 'white', href, className, shape, bodyClassName, children }: Props) {
+export function Card({ tone = 'white', href, className, shape, bodyClassName, image, children }: Props) {
   const cls = cn(
     'pcu-card flex flex-col',
     tone === 'midnight' && 'pcu-card--midnight',
@@ -26,6 +29,11 @@ export function Card({ tone = 'white', href, className, shape, bodyClassName, ch
   )
   const body = (
     <>
+      {image && (
+        <div className="relative h-40 -mx-[var(--pcu-space-6)] -mt-[var(--pcu-space-6)] mb-[var(--pcu-space-5)]">
+          <Image src={image} alt="" fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" />
+        </div>
+      )}
       {shape}
       <div className={cn('relative flex flex-1 flex-col gap-3', bodyClassName)}>{children}</div>
     </>
