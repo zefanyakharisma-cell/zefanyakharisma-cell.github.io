@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { PageHero, Shape, Stat, ThemeBand } from '@/components/pcu'
 import ProjectGrid from '@/components/projects/ProjectGrid'
 import { stats } from '@/lib/data/profile'
+import { pageMeta } from '@/lib/og'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/projects-overview', {
   title: 'Projects',
-  alternates: { canonical: '/projects-overview' },
   description: 'Flagship programs AMERTA, ACI and AERO at Universitas Airlangga, and the SIM Kerjasama and SIM Realisasi systems at Petra Christian University.',
-}
+})
 
 export default function ProjectsOverview() {
   return (

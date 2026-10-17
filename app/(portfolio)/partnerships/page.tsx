@@ -9,15 +9,15 @@ import { CONTINENT, countBy, DOM_DATA, INTL_DATA } from '@/lib/data/partners'
 import { stats } from '@/lib/data/profile'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/partnerships', {
   title: 'Partnership Development',
-  alternates: { canonical: '/partnerships' },
   description: 'PETRA partnerships mapped: 505+ partners across 32 countries and 52 Indonesian cities.',
-}
+})
 
 const enables = [
   { icon: <BookOpen aria-hidden />, title: 'Student exchange', back: 'Semester abroad, dual-degree and degree-level mobility.' },

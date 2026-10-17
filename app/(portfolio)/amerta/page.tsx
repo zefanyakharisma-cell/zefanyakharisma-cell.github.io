@@ -12,15 +12,15 @@ import { DATA } from '@/lib/data/amerta'
 import { stats } from '@/lib/data/profile'
 import { buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/amerta', {
   title: 'AMERTA',
-  alternates: { canonical: '/amerta' },
   description: 'AMERTA, Universitas Airlangga\'s semester exchange: 207 students from 14 countries across four batches, mapped and charted.',
-}
+})
 
 const GALLERY_IMAGES = [
   '/assets/images/amerta/img-0570.jpg', '/assets/images/amerta/img-0576.jpg',

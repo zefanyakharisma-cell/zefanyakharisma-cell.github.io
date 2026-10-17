@@ -9,15 +9,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { Treemap } from '@/components/viz/Treemap'
 import { AERO_BUDGET, contributions, GALLERY_IMAGES, highlights, INSTITUTIONS } from '@/lib/data/aero'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/aero', {
   title: 'AERO 2025',
-  alternates: { canonical: '/aero' },
   description: 'AERO, Airlangga Expanding Reach & Opportunities: the annual internationalisation exhibition at Universitas Airlangga.',
-}
+})
 
 const highlightIcons = [Building2, Mic, Globe, Users]
 const contributionIcons = [CalendarCheck, Receipt, Building2, Megaphone]

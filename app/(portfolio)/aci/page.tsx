@@ -12,15 +12,15 @@ import { WorldMap } from '@/components/viz/WorldMap'
 import { DATA, type Sat } from '@/lib/data/aci'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/aci', {
   title: 'ACI',
-  alternates: { canonical: '/aci' },
   description: 'Airlangga Cultural Immersion: 191 participants, 4 batches and 3 cities in Java, mapped and charted.',
-}
+})
 
 const GALLERY_IMAGES = [
   '/assets/images/aci/aci-1.jpg',

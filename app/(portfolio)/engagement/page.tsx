@@ -3,12 +3,12 @@ import { Button, Card, PageHero, PhotoCard, Reveal, SectionHead, Shape, Stat, Th
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
+import { pageMeta } from '@/lib/og'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/engagement', {
   title: 'International Education',
-  alternates: { canonical: '/engagement' },
   description: `Supporting ${stats.studentsPerSemester} international students per semester across welfare, mobility, engagement and partnership programs at Airlangga Global Engagement and Petra Christian University.`,
-}
+})
 
 const areas = [
   { href: '/onboarding', src: '/assets/images/student-services/knb-orientation-2025/img-8471.jpg', alt: 'KNB scholarship students at orientation', tag: `${stats.studentsPerSemester} / semester`, title: 'Student support', text: 'Arrival to departure' },

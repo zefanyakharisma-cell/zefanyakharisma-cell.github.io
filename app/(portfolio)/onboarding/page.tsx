@@ -10,15 +10,15 @@ import { stats } from '@/lib/data/profile'
 import { amertaNations, gender, inboundNations, studentPrograms, studyLevel } from '@/lib/data/students'
 import { buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/onboarding', {
   title: 'International Student Support',
-  alternates: { canonical: '/onboarding' },
   description: `Support for ${stats.studentsPerSemester} international students per semester, from arrival to departure: visas, welfare, scholarships and peer mentoring at Airlangga Global Engagement.`,
-}
+})
 
 const KNB_GALLERY = [
   '/assets/images/student-services/knb-orientation-2025/img-8467.jpg',
