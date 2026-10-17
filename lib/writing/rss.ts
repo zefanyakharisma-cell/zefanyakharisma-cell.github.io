@@ -1,8 +1,7 @@
 import 'server-only'
 import { pick, postPath, type Lang } from './config'
+import { SITE_URL } from '@/lib/seo'
 import { listPosts } from './posts'
-
-const SITE_URL = 'https://zefanyakharisma.com'
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 

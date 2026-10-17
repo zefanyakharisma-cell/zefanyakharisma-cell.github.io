@@ -2,13 +2,11 @@ import { Header } from '@/components/pcu/Header'
 import { Footer } from '@/components/pcu/Footer'
 import { MotionObserver } from '@/components/pcu/MotionObserver'
 import { RouteProgress } from '@/components/pcu/RouteProgress'
-import { Splash } from '@/components/pcu/Splash'
 import { ThemeScope } from '@/components/pcu/ThemeScope'
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeScope>
-      <Splash />
       <MotionObserver />
       <RouteProgress />
       <a href="#main-content" className="skip-to-content">Skip to main content</a>

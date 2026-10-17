@@ -164,7 +164,7 @@ img { max-width: 100%; }
 [data-motion="on"] .rv:not(.rv-done) .pcu-shape { transition: opacity var(--dur-3) var(--ease-out), scale var(--dur-3) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--stagger) + 150ms); }
 [data-motion="on"] .rv:not(.is-in) .pcu-shape { opacity: 0; scale: .85; }
 
-/* Page heroes: content steps in line by line; waits for the first-visit splash. */
+/* Page heroes: content steps in line by line. */
 [data-motion="on"] .hero-seq > * { animation: hero-in .6s var(--ease-out) both; }
 .hero-seq > :nth-child(2) { animation-delay: 90ms; }
 .hero-seq > :nth-child(3) { animation-delay: 180ms; }
@@ -188,7 +188,6 @@ img { max-width: 100%; }
 [data-motion="on"] .hero-glow::before, [data-motion="on"] .hero-glow::after { animation: glow-drift 24s ease-in-out infinite alternate; }
 [data-motion="on"] .hero-glow::after { animation-duration: 30s; animation-direction: alternate-reverse; }
 @keyframes glow-drift { to { translate: 30px 20px; } }
-html:not([data-splash="seen"]) :is(.hero-seq > *, .hero-art > *, .page-hero .theme-ring, .hero-photo, .page-enter) { animation-play-state: paused; }
 
 /* Pattern divider appears tile by tile; linework rings rise from their base. */
 [data-motion="on"] .pattern-band:not(.is-in) { clip-path: inset(0 100% 0 0); }

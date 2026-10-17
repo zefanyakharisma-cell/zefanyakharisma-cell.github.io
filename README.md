@@ -14,7 +14,14 @@ npx tsc --noEmit   # type-check
 npm run build      # every route is prerendered as static HTML
 ```
 
-`NEXT_PUBLIC_SITE_URL` is optional; it defaults to `https://zefanyakharisma.com` and is used for canonical URLs, the sitemap and structured data.
+`NEXT_PUBLIC_SITE_URL` is optional; it defaults to `https://zefanyakharisma.com` and is used for canonical URLs, the sitemap and structured data (`SITE_URL` in `lib/seo.ts`; import it rather than hard-coding the domain).
+
+Search engine verification is optional too. Set either in Vercel and the matching `<meta>` tag appears on every page; unset, nothing is emitted:
+
+```bash
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=<token from Google Search Console, HTML tag method>
+NEXT_PUBLIC_BING_SITE_VERIFICATION=<token from Bing Webmaster Tools (msvalidate.01)>
+```
 
 For the Writing section, put these in `.env.local` (and in Vercel → Settings → Environment Variables):
 
@@ -37,6 +44,7 @@ Without them `/writing` shows an empty state and `/admin` explains what is missi
 | `lib/data/discovery.ts` | Items and skill tags for the skill explorer. |
 | `lib/data/countries.ts` | Country → ISO code, shown as chips (the site uses no emoji flags). |
 | `lib/nav.ts` | Main navigation, the Intl. Ed sub-navigation, and the sitemap route list. Add new pages here. |
+| `lib/seo.ts`, `components/seo/JsonLd.tsx` | `SITE_URL`, absolute URLs, breadcrumb labels; `<JsonLd data>` and `<BreadcrumbJsonLd path>` for schema.org structured data. |
 | `app/(portfolio)/writing/` | Public Writing pages: index, `[slug]` (English), `[slug]/id` (Indonesian), share images, RSS (`rss.xml`, `rss-id.xml`). |
 | `app/admin/` | Writing admin: login, post list, editor, preview. Server actions in `actions.ts`. |
 | `lib/writing/` | Streams, types and related pages (`config.ts`), public queries (`posts.ts`), editor schema and HTML generation. |
@@ -62,6 +70,15 @@ Rules worth keeping:
 - Text on light backgrounds is midnight or black (secondary `#46505c`, muted `#5f6b78`); accents (amber, teal, blue, cerise) are for shapes and charts only.
 - Charts use the validated series order in `lib/chart.ts` and always print their values as text.
 - Focus is a 3px amber ring. No emoji.
+
+## SEO
+
+- `app/layout.tsx` emits the site-wide JSON-LD `@graph` (WebSite + Person, `@id` `${SITE_URL}/#person`), the root metadata and the verification tags.
+- **Add `<BreadcrumbJsonLd path="/your-page" />` to every new sub-page.** It builds Home → section overview → page from `lib/nav.ts`; a page missing from `intlNav` gets its label from `pageTitles` in `lib/seo.ts` (or pass `title`).
+- Use `<JsonLd data={...} />` for any other structured data; it escapes `<` so content can't close the script.
+- Writing posts get BlogPosting + BreadcrumbList JSON-LD, hreflang alternates (with `x-default`) and Twitter cards from `app/(portfolio)/writing/[slug]/shared.tsx`. Indonesian posts set `<html lang="id">` with a small inline script (`id/HtmlLang.tsx`), since the root layout stays static.
+- `app/sitemap.ts` and `app/robots.ts` (which disallows `/admin` and `/api`) read `SITE_URL`.
+- Vercel Speed Insights (`@vercel/speed-insights`) is rendered in the root layout; enable it in Vercel → Project → Speed Insights to see real-user Core Web Vitals.
 
 ## Images
 
