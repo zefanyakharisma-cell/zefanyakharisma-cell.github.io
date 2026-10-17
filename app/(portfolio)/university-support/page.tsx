@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { BarChart2, Building2, Coins, Compass, FileCheck, LayoutDashboard, MessagesSquare, Rocket } from 'lucide-react'
 import { Button, FlipCard, PageHero, PhotoWall, Reveal, SectionHead, Stat, Tag, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
@@ -7,13 +8,14 @@ import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/university-support', {
-  title: 'University Support on Partnership',
-  description: `How I support PETRA's faculties and units on partnership: finding partners, preparing agreements, hosting visits and launches, and the systems that track it all.`,
+  title: 'University Partnership Support at PETRA',
+  description: `Supporting faculties and units at Petra Christian University on partnership: partner matching, ${stats.agreementsPerMonth} agreement reviews and ${stats.meetingsPerMonth} meetings a month, launches.`,
 })
 
 const launches = engagementsOf('support')
@@ -39,11 +41,12 @@ const links = [
 export default function UniversitySupportPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/university-support" />
       <PageHero
         image={{ src: '/assets/images/partnerships/support/drone-academy-2.jpg' }}
         eyebrow="Partnerships · PETRA"
         title="University support on partnership"
-        lead="Helping faculties and units turn partners into programs."
+        lead="Helping faculties and units at Petra Christian University (PETRA) turn partners into programs."
         aside={<Stat amber value={stats.partners} label="Partners managed for the university" className="flex-[0_1_260px]" />}
       />
       <SubNav />
@@ -77,7 +80,11 @@ export default function UniversitySupportPage() {
       <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="section decor-glow-br">
         <div className="wrap">
-          <SectionHead eyebrow="See the work" title="Where the support shows" />
+          <SectionHead
+            eyebrow="See the work"
+            title="Where the support shows"
+            lead={<>Activities that come out of this support are reported through <Link href="/sim-realisasi">SIM Realisasi</Link>.</>}
+          />
           <div className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))]">
             {links.map((l, i) => (
               <Reveal key={l.href} delay={i * 60} className="pcu-card flex flex-col gap-3 h-full">

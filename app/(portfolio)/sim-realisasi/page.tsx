@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import {
   ArrowLeftRight, ArrowRight, BookOpen, Building, Camera, ChartColumn, Check, ClipboardCheck, Crown, Database, FileDown, FileText, Flag, Layers, Link2,
   ListChecks, Minus, MonitorPlay, Paperclip, Plane, Plus, Send, Settings, ShieldCheck, Target, Trophy, UserCheck, Users, X,
@@ -14,13 +15,14 @@ import { simRealisasi as sim, simRealisasiDetail as detail } from '@/lib/data/si
 import { simRealisasiDev } from '@/lib/data/simDev'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/sim-realisasi', {
-  title: 'SIM Realisasi',
-  description: `${sim.mission} Business process, objectives, benefits and a live demo.`,
+  title: 'SIM Realisasi: MoU Activity Reporting',
+  description: 'Sistem Informasi Manajemen (SIM) Realisasi collects, verifies and reports every activity under PETRA MoUs and MoAs as RENSTRA strategic plan indicators.',
 })
 
 const menuIcons = [ChartColumn, BookOpen, Plus, Users, FileDown, Settings, Link2]
@@ -74,12 +76,13 @@ function Cell({ v }: { v: string | boolean }) {
 export default function SimRealisasiPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/sim-realisasi" />
       <PageHero
         image={{ src: '/assets/images/partnerships/meetings/de-la-salle-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Realisasi"
-        lead={sim.mission}
+        lead="Sistem Informasi Manajemen (SIM) Realisasi collects, verifies, stores and reports every activity carried out under Petra Christian University (PETRA) MoUs and MoAs, counted toward RENSTRA (Rencana Strategis), the university's strategic plan."
         shapes={<>
           <Shape kind="ring-u" color="teal" className="right-[6%] top-0 w-[300px]" />
           <Shape kind="circle" color="amber" className="right-[30%] bottom-10 w-14" />
@@ -305,7 +308,11 @@ export default function SimRealisasiPage() {
 
           <section className="section section--smoke decor-grid">
             <div className="wrap">
-              <SectionHead eyebrow="Benefits · Manfaat" title="Who gains what" lead="Tap a card." />
+              <SectionHead
+                eyebrow="Benefits · Manfaat"
+                title="Who gains what"
+                lead={<>Tap a card. See also <Link href="/university-support">university support on partnership</Link> and <Link href="/intl-grants">international grants management</Link>.</>}
+              />
               <div className="grid-3">
                 {detail.benefits.map((b, i) => {
                   const Icon = benefitIcons[i]

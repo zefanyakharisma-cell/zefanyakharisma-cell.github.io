@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import {
   Award, Bookmark, Calendar, CheckCircle, ClipboardList, Flag, GitMerge, Layers, Megaphone, PieChart, Plane, Search, Send, UploadCloud, Users, Zap,
 } from 'lucide-react'
@@ -7,13 +8,14 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/intl-grants', {
-  title: 'International Grants Management',
-  description: 'A system to inform, maintain and execute international grants at Petra Christian University: a digital dashboard and a physical operational workflow.',
+  title: 'International Grants Management System',
+  description: 'A system in development to inform, maintain and execute international grants at Petra Christian University: a digital dashboard, a physical workflow, 5 stages.',
 })
 
 const pipeline = [
@@ -48,18 +50,23 @@ const physical = [
 export default function IntlGrantsPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/intl-grants" />
       <PageHero
         image={{ src: '/assets/images/student-services/tailor-made/griffith-unair-3.jpg' }}
         eyebrow="International Education · PETRA"
         tags={['In development']}
         title="International grants management"
-        lead="One dashboard and one physical workflow for every grant."
+        lead="One dashboard and one physical workflow for every grant at Petra Christian University (PETRA)."
       />
       <SubNav />
 
       <section className="section decor-glow-tr">
         <div className="wrap">
-          <SectionHead eyebrow="Pipeline" title="Five stages per grant" />
+          <SectionHead
+            eyebrow="Pipeline"
+            title="Five stages per grant"
+            lead={<>Many grants open up through partners; see <Link href="/university-support">university support on partnership</Link> and how partnership activities are counted in <Link href="/sim-realisasi">SIM Realisasi</Link>.</>}
+          />
           <Lifecycle steps={pipeline} label="International grant pipeline" />
           <Details summary="Why it's being built" className="mt-6">
             Grant information at PETRA was spread across emails, shared drives and spreadsheets. The system gives faculty, staff and students one

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { BarChart2, Handshake, HeartHandshake, Workflow } from 'lucide-react'
 import { Button, FlipCard, PhotoCard, Reveal, SectionHead, Shape, Stat, Card, Tag, ThemeBand } from '@/components/pcu'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
@@ -10,10 +11,13 @@ import { stats } from '@/lib/data/profile'
 import { DATA as AMERTA } from '@/lib/data/amerta'
 import { inboundNations } from '@/lib/data/students'
 import { buildWorldMap, mergeCounts } from '@/lib/geo'
+import { pageMeta } from '@/lib/og'
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
-}
+export const metadata: Metadata = pageMeta('/', {
+  title: 'Zefanya Kharisma Nugroho — International Partnership Specialist',
+  absolute: true,
+  description: `International Partnership Specialist at Petra Christian University (PETRA), Surabaya, Indonesia: ${stats.partners} partners and ${stats.agreementsPerMonth} MoU/MoA reviews a month.`,
+})
 
 const strip = [
   '/assets/images/amerta/img-0570.jpg', '/assets/images/aci/aci-1.jpg', '/assets/images/aero/aero-3.jpg',
@@ -45,7 +49,11 @@ export default function Home() {
           <div className="hero-seq flex flex-col gap-6 min-w-0 flex-[1_1_440px]">
             <span className="pcu-eyebrow text-accent-strong">International Education · Surabaya</span>
             <h1 className="h-page">Partnerships, students, systems.</h1>
-            <p className="lead">International Partnership Specialist, Petra Christian University.</p>
+            <p className="lead">
+              International Partnership Specialist at Petra Christian University (PETRA), Surabaya, where I built the{' '}
+              <Link href="/sim-kerjasama">SIM Kerjasama partnership system</Link>. Formerly at Universitas Airlangga (UNAIR), running the{' '}
+              <Link href="/amerta">AMERTA semester exchange</Link>.
+            </p>
             <div className="flex flex-wrap gap-3">
               <Button href="/projects-overview">See projects</Button>
               <Button href="/about-overview" variant="outline" className="text-midnight">About me</Button>

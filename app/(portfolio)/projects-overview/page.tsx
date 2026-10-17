@@ -3,20 +3,22 @@ import { PageHero, Shape, Stat, ThemeBand } from '@/components/pcu'
 import ProjectGrid from '@/components/projects/ProjectGrid'
 import { stats } from '@/lib/data/profile'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 export const metadata: Metadata = pageMeta('/projects-overview', {
-  title: 'Projects',
-  description: 'Flagship programs AMERTA, ACI and AERO at Universitas Airlangga, and the SIM Kerjasama and SIM Realisasi systems at Petra Christian University.',
+  title: 'Projects: Exchange Programs and Systems',
+  description: `AMERTA, ACI and AERO at Universitas Airlangga, and the SIM Kerjasama and SIM Realisasi systems at Petra Christian University: ${stats.amertaParticipants} exchange students.`,
 })
 
 export default function ProjectsOverview() {
   return (
     <>
+      <BreadcrumbJsonLd path="/projects-overview" />
       <PageHero
         image={{ src: '/assets/images/amerta/amerta-1.jpg' }}
         eyebrow="Projects"
         title={<span className="block max-w-[14ch]">Programs run, systems built</span>}
-        lead="Three programs at Universitas Airlangga, two systems at Petra Christian University."
+        lead="Three programs at Universitas Airlangga (UNAIR), two systems at Petra Christian University (PETRA)."
         shapes={<>
           <Shape kind="ring-n" className="theme-ring -right-14 bottom-0 w-[360px] hidden sm:block" />
           <Shape kind="circle" color="amber" className="right-[320px] top-12 w-14" />

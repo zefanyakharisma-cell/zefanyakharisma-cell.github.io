@@ -134,11 +134,15 @@ export function ogAlt(route: Route) {
   return `${title} — ${eyebrow}`
 }
 
-/** Page metadata whose Open Graph and Twitter text match the page, not the site default. */
-export function pageMeta(route: Route, { title, description }: { title?: string; description: string }): Metadata {
-  const full = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — International Education Professional`
+/** Page metadata whose Open Graph and Twitter text match the page, not the site default.
+ *  `absolute` uses the title as given, without the "— name" suffix (the home page). */
+export function pageMeta(
+  route: Route,
+  { title, description, absolute = false }: { title?: string; description: string; absolute?: boolean },
+): Metadata {
+  const full = title ? (absolute ? title : `${title} — ${SITE_NAME}`) : `${SITE_NAME} — International Education Professional`
   return {
-    ...(title && { title }),
+    ...(title && { title: absolute ? { absolute: title } : title }),
     description,
     alternates: { canonical: route },
     openGraph: { type: 'website', siteName: SITE_NAME, locale: 'en_US', url: route, title: full, description },

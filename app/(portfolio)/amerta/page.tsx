@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import Image from 'next/image'
 import { BookOpenCheck, ClipboardCheck, Mail, Mountain, PartyPopper, PlaneLanding, Presentation, Users } from 'lucide-react'
 import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
@@ -13,13 +14,14 @@ import { stats } from '@/lib/data/profile'
 import { buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/amerta', {
-  title: 'AMERTA',
-  description: 'AMERTA, Universitas Airlangga\'s semester exchange: 207 students from 14 countries across four batches, mapped and charted.',
+  title: 'AMERTA Exchange, Universitas Airlangga',
+  description: `AMERTA, the Universitas Airlangga (UNAIR) semester exchange program: ${DATA.all.students} students from ${DATA.all.countries} countries and ${DATA.all.uniCount} partner universities over four batches.`,
 })
 
 const GALLERY_IMAGES = [
@@ -91,13 +93,14 @@ export default function Amerta() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/amerta" />
       <PageHero
         image={{ src: '/assets/images/amerta/img-3867.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Exchange program', 'Universitas Airlangga']}
         kicker="Airlangga Mobility, Exchange, Research & Transfer Academic"
         title="AMERTA"
-        lead="Airlangga's flagship semester exchange, run end to end for four batches."
+        lead="The flagship semester exchange at Universitas Airlangga (UNAIR), run end to end for four batches."
       />
 
       <div className="wrap">
@@ -164,7 +167,11 @@ export default function Amerta() {
       <section className="section relative overflow-hidden decor-glow-br">
         <Shape kind="quarter-bl" color="amber" className="w-[120px] right-0 top-0 hidden md:block" />
         <div className="wrap">
-          <SectionHead eyebrow="Process" title="Eight steps, one journey" />
+          <SectionHead
+            eyebrow="Process"
+            title="Eight steps, one journey"
+            lead={<>Arrival and welfare continue as <Link href="/onboarding">international student support</Link>; the culture step includes weekend trips with <Link href="/aci">Airlangga Cultural Immersion</Link>.</>}
+          />
           <Lifecycle steps={steps} label="AMERTA program journey" />
         </div>
       </section>

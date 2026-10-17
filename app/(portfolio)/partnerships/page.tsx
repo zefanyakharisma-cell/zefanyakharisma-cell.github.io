@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { BookOpen, Handshake, Layers, Microscope, Search, TrendingUp, Users, FileCheck } from 'lucide-react'
 import { BarList, Details, FlipCard, PageHero, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
@@ -10,13 +11,14 @@ import { stats } from '@/lib/data/profile'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/partnerships', {
-  title: 'Partnership Development',
-  description: 'PETRA partnerships mapped: 505+ partners across 32 countries and 52 Indonesian cities.',
+  title: 'University Partnership Development',
+  description: 'International and domestic partnership development at Petra Christian University (PETRA), Surabaya: 505+ partners in 32 countries and 52 Indonesian cities.',
 })
 
 const enables = [
@@ -41,11 +43,12 @@ export default function PartnershipsPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/partnerships" />
       <PageHero
         image={{ src: '/assets/images/student-services/tailor-made/ljmu-unair-2.jpg' }}
         eyebrow="Global partnerships"
         title="Partnership development"
-        lead={`${stats.partners} partners managed, ${stats.meetingsPerMonth} meetings a month.`}
+        lead={`${stats.partners} partners managed at Petra Christian University (PETRA), ${stats.meetingsPerMonth} meetings a month.`}
       />
       <SubNav />
 
@@ -90,7 +93,11 @@ export default function PartnershipsPage() {
       <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="section section--smoke decor-grid">
         <div className="wrap">
-          <SectionHead eyebrow="My approach" title="Four phases" />
+          <SectionHead
+            eyebrow="My approach"
+            title="Four phases"
+            lead={<>Most partnerships start with a <Link href="/strategic-meetings">strategic partner meeting</Link> and become formal through the <Link href="/signing">MoU and MoA signing process</Link>.</>}
+          />
           <Lifecycle steps={approach} label="How I build partnerships" />
           <Details className="mt-6">
             Every partnership moves from identification to growth. I evaluate fit with PETRA&apos;s academic strengths, negotiate terms that serve

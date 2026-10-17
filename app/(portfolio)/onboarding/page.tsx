@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Award, Globe, GraduationCap, Heart, ShieldCheck, Users } from 'lucide-react'
 import { Card, FlipCard, PageHero, Reveal, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
@@ -11,13 +12,14 @@ import { amertaNations, gender, inboundNations, studentPrograms, studyLevel } fr
 import { buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/onboarding', {
-  title: 'International Student Support',
-  description: `Support for ${stats.studentsPerSemester} international students per semester, from arrival to departure: visas, welfare, scholarships and peer mentoring at Airlangga Global Engagement.`,
+  title: 'International Student Support, KNB & TIAS',
+  description: `Support for ${stats.studentsPerSemester} international students a semester at Universitas Airlangga: visas, welfare, KNB and TIAS scholarship monitoring, Best Buddies mentoring.`,
 })
 
 const KNB_GALLERY = [
@@ -44,11 +46,12 @@ const toCounts = (list: { name: string; count: number }[]) => Object.fromEntries
 export default function OnboardingPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/onboarding" />
       <PageHero
         image={{ src: '/assets/images/student-services/arrival-tias-2025/arrival-tias-2025-1.jpg' }}
         eyebrow="Student welfare & mobility"
         title="International student support"
-        lead="Visas, welfare, scholarships and mentoring, arrival to departure."
+        lead="Visas, welfare, KNB (Kemitraan Negara Berkembang) and TIAS scholarships, and mentoring, arrival to departure, at Airlangga Global Engagement, Universitas Airlangga (UNAIR)."
         aside={<Stat amber value={stats.studentsPerSemester} label="International students per semester" className="flex-[0_1_260px]" />}
       />
       <SubNav />
@@ -65,7 +68,11 @@ export default function OnboardingPage() {
 
       <section className="section !pt-0 decor-ring-bl">
         <div className="wrap">
-          <SectionHead eyebrow="Reach" title="Where students came from" lead="Top nationalities per group." />
+          <SectionHead
+            eyebrow="Reach"
+            title="Where students came from"
+            lead={<>Top nationalities per group, including students on the <Link href="/amerta">AMERTA semester exchange</Link>. Weekend trips across Java ran as <Link href="/aci">Airlangga Cultural Immersion</Link>.</>}
+          />
           <Reveal>
             <MapSwitch
               label="Student nationalities"
