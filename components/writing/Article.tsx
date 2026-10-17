@@ -5,6 +5,7 @@ import { Card, PageHero, SectionHead } from '@/components/pcu'
 import { withHeadingIds } from '@/lib/writing/headings'
 import { formatDate, postPath, postTypes, relatedPageLabel, streams, ui, type Lang } from '@/lib/writing/config'
 import type { Post, PostSummary } from '@/lib/writing/posts'
+import { AdminLink } from './AdminLink'
 import { PostCard } from './PostCard'
 
 const SITE_URL = 'https://zefanyakharisma.com'
@@ -35,6 +36,7 @@ export function Article({ post, lang, related = [], preview }: { post: Post; lan
           ) : !hasOther ? (
             <span className="text-sm" lang={other}>{copy.translationPending}</span>
           ) : null}
+          {!preview && <AdminLink href={`/admin/posts/${post.id}`} label="Edit this post" className="pcu-btn--accent" />}
         </div>
       </PageHero>
 

@@ -14,7 +14,7 @@ export function Footer() {
         <div className="foot-row">
           <span>© 2026 Zefanya Kharisma Nugroho · Surabaya, Indonesia</span>
           <span>
-            <a href={`mailto:${contact.email}`}>Email</a> · <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={`mailto:${contact.email}`}>Email</a> · <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/admin">Admin</a>
           </span>
         </div>
       </div>

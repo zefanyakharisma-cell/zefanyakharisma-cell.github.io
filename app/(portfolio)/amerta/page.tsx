@@ -170,7 +170,7 @@ export default function Amerta() {
       </section>
 
       <div aria-hidden className="pcu-pattern pattern-band" />
-      <section className="section !pt-0 decor-ring-tr">
+      <section className="section decor-ring-tr">
         <div className="wrap">
           <SectionHead eyebrow="Gallery" title="Moments" />
           <PhotoWall images={GALLERY_IMAGES} alt="AMERTA exchange activity" />
