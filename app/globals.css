@@ -107,6 +107,20 @@ img { max-width: 100%; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .animate-\[marquee_60s_linear_infinite\] { animation: none; } }
 
+/* Writing index: stream filter tiles and the featured post. */
+.stream-tile { display: flex; align-items: flex-start; gap: 16px; padding: var(--pcu-space-6); border-radius: var(--pcu-radius-md); border: 1.5px solid var(--line, rgba(25,48,75,.16)); background: var(--white); color: var(--midnight); font: inherit; cursor: pointer; transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+.stream-tile:hover { border-color: var(--midnight); transform: translateY(-1px); }
+.stream-tile--on { border-color: var(--midnight); box-shadow: inset 0 0 0 1.5px var(--midnight), 0 12px 32px -16px rgba(25,48,75,.35); }
+.stream-tile__blurb { font-size: .9375rem; line-height: 1.5; color: var(--text-secondary); }
+.stream-tile__count { margin-top: 4px; font: 600 .75rem/1 var(--pcu-font-inter); letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted, #5f6b78); }
+.stream-tile--on .stream-tile__count { color: var(--midnight); }
+.pcu-card.post-feature { display: grid; grid-template-columns: minmax(0, 1fr); padding: 0; transition: transform .15s ease; }
+.post-feature:hover { transform: translateY(-1px); }
+.post-feature__media { position: relative; overflow: hidden; aspect-ratio: 16 / 10; }
+.post-feature__body { display: flex; flex-direction: column; gap: 14px; padding: clamp(24px, 3vw, 40px); }
+@media (min-width: 768px) { .pcu-card.post-feature { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } .post-feature__media { aspect-ratio: auto; min-height: 320px; } }
+@media (prefers-reduced-motion: reduce) { .stream-tile, .post-feature { transition: none; } .stream-tile:hover, .post-feature:hover { transform: none; } }
+
 /* Writing: article layout and body typography (HTML generated from the editor). */
 .article-layout { display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); max-width: 960px; margin: 0 auto; }
 @media (min-width: 1024px) { .article-layout:has(.article-toc) { grid-template-columns: 220px minmax(0, 1fr); } }

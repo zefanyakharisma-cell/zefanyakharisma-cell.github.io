@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { Database, Globe2, Users } from 'lucide-react'
-import { Card, IconBadge, PageHero, SectionHead } from '@/components/pcu'
+import { Rss } from 'lucide-react'
+import { PageHero } from '@/components/pcu'
+import { AdminLink } from '@/components/writing/AdminLink'
 import { WritingIndex } from '@/components/writing/WritingIndex'
-import { streams } from '@/lib/writing/config'
 import { listPosts } from '@/lib/writing/posts'
 
 export const revalidate = 300
@@ -16,8 +16,6 @@ export const metadata: Metadata = {
   },
 }
 
-const streamIcons = { global: Globe2, people: Users, systems: Database }
-
 export default async function WritingPage() {
   const posts = await listPosts()
   return (
@@ -26,33 +24,17 @@ export default async function WritingPage() {
         eyebrow="Writing"
         title="Where diplomacy, people and systems meet."
         lead="Essays, reflections and field notes from an international office: how partnerships between countries really work, how to look after the people who make them happen, and the systems and databases that keep it all running."
-      />
+      >
+        <div className="flex flex-wrap items-center gap-3">
+          <a href="/writing/rss.xml" className="pcu-btn pcu-btn--inverse"><Rss aria-hidden size={16} /> RSS (English)</a>
+          <a href="/writing/rss-id.xml" className="pcu-btn pcu-btn--outline text-white" hrefLang="id" lang="id"><Rss aria-hidden size={16} /> RSS (Bahasa Indonesia)</a>
+          <AdminLink href="/admin" label="Manage posts" className="pcu-btn--accent" />
+        </div>
+      </PageHero>
 
       <section className="section">
         <div className="wrap">
-          <SectionHead eyebrow="Three streams" title="What I write about" />
-          <div className="grid-3">
-            {(Object.keys(streams) as (keyof typeof streams)[]).map(k => (
-              <Card key={k} bodyClassName="!gap-4">
-                <IconBadge icon={streamIcons[k]} />
-                <h3 className="m-0 text-xl text-midnight">{streams[k].en}</h3>
-                <p className="m-0 muted">{streams[k].blurb}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--smoke">
-        <div className="wrap">
-          <SectionHead eyebrow="Latest" title="All writing" />
-          {posts === null ? (
-            <p className="lead m-0">The writing is not available right now. Please check back in a little while.</p>
-          ) : posts.length === 0 ? (
-            <p className="lead m-0">The first pieces are on their way.</p>
-          ) : (
-            <WritingIndex posts={posts} />
-          )}
+          <WritingIndex posts={posts ?? []} unavailable={posts === null} />
         </div>
       </section>
     </>

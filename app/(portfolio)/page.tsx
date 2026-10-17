@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       <div aria-hidden className="pcu-pattern pattern-band" />
-      <section className="section--smoke pt-2 pb-10">
+      <section className="section--smoke pt-10 pb-10">
         <div className="wrap grid-4 !gap-8">
           <Stat value={stats.amertaParticipants} label="AMERTA students" />
           <Stat value={stats.studentsPerSemester} label="Students per semester" />
