@@ -242,7 +242,9 @@ html[data-splash="seen"] .pcu-splash { display: none; }
 .decor-ring-bl::after, .decor-ring-tr::after { content: ""; position: absolute; z-index: -1; pointer-events: none; width: 340px; aspect-ratio: 2/1; border: 1.5px solid rgba(56,128,208,.35); border-bottom: 0; border-radius: 340px 340px 0 0; }
 .decor-ring-bl::after { left: -90px; bottom: 0; }
 .decor-ring-tr::after { right: -90px; top: 0; transform: rotate(180deg); }
-.pattern-band { height: 12px; background-size: 48px 48px; background-repeat: repeat-x; }
+/* Pattern divider: two whole rows of the 160px brand tile (never a cropped sliver). */
+.pattern-band { height: 48px; background-size: 96px 96px; background-repeat: repeat-x; background-position: center top; }
+@media (max-width: 640px) { .pattern-band { height: 32px; background-size: 64px 64px; } }
 .hero-glow { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .hero-glow::before, .hero-glow::after { content: ""; position: absolute; border-radius: 50%; width: min(620px, 90vw); aspect-ratio: 1; }
 .hero-glow::before { top: -260px; left: -200px; background: radial-gradient(circle, var(--glow-hero-1), transparent 65%); }
