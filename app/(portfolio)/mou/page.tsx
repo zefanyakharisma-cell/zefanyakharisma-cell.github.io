@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Archive, BarChart2, Building, CheckSquare, FileCheck, FilePen, Handshake, PenTool, RefreshCw, ShieldCheck, Zap } from 'lucide-react'
 import { Button, Card, Details, FlipCard, PageHero, SectionHead, Shape, Stat } from '@/components/pcu'
 import { Lifecycle } from '@/components/viz/Lifecycle'
@@ -6,13 +7,14 @@ import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/mou', {
-  title: 'MoU / MoA Coordination',
-  description: `Reviewing ${stats.agreementsPerMonth} partnership agreements a month at PETRA for compliance, institutional fit and timely processing.`,
+  title: 'MoU and MoA Lifecycle: Draft to Renewal',
+  description: `How MoUs and MoAs are coordinated at Petra Christian University, Indonesia: ${stats.agreementsPerMonth} reviewed a month for compliance and fit, in 8 stages from draft to archive.`,
 })
 
 const framework = [
@@ -36,11 +38,12 @@ const lifecycle = [
 export default function MouPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/mou" />
       <PageHero
         image={{ src: '/assets/images/student-services/monev-tias/img-4590.jpg' }}
         eyebrow="Agreement management"
         title="MoU / MoA coordination"
-        lead={`${stats.agreementsPerMonth} agreements reviewed a month at PETRA.`}
+        lead={`${stats.agreementsPerMonth} memoranda of understanding and of agreement (MoU and MoA) reviewed a month at Petra Christian University (PETRA).`}
       />
       <SubNav />
 
@@ -55,7 +58,11 @@ export default function MouPage() {
 
       <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
-          <SectionHead eyebrow="Lifecycle" title="Eight stages, draft to archive" />
+          <SectionHead
+            eyebrow="Lifecycle"
+            title="Eight stages, draft to archive"
+            lead={<>The signature stage has its own <Link href="/signing">MoU and MoA signing process</Link>; every stage is now recorded in <Link href="/sim-kerjasama">SIM Kerjasama</Link>.</>}
+          />
           <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle" />
         </div>
       </section>

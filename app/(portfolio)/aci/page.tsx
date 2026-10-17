@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import Image from 'next/image'
 import { ClipboardList, Handshake, MapPin, MountainSnow, Star, Users } from 'lucide-react'
 import { PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
@@ -13,13 +14,14 @@ import { DATA, type Sat } from '@/lib/data/aci'
 import { buildIndonesiaMap, buildWorldMap } from '@/lib/geo'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/aci', {
-  title: 'ACI',
-  description: 'Airlangga Cultural Immersion: 191 participants, 4 batches and 3 cities in Java, mapped and charted.',
+  title: 'Airlangga Cultural Immersion (ACI)',
+  description: `Airlangga Cultural Immersion (ACI) at Universitas Airlangga: weekend cultural trips across Java, ${DATA.all.participants} participants, ${DATA.all.batches} batches, ${DATA.all.locations} cities, 2024–2025.`,
 })
 
 const GALLERY_IMAGES = [
@@ -82,13 +84,14 @@ export default function Aci() {
 
   return (
     <>
+      <BreadcrumbJsonLd path="/aci" />
       <PageHero
         image={{ src: '/assets/images/aci/aci-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Cultural immersion', 'Universitas Airlangga']}
         kicker="Airlangga Cultural Immersion"
         title="ACI"
-        lead="Weekend cultural trips across Java, from planning to report."
+        lead="Weekend cultural trips across Java for international students at Universitas Airlangga (UNAIR), from planning to report."
       />
 
       <div className="wrap">
@@ -155,7 +158,11 @@ export default function Aci() {
       <section className="section section--smoke decor-grid relative overflow-hidden">
         <Shape kind="quarter-bl" color="teal" className="w-[120px] right-0 top-0 hidden md:block" />
         <div className="wrap">
-          <SectionHead eyebrow="Process" title="Six steps per trip" />
+          <SectionHead
+            eyebrow="Process"
+            title="Six steps per trip"
+            lead={<>Run alongside the <Link href="/amerta">AMERTA semester exchange</Link> and the <Link href="/aero">AERO internationalisation exhibition</Link> at UNAIR.</>}
+          />
           <Lifecycle steps={steps} label="ACI delivery process" />
         </div>
       </section>

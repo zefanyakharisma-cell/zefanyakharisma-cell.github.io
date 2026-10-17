@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import Image from 'next/image'
 import { Building2, CalendarCheck, Globe, Megaphone, Mic, Receipt, Users } from 'lucide-react'
 import { CountryCode, Details, FlipCard, PageHero, PhotoCard, PhotoWall, Reveal, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
@@ -10,13 +11,14 @@ import { Treemap } from '@/components/viz/Treemap'
 import { AERO_BUDGET, contributions, GALLERY_IMAGES, highlights, INSTITUTIONS } from '@/lib/data/aero'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/aero', {
-  title: 'AERO 2025',
-  description: 'AERO, Airlangga Expanding Reach & Opportunities: the annual internationalisation exhibition at Universitas Airlangga.',
+  title: 'AERO 2025 Internationalisation Exhibition',
+  description: 'AERO 2025 (Airlangga Expanding Reach & Opportunities), the internationalisation exhibition at Universitas Airlangga (UNAIR): 19 booths, 12 partner institutions.',
 })
 
 const highlightIcons = [Building2, Mic, Globe, Users]
@@ -28,13 +30,14 @@ const rp = (n: number) => `Rp ${(n / 1_000_000).toFixed(1)}M`
 export default function AeroPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/aero" />
       <PageHero
         image={{ src: '/assets/images/aero/aero-10.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Exhibition', 'Universitas Airlangga']}
         kicker="Airlangga Expanding Reach & Opportunities"
         title="AERO 2025"
-        lead="UNAIR's internationalisation exhibition · 9–10 May 2025, Surabaya."
+        lead="The internationalisation exhibition of Universitas Airlangga (UNAIR) · 9–10 May 2025, Surabaya."
       />
 
       <div className="wrap">
@@ -127,7 +130,11 @@ export default function AeroPage() {
       <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="section section--smoke decor-grid">
         <div className="wrap">
-          <SectionHead eyebrow="Related programs" title="Part of the same story" />
+          <SectionHead
+            eyebrow="Related programs"
+            title="Part of the same story"
+            lead={<>The students AERO helps bring in are looked after through <Link href="/onboarding">international student support</Link>, from arrival to departure.</>}
+          />
           <div className="grid-2">
             <PhotoCard href="/amerta" src="/assets/images/amerta/amerta-1.jpg" alt="AMERTA exchange students" tag="Semester exchange" title="AMERTA" text="The inbound exchange AERO promotes." sizes="(min-width: 1024px) 50vw, 100vw" />
             <PhotoCard href="/aci" src="/assets/images/aci/aci-4.jpg" alt="ACI participants" tag="Cultural immersion" title="ACI" text="Culture behind the student performances." sizes="(min-width: 1024px) 50vw, 100vw" />

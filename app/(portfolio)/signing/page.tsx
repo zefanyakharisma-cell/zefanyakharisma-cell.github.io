@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Camera, CheckSquare, FilePen, Handshake, Megaphone, PenTool, Route, Zap } from 'lucide-react'
 import { Button, Card, Details, FlipCard, PageHero, PhotoWall, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
@@ -8,13 +9,14 @@ import { engagements, engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/signing', {
-  title: 'MoU & MoA Signing Process',
-  description: 'How partnership agreements at PETRA get from final text to a signed, published and active MoU or MoA: documents, approvals, ceremony and activation.',
+  title: 'MoU & MoA Signing Process at PETRA',
+  description: `How an MoU or MoA at Petra Christian University, Indonesia, goes from final text to a signed, active agreement in 7 steps, with ${stats.agreementsPerMonth} reviewed a month.`,
 })
 
 const signings = engagementsOf('signing')
@@ -41,11 +43,12 @@ const jobs = [
 export default function SigningPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/signing" />
       <PageHero
         image={{ src: '/assets/images/partnerships/signings/pgpi-2.jpg' }}
         eyebrow="Partnerships · PETRA"
         title="MoU & MoA signing process"
-        lead="From approved text to a signed agreement that is ready to use."
+        lead="How a memorandum of understanding (MoU) or memorandum of agreement (MoA) at Petra Christian University (PETRA) goes from approved text to a signed agreement that is ready to use."
         aside={<Stat amber value={stats.agreementsPerMonth} label="Agreements reviewed a month" className="flex-[0_1_260px]" />}
       />
       <SubNav />
@@ -64,7 +67,9 @@ export default function SigningPage() {
           <SectionHead eyebrow="The process" title="Seven steps, final text to activation" />
           <Lifecycle steps={steps} label="MoU and MoA signing process" />
           <Details className="mt-6">
-            A signing is the visible moment of a long process. Behind it I make sure the text is final, every approval is in place, the
+            A signing is the visible moment of a long process, which often starts at a{' '}
+            <Link href="/strategic-meetings">strategic partner meeting</Link> and goes through{' '}
+            <Link href="/mou">MoU and MoA review and coordination</Link>. Behind it I make sure the text is final, every approval is in place, the
             signatories and copies are right, and that the agreement is recorded and handed over the same week, so it does not sit in a drawer.
           </Details>
         </div>

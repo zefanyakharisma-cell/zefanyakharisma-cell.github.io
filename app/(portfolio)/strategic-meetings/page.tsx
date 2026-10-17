@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { CalendarCheck, ClipboardList, FileText, Languages, ListChecks, MailOpen, Presentation, Send, UserCheck, Users } from 'lucide-react'
 import { Details, FlipCard, PageHero, PhotoWall, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
@@ -8,13 +9,14 @@ import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/strategic-meetings', {
-  title: 'Strategic Meeting Arrangements',
-  description: `Arranging ${stats.meetingsPerMonth} strategic partnership meetings a month at PETRA, from invitation to minutes and follow-up, with universities and institutions abroad.`,
+  title: 'Strategic Partner Meetings at PETRA',
+  description: `How I arrange ${stats.meetingsPerMonth} strategic partnership meetings a month at Petra Christian University, from visit request and briefing to minutes within 24 hours.`,
 })
 
 const meetings = engagementsOf('meeting')
@@ -40,11 +42,12 @@ const skills = [
 export default function StrategicMeetingsPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/strategic-meetings" />
       <PageHero
         image={{ src: '/assets/images/partnerships/meetings/formosa-2.jpg' }}
         eyebrow="Partnerships · PETRA"
         title="Strategic meeting arrangements"
-        lead="From the first email to the minutes, every partner visit run end to end."
+        lead="From the first email to the minutes, every partner visit to Petra Christian University (PETRA) run end to end."
         aside={<Stat amber value={stats.meetingsPerMonth} label="Strategic meetings a month" className="flex-[0_1_260px]" />}
       />
       <SubNav />
@@ -60,7 +63,11 @@ export default function StrategicMeetingsPage() {
 
       <section className="section !pt-6 decor-ring-bl">
         <div className="wrap">
-          <SectionHead eyebrow="How I run a meeting" title="Seven steps, request to follow-up" />
+          <SectionHead
+            eyebrow="How I run a meeting"
+            title="Seven steps, request to follow-up"
+            lead={<>Where much of <Link href="/partnerships">partnership development</Link> starts, and often the first step toward an <Link href="/signing">MoU or MoA signing</Link>.</>}
+          />
           <Lifecycle steps={steps} label="How I arrange a strategic meeting" />
           <Details className="mt-6">
             A partner visit is often the first time two institutions meet in person. I treat it as the start of the partnership, not an event:

@@ -5,10 +5,9 @@ import { Card, PageHero, SectionHead } from '@/components/pcu'
 import { withHeadingIds } from '@/lib/writing/headings'
 import { formatDate, postPath, postTypes, relatedPageLabel, streams, ui, type Lang } from '@/lib/writing/config'
 import type { Post, PostSummary } from '@/lib/writing/posts'
+import { SITE_URL } from '@/lib/seo'
 import { AdminLink } from './AdminLink'
 import { PostCard } from './PostCard'
-
-const SITE_URL = 'https://zefanyakharisma.com'
 
 /** One post in one language. Used by the public pages and the admin preview. */
 export function Article({ post, lang, related = [], preview }: { post: Post; lang: Lang; related?: PostSummary[]; preview?: boolean }) {

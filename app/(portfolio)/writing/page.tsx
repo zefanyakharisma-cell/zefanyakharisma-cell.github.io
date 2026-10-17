@@ -5,13 +5,14 @@ import { AdminLink } from '@/components/writing/AdminLink'
 import { WritingIndex } from '@/components/writing/WritingIndex'
 import { listPosts } from '@/lib/writing/posts'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 300
 
 export const metadata: Metadata = {
   ...pageMeta('/writing', {
-    title: 'Writing',
-    description: 'Essays, reflections and field notes where international relations, people in an international office and system design meet.',
+    title: 'Writing on International Education',
+    description: 'Essays, reflections and field notes in English and Bahasa Indonesia on international relations, people in an international office and partnership systems.',
   }),
   alternates: {
     canonical: '/writing',
@@ -23,6 +24,7 @@ export default async function WritingPage() {
   const posts = await listPosts()
   return (
     <>
+      <BreadcrumbJsonLd path="/writing" />
       <PageHero
         eyebrow="Writing"
         title="Where diplomacy, people and systems meet."

@@ -4,10 +4,11 @@ import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 export const metadata: Metadata = pageMeta('/engagement', {
-  title: 'International Education',
-  description: `Supporting ${stats.studentsPerSemester} international students per semester across welfare, mobility, engagement and partnership programs at Airlangga Global Engagement and Petra Christian University.`,
+  title: 'International Education Overview',
+  description: `Eight areas of international office work at Petra Christian University and Universitas Airlangga: ${stats.studentsPerSemester} students a semester, ${stats.partners} partners, MoUs, grants.`,
 })
 
 const areas = [
@@ -31,6 +32,7 @@ const strip = [
 export default function EngagementPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/engagement" />
       <PageHero
         image={{ src: '/assets/images/student-services/monev-tias/img-7092.jpg' }}
         eyebrow="International Education"

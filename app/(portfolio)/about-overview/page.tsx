@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   Award, BarChart2, BookOpen, Code2, FileCheck, Globe, Globe2, GraduationCap, Handshake, Heart, Languages,
   LayoutDashboard, Lightbulb, Network, Plane, School, Target, Users, Zap,
@@ -10,10 +11,12 @@ import { Gantt } from '@/components/viz/Gantt'
 import { roles } from '@/lib/data/experience'
 import { contact, stats } from '@/lib/data/profile'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd, JsonLd } from '@/components/seo/JsonLd'
+import { SITE_URL } from '@/lib/seo'
 
 export const metadata: Metadata = pageMeta('/about-overview', {
-  title: 'About',
-  description: `${stats.years} years in international higher education: partnerships, student mobility and the systems behind them.`,
+  title: 'About: Career, Education, Publications',
+  description: `${stats.years} years in international higher education: International Partnership Specialist at Petra Christian University, formerly Airlangga Global Engagement, UNAIR.`,
 })
 
 const expertise = [
@@ -67,7 +70,12 @@ export default function AboutOverview() {
   const overview = (
     <div className="flex flex-col gap-16">
       <div>
-        <SectionHead eyebrow="Now" title="Current focus" size="sub" />
+        <SectionHead
+          eyebrow="Now"
+          title="Current focus"
+          size="sub"
+          lead={<>Partnership work at PETRA, from <Link href="/partnerships">partnership development</Link> and the <Link href="/signing">MoU and MoA signing process</Link> to the systems that track every agreement.</>}
+        />
         <div className="grid-3">{focus.map(f => <FlipCard key={f.title} {...f} />)}</div>
       </div>
       <div>
@@ -146,8 +154,16 @@ export default function AboutOverview() {
     </div>
   )
 
+  const person = { '@id': `${SITE_URL}/#person` }
+  const structuredData = [
+    { '@context': 'https://schema.org', '@type': 'ProfilePage', url: `${SITE_URL}/about-overview`, mainEntity: person },
+    ...publications.map(name => ({ '@context': 'https://schema.org', '@type': 'ScholarlyArticle', name, inLanguage: 'id', author: person })),
+  ]
+
   return (
     <>
+      <BreadcrumbJsonLd path="/about-overview" />
+      <JsonLd data={structuredData} />
       <section className="relative overflow-hidden pt-[clamp(40px,6vw,80px)] pb-12 decor-glow-tr decor-grid">
         <Image src="/assets/images/student-services/monev-tias/img-7095.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo hero-photo--light hero-photo--left" />
         <div className="wrap relative flex flex-wrap gap-12 items-center">
@@ -157,7 +173,7 @@ export default function AboutOverview() {
           <div className="flex-[1_1_480px] min-w-0 flex flex-col gap-5">
             <span className="pcu-eyebrow text-accent-strong">About</span>
             <h1 className="h-page"><span className="pcu-kicker">International Partnership</span>Zefanya Kharisma Nugroho</h1>
-            <p className="lead">Petra Christian University · formerly Airlangga Global Engagement.</p>
+            <p className="lead">Petra Christian University (PETRA), Surabaya · formerly Airlangga Global Engagement, Universitas Airlangga (UNAIR).</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
               <Stat value={stats.years} label="Years" />
               <Stat value="6" label="Roles" />

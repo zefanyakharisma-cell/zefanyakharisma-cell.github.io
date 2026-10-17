@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import {
   Award, Bell, Building, ChartColumn, ClipboardCheck, Crown, Database, Eye, FilePlus2, Globe2, Landmark, MonitorPlay, PenLine, Plane, RefreshCw,
   Scale, Search, Settings, ShieldCheck, Stamp, Timer, TrendingUp, Users,
@@ -15,13 +16,14 @@ import { simKerjasama as sim, simKerjasamaDetail as detail } from '@/lib/data/si
 import { simKerjasamaDev } from '@/lib/data/simDev'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
 import { pageMeta } from '@/lib/og'
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/sim-kerjasama', {
-  title: 'SIM Kerjasama',
-  description: `${sim.tagline}: business process, objectives, benefits and a live demo.`,
+  title: 'SIM Kerjasama, PETRA Partnership System',
+  description: `Sistem Informasi Manajemen (SIM) Kerjasama, the system of record for every MoU and MoA at Petra Christian University: ${sim.goals.length} goals, ${detail.tiers.length} approval tiers, live demo.`,
 })
 
 const menuIcons = [ChartColumn, Search, FilePlus2, Timer, RefreshCw, Bell, Database, Settings]
@@ -59,12 +61,13 @@ const [approval, renewal] = detail.processes
 export default function SimKerjasamaPage() {
   return (
     <>
+      <BreadcrumbJsonLd path="/sim-kerjasama" />
       <PageHero
         image={{ src: '/assets/images/partnerships/signings/talenta-karya-sentosa-1.jpg' }}
         back={{ href: '/projects-overview', label: 'All projects' }}
         tags={['Information system', 'Petra Christian University']}
         title="SIM Kerjasama"
-        lead={`${sim.tagline}.`}
+        lead="Sistem Informasi Manajemen (SIM) Kerjasama, the partnership management system of Petra Christian University (PETRA): the official system of record for every memorandum of understanding (MoU) and memorandum of agreement (MoA)."
         shapes={<>
           <Shape kind="ring-n" color="blue" className="right-[6%] bottom-0 w-[320px]" />
           <Shape kind="ring-u-line" color="amber" className="right-[2%] top-0 w-[220px]" />
@@ -176,7 +179,7 @@ export default function SimKerjasamaPage() {
 
           <section className="section decor-ring-tr">
             <div className="wrap">
-              <SectionHead eyebrow="Lifecycle" title="One agreement, six stages" lead="The two processes above, in one line." />
+              <SectionHead eyebrow="Lifecycle" title="One agreement, six stages" lead={<>The two processes above, in one line. How the review and the ceremony run in practice: <Link href="/mou">MoU and MoA coordination</Link> and the <Link href="/signing">MoU and MoA signing process</Link>.</>} />
               <Lifecycle steps={lifecycle} label="MoU and MoA lifecycle in SIM Kerjasama" />
             </div>
           </section>
