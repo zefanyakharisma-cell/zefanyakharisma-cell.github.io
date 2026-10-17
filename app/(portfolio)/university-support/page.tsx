@@ -6,15 +6,15 @@ import { EngagementCards } from '@/components/projects/EngagementCards'
 import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/university-support', {
   title: 'University Support on Partnership',
-  alternates: { canonical: '/university-support' },
   description: `How I support PETRA's faculties and units on partnership: finding partners, preparing agreements, hosting visits and launches, and the systems that track it all.`,
-}
+})
 
 const launches = engagementsOf('support')
 

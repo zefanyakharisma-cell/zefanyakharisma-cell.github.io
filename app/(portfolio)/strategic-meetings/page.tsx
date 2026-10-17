@@ -7,15 +7,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/strategic-meetings', {
   title: 'Strategic Meeting Arrangements',
-  alternates: { canonical: '/strategic-meetings' },
   description: `Arranging ${stats.meetingsPerMonth} strategic partnership meetings a month at PETRA, from invitation to minutes and follow-up, with universities and institutions abroad.`,
-}
+})
 
 const meetings = engagementsOf('meeting')
 const countries = new Set(meetings.map(m => m.country)).size

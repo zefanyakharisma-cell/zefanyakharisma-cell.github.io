@@ -5,15 +5,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/mou', {
   title: 'MoU / MoA Coordination',
-  alternates: { canonical: '/mou' },
   description: `Reviewing ${stats.agreementsPerMonth} partnership agreements a month at PETRA for compliance, institutional fit and timely processing.`,
-}
+})
 
 const framework = [
   { icon: <FileCheck aria-hidden />, title: 'Drafting', back: 'Scope, objectives and mutual commitments, written clearly.' },

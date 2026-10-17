@@ -13,15 +13,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { simRealisasi as sim, simRealisasiDetail as detail } from '@/lib/data/sim'
 import { simRealisasiDev } from '@/lib/data/simDev'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/sim-realisasi', {
   title: 'SIM Realisasi',
-  alternates: { canonical: '/sim-realisasi' },
   description: `${sim.mission} Business process, objectives, benefits and a live demo.`,
-}
+})
 
 const menuIcons = [ChartColumn, BookOpen, Plus, Users, FileDown, Settings, Link2]
 const formText = [

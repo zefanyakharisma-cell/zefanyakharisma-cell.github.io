@@ -7,15 +7,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { engagements, engagementsOf } from '@/lib/data/engagements'
 import { stats } from '@/lib/data/profile'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/signing', {
   title: 'MoU & MoA Signing Process',
-  alternates: { canonical: '/signing' },
   description: 'How partnership agreements at PETRA get from final text to a signed, published and active MoU or MoA: documents, approvals, ceremony and activation.',
-}
+})
 
 const signings = engagementsOf('signing')
 /** Every documented event where an agreement was signed, including program launches. */

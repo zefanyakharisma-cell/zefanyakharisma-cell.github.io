@@ -6,15 +6,15 @@ import { Details, FlipCard, PageHero, SectionHead, Shape, Tag } from '@/componen
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/intl-grants', {
   title: 'International Grants Management',
-  alternates: { canonical: '/intl-grants' },
   description: 'A system to inform, maintain and execute international grants at Petra Christian University: a digital dashboard and a physical operational workflow.',
-}
+})
 
 const pipeline = [
   { icon: <Megaphone size={20} aria-hidden />, title: 'Awareness', text: 'Students hear about grants before deadlines pass.' },

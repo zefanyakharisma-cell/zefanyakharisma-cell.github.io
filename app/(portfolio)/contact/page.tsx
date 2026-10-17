@@ -3,12 +3,12 @@ import Image from 'next/image'
 import { Linkedin, Mail, MapPin } from 'lucide-react'
 import { Card, IconBadge, Shape } from '@/components/pcu'
 import { contact } from '@/lib/data/profile'
+import { pageMeta } from '@/lib/og'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/contact', {
   title: 'Contact',
-  alternates: { canonical: '/contact' },
   description: 'Open to international partnerships, collaborations and conversations about global education.',
-}
+})
 
 export default function Contact() {
   return (

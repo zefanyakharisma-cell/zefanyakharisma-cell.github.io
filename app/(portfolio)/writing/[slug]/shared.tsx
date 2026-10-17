@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Article } from '@/components/writing/Article'
 import { postPath, type Lang } from '@/lib/writing/config'
 import { getPost, relatedPosts } from '@/lib/writing/posts'
+import { SITE_NAME } from '@/lib/og'
 
 export type SlugProps = { params: Promise<{ slug: string }> }
 
@@ -20,6 +21,8 @@ export async function postMetadata({ params }: SlugProps, lang: Lang): Promise<M
     alternates: { canonical: postPath(slug, lang), languages },
     openGraph: {
       type: 'article',
+      siteName: SITE_NAME,
+      url: postPath(slug, lang),
       title: t.title,
       description: t.excerpt || undefined,
       publishedTime: post.published_at,

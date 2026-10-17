@@ -14,15 +14,15 @@ import { Lifecycle } from '@/components/viz/Lifecycle'
 import { simKerjasama as sim, simKerjasamaDetail as detail } from '@/lib/data/sim'
 import { simKerjasamaDev } from '@/lib/data/simDev'
 import { WritingAboutThis } from '@/components/writing/WritingAboutThis'
+import { pageMeta } from '@/lib/og'
 
 // Refreshes "Writing about this" for newly published or scheduled posts.
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/sim-kerjasama', {
   title: 'SIM Kerjasama',
-  alternates: { canonical: '/sim-kerjasama' },
   description: `${sim.tagline}: business process, objectives, benefits and a live demo.`,
-}
+})
 
 const menuIcons = [ChartColumn, Search, FilePlus2, Timer, RefreshCw, Bell, Database, Settings]
 const stakeholderIcons = [Building, Users, Stamp, Plane, Crown, Globe2]

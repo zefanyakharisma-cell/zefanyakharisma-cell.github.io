@@ -9,12 +9,12 @@ import { Tabs } from '@/components/pcu/Tabs'
 import { Gantt } from '@/components/viz/Gantt'
 import { roles } from '@/lib/data/experience'
 import { contact, stats } from '@/lib/data/profile'
+import { pageMeta } from '@/lib/og'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta('/about-overview', {
   title: 'About',
-  alternates: { canonical: '/about-overview' },
   description: `${stats.years} years in international higher education: partnerships, student mobility and the systems behind them.`,
-}
+})
 
 const expertise = [
   { icon: <Handshake aria-hidden />, title: 'Partnerships', back: `${stats.partners} partners and ${stats.meetingsPerMonth} strategic meetings a month.` },

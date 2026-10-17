@@ -4,12 +4,15 @@ import { Card, IconBadge, PageHero, SectionHead } from '@/components/pcu'
 import { WritingIndex } from '@/components/writing/WritingIndex'
 import { streams } from '@/lib/writing/config'
 import { listPosts } from '@/lib/writing/posts'
+import { pageMeta } from '@/lib/og'
 
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: 'Writing',
-  description: 'Essays, reflections and field notes where international relations, people in an international office and system design meet.',
+  ...pageMeta('/writing', {
+    title: 'Writing',
+    description: 'Essays, reflections and field notes where international relations, people in an international office and system design meet.',
+  }),
   alternates: {
     canonical: '/writing',
     types: { 'application/rss+xml': [{ url: '/writing/rss.xml', title: 'Writing (English)' }, { url: '/writing/rss-id.xml', title: 'Tulisan (Bahasa Indonesia)' }] },
