@@ -32,7 +32,7 @@ export function PageHero({ eyebrow, kicker, title, lead, tags, back, image, shap
       <div aria-hidden className="hero-glow" />
       {shapes ?? <Shape kind="ring-u" className="theme-ring w-[clamp(88px,18vw,260px)] -right-3 sm:right-[4%] top-0" />}
       <div className="wrap relative flex flex-wrap items-end gap-12">
-        <div className="flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
+        <div className="hero-seq flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
           {back && (
             <Link href={back.href} className="pcu-btn pcu-btn--ghost self-start text-white">
               <ArrowLeft aria-hidden size={16} /> {back.label}

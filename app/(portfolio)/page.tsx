@@ -42,7 +42,7 @@ export default function Home() {
         <Image src="/assets/images/aero/aero-2.jpg" alt="" aria-hidden fill priority sizes="100vw" className="hero-photo hero-photo--light" />
         <div aria-hidden className="hero-glow hero-glow--light" />
         <div className="wrap relative flex flex-wrap gap-14 items-center">
-          <div className="flex flex-col gap-6 min-w-0 flex-[1_1_440px]">
+          <div className="hero-seq flex flex-col gap-6 min-w-0 flex-[1_1_440px]">
             <span className="pcu-eyebrow text-accent-strong">International Education · Surabaya</span>
             <h1 className="h-page">Partnerships, students, systems.</h1>
             <p className="lead">International Partnership Specialist, Petra Christian University.</p>
@@ -51,7 +51,7 @@ export default function Home() {
               <Button href="/about-overview" variant="outline" className="text-midnight">About me</Button>
             </div>
           </div>
-          <div className="relative min-w-0 flex-[1_1_420px] h-[clamp(360px,46vw,520px)]">
+          <div className="hero-art relative min-w-0 flex-[1_1_420px] h-[clamp(360px,46vw,520px)]">
             <div aria-hidden className="absolute left-[12%] top-0 w-[46%] h-[78%] bg-midnight" />
             <div aria-hidden className="absolute right-0 top-0 w-[34%] h-[38%] bg-blue" />
             <Shape kind="quarter-br" color="amber" className="right-[8%] top-[38%] w-[26%]" />

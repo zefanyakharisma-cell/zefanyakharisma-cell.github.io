@@ -147,3 +147,71 @@ img { max-width: 100%; }
 .article-body hr { border: 0; border-top: 1px solid var(--border); margin: 2.5em 0; }
 .article-body code { font-size: .9em; background: var(--smoke); padding: .1em .35em; border-radius: 4px; }
 .article-share { max-width: 960px; margin: 56px auto 0; padding-top: 24px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+
+/* ---------- Motion (subtle & polished) ----------
+   Hidden "before" states only apply under html[data-motion=on], set before paint
+   by MotionObserver unless the visitor prefers reduced motion. Only opacity,
+   transform and clip-path animate. */
+:root { --ease-out: cubic-bezier(.2,.7,.2,1); --dur-1: .15s; --dur-2: .45s; --dur-3: .7s; --stagger: 70ms; }
+
+/* Page fade on every navigation (app/(portfolio)/template.tsx). */
+[data-motion="on"] .page-enter { animation: page-enter .35s var(--ease-out) both; }
+@keyframes page-enter { from { opacity: 0; transform: translateY(8px); } }
+
+/* Scroll reveals (.rv is added by MotionObserver; .is-in when it enters). */
+[data-motion="on"] .rv:not(.rv-done) { transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--stagger)); }
+[data-motion="on"] .rv:not(.is-in) { opacity: 0; transform: translateY(20px); }
+[data-motion="on"] .rv:not(.rv-done) .pcu-shape { transition: opacity var(--dur-3) var(--ease-out), scale var(--dur-3) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--stagger) + 150ms); }
+[data-motion="on"] .rv:not(.is-in) .pcu-shape { opacity: 0; scale: .85; }
+
+/* Page heroes: content steps in line by line; waits for the first-visit splash. */
+[data-motion="on"] .hero-seq > * { animation: hero-in .6s var(--ease-out) both; }
+.hero-seq > :nth-child(2) { animation-delay: 90ms; }
+.hero-seq > :nth-child(3) { animation-delay: 180ms; }
+.hero-seq > :nth-child(4) { animation-delay: 270ms; }
+.hero-seq > :nth-child(5) { animation-delay: 360ms; }
+.hero-seq > :nth-child(n+6) { animation-delay: 450ms; }
+@keyframes hero-in { from { opacity: 0; transform: translateY(16px); } }
+[data-motion="on"] .page-hero .theme-ring { animation: ring-rise .9s var(--ease-out) .2s both; }
+@keyframes ring-rise { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0); } }
+[data-motion="on"] .hero-photo { animation: photo-in 1.4s var(--ease-out) both; }
+@keyframes photo-in { from { opacity: 0; scale: 1.04; } }
+[data-motion="on"] .hero-art > * { animation: art-in .7s var(--ease-out) both; }
+.hero-art > :nth-child(1) { animation-delay: 100ms; }
+.hero-art > :nth-child(2) { animation-delay: 180ms; }
+.hero-art > :nth-child(3) { animation-delay: 260ms; }
+.hero-art > :nth-child(4) { animation-delay: 340ms; }
+.hero-art > :nth-child(5) { animation-delay: 420ms; }
+.hero-art > :nth-child(6) { animation-delay: 500ms; }
+.hero-art > :nth-child(7) { animation-delay: 220ms; }
+@keyframes art-in { from { opacity: 0; scale: .92; } }
+[data-motion="on"] .hero-glow::before, [data-motion="on"] .hero-glow::after { animation: glow-drift 24s ease-in-out infinite alternate; }
+[data-motion="on"] .hero-glow::after { animation-duration: 30s; animation-direction: alternate-reverse; }
+@keyframes glow-drift { to { translate: 30px 20px; } }
+html:not([data-splash="seen"]) :is(.hero-seq > *, .hero-art > *, .page-hero .theme-ring, .hero-photo, .page-enter) { animation-play-state: paused; }
+
+/* Pattern divider appears tile by tile; linework rings rise from their base. */
+[data-motion="on"] .pattern-band:not(.is-in) { clip-path: inset(0 100% 0 0); }
+[data-motion="on"] .pattern-band.is-in { animation: band-wipe .7s steps(12) both; }
+@keyframes band-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+[data-motion="on"] :is(.decor-ring-bl, .decor-ring-tr):not(.is-in)::after { opacity: 0; clip-path: inset(100% 0 0 0); }
+[data-motion="on"] :is(.decor-ring-bl, .decor-ring-tr)::after { transition: opacity 1s var(--ease-out) .2s, clip-path 1.2s var(--ease-out) .2s; }
+
+/* Hover & micro-interactions */
+a.pcu-card, .pcu-card.post-feature, .stream-tile { transition: transform var(--dur-1) ease, box-shadow var(--dur-2) var(--ease-out), border-color var(--dur-1) ease; }
+a.pcu-card:hover, .pcu-card.post-feature:hover { transform: translateY(-3px); box-shadow: 0 1px 0 rgba(25,48,75,.06), 0 20px 40px -18px rgba(25,48,75,.4); }
+.stream-tile:hover { transform: translateY(-3px); }
+.photo-card img, a.pcu-card img, .post-feature__media img { transition: scale .6s var(--ease-out); }
+.photo-card:is(:hover, :focus-visible) img, a.pcu-card:is(:hover, :focus-visible) img { scale: 1.04; }
+.lucide-arrow-right { transition: translate var(--dur-2) var(--ease-out); }
+a:is(:hover, :focus-visible) .lucide-arrow-right, button:is(:hover, :focus-visible) .lucide-arrow-right { translate: 3px 0; }
+.pcu .site-nav a { transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out); }
+.seg button { transition: background-color var(--dur-1) ease, color var(--dur-1) ease; }
+.pcu .site-footer .foot-row a { text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat; transition: background-size var(--dur-2) var(--ease-out); }
+.pcu .site-footer .foot-row a:is(:hover, :focus-visible) { background-size: 100% 1.5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-card:is(:hover, :focus-visible) img, a.pcu-card:is(:hover, :focus-visible) img { scale: none; }
+  a.pcu-card:hover, .pcu-card.post-feature:hover, .stream-tile:hover { transform: none; }
+  a:is(:hover, :focus-visible) .lucide-arrow-right { translate: none; }
+}
