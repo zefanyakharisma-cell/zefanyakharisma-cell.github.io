@@ -106,12 +106,6 @@ const specs = {
     stat: { value: stats.partners, label: "partners supported across PETRA's faculties" },
     photo: '/assets/images/partnerships/support/drone-academy-2.jpg',
   },
-  '/intl-grants': {
-    eyebrow: 'Petra Christian University',
-    title: 'International grants management',
-    stat: { label: 'A digital dashboard and a physical workflow' },
-    photo: '/assets/images/student-services/tailor-made/griffith-unair-3.jpg',
-  },
   '/writing': {
     eyebrow: 'Writing',
     title: 'Where diplomacy, people and systems meet.',

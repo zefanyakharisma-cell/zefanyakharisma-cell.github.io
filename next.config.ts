@@ -15,7 +15,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: 'https', hostname: '*.supabase.co', pathname: '/storage/v1/object/public/**' }],
   },
   async redirects() {
-    return aboutTabs.map(([source, tab]) => ({ source, destination: `/about-overview?tab=${tab}`, permanent: true }))
+    return [
+      ...aboutTabs.map(([source, tab]) => ({ source, destination: `/about-overview?tab=${tab}`, permanent: true })),
+      // The International Grants page was retired; its partnership context lives on University Support.
+      { source: '/intl-grants', destination: '/university-support', permanent: true },
+    ]
   },
 }
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Camera, CheckSquare, FilePen, Handshake, Megaphone, PenTool, Route, Zap } from 'lucide-react'
-import { Button, Card, Details, FlipCard, PageHero, PhotoWall, SectionHead, Shape, Stat, ThemeBand } from '@/components/pcu'
+import { Archive, Camera, CheckSquare, FilePen, FileText, Handshake, Megaphone, PenTool, Route, Timer, Undo2, Zap } from 'lucide-react'
+import { Button, Card, Details, FlipCard, PageHero, PhotoWall, Reveal, SectionHead, Shape, Stat, StatusFlow, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
 import { EngagementCards } from '@/components/projects/EngagementCards'
 import { Lifecycle } from '@/components/viz/Lifecycle'
@@ -38,6 +38,28 @@ const jobs = [
   { icon: <Route aria-hidden />, title: 'Coordination', back: 'Partner, leadership, faculties, protocol and media aligned on one run of show.' },
   { icon: <Camera aria-hidden />, title: 'The moment', back: 'Backdrop, seating, signing order and the photo that both institutions will publish.' },
   { icon: <Zap aria-hidden />, title: 'After the ink', back: 'Archived, recorded and handed over, so the agreement turns into activities.' },
+]
+
+const kinds = [
+  { icon: <FileText aria-hidden />, title: 'MoU · nota kesepahaman', text: 'A framework. It records that two institutions intend to work together and names the broad areas: student exchange, research, staff development, curriculum.' },
+  { icon: <FilePen aria-hidden />, title: 'MoA · perjanjian kerja sama', text: 'Specific. It usually sits under an MoU, or stands alone with a narrower scope, and sets out the activities, the units responsible and what each side commits.' },
+]
+
+const fixes = [
+  { icon: <Timer aria-hidden />, title: 'A clock on every approval', back: 'Business days counted from when a tier opens. Yellow at 2 days, red at 4: nobody is blamed, the delay is just visible.' },
+  { icon: <Undo2 aria-hidden />, title: 'More than yes or no', back: 'A revise option with a note keeps a document moving instead of sitting with an unsure approver.' },
+  { icon: <Archive aria-hidden />, title: 'Signed elsewhere, still recorded', back: 'Agreements signed abroad or at events are recorded directly, so they can still be activated and renewed.' },
+]
+
+const weekOf = [
+  'Final text confirmed in writing by both sides',
+  'Approval trail complete and in order',
+  'Signatory names, titles and order of signing checked against the text',
+  'Copies printed, checked and in signing order',
+  'Run of show shared with the partner, protocol and media',
+  'Photographer briefed on the one photo both institutions need',
+  'Same day: originals archived, scans filed',
+  'Same week: agreement active in SIM Kerjasama, handed to the implementing units, news shared',
 ]
 
 export default function SigningPage() {
@@ -86,6 +108,41 @@ export default function SigningPage() {
         <div className="wrap">
           <SectionHead eyebrow="My part" title="Four jobs per signing" lead="Tap a card." />
           <div className="grid-4">{jobs.map(j => <FlipCard key={j.title} {...j} />)}</div>
+        </div>
+      </section>
+
+      <section className="section section--smoke decor-grid">
+        <div className="wrap">
+          <SectionHead eyebrow="What is being signed" title="MoU or MoA?" lead="An MoU opens the door; an MoA says who walks through it and when." />
+          <div className="grid-2 !gap-6">
+            {kinds.map((k, i) => (
+              <Reveal key={k.title} delay={i * 60} className="h-full">
+                <Card className="h-full">
+                  <span className="text-accent-strong">{k.icon}</span>
+                  <h3 className="!text-xl m-0">{k.title}</h3>
+                  <p className="m-0 text-ink-secondary">{k.text}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+          <p className="mt-6 mb-8 text-ink-secondary max-w-[70ch]">
+            Activities under either are documented with an Implementation Arrangement (IA) and reported with an Implementation Report (IR).
+          </p>
+          <h3 className="!text-lg mb-4">In SIM Kerjasama, the signing path</h3>
+          <StatusFlow main={['Disetujui', 'Siap TTD', 'Aktif']} label="Agreement statuses along the signing path" />
+          <p className="mt-3 mb-0 text-sm muted">Approved when every tier has signed off, ready to sign at the ceremony, active once the signed file is uploaded.</p>
+        </div>
+      </section>
+
+      <section className="section decor-ring-bl">
+        <div className="wrap">
+          <SectionHead eyebrow="Keeping it moving" title="Where agreements stall, and what helps" lead="Before SIM Kerjasama, nobody could say where a document was. Three habits, now built into the system. Tap a card." />
+          <div className="grid-3">{fixes.map(f => <FlipCard key={f.title} {...f} />)}</div>
+          <Details summary="Checklist for the week of a signing" className="mt-6">
+            <ul className="m-0 pl-5 flex flex-col gap-1.5">
+              {weekOf.map(c => <li key={c}>{c}</li>)}
+            </ul>
+          </Details>
         </div>
       </section>
 

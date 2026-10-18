@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Archive, BarChart2, Building, CheckSquare, FileCheck, FilePen, Handshake, PenTool, RefreshCw, ShieldCheck, Zap } from 'lucide-react'
-import { Button, Card, Details, FlipCard, PageHero, SectionHead, Shape, Stat } from '@/components/pcu'
+import { Activity, Archive, BarChart2, Bell, Building, CheckSquare, ClipboardCheck, FileCheck, FilePen, Handshake, PenTool, RefreshCw, ShieldCheck, Zap } from 'lucide-react'
+import { Button, Card, Details, FlipCard, PageHero, Reveal, SectionHead, Shape, Stat, StatusFlow } from '@/components/pcu'
 import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { stats } from '@/lib/data/profile'
@@ -33,6 +33,18 @@ const lifecycle = [
   { icon: <Zap size={20} aria-hidden />, title: 'Active', text: 'Programs run under the agreement.' },
   { icon: <RefreshCw size={20} aria-hidden />, title: 'Renewal', text: 'Renewed on evaluation evidence.' },
   { icon: <Archive size={20} aria-hidden />, title: 'Archived', text: 'Closed, kept on record.' },
+]
+
+const tiers = [
+  { n: '1', title: 'International Office & Rector’s Secretariat', text: 'The head of the International Office and the head of the Rector’s Secretariat review the document first.' },
+  { n: '2', title: 'Deans and unit heads', text: 'The deans and heads of the programmes and units involved confirm the fit with their own plans.' },
+  { n: '3', title: 'Vice Rectors and Rector', text: 'Leadership approves in parallel. Only then does the document reach Disetujui (approved).' },
+]
+
+const renewal = [
+  { icon: <Bell aria-hidden />, title: 'Six months ahead', back: 'Renewal reminders start six months before the end date, not when the agreement has already lapsed.' },
+  { icon: <ClipboardCheck aria-hidden />, title: 'Two evaluations', back: 'One from the PETRA unit that owns the partnership, one from the partner via an official link, no account needed.' },
+  { icon: <Activity aria-hidden />, title: 'Activity as evidence', back: 'Verified activities across the renewal chain sit beside the evaluations; active agreements with none get a “no activity yet” flag.' },
 ]
 
 export default function MouPage() {
@@ -71,6 +83,44 @@ export default function MouPage() {
         <div className="wrap">
           <SectionHead eyebrow="Framework" title="Four jobs per agreement" lead="Tap a card." />
           <div className="grid-4">{framework.map(f => <FlipCard key={f.title} {...f} />)}</div>
+        </div>
+      </section>
+
+      <section className="section decor-glow-br">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="Approval"
+            title="Three tiers, enforced in order"
+            lead="Once the proposing faculty has drafted the scope, approval runs through the university hierarchy. SIM Kerjasama enforces the order in software."
+          />
+          <div className="grid-3">
+            {tiers.map((t, i) => (
+              <Reveal key={t.n} delay={i * 60} className="h-full">
+                <Card className="h-full">
+                  <span className="font-bold text-amber tabular-nums text-2xl">{t.n.padStart(2, '0')}</span>
+                  <h3 className="!text-lg m-0">{t.title}</h3>
+                  <p className="m-0 text-ink-secondary">{t.text}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+          <h3 className="!text-lg mt-10 mb-4">What an approver can do</h3>
+          <StatusFlow main={['Approve']} side={['Revise', 'Hold', 'Reject']} sideLabel="Or" label="Approver options" />
+          <p className="mt-3 mb-0 text-sm muted max-w-[70ch]">
+            A revision comes back with a note; time on hold is not counted against the approver. Lock the text before approval starts: any change
+            afterwards restarts the chain.
+          </p>
+        </div>
+      </section>
+
+      <section className="section section--smoke decor-grid">
+        <div className="wrap">
+          <SectionHead eyebrow="Renewal" title="Renewed on evidence, not by default" lead="An agreement is only worth what is carried out under it. Tap a card." />
+          <div className="grid-3">{renewal.map(r => <FlipCard key={r.title} {...r} />)}</div>
+          <Details summary="Why dormant agreements matter" className="mt-6">
+            Partnerships count toward accreditation, RENSTRA indicators and rankings, and an agreement with nothing carried out under it is
+            visible as dormant. Renewal opens when both evaluations recommend continuing, so the best preparation is a record of activity.
+          </Details>
         </div>
       </section>
 

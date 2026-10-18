@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Award, Globe, GraduationCap, Heart, ShieldCheck, Users } from 'lucide-react'
-import { Card, FlipCard, PageHero, Reveal, SectionHead, Stat, ThemeBand } from '@/components/pcu'
+import { Award, BookOpen, ClipboardCheck, DoorOpen, Globe, GraduationCap, Heart, Mail, PlaneLanding, Receipt, ShieldCheck, Users } from 'lucide-react'
+import { Card, Details, FlipCard, PageHero, Reveal, SectionHead, Stat, ThemeBand } from '@/components/pcu'
+import { Insights } from '@/components/pcu/Insights'
 import { PhotoStrip } from '@/components/pcu/PhotoStrip'
 import { SubNav } from '@/components/pcu/SubNav'
 import StudentActivities from '@/components/projects/StudentActivities'
 import { MapSwitch } from '@/components/viz/MapSwitch'
+import { Lifecycle } from '@/components/viz/Lifecycle'
 import { Waffle } from '@/components/viz/Waffle'
 import { stats } from '@/lib/data/profile'
 import { amertaNations, gender, inboundNations, studentPrograms, studyLevel } from '@/lib/data/students'
@@ -39,6 +41,29 @@ const support = [
   { icon: <Globe aria-hidden />, title: 'Adaptation', back: 'Language, customs and daily life in Indonesia.' },
   { icon: <Award aria-hidden />, title: 'Scholarships', back: 'KNB and TIAS monitoring, tax reports and formal reporting.' },
   { icon: <Users aria-hidden />, title: 'Peer support', back: 'Best Buddies: trained local mentors for every semester.' },
+]
+
+const journey = [
+  { icon: <Mail size={20} aria-hidden />, title: 'Before arrival', text: 'Flight details from inbound mobility, then a note to each student on schedule, housing, what to bring and day one.' },
+  { icon: <PlaneLanding size={20} aria-hidden />, title: 'First hour', text: 'Met at Juanda airport by name, including late-night and weekend flights: luggage, SIM card, cash, a ride home and a welcome pack.' },
+  { icon: <BookOpen size={20} aria-hidden />, title: 'Orientation', text: 'Multi-day orientation in English: course registration, the offices students actually need, customs and daily life.' },
+  { icon: <ShieldCheck size={20} aria-hidden />, title: 'Immigration', text: 'KITAS applications, extensions and reporting tracked per student, never left to memory.' },
+  { icon: <Users size={20} aria-hidden />, title: 'Peer support', text: 'Every student handed to a trained Best Buddies mentor, matched on interests and background.' },
+  { icon: <ClipboardCheck size={20} aria-hidden />, title: 'Monitoring', text: 'Check-ins in the first two weeks and all semester, catching problems early.' },
+  { icon: <DoorOpen size={20} aria-hidden />, title: 'Departure', text: 'Farewell with performances and certificates, clearance and departure logistics: the start of an alumni relationship.' },
+]
+
+const scholarshipJobs = [
+  { icon: <ClipboardCheck aria-hidden />, title: 'Monitoring and reporting', text: 'Regular individual and group check-ins on academic progress, attendance and well-being, written up as structured progress reports for the national scholarship authority (DIKTI). Problems are raised before reporting deadlines, not after.' },
+  { icon: <Receipt aria-hidden />, title: 'Tax reporting', text: "Scholarship holders have Indonesian tax obligations. I explained them in plain English, ran group sessions with the university's finance office, helped prepare documents and followed up one by one until every report was in." },
+]
+
+const lessons = [
+  { text: 'Plan support as **one journey**, and name an owner for each stage.' },
+  { text: 'Build relationships with **hospitals, banks and immigration** before the first emergency.' },
+  { text: 'Track immigration and scholarship deadlines **per student**; never rely on memory.' },
+  { text: 'Train local students as **buddies**; they reach students that offices cannot.' },
+  { text: 'Write guidance in **plain English, with steps**.' },
 ]
 
 const toCounts = (list: { name: string; count: number }[]) => Object.fromEntries(list.map(n => [n.name, n.count]))
@@ -112,11 +137,61 @@ export default function OnboardingPage() {
         </div>
       </section>
 
+      <section className="section section--smoke decor-grid">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="The journey"
+            title="Arrival to departure, seven stages"
+            lead="Students don't experience offices; they experience a sequence. I planned support the same way, with a named owner at each stage."
+          />
+          <Lifecycle steps={journey} label="International student journey" />
+          <Details summary="When things go wrong" className="mt-6">
+            Students fall ill, lose documents, have accidents or face emergencies at home. What helped most was preparation: knowing which
+            hospital to call and who at the bank or immigration office could help before we needed them. Across the six kinds of care I worked
+            with 10+ stakeholders, including faculties, hospitals, banks and the immigration authorities.
+          </Details>
+        </div>
+      </section>
+
+      <section className="section decor-ring-bl">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="Scholarships"
+            title="KNB and TIAS students"
+            lead="Indonesian government scholarship holders need an extra layer of support on top of the journey."
+          />
+          <div className="grid-4 !gap-8 mb-10">
+            <Stat value="27" label="KNB students, 10+ countries" />
+            <Stat value="9" label="TIAS students, 5 countries" />
+            <Stat value="50+" label="Best Buddies mentors a semester" />
+            <Stat value="10+" label="Stakeholders coordinated" />
+          </div>
+          <div className="grid-2 !gap-6">
+            {scholarshipJobs.map((j, i) => (
+              <Reveal key={j.title} delay={i * 60} className="h-full">
+                <Card className="h-full">
+                  <span className="text-accent-strong">{j.icon}</span>
+                  <h3 className="!text-xl m-0">{j.title}</h3>
+                  <p className="m-0 text-ink-secondary">{j.text}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div aria-hidden className="pcu-pattern pattern-band" />
       <section className="section section--smoke decor-grid">
         <div className="wrap">
           <SectionHead eyebrow="In practice" title="Activities and services" lead="Open one for my role and the impact." />
           <StudentActivities />
+        </div>
+      </section>
+      <section className="section decor-glow-tr">
+        <div className="wrap">
+          <div className="max-w-[860px]">
+            <Insights title="What I'd pass on" items={lessons} shown={2} />
+          </div>
         </div>
       </section>
       <WritingAboutThis page="/onboarding" />
