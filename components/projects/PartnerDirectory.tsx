@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { MapPin, Search, X } from 'lucide-react'
 import { CountryCode, Flag, SectionHead, Tag } from '@/components/pcu'
 import { InstitutionLogo } from '@/components/pcu/InstitutionLogo'
@@ -9,6 +9,8 @@ import { Segmented } from '@/components/pcu/Segmented'
 import { CONT_BTNS, CONTINENT, DOM_DATA, INTL_DATA, PAGE_SIZE, TYPE_BTNS } from '@/lib/data/partners'
 
 type Tab = 'intl' | 'dom'
+
+const TABS = [['intl', 'International', INTL_DATA.length], ['dom', 'Domestic', DOM_DATA.length]] as const
 
 type Props = {
   /** Set by a map click: show only this country (international) or city (domestic). */
@@ -32,33 +34,54 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
   const intlQ = intlSearch.trim().toLowerCase()
   const domQ = domSearch.trim().toLowerCase()
 
+  // The map pick is a visible, clearable chip, so it always applies; a search narrows
+  // within it. The region / type chips are the ones a search overrides (shown dimmed).
+  const intlBase = country ? INTL_DATA.filter(p => p.country === country) : INTL_DATA
   const filteredIntl = intlQ
-    ? INTL_DATA.filter(p => p.name.toLowerCase().includes(intlQ) || p.country.toLowerCase().includes(intlQ))
-    : country ? INTL_DATA.filter(p => p.country === country)
-    : intlContinent !== 'all' ? INTL_DATA.filter(p => CONTINENT[p.country] === intlContinent) : INTL_DATA
+    ? intlBase.filter(p => p.name.toLowerCase().includes(intlQ) || p.country.toLowerCase().includes(intlQ))
+    : !country && intlContinent !== 'all' ? INTL_DATA.filter(p => CONTINENT[p.country] === intlContinent) : intlBase
 
+  const domBase = city ? DOM_DATA.filter(p => p.city === city) : DOM_DATA
   const filteredDom = domQ
-    ? DOM_DATA.filter(p => [p.name, p.city, p.type].some(t => t.toLowerCase().includes(domQ)))
-    : city ? DOM_DATA.filter(p => p.city === city)
-    : domType !== 'all' ? DOM_DATA.filter(p => p.type === domType) : DOM_DATA
+    ? domBase.filter(p => [p.name, p.city, p.type].some(t => t.toLowerCase().includes(domQ)))
+    : !city && domType !== 'all' ? DOM_DATA.filter(p => p.type === domType) : domBase
 
   const isIntl = tab === 'intl'
   const search = isIntl ? intlSearch : domSearch
   const query = isIntl ? intlQ : domQ
   const total = isIntl ? filteredIntl.length : filteredDom.length
   const showing = isIntl ? intlShowing : domShowing
+  const mapPick = isIntl ? country : city
+
+  const uid = useId()
+  const tabId = (k: Tab) => `${uid}-tab-${k}`
+  const panelId = `${uid}-panel`
+
+  const selectTab = (key: Tab) => { setTab(key); onClear?.() }
+  const onTabKey = (e: React.KeyboardEvent, i: number) => {
+    const next = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? TABS.length - 1 : null
+    if (next === null) return
+    e.preventDefault()
+    const key = TABS[(next + TABS.length) % TABS.length][0]
+    selectTab(key)
+    document.getElementById(tabId(key))?.focus()
+  }
 
   const body = (
     <>
 
         <div className="tabs mb-8" role="tablist" aria-label="Partner type">
-          {([['intl', 'International', INTL_DATA.length], ['dom', 'Domestic', DOM_DATA.length]] as const).map(([key, label, count]) => (
+          {TABS.map(([key, label, count], i) => (
             <button
               key={key}
+              id={tabId(key)}
               type="button"
               role="tab"
               aria-selected={tab === key}
-              onClick={() => { setTab(key); onClear?.() }}
+              aria-controls={panelId}
+              tabIndex={tab === key ? 0 : -1}
+              onClick={() => selectTab(key)}
+              onKeyDown={e => onTabKey(e, i)}
               className={`px-4 min-h-[44px] -mb-px border-0 border-b-2 bg-transparent cursor-pointer text-[.9375rem] ${tab === key ? 'border-midnight text-midnight font-semibold' : 'border-transparent text-ink-secondary font-medium'}`}
             >
               {label} <span className="ml-1 text-sm tabular-nums">{count}</span>
@@ -75,7 +98,7 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
           </p>
         )}
 
-        <div role="tabpanel">
+        <div role="tabpanel" id={panelId} aria-labelledby={tabId(tab)}>
           <label className="sr-only" htmlFor="partner-search">{isIntl ? 'Search institutions or countries' : 'Search partners, cities or types'}</label>
           <div className="flex items-center gap-2 bg-white border border-line rounded-pill px-5 min-h-[48px] mb-5 focus-within:outline focus-within:outline-[3px] focus-within:outline-amber focus-within:outline-offset-2">
             <Search aria-hidden size={18} className="text-ink-muted flex-none" />
@@ -92,7 +115,7 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
             />
           </div>
 
-          <div className={query ? 'opacity-50' : ''}>
+          <div className={query || mapPick ? 'opacity-50' : ''}>
             {isIntl ? (
               <Segmented label="Filter by region" options={CONT_BTNS} value={intlContinent} onChange={k => { setIntlCont(k); setIntlShowing(PAGE_SIZE) }} />
             ) : (
@@ -102,7 +125,7 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
 
           <p className="text-sm muted mt-5 mb-4" aria-live="polite">
             {query
-              ? `${total} result${total !== 1 ? 's' : ''} for "${search.trim()}" across all ${isIntl ? 'regions' : 'types'}`
+              ? `${total} result${total !== 1 ? 's' : ''} for "${search.trim()}" ${mapPick ? `in ${mapPick}` : `across all ${isIntl ? 'regions' : 'types'}`}`
               : `Showing ${Math.min(showing, total)} of ${total} ${isIntl ? 'institutions' : 'partners'}`}
           </p>
 
@@ -132,7 +155,7 @@ export default function PartnerDirectory({ country, city, onClear, bare }: Props
           </ul>
           {total === 0 && <p className="text-center muted py-8">No {isIntl ? 'institutions' : 'partners'} found.</p>}
 
-          {!query && total > showing && (
+          {total > showing && (
             <div className="text-center">
               <button
                 type="button"

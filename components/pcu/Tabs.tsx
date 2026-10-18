@@ -1,19 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { SearchParam } from './SearchParam'
 
 type Tab = { key: string; label: string; panel: React.ReactNode }
 
 /**
  * Accessible tabs (roving arrow keys). The active tab is kept in ?tab= so links
  * like /about-overview?tab=experience open the right panel.
+ *
+ * The bar sticks just below the site header (--header-h) and, inside a PovSwitch,
+ * below its bar too (--pov-h, set on the PovSwitch subtree).
  */
-export function Tabs({ tabs, label, stickyTop = 72 }: { tabs: Tab[]; label: string; /** px from the top where the tab bar sticks */ stickyTop?: number }) {
+export function Tabs({ tabs, label }: { tabs: Tab[]; label: string }) {
   const [active, setActive] = useState(tabs[0].key)
 
-  useEffect(() => {
-    const fromUrl = new URLSearchParams(window.location.search).get('tab')
-    if (fromUrl && tabs.some(t => t.key === fromUrl)) setActive(fromUrl)
+  // ?tab= may hold another Tabs' key (they share the param): only take our own.
+  const fromUrl = useCallback((key: string | null) => {
+    if (key && tabs.some(t => t.key === key)) setActive(key)
   }, [tabs])
 
   const select = (key: string) => {
@@ -24,7 +28,7 @@ export function Tabs({ tabs, label, stickyTop = 72 }: { tabs: Tab[]; label: stri
   }
 
   const onKey = (e: React.KeyboardEvent, i: number) => {
-    const next = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null
+    const next = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null
     if (next === null) return
     e.preventDefault()
     const t = tabs[(next + tabs.length) % tabs.length]
@@ -34,7 +38,8 @@ export function Tabs({ tabs, label, stickyTop = 72 }: { tabs: Tab[]; label: stri
 
   return (
     <div>
-      <div role="tablist" aria-label={label} className="tabs sticky z-20 bg-white" style={{ top: stickyTop }}>
+      <SearchParam name="tab" onValue={fromUrl} />
+      <div role="tablist" aria-label={label} className="tabs sticky z-20 bg-white top-[calc(var(--header-h)+var(--pov-h,0px))]">
         {tabs.map((t, i) => (
           <button
             key={t.key}

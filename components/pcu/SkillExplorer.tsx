@@ -37,7 +37,7 @@ export function SkillExplorer({ eyebrow = 'Skill explorer', title = 'Find work b
   return (
     <section className="section section--smoke">
       <div className="wrap grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start">
-        <div className="lg:sticky lg:top-24">
+        <div className="lg:sticky lg:top-[calc(var(--header-h)+24px)]">
           <SectionHead
             eyebrow={eyebrow}
             title={title}

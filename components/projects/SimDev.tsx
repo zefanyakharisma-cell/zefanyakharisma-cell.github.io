@@ -7,8 +7,6 @@ import { ProcessToData } from '@/components/viz/ProcessToData'
 import type { Process } from '@/lib/data/sim'
 import type { DevSystem } from '@/lib/data/simDev'
 
-const STICKY = 138
-
 /** The Programmer point of view of a SIM page: architecture, process → data, ERD, rules. */
 export function SimDev({ dev, processes, name, integration }: {
   dev: DevSystem
@@ -70,7 +68,6 @@ export function SimDev({ dev, processes, name, integration }: {
           <SectionHead eyebrow="Business process → data" title="What each step does to the database" lead="Pick a step: the functions it calls, the tables it writes, the status it sets and the rules that guard it. The touched tables light up in the ERD." />
           <Tabs
             label={`${name} process to data`}
-            stickyTop={STICKY}
             tabs={processes.map(p => ({ key: `dev-${p.key}`, label: p.label, panel: <ProcessToData process={p} dev={dev} /> }))}
           />
         </div>
