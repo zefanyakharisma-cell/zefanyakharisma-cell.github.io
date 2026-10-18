@@ -53,8 +53,9 @@ export function Erd({ entities, relations, domains, label, highlight, compact, r
   /** When this changes (e.g. the process step), the user's own pick is dropped. */
   resetKey?: string | number
 }) {
-  // The pick remembers which resetKey it was made under, so a new step starts clean.
+  // A pick only lasts for the resetKey it was made under; returning to that step later starts clean too.
   const [pick, setPick] = useState<{ id: string; key: typeof resetKey } | null>(null)
+  if (pick && pick.key !== resetKey) setPick(null)
   const picked = pick && pick.key === resetKey ? pick.id : null
   const { boxes, width, height } = useMemo(() => layout(entities), [entities])
   const scroller = useRef<HTMLDivElement>(null)

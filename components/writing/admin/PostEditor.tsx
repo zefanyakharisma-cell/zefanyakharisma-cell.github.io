@@ -28,9 +28,12 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
   const [saving, startSaving] = useTransition()
   const slugTouched = useRef(!initial.slug.startsWith('draft-'))
   const latest = useRef(post)
-  latest.current = post
   // Bumped on every edit: a save only clears "unsaved" if nothing changed while it was in flight.
+  // renderedRev is the revision `latest` holds, which can trail rev until React re-renders.
   const rev = useRef(0)
+  const renderedRev = useRef(0)
+  latest.current = post
+  renderedRev.current = rev.current
   const running = useRef(false)
   const queued = useRef<{ override?: Partial<SaveInput>; done?: string; waiters: { resolve: (ok: boolean) => void; reject: (e: unknown) => void }[] } | null>(null)
 
@@ -47,7 +50,7 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
 
   const send = useCallback(async (override?: Partial<SaveInput>, done?: string): Promise<boolean> => {
     const sent = { ...latest.current, ...override }
-    const sentRev = rev.current
+    const sentRev = renderedRev.current
     try {
       // Sent as a JSON string: editor documents passed as objects reach the server as client references.
       const res = await savePost(JSON.stringify(sent))

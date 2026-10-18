@@ -41,7 +41,14 @@ export const fetchPosts = cache(async (): Promise<PostSummary[]> => {
     .from('posts')
     .select(`${baseColumns}, post_translations (lang, title, excerpt, reading_minutes)`)
     .order('published_at', { ascending: false })
-  if (error) throw new Error(`[writing] listing posts failed: ${error.message}`, { cause: error })
+  if (error) {
+    // At build time there is no last good page to fall back on, so a paused database must not fail the deploy.
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.error('[writing] listing posts failed during build', error)
+      return []
+    }
+    throw new Error(`[writing] listing posts failed: ${error.message}`, { cause: error })
+  }
   return (data as Row<TranslationSummary>[]).map(toSummary).filter(p => Object.keys(p.translations).length > 0)
 })
 
