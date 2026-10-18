@@ -33,7 +33,6 @@ export const relatedPages: { href: string; label: string }[] = [
   { href: '/signing', label: 'MoU & MoA Signing' },
   { href: '/mou', label: 'MoU / MoA' },
   { href: '/university-support', label: 'University Support' },
-  { href: '/intl-grants', label: 'International Grants' },
 ]
 
 export function relatedPageLabel(href: string | null): string | null {

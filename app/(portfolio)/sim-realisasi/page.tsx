@@ -311,7 +311,7 @@ export default function SimRealisasiPage() {
               <SectionHead
                 eyebrow="Benefits · Manfaat"
                 title="Who gains what"
-                lead={<>Tap a card. See also <Link href="/university-support">university support on partnership</Link> and <Link href="/intl-grants">international grants management</Link>.</>}
+                lead={<>Tap a card. See also <Link href="/university-support">university support on partnership</Link>.</>}
               />
               <div className="grid-3">
                 {detail.benefits.map((b, i) => {

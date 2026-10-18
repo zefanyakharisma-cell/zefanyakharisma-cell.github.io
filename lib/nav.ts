@@ -23,7 +23,6 @@ const sectionByRoute: Record<string, Section> = {
   '/signing': 'intl',
   '/mou': 'intl',
   '/university-support': 'intl',
-  '/intl-grants': 'intl',
   '/writing': 'writing',
   '/contact': 'contact',
 }
@@ -59,7 +58,6 @@ export const intlNav = [
   { href: '/signing', label: 'Signing' },
   { href: '/mou', label: 'MoU / MoA' },
   { href: '/university-support', label: 'Univ. Support' },
-  { href: '/intl-grants', label: 'Grants' },
 ]
 
 /** Every public route, for the sitemap. */

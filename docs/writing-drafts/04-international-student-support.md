@@ -14,7 +14,7 @@ primary_search_intent:
   id: ["layanan mahasiswa asing universitas", "pendampingan mahasiswa internasional KNB"]
 ```
 
-Internal links used: [/onboarding](/onboarding), [/amerta](/amerta), [/intl-grants](/intl-grants)
+Internal links used: [/onboarding](/onboarding), [/amerta](/amerta)
 
 ---
 
@@ -88,7 +88,7 @@ The end of a stay deserves as much care as the start. We organised farewell even
 - Train local students as buddies; they reach students offices cannot.
 - Write guidance in plain English, with steps.
 
-You can see the six kinds of care and the activities behind them on the [international student support page](/onboarding). The same journey shaped how we ran the [AMERTA semester exchange](/amerta), and it is why the [international grants system at PETRA](/intl-grants) pairs a dashboard with in-person advising.
+You can see the six kinds of care and the activities behind them on the [international student support page](/onboarding). The same journey shaped how we ran the [AMERTA semester exchange](/amerta).
 
 ---
 
@@ -162,4 +162,4 @@ Akhir masa tinggal layak diperhatikan sama seriusnya dengan awal. Kami menyeleng
 - Latih mahasiswa lokal sebagai *buddy*; mereka menjangkau hal yang tidak terjangkau kantor.
 - Tulis panduan dalam bahasa yang sederhana, langkah demi langkah.
 
-Enam bentuk pendampingan dan kegiatan di baliknya bisa dilihat di [halaman layanan mahasiswa internasional](/onboarding). Pola perjalanan yang sama membentuk cara kami menjalankan [program pertukaran semester AMERTA](/amerta), dan menjadi alasan [sistem hibah internasional di PETRA](/intl-grants) memadukan dasbor dengan pendampingan tatap muka.
+Enam bentuk pendampingan dan kegiatan di baliknya bisa dilihat di [halaman layanan mahasiswa internasional](/onboarding). Pola perjalanan yang sama membentuk cara kami menjalankan [program pertukaran semester AMERTA](/amerta).

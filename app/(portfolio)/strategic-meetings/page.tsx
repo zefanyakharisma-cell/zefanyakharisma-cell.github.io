@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { CalendarCheck, ClipboardList, FileText, Languages, ListChecks, MailOpen, Presentation, Send, UserCheck, Users } from 'lucide-react'
-import { Details, FlipCard, PageHero, PhotoWall, SectionHead, Stat, ThemeBand } from '@/components/pcu'
+import { BookOpen, CalendarCheck, ClipboardList, FileText, Gift, Languages, ListChecks, MailOpen, Presentation, Send, UserCheck, Users } from 'lucide-react'
+import { Card, Details, FlipCard, PageHero, PhotoWall, Reveal, SectionHead, Stat, ThemeBand } from '@/components/pcu'
 import { SubNav } from '@/components/pcu/SubNav'
 import { EngagementCards } from '@/components/projects/EngagementCards'
 import { Lifecycle } from '@/components/viz/Lifecycle'
@@ -37,6 +37,13 @@ const skills = [
   { icon: <Languages aria-hidden />, title: 'Cross-cultural communication', back: 'English–Indonesian facilitation and partner etiquette for delegations from abroad.' },
   { icon: <UserCheck aria-hidden />, title: 'Diplomatic protocol', back: 'Order of speakers, seating, gifts and photos handled the way each partner expects.' },
   { icon: <ListChecks aria-hidden />, title: 'Follow-through', back: 'A meeting only counts if it moves: 24-hour minutes and tracked actions.' },
+]
+
+const visitTips = [
+  { icon: <Users aria-hidden />, title: 'Names and titles, early', text: 'Send the delegation list ahead, so the right people are invited from the PETRA side.' },
+  { icon: <ClipboardList aria-hidden />, title: 'Agenda agreed', text: 'Agree the agenda in advance, including which faculties should be at the table.' },
+  { icon: <BookOpen aria-hidden />, title: 'A specific proposal', text: 'Bring a short institutional profile and the programme you want to start with.' },
+  { icon: <Gift aria-hidden />, title: 'Formal protocol', text: 'Expect an order of speakers, seating, a souvenir exchange and a group photo. It matters here.' },
 ]
 
 export default function StrategicMeetingsPage() {
@@ -87,6 +94,37 @@ export default function StrategicMeetingsPage() {
         <div className="wrap">
           <SectionHead eyebrow="What it takes" title="Four skills in every meeting" lead="Tap a card." />
           <div className="grid-4">{skills.map(s => <FlipCard key={s.title} {...s} />)}</div>
+        </div>
+      </section>
+
+      <section className="section section--smoke decor-grid">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="For visiting delegations"
+            title="Before you visit"
+            lead="Four things that make a first meeting at PETRA move faster."
+          />
+          <div className="grid-4">
+            {visitTips.map((t, i) => (
+              <Reveal key={t.title} delay={i * 60} className="h-full">
+                <Card className="h-full">
+                  <span className="text-accent-strong">{t.icon}</span>
+                  <h3 className="!text-lg m-0">{t.title}</h3>
+                  <p className="m-0 text-ink-secondary">{t.text}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+          <div className="grid-2 !gap-x-12 !gap-y-2 mt-8">
+            <Details summary="What the 24-hour minutes contain">
+              Minutes go out within 24 hours, with an owner and a date for every action. Ask your counterpart for the same after every
+              meeting: it is the clearest sign a partnership is moving.
+            </Details>
+            <Details summary="From meeting to MoU">
+              Follow-up starts the day after: thank-you letters, an exchange of documents and the next step, often a draft MoU or MoA that then
+              goes through <Link href="/mou">review and approval</Link>.
+            </Details>
+          </div>
         </div>
       </section>
 

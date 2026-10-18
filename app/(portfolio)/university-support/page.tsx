@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BarChart2, Building2, Coins, Compass, FileCheck, LayoutDashboard, MessagesSquare, Rocket } from 'lucide-react'
-import { Button, FlipCard, PageHero, PhotoWall, Reveal, SectionHead, Stat, Tag, ThemeBand } from '@/components/pcu'
+import { BarChart2, Building2, CheckCircle, Coins, Compass, FileCheck, LayoutDashboard, MessagesSquare, Rocket, Send, Sigma, Snowflake, Undo2 } from 'lucide-react'
+import { Button, Card, FlipCard, PageHero, PhotoWall, Reveal, SectionHead, Stat, Tag, ThemeBand } from '@/components/pcu'
+import { Insights } from '@/components/pcu/Insights'
+import { Lifecycle } from '@/components/viz/Lifecycle'
 import { SubNav } from '@/components/pcu/SubNav'
 import { EngagementCards } from '@/components/projects/EngagementCards'
 import { engagementsOf } from '@/lib/data/engagements'
@@ -15,7 +17,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = pageMeta('/university-support', {
   title: 'University Partnership Support at PETRA',
-  description: `Supporting faculties and units at Petra Christian University on partnership: partner matching, ${stats.agreementsPerMonth} agreement reviews and ${stats.meetingsPerMonth} meetings a month, launches.`,
+  description: `Supporting faculties and units at Petra Christian University on partnership: partner matching, ${stats.agreementsPerMonth} agreement reviews and ${stats.meetingsPerMonth} meetings a month, launches and RENSTRA reporting.`,
 })
 
 const launches = engagementsOf('support')
@@ -35,7 +37,28 @@ const links = [
   { href: '/strategic-meetings', title: 'Strategic meetings', text: 'How each partner visit is arranged and followed up.' },
   { href: '/signing', title: 'MoU & MoA signing', text: 'From approved text to a signed, active agreement.' },
   { href: '/sim-kerjasama', title: 'SIM Kerjasama', text: 'The system of record for every PETRA agreement.' },
-  { href: '/intl-grants', title: 'International grants', text: 'Finding, tracking and delivering grants.' },
+  { href: '/mou', title: 'MoU / MoA lifecycle', text: 'Draft to renewal, with approval and evidence at every stage.' },
+]
+
+const reporting = [
+  { icon: <Send size={20} aria-hidden />, title: 'Submit', text: 'The unit that ran the activity links it to a valid MoU or MoA and submits within 30 days of the end date.' },
+  { icon: <CheckCircle size={20} aria-hidden />, title: 'Verify', text: 'Mobility is checked by the International Office against BAAK and HR records; duplicates are decided once.' },
+  { icon: <Undo2 size={20} aria-hidden />, title: 'Revise', text: 'A wrong submission is never rejected or deleted. It comes back as a revision with a note.' },
+  { icon: <Sigma size={20} aria-hidden />, title: 'Count', text: 'Indicators are computed from verified data only, and each renewal chain counts once.' },
+  { icon: <Snowflake size={20} aria-hidden />, title: 'Freeze', text: 'Each semester is frozen on its cutoff date, with the records behind every figure.' },
+]
+
+const indicators = [
+  { code: 'RENSTRA 1.1', text: 'Inbound and outbound students' },
+  { code: 'RENSTRA 1.19.S1', text: 'International activities' },
+  { code: 'RENSTRA 1.19.S4', text: 'Agreements actually realised, per renewal chain' },
+]
+
+const lessons = [
+  { text: 'Define **one activity** before building anything. Most double counting starts with a vague unit.' },
+  { text: 'Link every activity to a **specific, valid agreement**, or the realisation figure means nothing.' },
+  { text: '**Verify before counting**, and decide duplicates once.' },
+  { text: '**Freeze each semester.** Stable numbers build more trust than perfect ones.' },
 ]
 
 export default function UniversitySupportPage() {
@@ -73,6 +96,32 @@ export default function UniversitySupportPage() {
           <div className="grid gap-8 items-start lg:grid-cols-[minmax(280px,360px)_1fr]">
             <EngagementCards items={launches} />
             <PhotoWall images={launches.flatMap(e => e.photos.map(p => p.src))} alt="PETRA Drone Academy launch" />
+          </div>
+        </div>
+      </section>
+
+      <section className="section decor-ring-bl">
+        <div className="wrap">
+          <SectionHead
+            eyebrow="Reporting"
+            title="From activity to indicator"
+            lead={<>Every activity under a PETRA agreement is collected, verified and counted in <Link href="/sim-realisasi">SIM Realisasi</Link>, so faculties report once and leadership reads one number.</>}
+          />
+          <Lifecycle steps={reporting} label="How partnership activities become indicators" />
+          <div className="grid-2 !gap-8 mt-10 items-start">
+            <Card>
+              <h3 className="!text-xl m-0">Indicators reported</h3>
+              <ul className="m-0 p-0 list-none flex flex-col gap-3">
+                {indicators.map(i => (
+                  <li key={i.code} className="flex flex-col gap-0.5">
+                    <span className="font-mono text-xs text-accent-strong">{i.code}</span>
+                    <span className="text-ink-secondary">{i.text}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="m-0 text-sm muted">Plus an internal International Awards ranking of study programmes on verified activity.</p>
+            </Card>
+            <Insights title="What I'd tell another university" items={lessons} shown={2} />
           </div>
         </div>
       </section>
