@@ -42,7 +42,7 @@ const keyStyle: Record<string, string> = {
  * are logical references (to views or registries) checked by functions, not
  * foreign keys. Selecting an entity highlights its relations and lists it.
  */
-export function Erd({ entities, relations, domains, label, highlight, compact }: {
+export function Erd({ entities, relations, domains, label, highlight, compact, resetKey }: {
   entities: Entity[]
   relations: Relation[]
   domains: Domain[]
@@ -50,8 +50,13 @@ export function Erd({ entities, relations, domains, label, highlight, compact }:
   /** Entity ids to emphasise (e.g. the tables a process step touches). */
   highlight?: string[]
   compact?: boolean
+  /** When this changes (e.g. the process step), the user's own pick is dropped. */
+  resetKey?: string | number
 }) {
-  const [picked, setPicked] = useState<string | null>(null)
+  // A pick only lasts for the resetKey it was made under; returning to that step later starts clean too.
+  const [pick, setPick] = useState<{ id: string; key: typeof resetKey } | null>(null)
+  if (pick && pick.key !== resetKey) setPick(null)
+  const picked = pick && pick.key === resetKey ? pick.id : null
   const { boxes, width, height } = useMemo(() => layout(entities), [entities])
   const scroller = useRef<HTMLDivElement>(null)
   const firstLit = highlight?.find(id => boxes.has(id))
@@ -138,7 +143,7 @@ export function Erd({ entities, relations, domains, label, highlight, compact }:
             <button
               key={e.id}
               type="button"
-              onClick={() => setPicked(p => (p === e.id ? null : e.id))}
+              onClick={() => setPick(picked === e.id ? null : { id: e.id, key: resetKey })}
               aria-pressed={picked === e.id}
               className={`absolute text-left bg-white rounded-md border-2 overflow-hidden transition-opacity cursor-pointer p-0 ${on ? 'shadow-card' : ''}`}
               style={{ left: x, top: y, width: W, height: h, borderColor: on ? '#ffbc00' : color(e.domain), opacity: dim ? 0.35 : 1 }}

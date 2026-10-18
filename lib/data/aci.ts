@@ -71,7 +71,7 @@ export const DATA: Record<string, Batch> = {
       { country: 'Nigeria', count: 2 }, { country: 'United Kingdom', count: 1 },
       { country: 'Indonesia', count: 1 }, { country: 'Belarus', count: 1 },
       { country: 'Kenya', count: 1 }, { country: 'Gambia', count: 1 },
-      { country: 'Others', count: 8 },
+      { country: 'Others', count: 9 },
     ],
     natNote: 'Nationality data is fully available for 3 of 4 batches (144 participants). ACI 2025 Batch 1 has partial data due to spreadsheet formula errors; Malaysia (19 via IUP program) is confirmed.',
     programs: [
@@ -79,7 +79,7 @@ export const DATA: Record<string, Batch> = {
       { name: 'ADS (Airlangga Darmasiswa)', count: 19 }, { name: 'KNB (Kemitraan Negara Berkembang)', count: 25 },
       { name: 'TIAS (TIAS Program)', count: 9 }, { name: 'DARMASISWA / Other', count: 3 },
     ],
-    gender: { M: 53, F: 79, note: 'Gender data available for 132 participants across 3 batches.' },
+    gender: null, // summed from the batches below
     satisfaction: {
       scale: 'mixed', note: '2024 used a 1–10 scale; 2025 used a 1–4 scale. Scores converted to percentage for comparison.',
       batches: [
@@ -311,3 +311,8 @@ export const TABS: { key: string; label: string }[] = [
   { key: 'b21_2025', label: '2025 Solo' },
   { key: 'b22_2025', label: '2025 Mojokerto' },
 ]
+
+const genders = Object.entries(DATA).flatMap(([key, b]) => (key !== 'all' && b.gender ? [b.gender] : []))
+const M = genders.reduce((n, g) => n + g.M, 0)
+const F = genders.reduce((n, g) => n + g.F, 0)
+DATA.all.gender = { M, F, note: `Gender data available for ${M + F} participants across ${genders.length} batches.` }

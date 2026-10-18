@@ -34,38 +34,49 @@ function toSummary({ post_translations, ...rest }: Row<TranslationSummary>): Pos
 }
 
 /** Live posts, newest first. Row-level security already hides drafts, future posts and unready translations.
- *  Returns null when the database cannot be reached, so pages can say so instead of claiming there is no writing. */
+ *  Empty when Supabase is not configured; throws when the database fails, so a failed revalidation keeps the last good page. */
+export const fetchPosts = cache(async (): Promise<PostSummary[]> => {
+  if (!supabaseConfigured) return []
+  const { data, error } = await publicClient()
+    .from('posts')
+    .select(`${baseColumns}, post_translations (lang, title, excerpt, reading_minutes)`)
+    .order('published_at', { ascending: false })
+  if (error) {
+    // At build time there is no last good page to fall back on, so a paused database must not fail the deploy.
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.error('[writing] listing posts failed during build', error)
+      return []
+    }
+    throw new Error(`[writing] listing posts failed: ${error.message}`, { cause: error })
+  }
+  return (data as Row<TranslationSummary>[]).map(toSummary).filter(p => Object.keys(p.translations).length > 0)
+})
+
+/** Like fetchPosts, but null when Supabase is not configured or the database cannot be reached,
+ *  so pages can say so instead of claiming there is no writing. */
 export const listPosts = cache(async (): Promise<PostSummary[] | null> => {
   if (!supabaseConfigured) return null
   try {
-    const { data, error } = await publicClient()
-      .from('posts')
-      .select(`${baseColumns}, post_translations (lang, title, excerpt, reading_minutes)`)
-      .order('published_at', { ascending: false })
-    if (error) throw error
-    return (data as Row<TranslationSummary>[]).map(toSummary).filter(p => Object.keys(p.translations).length > 0)
+    return await fetchPosts()
   } catch (e) {
-    console.error('[writing] listPosts failed', e)
+    console.error(e)
     return null
   }
 })
 
+/** Null when Supabase is not configured or there is no such post; throws when the database fails,
+ *  so ISR keeps the cached page instead of replacing it with a 404. */
 export const getPost = cache(async (slug: string): Promise<Post | null> => {
   if (!supabaseConfigured) return null
-  try {
-    const { data, error } = await publicClient()
-      .from('posts')
-      .select(`${baseColumns}, post_translations (lang, title, excerpt, reading_minutes, body_html)`)
-      .eq('slug', slug)
-      .maybeSingle()
-    if (error) throw error
-    if (!data) return null
-    const { post_translations, ...rest } = data as Row<Translation>
-    return { ...rest, translations: byLang(post_translations) }
-  } catch (e) {
-    console.error('[writing] getPost failed', e)
-    return null
-  }
+  const { data, error } = await publicClient()
+    .from('posts')
+    .select(`${baseColumns}, post_translations (lang, title, excerpt, reading_minutes, body_html)`)
+    .eq('slug', slug)
+    .maybeSingle()
+  if (error) throw new Error(`[writing] loading post "${slug}" failed: ${error.message}`, { cause: error })
+  if (!data) return null
+  const { post_translations, ...rest } = data as Row<Translation>
+  return { ...rest, translations: byLang(post_translations) }
 })
 
 export async function postsForPage(href: string): Promise<PostSummary[]> {

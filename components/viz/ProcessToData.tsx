@@ -68,7 +68,7 @@ export function ProcessToData({ process, dev }: { process: Process; dev: DevSyst
           </div>
         </div>
         <div className="min-w-0 flex flex-col gap-2">
-          <Erd compact entities={dev.entities} relations={dev.relations} domains={dev.domains} highlight={lit} label={`Tables touched by: ${step.title}`} />
+          <Erd compact entities={dev.entities} relations={dev.relations} domains={dev.domains} highlight={lit} resetKey={active} label={`Tables touched by: ${step.title}`} />
           <p className="m-0 text-xs text-ink-muted">{lit.length ? `Highlighted in amber: ${lit.join(', ')}.` : 'This step writes no table shown in the diagram.'}</p>
         </div>
       </div>

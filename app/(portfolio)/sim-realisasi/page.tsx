@@ -95,7 +95,7 @@ export default function SimRealisasiPage() {
         </div>
       </PageHero>
 
-      <section id="demo" className="section section--smoke decor-grid scroll-mt-20">
+      <section id="demo" className="section section--smoke decor-grid anchor-offset">
         <div className="wrap">
           <SectionHead eyebrow="Live demo" title="Try SIM Realisasi" lead="The working app, on demo data: the dashboard, the activity list and the single-page report form." />
           <DemoFrame src={sim.demoUrl} app="SIM Realisasi" note="Demo environment with generated activities over real agreements. Figures there are not official PETRA indicators." />
@@ -186,11 +186,10 @@ export default function SimRealisasiPage() {
             </div>
           </section>
 
-          <section id="process" className="section scroll-mt-20 decor-ring-tr">
+          <section id="process" className="section anchor-offset decor-ring-tr">
             <div className="wrap">
               <SectionHead eyebrow="Business process" title="From activity to indicator" lead="Modelled in BPMN: one process follows an activity through verification; the other covers what runs on a schedule." />
               <Tabs
-                stickyTop={138}
                 label="SIM Realisasi business processes"
                 tabs={[
                   {

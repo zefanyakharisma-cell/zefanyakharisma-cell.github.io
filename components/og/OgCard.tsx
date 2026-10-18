@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { extname, join } from 'node:path'
+import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { ogThemes, ogTokens, ringU, type OgTheme } from './tokens'
 
@@ -27,12 +27,24 @@ const SEAM = 6
 
 const fontFile = (name: string) => readFile(join(process.cwd(), 'app/fonts/og', name))
 
-const mime: Record<string, string> = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp' }
+const isPngOrJpeg = (b: Buffer) =>
+  (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) || (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff)
 
+/** The photo as a PNG/JPEG data URI. Satori can't decode WebP (the Writing admin's
+ *  cover format) or AVIF, so anything else is re-encoded with sharp. */
 async function photoSrc(photo: string) {
-  if (/^https?:\/\//.test(photo)) return photo
-  const data = await readFile(join(process.cwd(), 'public', photo))
-  return `data:${mime[extname(photo).toLowerCase()] ?? 'image/jpeg'};base64,${data.toString('base64')}`
+  let data: Buffer
+  if (/^https?:\/\//.test(photo)) {
+    const res = await fetch(photo, { signal: AbortSignal.timeout(8000) })
+    if (!res.ok) throw new Error(`Photo fetch failed: ${res.status}`)
+    data = Buffer.from(await res.arrayBuffer())
+  } else {
+    data = await readFile(join(process.cwd(), 'public', photo))
+  }
+  if (isPngOrJpeg(data)) return `data:image/${data[0] === 0x89 ? 'png' : 'jpeg'};base64,${data.toString('base64')}`
+  const { default: sharp } = await import('sharp')
+  const jpeg = await sharp(data).resize({ width: 960, height: 1260, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 85 }).toBuffer()
+  return `data:image/jpeg;base64,${jpeg.toString('base64')}`
 }
 
 function titleSize(title: string, photo: boolean) {
@@ -43,14 +55,28 @@ function titleSize(title: string, photo: boolean) {
 
 /** The site's share card on the PCU Design System: midnight panel with Inter type,
  *  the section's half ring and seam as accent, and the page's hero photo. */
-export async function ogCard(spec: OgSpec) {
-  const theme = ogThemes[spec.theme]
+export async function ogCard(spec: OgSpec): Promise<Response> {
   const [regular, semibold, bold, photo] = await Promise.all([
     fontFile('Inter-Regular.ttf'),
     fontFile('Inter-SemiBold.ttf'),
     fontFile('Inter-Bold.ttf'),
     spec.photo ? photoSrc(spec.photo).catch(() => null) : null,
   ])
+  const fonts = [regular, semibold, bold] as const
+  if (!photo) return render(spec, null, fonts)
+  // ImageResponse renders lazily, so a bad photo would only fail mid-stream (a 500).
+  // Render it here and fall back to the text-only card on any error.
+  try {
+    const res = render(spec, photo, fonts)
+    const body = await res.arrayBuffer()
+    return new Response(body, { status: res.status, headers: res.headers })
+  } catch {
+    return render(spec, null, fonts)
+  }
+}
+
+function render(spec: OgSpec, photo: string | null, [regular, semibold, bold]: readonly [Buffer, Buffer, Buffer]) {
+  const theme = ogThemes[spec.theme]
   const panelWidth = photo ? PANEL : ogSize.width
   const ringWidth = photo ? 200 : 260
   const ringLeft = photo ? PANEL + SEAM / 2 - ringWidth / 2 : ogSize.width - 72 - ringWidth

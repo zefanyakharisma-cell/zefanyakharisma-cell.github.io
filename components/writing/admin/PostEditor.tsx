@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import Image from 'next/image'
+import { unstable_rethrow } from 'next/navigation'
 import { ExternalLink, Trash2 } from 'lucide-react'
 import { deletePost, savePost, type SaveInput, type TranslationInput } from '@/app/admin/actions'
 import { langs, postTypes, relatedPages, slugify, streamKeys, streams, typeKeys, type Lang, type Stream } from '@/lib/writing/config'
@@ -27,27 +28,64 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
   const [saving, startSaving] = useTransition()
   const slugTouched = useRef(!initial.slug.startsWith('draft-'))
   const latest = useRef(post)
+  // Bumped on every edit: a save only clears "unsaved" if nothing changed while it was in flight.
+  // renderedRev is the revision `latest` holds, which can trail rev until React re-renders.
+  const rev = useRef(0)
+  const renderedRev = useRef(0)
   latest.current = post
+  renderedRev.current = rev.current
+  const running = useRef(false)
+  const queued = useRef<{ override?: Partial<SaveInput>; done?: string; waiters: { resolve: (ok: boolean) => void; reject: (e: unknown) => void }[] } | null>(null)
 
-  const update = (patch: Partial<SaveInput>) => { setPost(p => ({ ...p, ...patch })); setDirty(true) }
+  const update = (patch: Partial<SaveInput>) => { rev.current++; setPost(p => ({ ...p, ...patch })); setDirty(true) }
   const updateT = (lang: Lang, patch: Partial<TranslationInput>) => {
     setPost(p => {
       const next = { ...p, translations: { ...p.translations, [lang]: { ...p.translations[lang], ...patch } } }
       if (lang === 'en' && patch.title !== undefined && !slugTouched.current) next.slug = slugify(patch.title) || p.slug
       return next
     })
+    rev.current++
     setDirty(true)
   }
 
-  const persist = useCallback(async (override?: Partial<SaveInput>, done?: string): Promise<boolean> => {
-    // Sent as a JSON string: editor documents passed as objects reach the server as client references.
-    const res = await savePost(JSON.stringify({ ...latest.current, ...override }))
-    if (!res.ok) { setMessage({ kind: 'error', text: res.error }); return false }
-    setPost(p => ({ ...p, ...override, published_at: res.published_at }))
-    setDirty(false)
-    setMessage({ kind: 'ok', text: done ?? `Saved at ${new Date(res.savedAt).toLocaleTimeString()}` })
-    return true
+  const send = useCallback(async (override?: Partial<SaveInput>, done?: string): Promise<boolean> => {
+    const sent = { ...latest.current, ...override }
+    const sentRev = renderedRev.current
+    try {
+      // Sent as a JSON string: editor documents passed as objects reach the server as client references.
+      const res = await savePost(JSON.stringify(sent))
+      if (!res.ok) { setMessage({ kind: 'error', text: res.error }); return false }
+      const apply = (p: SaveInput) => ({ ...p, ...override, published_at: p.published_at === sent.published_at ? res.published_at : p.published_at })
+      latest.current = apply(latest.current)
+      setPost(apply)
+      if (rev.current === sentRev) setDirty(false)
+      setMessage({ kind: 'ok', text: done ?? `Saved at ${new Date(res.savedAt).toLocaleTimeString()}` })
+      return true
+    } catch (err) {
+      unstable_rethrow(err)
+      setMessage({ kind: 'error', text: `Could not save: ${err instanceof Error ? err.message : 'check your connection and try again.'}` })
+      return false
+    }
   }, [])
+
+  // One save at a time; saves requested meanwhile collapse into one follow-up that keeps every override.
+  const persist = useCallback((override?: Partial<SaveInput>, done?: string) => new Promise<boolean>((resolve, reject) => {
+    const q = (queued.current ??= { waiters: [] })
+    q.override = { ...q.override, ...override }
+    if (done) q.done = done
+    q.waiters.push({ resolve, reject })
+    if (running.current) return
+    running.current = true
+    void (async () => {
+      while (queued.current) {
+        const { override: o, done: d, waiters } = queued.current
+        queued.current = null
+        // send only throws Next's redirect/not-found signals; hand them to the caller's transition.
+        try { const ok = await send(o, d); waiters.forEach(w => w.resolve(ok)) } catch (e) { waiters.forEach(w => w.reject(e)) }
+      }
+      running.current = false
+    })()
+  }), [send])
   const save = useCallback((override?: Partial<SaveInput>, done?: string) => {
     startSaving(async () => { await persist(override, done) })
   }, [persist])
@@ -69,6 +107,23 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
   const scheduleAt = post.published_at && new Date(post.published_at).getTime() > Date.now()
   const onError = (text: string) => setMessage({ kind: 'error', text })
   const upload = (file: File) => uploadImage(file, post.id)
+  const onTabKey = (e: React.KeyboardEvent, i: number) => {
+    const next = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null
+    if (next === null) return
+    e.preventDefault()
+    const l = langs[(next + langs.length) % langs.length]
+    setTab(l)
+    document.getElementById(`lang-tab-${l}`)?.focus()
+  }
+  const remove = async () => {
+    try {
+      const res = await deletePost(post.id)
+      if (!res.ok) onError(res.error)
+    } catch (err) {
+      unstable_rethrow(err)
+      onError(`Could not delete: ${err instanceof Error ? err.message : 'check your connection and try again.'}`)
+    }
+  }
 
   // Preview shows the saved version, so unsaved changes are saved first (the tab opens right away to avoid popup blockers).
   const preview = (lang: Lang) => {
@@ -86,15 +141,16 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
       <div className="flex flex-col gap-6 min-w-0">
         <div className="tabs" role="tablist" aria-label="Language">
-          {langs.map(l => (
-            <a key={l} href="#" role="tab" aria-selected={tab === l} aria-current={tab === l ? 'page' : undefined}
-              onClick={e => { e.preventDefault(); setTab(l) }}>
+          {langs.map((l, i) => (
+            <button key={l} id={`lang-tab-${l}`} type="button" role="tab" aria-selected={tab === l} aria-controls={`lang-panel-${l}`}
+              tabIndex={tab === l ? 0 : -1} onClick={() => setTab(l)} onKeyDown={e => onTabKey(e, i)}
+              className={`px-4 min-h-[44px] -mb-px border-0 border-b-2 bg-transparent cursor-pointer whitespace-nowrap text-[.9375rem] ${tab === l ? 'border-midnight text-midnight font-semibold' : 'border-transparent text-ink-secondary font-medium'}`}>
               {langName[l]} {post.translations[l].ready ? '· ready' : ''}
-            </a>
+            </button>
           ))}
         </div>
         {langs.map(l => (
-          <div key={l} role="tabpanel" className={tab === l ? 'flex flex-col gap-5' : 'hidden'} lang={l}>
+          <div key={l} id={`lang-panel-${l}`} role="tabpanel" aria-labelledby={`lang-tab-${l}`} className={tab === l ? 'flex flex-col gap-5' : 'hidden'} lang={l}>
             <label className="admin-field">
               <span className="sr-only">Title ({langName[l]})</span>
               <input className="admin-input admin-title" placeholder={l === 'en' ? 'Title' : 'Judul'} value={post.translations[l].title}
@@ -213,7 +269,7 @@ export function PostEditor({ initial }: { initial: SaveInput }) {
           </div>
         </div>
 
-        <form action={deletePost.bind(null, post.id)} onSubmit={e => { if (!window.confirm('Delete this post and its images? This cannot be undone.')) e.preventDefault() }}>
+        <form action={remove} onSubmit={e => { if (!window.confirm('Delete this post and its images? This cannot be undone.')) e.preventDefault() }}>
           <button type="submit" className="pcu-btn pcu-btn--ghost !text-[#7a0d24]"><Trash2 aria-hidden size={16} /> Delete post</button>
         </form>
       </aside>

@@ -6,6 +6,10 @@
    mockup. Brand components (.pcu-*) and tokens live in styles/pcu.css. */
 
 html { scroll-behavior: smooth; }
+/* Height of the sticky site header. Header.tsx keeps it current (it wraps to two rows on phones);
+   --pov-h is set by PovSwitch on its own subtree. Sticky bars and anchor targets offset by these. */
+:root { --header-h: 72px; }
+.anchor-offset { scroll-margin-top: calc(var(--header-h) + var(--pov-h, 0px) + 8px); }
 body { margin: 0; background: var(--white); color: var(--midnight); }
 img { max-width: 100%; }
 .pcu :focus-visible { outline: 3px solid var(--focus-ring-brand); outline-offset: 3px; }
@@ -125,7 +129,7 @@ img { max-width: 100%; }
 .article-layout { display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); max-width: 960px; margin: 0 auto; }
 @media (min-width: 1024px) { .article-layout:has(.article-toc) { grid-template-columns: 220px minmax(0, 1fr); } }
 .article-toc { align-self: start; display: flex; flex-direction: column; gap: 12px; font-size: .9375rem; }
-@media (min-width: 1024px) { .article-toc { position: sticky; top: 96px; } }
+@media (min-width: 1024px) { .article-toc { position: sticky; top: calc(var(--header-h) + 24px); } }
 .article-toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .pcu .article-toc a { color: var(--text-secondary); text-decoration: none; }
 .pcu .article-toc a:hover { color: var(--midnight); text-decoration: underline; }
@@ -133,8 +137,8 @@ img { max-width: 100%; }
 .article-body > * + * { margin-top: 1.25em; }
 .article-body > :first-child { margin-top: 0; }
 .article-body p { margin-bottom: 0; }
-.pcu .article-body h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.25; margin-top: 2em; scroll-margin-top: 96px; }
-.pcu .article-body h3 { font-size: 1.3125rem; line-height: 1.3; margin-top: 1.6em; scroll-margin-top: 96px; }
+.pcu .article-body h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.25; margin-top: 2em; scroll-margin-top: calc(var(--header-h) + 24px); }
+.pcu .article-body h3 { font-size: 1.3125rem; line-height: 1.3; margin-top: 1.6em; scroll-margin-top: calc(var(--header-h) + 24px); }
 .article-body ul, .article-body ol { padding-left: 1.4em; margin-bottom: 0; }
 .article-body ul { list-style: disc; }
 .article-body ol { list-style: decimal; }

@@ -33,7 +33,11 @@ export async function requireAdmin() {
   const supabase = await sessionClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/admin/login')
-  const { data: isAdmin } = await supabase.rpc('is_admin')
+  const { data: isAdmin, error } = await supabase.rpc('is_admin')
+  if (error) {
+    console.error('requireAdmin: is_admin check failed', error)
+    redirect('/admin/login?error=unavailable')
+  }
   if (!isAdmin) redirect('/admin/login?error=not-admin')
   return { supabase, user }
 }

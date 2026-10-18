@@ -11,6 +11,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       ) : (
         <>
           {error === 'not-admin' && <p className="admin-error">This account is signed in but is not allowed to write.</p>}
+          {error === 'unavailable' && <p className="admin-error">The database could not be reached to check your access. Try again in a minute.</p>}
           <LoginForm />
         </>
       )}
