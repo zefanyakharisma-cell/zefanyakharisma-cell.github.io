@@ -58,7 +58,9 @@ export function MotionObserver() {
     }, { threshold: 0, rootMargin: '0px 0px -40px 0px' })
 
     const prepare = (el: Element, cls: 'rv' | 'mt') => {
-      if (el.classList.contains(cls)) return
+      if (el.classList.contains('is-in')) return
+      // Prepared by the previous run (a navigation's DOM can land before its effect re-runs): that observer is gone.
+      if (el.classList.contains(cls)) { io.observe(el); return }
       // A target inside another fading target would fade twice.
       if (cls === 'rv' && el.parentElement?.closest('.rv')) return
       const parent = el.parentElement
