@@ -6,7 +6,8 @@ export { ogSize } from '@/components/og/OgCard'
 
 /** Share image for a post: the site's share card with the post title, and its cover photo when it has one. */
 export async function postOgImage(slug: string, lang: Lang) {
-  const post = await getPost(slug)
+  // A database error falls back to the generic Writing card rather than a broken image.
+  const post = await getPost(slug).catch(() => null)
   const t = post?.translations[lang] ?? post?.translations[lang === 'en' ? 'id' : 'en']
   const eyebrow = post ? [postTypes[post.type][lang], ...post.streams.map(s => streams[s][lang])].join(' · ') : 'Writing'
   return ogCard({
