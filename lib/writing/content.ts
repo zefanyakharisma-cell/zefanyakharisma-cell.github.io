@@ -3,10 +3,10 @@ import { generateHTML } from '@tiptap/html/server'
 import type { JSONContent } from '@tiptap/core'
 import { editorExtensions, textAligns, textColors } from './extensions'
 import { chartDefaults, chartHtml, chartTypes, seriesModes, tableData, type ChartAttrs } from './chart'
-import { calloutTones, imageSizes } from './nodes'
+import { calloutTones, Chart, imageSizes } from './nodes'
 
-const safeHref = /^(https?:\/\/|mailto:|\/(?!\/)|#)/i
-const safeSrc = /^(https:\/\/|\/(?!\/))/i
+const safeHref = /^(https?:\/\/|mailto:|\/(?![\/\\])|#)/i
+const safeSrc = /^(https:\/\/|\/(?![\/\\]))/i
 const safeId = /^[a-z0-9]{1,24}$/
 const colors = new Set<string>(textColors.map(c => c.value))
 
@@ -47,22 +47,25 @@ export function sanitizeDoc(node: JSONContent): JSONContent {
   return out
 }
 
-function walk(node: JSONContent, visit: (n: JSONContent) => void) {
-  visit(node)
-  node.content?.forEach(c => walk(c, visit))
-}
+/** Charts render as `<div data-chart-slot="N">` (N = order in the doc) so docToHtml can fill each by index. */
+const slotExtensions = editorExtensions.map(e => (e.name === 'chart'
+  ? Chart.extend({
+    addAttributes: () => ({ slot: { default: '', renderHTML: a => ({ 'data-chart-slot': a.slot }) } }),
+    renderHTML: ({ HTMLAttributes }) => ['div', HTMLAttributes],
+  })
+  : e))
 
 export function docToHtml(doc: JSONContent, lang = 'en'): string {
   const tables = new Map<string, JSONContent>()
   const charts: ChartAttrs[] = []
-  walk(doc, n => {
+  const slotted = (n: JSONContent): JSONContent => {
     if (n.type === 'table' && n.attrs?.id && !tables.has(n.attrs.id)) tables.set(n.attrs.id, n)
-    if (n.type === 'chart') charts.push({ ...chartDefaults, ...n.attrs } as ChartAttrs)
-  })
-  let i = 0
-  return generateHTML(doc, editorExtensions)
-    .replace(/<div data-chart-slot=""[^>]*><\/div>/g, () => {
-      const attrs = charts[i++]
+    if (n.type === 'chart') return { type: 'chart', attrs: { slot: String(charts.push({ ...chartDefaults, ...n.attrs } as ChartAttrs) - 1) } }
+    return n.content ? { ...n, content: n.content.map(slotted) } : n
+  }
+  return generateHTML(slotted(doc), slotExtensions)
+    .replace(/<div data-chart-slot="(\d+)"><\/div>/g, (_, i: string) => {
+      const attrs = charts[Number(i)]
       const table = attrs && tables.get(attrs.tableId)
       return table ? chartHtml(attrs, tableData(table, attrs.seriesIn), lang) : ''
     })

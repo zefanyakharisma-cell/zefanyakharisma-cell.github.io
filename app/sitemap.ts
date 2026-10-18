@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { allRoutes } from '@/lib/nav'
 import { absoluteUrl } from '@/lib/seo'
 import { langs, postPath, type Lang } from '@/lib/writing/config'
-import { listPosts } from '@/lib/writing/posts'
+import { fetchPosts } from '@/lib/writing/posts'
 
 export const revalidate = 3600
 
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'monthly',
     priority: route === '/' ? 1 : 0.7,
   }))
-  const posts = (await listPosts()) ?? []
+  const posts = await fetchPosts()
   const writing: MetadataRoute.Sitemap = posts.flatMap(post => {
     const available = langs.filter(l => post.translations[l])
     // hreflang pairs only when both translations are live
