@@ -227,6 +227,13 @@ img { max-width: 100%; }
 @keyframes ring-rise { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0); } }
 [data-motion="on"] .hero-photo { animation: photo-in 1.4s var(--ease-out) both; }
 @keyframes photo-in { from { opacity: 0; scale: 1.04; } }
+[data-motion="on"] .arch-photo img { animation: portrait-in .8s var(--ease-out) both; }
+@keyframes portrait-in { from { opacity: 0; scale: 1.03; } }
+/* Hero images hold their first frame until the image has loaded (MotionObserver plays them),
+   so a cold first visit doesn't spend the fade on an empty box. */
+[data-motion="on"][data-img-wait] :is(.hero-photo, .arch-photo img) { animation-play-state: paused; }
+/* The hero text waits up to 300ms for the web font, so the font doesn't swap mid-fade. */
+[data-motion="on"][data-font-wait] .hero-seq > * { animation-play-state: paused; }
 [data-motion="on"] .hero-art > * { animation: art-in .7s var(--ease-out) both; }
 .hero-art > :nth-child(1) { animation-delay: 100ms; }
 .hero-art > :nth-child(2) { animation-delay: 180ms; }

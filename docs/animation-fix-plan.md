@@ -62,3 +62,15 @@ On the live site the gap is likely bigger: on a phone connection, and when Verce
 ## Risks
 - **Hiding images until they load:** if the listener ever failed, an image could stay hidden. The error handler and the 2.5 s fallback cover this.
 - **The inline script must stay tiny and run before hydration.** It joins the existing pre-paint script, so it adds no new request.
+
+## Result (implemented)
+- **Step 1:** hero photo and portrait entrances start paused (`data-img-wait`) and are played on the image's `load` or `error` event. After a client-side navigation, the page scan plays images that are already complete. A safety timeout of 2.5 s releases any image that never loads. No attributes on React-rendered elements are changed.
+- **Step 2:** the hero text waits for the Inter font, capped at 300 ms (`data-font-wait`). Only the first font family is passed to `fonts.load()`, because a failing fallback font in the list made it reject at once.
+- **Step 3:** confirmed: on a slow first load the hero stats showed their final value, then dropped to 0. Now a server-rendered number that has been on screen for more than 300 ms before hydration stays at its value. Numbers scrolled into view later, numbers after a client-side navigation, and numbers on a fast reload still count up. Also fixed: an occasional "-0" on the first frame.
+- **Verified** with headless Chromium on a production build, cold and throttled:
+  - `/`, `/about-overview`, `/contact` and `/amerta` on first visit and on reload
+  - client-side navigation
+  - reduced motion
+  - a broken image and a stalled image
+  - lint, tsc and build pass, and the pages stay static
+- **Found while testing; existing behaviour, not changed:** with JavaScript disabled, pages show only the `loading.tsx` loader. The prerendered content is streamed into a hidden element that an inline script swaps in.
