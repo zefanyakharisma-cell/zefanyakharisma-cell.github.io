@@ -95,6 +95,8 @@ Essays, reflections, field notes and explainers in three streams (Global, People
 - **Publish:** leave the date empty to publish now, or pick a future date to schedule it (it appears within about five minutes of that time). “Unpublish” takes it back to drafts.
 - **Link to work:** “Related page” puts the post under “Writing about this” on that project or Intl. Ed page.
 - **Images** are resized to 2000px WebP in the browser and stored in the `post-images` bucket.
+- **Tables and charts:** insert a table from the toolbar, then “Make chart from this table” (or the chart button) adds a column, stacked, bar, line, pie or donut chart. The first row names the series and the first column the categories; the chart stays linked and redraws as the table changes. Tick “Data only” to fold the table behind “Show the chart data” on the public page.
+- **Other tools:** strikethrough, superscript/subscript, highlight, text colour, alignment, checklists, note/tip/warning boxes, code blocks, and image size and captions. Changes apply to a post's public page the next time it is saved.
 
 Database (`supabase/migrations/`): `posts` (slug, streams, type, status, published_at, cover, related page, featured) and `post_translations` (one row per language with the editor JSON and the generated HTML). Row-level security lets anyone read only published posts whose date has passed and ready translations; only users listed in `admins` can write. To add the admin: create the user in Supabase → Authentication, then run `insert into public.admins (user_id) select id from auth.users where email = '<email>';`. Turn off public sign-ups in Supabase → Authentication.
 
