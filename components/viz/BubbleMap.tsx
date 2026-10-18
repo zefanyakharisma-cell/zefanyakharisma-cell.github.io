@@ -27,7 +27,7 @@ export function BubbleMap({ map, unit, label, selected, onSelect, labelTop = 4, 
     <figure className="m-0">
       <div ref={ref} className="relative">
         <svg viewBox={`0 0 ${map.width} ${map.height}`} className="block w-full h-auto" role="group" aria-label={label}>
-          <path d={map.base} fill="#e2e5e9" stroke="#ffffff" strokeWidth={0.6} />
+          <image href={map.base} width={map.width} height={map.height} aria-hidden />
           {ordered.map(b => {
             const pick = () => onSelect?.(selected === b.name ? null : b.name)
             return (

@@ -55,7 +55,7 @@ export function MotionObserver() {
         show(e.target)
         io.unobserve(e.target)
       }
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' })
 
     const prepare = (el: Element, cls: 'rv' | 'mt') => {
       if (el.classList.contains(cls)) return
@@ -65,8 +65,8 @@ export function MotionObserver() {
       if (cls === 'rv' && parent && /\bgrid-[234]\b/.test(parent.className)) {
         (el as HTMLElement).style.setProperty('--i', String(Math.min(Array.prototype.indexOf.call(parent.children, el), 6)))
       }
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
-        // Already on screen (it was painted visible): leave it be; the page fade covers it.
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        // Already on screen, even partly (it was painted visible): leave it be; the page fade covers it.
         el.classList.add(cls, 'is-in', 'rv-done')
       } else {
         el.classList.add(cls)

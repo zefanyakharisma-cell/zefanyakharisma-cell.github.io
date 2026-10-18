@@ -32,6 +32,13 @@ img { max-width: 100%; }
 .pcu .site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 9999px; color: var(--midnight); text-decoration: none; font-size: .9375rem; font-weight: 500; }
 .pcu .site-nav a:hover { background: var(--smoke); }
 .pcu .site-nav a[aria-current="page"] { background: var(--midnight); color: var(--white); }
+/* Phones: wordmark on its own line, the nav on one row below it (it scrolls sideways on very narrow screens). */
+@media (max-width: 640px) {
+  .site-header .wrap { min-height: 0; gap: 4px; }
+  .site-nav { flex-wrap: nowrap; justify-content: space-between; width: calc(100% + 20px); margin-inline: -10px; overflow-x: auto; scrollbar-width: none; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .pcu .site-nav a { flex: none; padding: 0 10px; font-size: .875rem; }
+}
 
 /* Sections */
 .section { padding: clamp(56px, 8vw, 96px) 0; }

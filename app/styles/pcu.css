@@ -193,26 +193,12 @@
 /* Self-hosted Inter is loaded by next/font as --font-inter. */
 :root { --pcu-font-inter: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 
-/* ---------- Loader and route progress (site layer) ---------- */
-.pcu-loader-mark { display: flex; flex-direction: column; align-items: center; gap: 18px; color: var(--pcu-white); position: relative; }
-.pcu-loader__ring { fill: none; stroke-width: 12; stroke-linecap: butt; stroke-dasharray: 300; stroke-dashoffset: 300; animation: pcu-draw 1.8s cubic-bezier(.65,0,.35,1) infinite alternate; }
-.pcu-loader__ring--1 { stroke: var(--pcu-amber); }
-.pcu-loader__ring--2 { stroke: var(--pcu-teal); animation-delay: .25s; }
-.pcu-loader__ring--3 { stroke: var(--pcu-blue); stroke-width: 9; animation-delay: .5s; }
-.pcu-loader__name { font-weight: 600; letter-spacing: .02em; font-size: .9375rem; color: var(--pcu-smoke); }
-.pcu-loader__bar { position: relative; width: 160px; height: 4px; border-radius: 9999px; background: rgba(255,255,255,.16); overflow: hidden; }
-.pcu-loader__bar::after { content: ""; position: absolute; inset: 0; width: 40%; border-radius: inherit; background: var(--pcu-amber); animation: pcu-bar 1.1s ease-in-out infinite; }
-.pcu-loader-mark--compact { gap: 14px; }
-@keyframes pcu-draw { to { stroke-dashoffset: 0; } }
-@keyframes pcu-bar { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
-
+/* ---------- Route progress (site layer) ---------- */
 .pcu-route-progress { position: fixed; top: 0; left: 0; z-index: 90; height: 3px; width: 0; background: linear-gradient(90deg, var(--pcu-amber), var(--pcu-cerise)); opacity: 0; transition: opacity .3s ease; }
 .pcu-route-progress[data-busy] { opacity: 1; animation: pcu-progress 8s cubic-bezier(.1,.8,.2,1) forwards; }
 @keyframes pcu-progress { from { width: 0; } 20% { width: 45%; } to { width: 92%; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .pcu-loader__ring { animation: none; stroke-dashoffset: 0; }
-  .pcu-loader__bar::after { animation: none; width: 100%; }
   .pcu-route-progress[data-busy] { animation: none; width: 60%; }
 }
 
