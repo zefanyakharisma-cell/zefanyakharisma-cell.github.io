@@ -93,7 +93,7 @@ export async function savePost(payload: string): Promise<SaveResult> {
       title: t.title.trim(),
       excerpt: t.excerpt.trim(),
       body_json: doc,
-      body_html: docToHtml(doc),
+      body_html: docToHtml(doc, lang),
       reading_minutes: readingMinutes(docText(doc)),
       ready: t.ready,
     }
