@@ -47,7 +47,7 @@ export function WorldMap({ map, unit, label, selected, onSelect, className }: Pr
     <figure className={`m-0 ${className ?? ''}`}>
       <div ref={ref} className="relative">
         <svg viewBox={`0 0 ${map.width} ${map.height}`} className="block w-full h-auto" role="group" aria-label={label}>
-          <path d={map.base} fill="#e2e5e9" stroke="#ffffff" strokeWidth={0.5} />
+          <image href={map.base} width={map.width} height={map.height} aria-hidden />
           {map.countries.filter(c => c.d).map(c => (
             <path key={c.name} d={c.d!} fill={shade(c.value, max)} stroke="#ffffff" strokeWidth={0.6} {...interactive(c.name, c.value)} />
           ))}

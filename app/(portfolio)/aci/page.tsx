@@ -75,7 +75,7 @@ export default function Aci() {
       Mojokerto: (DATA.b22_2025.participants ?? 0),
     },
     CITIES,
-    { bounds: [[110.1, -6.75], [113.3, -8.35]], height: 480 },
+    'east-central-java',
   )
   const world = buildWorldMap(Object.fromEntries(all.nationalities.filter(n => n.country !== 'Others').map(n => [n.country, n.count])))
 
