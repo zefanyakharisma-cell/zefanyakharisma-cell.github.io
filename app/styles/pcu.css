@@ -342,3 +342,69 @@
   .hero-photo--light { opacity: .16; }
   .hero-photo--left { -webkit-mask-image: linear-gradient(270deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.4) 40%, #000 80%); mask-image: linear-gradient(270deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.4) 40%, #000 80%); }
 }
+
+/* ---------- Glass (site layer) ----------
+   A material for things that float above content (sticky header, chips, the
+   hero stat, panels over photos), never for body copy, tables or charts.
+   Light glass carries midnight text: even over black the .72 fill keeps it
+   above 6:1. Without backdrop-filter, or when the reader asks for less
+   transparency, every glass surface turns near-solid. */
+:root {
+  --glass-bg: rgba(255,255,255,.72);
+  --glass-bg-solid: rgba(255,255,255,.94);
+  --glass-border: rgba(255,255,255,.75);
+  --glass-blur: blur(14px) saturate(160%);
+  --glass-shadow: inset 0 1px 0 rgba(255,255,255,.85), var(--shadow-card);
+  --glass-dark-bg: rgba(19,50,86,.55);
+  --glass-dark-bg-solid: rgba(19,50,86,.92);
+  --glass-dark-border: rgba(255,255,255,.18);
+}
+.glass, .glass--dark { -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); }
+.glass { background: var(--glass-bg); color: var(--pcu-midnight); box-shadow: var(--glass-shadow); }
+.glass--dark { background: var(--glass-dark-bg); border-color: var(--glass-dark-border); color: var(--pcu-white); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 12px 32px -16px rgba(0,0,0,.45); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--glass-bg-solid); }
+  .glass--dark { background: var(--glass-dark-bg-solid); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass--dark { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass { background: var(--glass-bg-solid); }
+  .glass--dark { background: var(--glass-dark-bg-solid); }
+}
+
+/* Home: the floating partner stat over the portrait art. */
+.hero-glass { --glass-bg: rgba(255,255,255,.8); z-index: 1; overflow: hidden; display: flex; flex-direction: column; gap: 6px; padding: 16px 20px; border-radius: 12px; min-width: 210px; }
+.hero-glass__eyebrow { display: flex; align-items: center; gap: 8px; font: 600 .6875rem/1 var(--pcu-font-inter); letter-spacing: .14em; text-transform: uppercase; color: var(--text-secondary); }
+.hero-glass__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pcu-teal); box-shadow: 0 0 0 4px rgba(69,184,188,.2); }
+.hero-glass__value { display: flex; align-items: baseline; gap: 8px; }
+.hero-glass__value b { font-size: 2.25rem; line-height: 1; letter-spacing: -0.02em; }
+.hero-glass__value span, .hero-glass__meta { font-size: .875rem; color: var(--text-secondary); }
+
+/* Home: stat tiles on a soft glow, each with a brand-colour quarter in the corner. */
+.stats-glass { background: radial-gradient(60% 120% at 10% 0%, rgba(69,184,188,.16), transparent 70%), radial-gradient(50% 120% at 90% 100%, rgba(255,188,0,.16), transparent 70%), var(--smoke); }
+.stat.stat--glass { position: relative; overflow: hidden; padding: 24px; border-top: 0; border-radius: var(--pcu-radius-md); }
+.stat--glass::after { content: ""; position: absolute; top: 0; right: 0; width: 36px; height: 36px; border-bottom-left-radius: 100%; background: var(--stat-accent, var(--pcu-teal)); opacity: .45; }
+.stats-glass .stat--glass:nth-child(1) { --stat-accent: var(--pcu-cerise); }
+.stats-glass .stat--glass:nth-child(2) { --stat-accent: var(--pcu-amber); }
+.stats-glass .stat--glass:nth-child(3) { --stat-accent: var(--pcu-teal); }
+.stats-glass .stat--glass:nth-child(4) { --stat-accent: var(--pcu-blue); }
+
+/* Hover sheen: one light sweep across a glass panel (the stat tile's ::before
+   gradient rule is replaced by it). Only on devices that hover, with motion allowed. */
+:is(.photo-card .body, .hero-glass, .stat--glass)::before { content: ""; position: absolute; inset: 0; height: auto; border-radius: inherit; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.6) 50%, transparent 65%); translate: -120% 0; pointer-events: none; }
+.photo-card .body { overflow: hidden; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :is(.photo-card:is(:hover, :focus-visible) .body, .hero-glass:hover, .stat--glass:hover)::before { translate: 120% 0; transition: translate .9s cubic-bezier(.4,0,.2,1); }
+}
+
+/* Chart tooltips: dark glass, filled enough that white text stays above 7:1 over white charts. */
+.tooltip-glass { --glass-dark-bg: rgba(19,50,86,.85); }
+
+/* Page openings: back link and tags as dark glass chips over the gradient and photo. */
+.hero-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 9999px; font: 600 .875rem/1 var(--pcu-font-inter); color: var(--pcu-white); text-decoration: none; transition: background-color var(--dur-1) ease; }
+.pcu a.hero-chip { color: var(--pcu-white); text-decoration: none; }
+a.hero-chip:is(:hover, :focus-visible) { background: rgba(19,50,86,.75); }
+.hero-chip--sm { min-height: 28px; padding: 0 12px; font-size: .75rem; }
+
+/* Closing band: the key number on a dark glass panel, an accent circle behind its corner. */
+.theme-band__panel { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: clamp(24px, 3vw, 32px); border-radius: 16px; }

@@ -25,6 +25,18 @@ export function Header() {
     return () => ro.disconnect()
   }, [])
 
+  // Past the first few pixels the glass gets a touch more frost and a shadow.
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let raf = 0
+    const update = () => { raf = 0; el.toggleAttribute('data-scrolled', window.scrollY > 8) }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update) }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }
+  }, [])
+
   return (
     <>
       <header ref={ref} className="site-header">

@@ -34,7 +34,8 @@ const skills = [
 ]
 
 export default function Home() {
-  const partners = buildWorldMap(countBy(INTL_DATA, p => p.country))
+  const byCountry = countBy(INTL_DATA, p => p.country)
+  const partners = buildWorldMap(byCountry)
   const students = buildWorldMap(mergeCounts(
     Object.fromEntries(AMERTA.all.nationalities.filter(n => !/other/i.test(n.country)).map(n => [n.country, n.count])),
     Object.fromEntries(inboundNations.map(n => [n.name, n.count])),
@@ -69,17 +70,22 @@ export default function Home() {
             <div className="arch-photo absolute left-[22%] top-[14%] w-[46%] h-[82%] shadow-card">
               <Image src="/assets/images/self-portrait/profile-pic-1.png" alt="Portrait of Zefanya Kharisma Nugroho" fill priority sizes="(min-width: 1024px) 280px, 45vw" />
             </div>
+            <div className="hero-glass glass absolute left-0 bottom-[4%]">
+              <span className="hero-glass__eyebrow"><span aria-hidden className="hero-glass__dot" />Partner network</span>
+              <span className="hero-glass__value"><b>{INTL_DATA.length}</b><span>international partners</span></span>
+              <span className="hero-glass__meta">{Object.keys(byCountry).length} countries</span>
+            </div>
           </div>
         </div>
       </section>
 
       <div aria-hidden className="pcu-pattern pattern-band" />
-      <section className="section--smoke pt-10 pb-10">
-        <div className="wrap grid-4 !gap-8">
-          <Stat value={stats.amertaParticipants} label="AMERTA students" />
-          <Stat value={stats.studentsPerSemester} label="Students per semester" />
-          <Stat value={String(INTL_DATA.length)} label="International partners" />
-          <Stat value={stats.agreementsPerMonth} label="MoU/MoA a month" />
+      <section className="stats-glass pt-10 pb-10">
+        <div className="wrap grid-4 !gap-6">
+          <Stat value={stats.amertaParticipants} label="AMERTA students" className="stat--glass glass" />
+          <Stat value={stats.studentsPerSemester} label="Students per semester" className="stat--glass glass" />
+          <Stat value={String(INTL_DATA.length)} label="International partners" className="stat--glass glass" />
+          <Stat value={stats.agreementsPerMonth} label="MoU/MoA a month" className="stat--glass glass" />
         </div>
       </section>
 
@@ -111,7 +117,7 @@ export default function Home() {
             <Reveal delay={160} theme="sunrise"><PhotoCard href="/aero" src="/assets/images/aero/aero-1.jpg" alt="AERO exhibition booths" tag="19 booths" title="AERO" text="Partnership exhibition" className="!min-h-[400px] theme-edge" imagePosition="center 35%" /></Reveal>
             <Reveal delay={240} theme="aqua">
               <Card tone="theme" href="/sim-kerjasama" className="!min-h-[400px] theme-edge" shape={<><Shape kind="ring-n-line" color="white" className="w-[200px] -right-10 top-8 opacity-70" /><Shape kind="circle" color="amber" className="w-12 right-10 top-[140px]" /></>}>
-                <div className="mt-auto flex flex-col gap-3">
+                <div className="glass--dark mt-auto flex flex-col gap-3 rounded-md p-5">
                   <Tag outline className="text-white">2 systems</Tag>
                   <h3 className="text-white !text-2xl">SIM Kerjasama &amp; Realisasi</h3>
                   <p className="m-0 text-smoke">Agreements and their activities</p>

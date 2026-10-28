@@ -68,7 +68,7 @@ export function Tooltip({ tip }: { tip: Tip }) {
     <div
       ref={el}
       role="status"
-      className="pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-md bg-midnight px-3 py-2 text-sm text-white shadow-card"
+      className="tooltip-glass glass--dark pointer-events-none absolute left-0 top-0 z-10 whitespace-nowrap rounded-md px-3 py-2 text-sm"
     >
       <span className="flex items-center gap-2 font-semibold"><Flag country={tip.title} />{tip.title}</span>
       <span className="block text-smoke tabular-nums">{tip.value}</span>
