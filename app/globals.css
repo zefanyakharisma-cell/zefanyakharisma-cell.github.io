@@ -24,9 +24,13 @@ img { max-width: 100%; }
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); box-sizing: border-box; }
 
 /* Header */
-.site-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.72); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(226,229,233,.8); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .site-header { background: rgba(255,255,255,.96); } }
-@media (prefers-reduced-transparency: reduce) { .site-header { background: rgba(255,255,255,.96); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+.site-header { position: sticky; top: 0; z-index: 40; }
+/* Glass bars: the header (lighter at the top of the page, frostier once scrolled) and the sticky POV bar. */
+.site-header, .pov-bar { background: rgba(255,255,255,.72); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(226,229,233,.8); }
+.site-header { background: rgba(255,255,255,.55); transition: background-color var(--dur-2) ease, box-shadow var(--dur-2) ease; }
+.site-header[data-scrolled] { background: rgba(255,255,255,.72); box-shadow: 0 8px 24px -16px rgba(25,48,75,.25); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .site-header, .site-header[data-scrolled], .pov-bar { background: rgba(255,255,255,.96); } }
+@media (prefers-reduced-transparency: reduce) { .site-header, .site-header[data-scrolled], .pov-bar { background: rgba(255,255,255,.96); -webkit-backdrop-filter: none; backdrop-filter: none; } }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 24px; min-height: 72px; flex-wrap: wrap; padding-block: 8px; }
 .wordmark { font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--midnight); text-decoration: none; }
 .wordmark span { font-weight: 400; color: var(--text-muted); }
@@ -92,9 +96,12 @@ img { max-width: 100%; }
 .pcu .tabs a[aria-current="page"] { color: var(--midnight); border-bottom-color: var(--midnight); font-weight: 600; }
 
 /* Segmented picker (batch tabs on program pages) */
-.seg { display: flex; gap: 8px; flex-wrap: wrap; }
-.seg button { font: 600 .9375rem/1 var(--pcu-font-inter); min-height: 44px; padding: 0 18px; border-radius: 9999px; border: 1.5px solid var(--midnight); background: var(--white); color: var(--midnight); cursor: pointer; }
-.seg button[aria-pressed="true"] { background: var(--midnight); color: var(--white); }
+/* Glass track: a faint tint (reads on white and smoke) with a light edge; the choice inside is solid midnight. */
+.seg, .glass-track { border-radius: 24px; background: rgba(25,48,75,.05); border: 1px solid rgba(255,255,255,.8); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(25,48,75,.06), 0 8px 24px -18px rgba(25,48,75,.35); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+.seg { display: flex; gap: 4px; flex-wrap: wrap; width: fit-content; max-width: 100%; padding: 4px; box-sizing: border-box; }
+.seg button { font: 600 .9375rem/1 var(--pcu-font-inter); min-height: 44px; padding: 0 18px; border-radius: 9999px; border: 0; background: transparent; color: var(--midnight); cursor: pointer; }
+.seg button:hover { background: rgba(255,255,255,.75); }
+.seg button[aria-pressed="true"] { background: var(--midnight); color: var(--white); box-shadow: 0 6px 16px -8px rgba(25,48,75,.6); }
 
 /* Data viz */
 .bar-track { height: 10px; background: var(--smoke); border-radius: 9999px; overflow: hidden; }

@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Shape } from './Shape'
-import { Tag } from './Tag'
 
 type Props = {
   eyebrow?: string
@@ -34,13 +33,13 @@ export function PageHero({ eyebrow, kicker, title, lead, tags, back, image, shap
       <div className="wrap relative flex flex-wrap items-end gap-12">
         <div className="hero-seq flex flex-col gap-5 min-w-0 flex-[1_1_520px]">
           {back && (
-            <Link href={back.href} className="pcu-btn pcu-btn--ghost self-start text-white">
+            <Link href={back.href} className="hero-chip glass--dark self-start">
               <ArrowLeft aria-hidden size={16} /> {back.label}
             </Link>
           )}
           {tags && tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {tags.map(t => <Tag key={t} outline>{t}</Tag>)}
+              {tags.map(t => <span key={t} className="hero-chip hero-chip--sm glass--dark">{t}</span>)}
             </div>
           )}
           {eyebrow && <span className="pcu-eyebrow text-amber">{eyebrow}</span>}

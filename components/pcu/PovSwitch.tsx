@@ -51,10 +51,10 @@ export function PovSwitch({ general, dev }: { general: React.ReactNode; dev: Rea
     // 73px (one row: py-3 + 48px group + border) is the pre-hydration fallback.
     <div ref={root} className="contents" style={{ '--pov-h': '73px' } as React.CSSProperties}>
       <SearchParam name="pov" onValue={fromUrl} />
-      <div ref={bar} id="pov-top" className="sticky top-[var(--header-h)] z-30 scroll-mt-[var(--header-h)] bg-white/90 backdrop-blur border-b border-line">
+      <div ref={bar} id="pov-top" className="sticky top-[var(--header-h)] z-30 scroll-mt-[var(--header-h)] pov-bar">
         <div className="wrap flex flex-wrap items-center justify-between gap-3 py-3">
           <span className="pcu-eyebrow">Point of view</span>
-          <div role="radiogroup" aria-label="Point of view" className="flex gap-1 p-1 rounded-pill bg-smoke">
+          <div role="radiogroup" aria-label="Point of view" className="glass-track flex gap-1 p-1 !rounded-pill">
             {options.map(({ key, label, hint, Icon }) => (
               <button
                 key={key}

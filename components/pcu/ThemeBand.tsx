@@ -17,9 +17,14 @@ export function ThemeBand({ eyebrow, value, label, cta }: Props) {
       <Shape kind="ring-n" className="theme-ring w-[clamp(200px,26vw,360px)] right-[4%] bottom-0 hidden md:block" />
       <div className="wrap relative">
         <div className="flex flex-col items-start gap-3 min-w-0 max-w-[560px]">
-          <span className="pcu-eyebrow text-amber">{eyebrow}</span>
-          <b className="theme-band__value">{value}</b>
-          <p className="m-0 text-xl text-white">{label}</p>
+          <div className="relative self-stretch">
+            <Shape kind="circle" color="amber" className="w-[clamp(64px,8vw,104px)] -right-6 -top-8" />
+            <div className="theme-band__panel glass--dark">
+              <span className="pcu-eyebrow text-amber">{eyebrow}</span>
+              <b className="theme-band__value">{value}</b>
+              <p className="m-0 text-xl text-white">{label}</p>
+            </div>
+          </div>
           {cta && (
             <Button href={cta.href} variant="inverse" className="mt-4">
               {cta.label} <ArrowRight aria-hidden size={16} />
